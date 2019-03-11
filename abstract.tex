@@ -6,7 +6,53 @@ TODO
 \chapter*{Kurzfassung (englisch)}
 \thispagestyle{empty}
 
-TODO
+The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments and
+microservice architectures introduces new attack scenarios. This creates the need for new defense
+strategies in both Development and Operations. Especially solutions providing (Kubernetes
+conformant) container orchestration are identifiably different and in high demand compared to long
+established solutions. This calls for a more detailed, focused examination. \\
+This thesis aims to answer the following questions: \\
+
+- What generic security risks emerge when providing or using a multi-tenant PaaS solution,
+with each tenant developing, deploying and running their own applications? \\
+
+- How can a PaaS provider (serving internal and/or external users) mitigate those risks? \\
+
+-  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
+to a public cloud solution? \\
+
+Another goal is to recommend security measures for different implementation use cases.
+If achievable within the provided time frame, it will additionally try and answer this question: \\
+
+- Does a cloud-hosted, self-managed solution (buy IaaS, provide PaaS) offer benefits in
+contrast to the solutions compared above?
+(In case there are sufficient differences, another set of security measures will be
+recommended for this solution) \\
+
+Examples for widely used PaaS solutions in different environments include OpenShift as an on-
+premise solution, Azure Kubernetes Service as a public cloud solution. To include a cloud-hosted,
+self-managed solution, OpenShift running on self-managed instances in Azure could serve as an
+example. \\
+To achieve these goals, the thesis will first limit the view on the problem to a manageable scope by
+focusing on specific components of a few (2-3) commonly used PaaS solutions, specifically Certified
+Kubernetes solutions. Components providing Kubernetes conformity will be the main focus, as these
+bear the most significance across all Kubernetes Certified solutions. \\
+Looking at three common attack scenarios, it will then determine vulnerabilities and attack vectors,
+as well as their potential damage and rate those risks: \\
+
+- Malicious third party attacking the underlying infrastructure from within the LAN and/or the
+internet \\
+
+- Malicious third party attacking from inside a hijacked container, i.e. remotely executing code
+or commands \\
+
+- Bad User, i.e. a negligent, hijacked or malicious developer (account) risking compromise of
+his own and/or other applications \\
+
+Possible measures to mitigate those risks will also be explored, evaluated and (if possible) put to use
+in practical examples, leveraging the PaaS solutions within scope. With the results gathered, the
+thesis will compare different best practice implementations for different use cases and recommend
+measures for each.
 
 \bigskip
 
