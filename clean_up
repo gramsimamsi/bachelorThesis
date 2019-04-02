@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SCRIPTDIR="$(dirname ${0})"
+WORKINGDIR="$(pwd)"
+
+cd "${SCRIPTDIR}"
+
+rm -rf $(grep -v "#" .gitignore) > /dev/null 2>&1
+
+cd "${WORKINGDIR}"
+
+exit 0

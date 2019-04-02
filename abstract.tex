@@ -1,9 +1,59 @@
-\chapter*{Kurzfassung (deutsch)}
+\chapter*{Abstract (german)}
 \thispagestyle{empty}
 
-TODO
+Die wachsende Zahl von Platform-as-a-Service (PaaS) Lösungen, Cloud-Umgebungen und Microservice-Architekturen bieten neue Angriffsszenarios.
+Dies erhöht den Bedarf an neuen Verteidigungs-Strategien in der IT-Sicherheit von Entwicklungs- und Produktiv-Umgebungen.
+Gerade Lösungen auf Basis von (Kubernetes-konformen) Container-Orchestrierung sind sowohl stark gefragt, as auch fundamental anders aufgebaut als andere, etabliertere Lösungen.
+Dieser Umstand legt eine nähere Untersuchung dieses Teilbereichs nahe. \\
+Aus diesem Grund ist das Ziel dieser Arbeit, folgende Fragestellungen zu beantworten:
 
-\chapter*{Kurzfassung (englisch)}
+\begin{itemize}
+
+\item Was für Sicherheits-Risiken existieren für den Anbieter und/oder Nutzer einer mandantenfähigen PaaS-Lösung, wenn jeder Mandant über eigene Entwicklungs-, Verteilungs- und Laufzeit-Umgebungen für seine Anwendungen verfügt?
+
+
+\item Wie kann ein Anbieter von PaaS-Lösungen an interne und/oder externe Nutzer diese Risiken Eindämmen?
+
+\item Was spricht in diesem Kontext aus Sicht eines PaaS-Anbieters jeweils für und gegen Vor-Ort- bzw. Cloud-Lösungen?
+
+\end{itemize}
+
+Ein weiteres Ziel ist es, Maßnahmen für die unterschiedlichen Implementierungsmöglichkeiten zu empfehlen.
+Falls der festgelegte Zeitrahmen es erlaubt, soll darüber hinaus folgende Fragestellung erörtert werden:
+
+\begin{itemize}
+
+\item Bietet eine selbstverwaltete Lösung in der Cloud (Einkauf von IaaS, Anbieten von PaaS) Vorteile im Vergleich zu den obigen Lösungen?\\
+(Sollten signifikante Unterschiede vorliegen, werden darüber hinaus weitere Lösungs-spezifische Empfehlungen zur Absicherung angeführt)
+
+\end{itemize}
+
+Unter den etablierten PaaS-Lösungen in unterschiedlichen Umgebungen finden sich OpenShift als Vor-Ort-Lösung und Azure Kubernetes Service für Cloud-Umgebungen.
+Zur Betrachtung einer selbstverwalteten Lösung in der Cloud kann OpenShift auf selbstverwalteten Instanzen in Azure dienen.
+
+Um die genannten Ziele zu erreichen, grenzt diese Arbeit den Problembereich zuerst ein, indem sie sich auf spezifische Komponenten von zwei bis drei gängiger und Kubernetes-zertifizierter PaaS-Lösungen konzentriert.
+Das Hauptaugenmerk liegt hierbei auf den Kubernetes-konformen Teilen, da hier die Risiken und Maßnahmen den weitreichensten Gültigkeitsbereich haben, unabhängig von der betrachteten Lösung.
+Unter Betrachtung von drei gängigen Angriffsszenarien werden Schwachstellen und Angriffsvektoren identifiziert, ihr Schadenspotential evaluiert und das Risiko eingeschätzt:
+
+\begin{itemize}
+
+\item Angriff von böswilligen Dritten auf die Infrastruktur von innerhalb des LAN und/oder dem Internet
+
+\item Angriff von böswlligen Dritten aus einem Container heraus, über den die Kontrolle übernommen wurde. Ein Beispiel wäre das Asführen von Code oder Befehlen per Zugriff von außen.
+
+\item Fahrlässiger, übernommener oder böswilliger Nutzer bzw. Nutzer-Identität, was ein Kompromittierungsrisiko für diesen und/oder weitere Mandanten und deren Anwendungen darstellt.
+
+\end{itemize}
+
+Es werden potentielle Maßnahmen zur Risiko-Eindämmung gesucht, evaluiert und (soweit möglich) exemplarisch in der Praxis umgesetzt.
+Hierzu werden die PaaS-Lösungen im Problembereich genutzt. Mithilfe der Ergebnissewerden verschiedene Implementierungs-Empfehlungen verglichen, anhand der verschiedenen Anwendungsfälle differenziert und jeweils Maßnahmen empfohlen.
+\bigskip
+
+\noindent
+Schlagworte: \\
+Platform-as-a-Service, PaaS, Cloud, Security, Container, Kubernetes, Docker, Risikoanalyse, OpenShift, Azure Kubernetes Service, AKS
+
+\chapter*{Abstract (english)}
 \thispagestyle{empty}
 
 The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments and
@@ -11,26 +61,34 @@ microservice architectures introduces new attack scenarios. This creates the nee
 strategies in both Development and Operations. Especially solutions providing (Kubernetes
 conformant) container orchestration are identifiably different and in high demand compared to long
 established solutions. This calls for a more detailed, focused examination. \\
-This thesis aims to answer the following questions: \\
+This thesis aims to answer the following questions:
 
-- What generic security risks emerge when providing or using a multi-tenant PaaS solution,
-with each tenant developing, deploying and running their own applications? \\
+\begin{itemize}
 
-- How can a PaaS provider (serving internal and/or external users) mitigate those risks? \\
+\item What generic security risks emerge when providing or using a multi-tenant PaaS solution,
+with each tenant developing, deploying and running their own applications? 
 
--  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
-to a public cloud solution? \\
+\item How can a PaaS provider (serving internal and/or external users) mitigate those risks? 
+
+\item  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
+to a public cloud solution? 
+
+\end{itemize}
 
 Another goal is to recommend security measures for different implementation use cases.
-If achievable within the provided time frame, it will additionally try and answer this question: \\
+If achievable within the provided time frame, it will additionally try and answer this question: 
 
-- Does a cloud-hosted, self-managed solution (buy IaaS, provide PaaS) offer benefits in
-contrast to the solutions compared above?
+\begin{itemize}
+
+\item Does a cloud-hosted, self-managed solution (buy IaaS, provide PaaS) offer benefits in
+contrast to the solutions compared above? \\
 (In case there are sufficient differences, another set of security measures will be
-recommended for this solution) \\
+recommended for this solution)
+
+\end{itemize}
 
 Examples for widely used PaaS solutions in different environments include OpenShift as an on-
-premise solution, Azure Kubernetes Service as a public cloud solution. To include a cloud-hosted,
+premise solution and Azure Kubernetes Service as a public cloud solution. To include a cloud-hosted,
 self-managed solution, OpenShift running on self-managed instances in Azure could serve as an
 example. \\
 To achieve these goals, the thesis will first limit the view on the problem to a manageable scope by
@@ -38,16 +96,20 @@ focusing on specific components of a few (2-3) commonly used PaaS solutions, spe
 Kubernetes solutions. Components providing Kubernetes conformity will be the main focus, as these
 bear the most significance across all Kubernetes Certified solutions. \\
 Looking at three common attack scenarios, it will then determine vulnerabilities and attack vectors,
-as well as their potential damage and rate those risks: \\
+as well as their potential damage and rate those risks:
 
-- Malicious third party attacking the underlying infrastructure from within the LAN and/or the
-internet \\
+\begin{itemize}
 
-- Malicious third party attacking from inside a hijacked container, i.e. remotely executing code
-or commands \\
+\item Malicious third party attacking the underlying infrastructure from within the LAN and/or the
+internet
 
-- Bad User, i.e. a negligent, hijacked or malicious developer (account) risking compromise of
-his own and/or other applications \\
+\item Malicious third party attacking from inside a hijacked container, i.e. remotely executing code
+or commands
+
+\item Bad User, i.e. a negligent, hijacked or malicious developer (account) risking compromise of
+his own and/or other applications
+
+\end{itemize}
 
 Possible measures to mitigate those risks will also be explored, evaluated and (if possible) put to use
 in practical examples, leveraging the PaaS solutions within scope. With the results gathered, the
@@ -57,5 +119,6 @@ measures for each.
 \bigskip
 
 \noindent
-Schlagworte: 
+Keywords: \\
+Platform-as-a-Service, PaaS, Cloud, Security, Container, Kubernetes, Docker, Risikoanalyse, OpenShift, Azure Kubernetes Service, AKS
 

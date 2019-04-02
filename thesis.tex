@@ -1,119 +1,235 @@
-  \documentclass[twoside=true, %  doppelseitiger Druck
-    DIV=15,% DIV Faktor für Satzspiegelberechnung, sie Doku zu KOMA Script
-    BCOR=15mm, % Bindekorrektur
-    chapterprefix=false,
-    headinclude=true,
-    footinclude=false,
-    pagesize,%         write pagesize to DVI or PDF
-    fontsize=11pt,%             use this font size
-    paper=a4,%          use ISO A4
-    bibliography=totoc,%         write bibliography-chapter to table of contents
-    index=totoc,%         write index-chapter to table of contents
-    cleardoublepage=plain,% \cleardoublepage generates pages with pagestyle empty
-     headings=big,%       A4/B5
-    listof=flat,%        improved list of tables
-    numbers=noenddot
-  ]{scrbook}
+\documentclass[twoside=true, % doppelseitiger Druck
+	DIV=15, % DIV Faktor für Satzspiegelberechnung, sie Doku zu KOMA Script
+	BCOR=15mm, % Bindekorrektur
+	chapterprefix=false,
+	headinclude=true,
+	footinclude=false,
+	pagesize, % write pagesize to DVI or PDF
+	fontsize=11pt, % use this font size
+	paper=a4, % use ISO A4
+	bibliography=totoc, % write bibliography-chapter to table of contents
+	index=totoc, % write index-chapter to table of contents
+	cleardoublepage=plain, % \cleardoublepage generates pages with pagestyle empty
+	headings=big, % A4/B5
+	listof=flat, % improved list of tables
+	numbers=noenddot,
+	parskip=half, % Absatz: durch Einrücken = false, Zeile = half / full (+, *, -)
+]{scrbook}
 
-\usepackage{fixltx2e}
+% Zeilenabstand
+\usepackage{setspace}
+\setstretch{1.3}
+
+\usepackage{scrhack}
 \usepackage[utf8]{inputenc}
+\usepackage{csquotes}
 \usepackage{makeidx}
 \usepackage{amsfonts}
-\usepackage[slantedGreek,sc]{mathpazo}  % Schriftart Palatino
-% \usepackage{lmodern}    % statt mathpazo, falls CM Fonts verwendet werden sollen
-%\usepackage{mathptmx}    % statt mathpazo, falls Times  verwendet werden soll
+\usepackage[slantedGreek,sc]{mathpazo} % Schriftart Palatino
+% \usepackage{lmodern} % statt mathpazo, falls CM Fonts verwendet werden sollen
+%\usepackage{mathptmx} % statt mathpazo, falls Times  verwendet werden soll
 \usepackage[scaled=.95]{helvet}
 \usepackage{courier}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
-\usepackage{amsmath}            % standard math notation (vectors/sets/...)
-\usepackage{bm}        % standard math notation (fonts)
-\usepackage{fixmath}        % standard math notation (fonts)
+\usepackage{amsmath} % standard math notation (vectors/sets/...)
+\usepackage{bm} % standard math notation (fonts)
+\usepackage{fixmath} % standard math notation (fonts)
 \usepackage{graphicx}
-\usepackage[facing=yes]{floatrow}       % mehrere Gleitobjekte nebeneinander/caption neben Bild/Tabelle
+\usepackage[facing=yes]{floatrow} % mehrere Gleitobjekte nebeneinander/caption neben Bild/Tabelle
 \usepackage[labelfont=bf,sf,font=small,labelsep=space,format=plain]{caption}
 \usepackage{subcaption}
 \usepackage{scrpage2}
-% \usepackage{pstool}  % einbinden falls psfrag verwendet werden soll
+% \usepackage{pstool} % einbinden falls psfrag verwendet werden soll
 \usepackage{epstopdf}
-\usepackage[ngerman]{babel}
-\usepackage{ellipsis}  % Korrigiert den Weißraum um Auslassungspunkte
-\usepackage{microtype}  % optischer Randausgleich etc.
+\usepackage[english]{babel}
+\usepackage{ellipsis} % Korrigiert den Weißraum um Auslassungspunkte
+\usepackage{microtype} % optischer Randausgleich etc.
 
-\usepackage{xcolor}         % z.B. für schattierte Boxen
-\usepackage{framed}			% shaded Umgebung
+%Zeilenumbruch für lange links swellnitz
+\usepackage[hyphens]{url}
+
+% Fußnoten werden jede Seite neu durchnummeriert
+\usepackage{perpage} %the perpage package
+\MakePerPage{footnote} %the perpage package command
+
+% TIKZ: Um Schaubilder und Diagramme zu zeichnen
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+% Blockbild-Test
+\usetikzlibrary{shapes,arrows,shadows}
+\usepackage{amsmath,bm,times}
+\newcommand{\mx}[1]{\mathbf{\bm{#1}}} % Matrix command
+\newcommand{\vc}[1]{\mathbf{\bm{#1}}} % Vector command
+
+%Handling der Abkürzungen
+\usepackage{acronym}
+
+\usepackage{xcolor} % z.B. für schattierte Boxen
+\usepackage{framed} % shaded Umgebung
 \definecolor{shadecolor}{gray}{.85}%
 
 % Links im PDF
 \usepackage[colorlinks=false,
-            pdfborder={0 0 0},
-            breaklinks=true]
-            {hyperref}
+	pdfborder={0 0 0},
+	breaklinks=true
+]{hyperref}
 
+% Kürzere Namen für \autoref
+\addto\extrasngerman{
+	\renewcommand{\sectionautorefname}{Abschnitt}
+	\renewcommand{\subsectionautorefname}{Abschnitt}
+	\renewcommand{\subsubsectionautorefname}{Abschnitt}
+	\renewcommand{\figureautorefname}{Abb.}
+	\renewcommand{\tableautorefname}{Tab.}
+}
+
+
+% Literaturangaben
+\usepackage[backend=biber,
+style=alphabetic-verb, % numeric-verb oder alphabetic-verb
+sorting=none,
+backref=true
+]{biblatex}
+\addbibresource{thesis.bib}
+
+% Features für Tabellen
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{calc}
+% Eigener Spaltentyp
+\usepackage{array}
+%% M: 1. Spalte: linksbündig, fett, 1.5cm breit
+\newcolumntype{M}{>{\raggedright}p{4.5cm}}
+%% M: 2. Spalte: linksbündig, fett, 1.5cm breit
+\newcolumntype{N}{>{\raggedright}p{2.5cm}}
+%% O: 3. Spalte: textbreite - 4 * spaltenrand - 1.5cm
+\newcolumntype{O}{p{\textwidth-4\tabcolsep-7cm}}
+
+%% R: 1. Spalte: rechsbündig, 1.5cm breit
+\newcolumntype{R}{>{\raggedleft}p{1.5cm}}
+%% S: 1. Spalte: rechsbündig, fett, 1.5cm breit
+\newcolumntype{S}{>{\raggedleft\bfseries}p{1.5cm}}
+%% T: 2. Spalte: textbreite - 4 * spaltenrand - 1.5cm
+\newcolumntype{T}{p{\textwidth-4\tabcolsep-1.5cm}}
+
+%% X: 1. Spalte: rechsbündig, 3.0cm breit
+\newcolumntype{U}{>{\raggedleft}p{3.0cm}}
+%% Y: 1. Spalte: rechsbündig, fett, 3.0cm breit
+\newcolumntype{V}{>{\raggedleft\bfseries}p{3.0cm}}
+%% Z: 2. Spalte: textbreite - 4 * spaltenrand - 3.0cm
+\newcolumntype{W}{p{\textwidth-4\tabcolsep-3.0cm}}
 
 %\typearea[current]{calc}
 
-
 % Einstellungen für Bild-/Tabellenbeschriftung neben dem Bild
-\floatsetup[figure]{capbesideposition={inside,top}}
-\floatsetup[table]{capbesideposition={inside,top},style=plaintop}
+%\floatsetup[figure]{capbesideposition={inside,top}}
+%\floatsetup[table]{capbesideposition={inside,top},style=plaintop}
+\floatsetup[figure]{capbesideposition={inside,center}}
+\floatsetup[table]{capbesideposition={inside,center},style=plaintop}
 \renewfloatcommand{fcapside}{figure}[\capbeside][\FBwidth]
 \newfloatcommand{tcapside}{table}[\capbeside][\FBwidth]
 
+% für den \tab befehl
+\usepackage{tabto}
+\TabPositions{2cm,5cm,6.5cm,12cm}
 
-\selectlanguage{ngerman}
+\selectlanguage{english}
+
+% Glossar, Akrynome, Abkürzungen
+% http://tug.ctan.org/macros/latex2e/contrib/glossaries/glossariesbegin.pdf
+% http://mirrors.rit.edu/CTAN/macros/latex/contrib/glossaries-extra/glossaries-extra-manual.pdf
+% /usr/share/doc/texlive-doc/latex/glossaries-extra/glossaries-extra-manual.html
+\usepackage[nonumberlist,toc=false]{glossaries-extra}
+\setabbreviationstyle{long-short} % style
+\makeglossaries % build glossaries for sorting with makeglossaries thesis
+\loadglsentries{abbreviations} % load abbreviations from file
+
+% Zur Darstellung von Quellcode
+% https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+\usepackage{listings}
+
+% Standard style
+\lstset{inputencoding=utf8,
+    numbers=left,
+	extendedchars=true,
+	frame=single,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=4
+}
+% Eigener c style
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+% Eigener bash style
+\lstdefinestyle{custombash}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=bash,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
 
 
-\deffootnote{1em}{1em}{%
- \makebox[1em][l]{\thefootnotemark}}
+\deffootnote{1em}{1em}{\makebox[1em][l]{\thefootnotemark}}
 
 \makeindex
 
 \newcommand{\real}{\mathord{\mathrm{I\!R}}}
 
 \begin{document}
-\selectlanguage{ngerman}
+\selectlanguage{english}
 \def\figdir{figures}
 \def\tabledir{tables}
+\def\picdir{pictures}
+\def\srcdir{sourcecode}
 
 \frontmatter
-
 \pagestyle{scrplain}
 \pagestyle{empty}
-
 \include{title}
-\cleardoubleemptypage
-\include{abstract}
-\cleardoubleemptypage
+% leere seite nach dem Deckblatt
+\newpage\null\thispagestyle{empty}\newpage
 
+%abstract
+\include{abstract}
+
+\cleardoubleemptypage
 \pagestyle{scrplain}
 \pagenumbering{roman}
 \include{toc}
 
 \pagestyle{scrheadings}
-
-
 \addtokomafont{caption}{\small}
-
 \mainmatter
-
 \include{chapters}
 
+% Literaturangaben
 
 
-\appendix
-\include{append}
-
+% Literaturangaben
+\printbibheading
+\printbibliography[keyword={book},heading=subbibliography,title={Bücher}]
+\printbibliography[keyword={online},heading=subbibliography,title={Online Quellen}]
 \cleardoublepage
-
-\bibliographystyle{natger}
-\bibliography{thesis}
-
-\cleardoublepage
-
-
-\footnotesize
-\printindex
-
 
 \end{document}
