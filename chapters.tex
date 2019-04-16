@@ -73,10 +73,42 @@ TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubern
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout this thesis.
 
-\section{Platform-as-a-Service}
-TODO
+\section{Infrastructure-as-a-Service}
+In \gls{iaas} environments, a consumer trusts his \gls{iaas} provider with the management and control of the infrastructure needed to deploy his applications.
+The provided service ends at provisioning or processing, storage, networks and other computing resources \cite{nistcloud}
+(TODO Quelle: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf ). 
+Therefore consumers do not need to manage their own data centers or topics like system uplink availability.
+As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the \gls{os} layer and everything above it.
 
-scope, starting point (for potential PaaS providers), problem with Buying Paas (limited control over hardware)
+(TODO: you manage <-> other manages https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/ )
+
+citation test 1\cite{servicecomparison} \\
+cit test 3~\cite{servicecomparison} \\
+cit \citation{servicecomparison}
+
+\begin{figure}[H]
+\includegraphics[scale=0.4]{pictures/ServiceComparison.jpg} 
+\caption{captionright\protect\footnotemark}
+%% \caption{Comparison of responsibilities in different service models }
+\label{fig:servicecomparison}
+\end{figure}
+
+\footnotetext{Source:  \cite{servicecomparison} }
+
+\section{Platform-as-a-Service}
+
+In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}. 
+(TODO Quelle: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf )
+In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis 
+(TODO Quelle: https://docs.microsoft.com/en-us/azure/data-explorer/ )
+ and allows him to focus on other tasks, i.e. application development. As a downside to this, a consumer might only have limited control on, among others, the software installed on the  machines provisioned. 
+Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
+Figure X  (TODO: Picture link) shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
+A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, again resulting in middleware responsibilities for the consumer. 
+A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
+Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates. 
+(TODO Quelle: https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview\#process-node-updates-and-reboots-using-kured )
+
 
 \section{Containers, Docker}
 TODO
@@ -88,31 +120,40 @@ https://www.docker.com/resources/what-container\\
 https://www.docker.com/sites/default/files/d8/2018-11/docker-containerized-and-vm-transparent-bg.png
 Citations: TODO Look for books! 
 
-\section{Container Orchestration, Kubernetes}
+\section{Container Orchestration}
 TODO
 
 idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in AKS/Openshift specifically.
 
+\subsection{Kubernetes}
+
 https://kubernetes.io/docs/concepts/\#overview \\
 https://kubernetes.io/docs/concepts/overview/components/
+https://res.cloudinary.com/dukp6c7f7/image/upload/f_auto,fl_lossy,q_auto/s3-ghost/2016/06/o7leok.png
 
-\subsection{Kubernetes Objects}
+\subsubsection{Kubernetes Objects}
 TODO
 higher-level idea behind objects
 Pods, Services, Volumes, Namespaces
 
-\subsection{Kubernetes Controllers}
+\subsubsection{Kubernetes Controllers}
 TODO
 
 higher-level idea behind controllers
 ReplicaSets, Deployments, StatefulSets, DaemonSets, Jobs
 
-\subsection{Using Kubernetes}
+\subsubsection{Using Kubernetes}
 TODO
 
 build from scratch, buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/features from different products
 
 https://kubernetes.io/docs/setup/pick-right-solution/
+
+\subsubsection{OpenShift}
+TODO
+
+\subsubsection{Azure Kubernetes Service}
+TODO
 
 \section{TODO: Others?}
 TODO
