@@ -128,8 +128,8 @@ idea: control system, architecture (control plane vs. application(s), kubelet, m
 \subsection{Kubernetes}
 
 https://kubernetes.io/docs/concepts/\#overview \\
-https://kubernetes.io/docs/concepts/overview/components/
-https://res.cloudinary.com/dukp6c7f7/image/upload/f_auto,fl_lossy,q_auto/s3-ghost/2016/06/o7leok.png
+https://kubernetes.io/docs/concepts/overview/components/ \\
+https://res.cloudinary.com/dukp6c7f7/image/upload/f\_auto,fl\_lossy,q\_auto/s3-ghost/2016/06/o7leok.png \\
 
 \subsubsection{Kubernetes Objects}
 TODO
@@ -162,33 +162,74 @@ TODO
 TODO
 
 \section{Defining procedures and approach}
+Focus on three scenarios: attack through network, hijacked container, bad user
 TODO
 
-\section{Scenario 1: Third party over network}
+\section{Hijack running container}
+Out of scope, b/c AppSec? But: defense measures through k8s (image scanning, pipeline)!
 TODO
 
-\subsection{TODO: Vector one}
+\section{Access kubernetes management components}
+dashboard, apiserver, etcd, ..., AND kubelet! -> master + worker nodes
 TODO
 
-\subsection{TODO}
+\section{Access cloud provider management components}
 TODO
 
-\section{Scenario 2: Third party inside container}
+\section{Access non public-facing application components}
+Out of scope, b/c AppSec? But: defense measures through k8s!
 TODO
 
-\subsection{TODO: Vector one}
+\section{Lateral movement}
+Duplicate to non-public-facing? But: Inside in container != inside in network!
 TODO
 
-\subsection{TODO}
+\section{Container breakout}
 TODO
 
-\section{Scenario 3: Bad user}
+\section{Read/Manipulate host}
 TODO
 
-\subsection{TODO: Vector one}
+\section{Access host / base infrastructure from outside?}
+Out of scope, b/c classic OpSec? But: included in pitch!
 TODO
 
-\subsection{TODO}
+\section{Soft- and Hardware reconnaissance}
+TODO
+
+\section{Gather secrets, credentials}
+TODO
+
+\section{Start new container(s)}
+TODO
+
+\section{Access non-public data}
+TODO
+
+\section{Manipulate container images}
+TODO
+
+\section{Evade detection/logging}
+TODO
+
+\section{Move to cluster-external areas}
+Out of scope? But: defense measures include cluster-internal things (credential reuse, cloud provider subscriptions, mixing container/non-container workloads, network restrictions)!
+TODO
+
+\section{Evade detection}
+TODO
+
+\section{Misuse of resources (Cryptojacking)}
+TODO
+
+\section{Denial of resources (DOS)}
+TODO
+
+\section{Influence other tenants}
+duplicate?
+TODO
+
+\section{TODO: more?}
 TODO
 
 \chapter{PaaS solution risk analysis}
@@ -215,6 +256,7 @@ TODO
 
 \chapter{Summary}
 TODO
+
 
 
 
