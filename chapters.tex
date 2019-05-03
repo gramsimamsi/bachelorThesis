@@ -163,6 +163,30 @@ TODO
 
 \section{Defining procedures and approach}
 Focus on three scenarios: attack through network, hijacked container, bad user
+
+Version freeze:
+OpenShift Container Platform 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
+AKS (on May 3rd 2019) => k8s-version <= 1.13.5, but only 1.11.8 or 1.11.9!
+
+Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
+- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (#65799, @dekkagaijin)
+- https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
+- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (#65499, @krunaljain)
+- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (#65739, @liggitt)
+The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (#65593, @bsalamat)
+
+no major changes => OCP 3.11, AKS-k8s 1.11.9!
+
+Dependency compatibilities:
+OCP 3.11: docker 1.13, CRI-O 1.11 (Source: https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
+k8s-1.11: docker 1.11.2 to 1.13.1  (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
+Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
+
+-> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
+TODO: apply OCP updates when incoming?
+
+Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
+
 TODO
 
 \section{Hijack running container}
