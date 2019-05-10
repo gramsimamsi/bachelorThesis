@@ -187,6 +187,25 @@ TODO: apply OCP updates when incoming?
 
 Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
 
+
+RISK ASSESSMENT METHODOLOGY:
+difficulties with: 
+A how generically should vectors be set?
+B how to structure vectors (into categories?) 
+
+Solution to A: vectors split and merged after risk assessment sketch; if there were considerable differences in the estimated values, they were split. If no diffs, they were merged.
+Solution to B: Considerable time invested, no optimal solution was found. Ultimately ignored this, since more time investment wasnt feasible or added much value to the goals. TODO: Explain process, what was looked at and why it wasnt good, how we arrived at the end structure.
+
+Risk assessment formula:
+Risk = Probability * Impact.
+Impact was taken as single value between 1 and 4 and estimated through None/Theoretical (0), Low/Intermediate-Step (1), Moderate/Single-Tenant-pwn (2), Severe/Multi-Tenant-pwn (3)
+
+Probability was a bitch to define proberly. Therefore split into four factors: Required Access Level (RAL), Vantage Point, Detectability and Exploitability. Those initially had values between 0 though 3, but outlier values were defined for RAL and Vantage Point (in sync with existing assessment methodologies within HvS).
+Required Access Level: cloud/infrastructure admin (0, since a rogue employee with super-admin can do whatever they want and this is about baseline security); single-cluster/system-admin (1); single-cluster/system user (2); read-only (3); unauthenticated (4)
+Vantage Point: physical access (0, see above since your own or the cloud providers hardware-accessing employees can also do whatever they want); node or management-interface (1); within container (2); within company network (3); from public www (4)
+Detectability: Difficult (1) since it needs custom tools for environment-specific vuln detction; Average (2) since it is either generic but needs simple custom tools or its individualized but can be identified with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to find the vuln
+Exploitability: Theoretical (0, since this is the level of unpublished 0-days and we are still doing baseline security); difficult (1) needs custom tools for environment-specific exploitation; Average(2), since its a generic exploit but needs simple custom tools or its inividualized but can be exploited with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to exploit the vuln
+
 TODO
 
 \section{Hijack running container}
