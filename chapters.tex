@@ -11,7 +11,6 @@ established solutions. This calls for a more detailed, focused examination. \\
 
 \section{Objective}
 
-
 This thesis aims to answer the following questions:
 
 \begin{itemize}
@@ -158,15 +157,55 @@ TODO
 \section{TODO: Others?}
 TODO
 
-\chapter{Potential attack scenarios}
+\chapter{Risk Assessment of potential attack vectors}
 TODO
 
 \section{Defining procedures and approach}
 Focus on three scenarios: attack through network, hijacked container, bad user
 
+Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
+Some newer information might be used for big outliers, but everything else just gets a side note
+
+RISK ASSESSMENT METHODOLOGY:
+difficulties with: 
+A how generically should vectors be set?
+B how to structure vectors (into categories?) 
+
+Solution to A: vectors split and merged after risk assessment sketch; if there were considerable differences in the estimated values, they were split. If no diffs, they were merged.
+Solution to B: Considerable time invested, no optimal solution was found. Ultimately ignored this, since more time investment wasnt feasible or added much value to the goals. TODO: Explain process, what was looked at and why it wasnt good, how we arrived at the end structure.
+
+Risk assessment formula:
+Risk = Probability * Impact.
+Impact was taken as single value of 1 through 3  and estimated through None/Theoretical (0), Low/Intermediate-Step (1), non-severe security principle violation (2), severe security principle violation (3)
+
+Probability was a bitch to define proberly. Therefore split into four factors: Vantage Point, Required Access Level (RAL), Detectability and Exploitability. Those initially had values between 0 though 3, but outlier values of 4  were defined for RAL and Vantage Point (in sync with existing assessment methodologies within HvS).
+The average of these four values is taken as the total propability value, ranging from 0.25 through 3.5 (low <= 1.25, medium <= 2.25).
+Vantage Point: physical access (0, see above since your own or the cloud providers hardware-accessing employees can also do whatever they want); node or management-interface (1); within container (2); within company network (3); from public www (4)
+Required Access Level: cloud/infrastructure admin (0, since a rogue employee with super-admin can do whatever they want and this is about baseline security); cluster/system-admin (1); cluster/system user with read/write access (2); cluster/system user with read-only access (3); unauthenticated (4)
+Detectability: Difficult (1) since it needs custom tools for environment-specific vuln detction; Average (2) since it is either generic but needs simple custom tools or its individualized but can be identified with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to find the vuln
+Exploitability: Theoretical (0, since this is the level of unpublished 0-days and we are still doing baseline security); difficult (1) needs custom tools for environment-specific exploitation; Average(2), since its a generic exploit but needs simple custom tools or its inividualized but can be exploited with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to exploit the vuln
+
+This leads to a total risk of 0 through 10.5, which is then rounded to one decimal place and capped at 10. In accordance to HvS internal models, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high.
+
+specific values for each vector are estimated in a context with multiple assumptions:
+- Tenants are only divided by namespace, NOT cluster!
+- Default configs are used for everything, or just enough is changed to get the system functional, not secured!
+- Average "usual" (non container-specific) application security measures have been taken (i.e. against the OWASP Top 10)
+- The people administering and using the cluster (devs, cloud administrators, devops and their superiors) are familiar with conventional security principles and measures taken to secure solutions of moderate importance (read: not online banking, no industry-specific compliance requirements. i.e. simple networking and host security without many functionality restrictions)
+- Those people are new to orchestrated container solutions and maybe containers + cloud solutions in general
+
+- If multiple techniques can be used / impacts can occur to leverage a vector, all factor values of the one with the highest total risk are taken
+- Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
+
+goal is to reduce values above threshold X to below threshold X by applying security measures. This aims to ensure a basic security level, not something against APT groups / zero-day protection / targeted attacks with a lot of resources and competence. (no online banking, user data of average confidentiality etc)
+
+Default values are defined as the following:
+
+SETUP OF PRACTICAL PART:
+
 Version freeze:
 OpenShift Container Platform 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
-AKS (on May 3rd 2019) => k8s-version <= 1.13.5, but only 1.11.8 or 1.11.9!
+AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
 
 Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
 - action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (#65799, @dekkagaijin)
@@ -185,104 +224,101 @@ Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on d
 -> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
 TODO: apply OCP updates when incoming?
 
-Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
+\section{Identified vectors}
 
-
-RISK ASSESSMENT METHODOLOGY:
-difficulties with: 
-A how generically should vectors be set?
-B how to structure vectors (into categories?) 
-
-Solution to A: vectors split and merged after risk assessment sketch; if there were considerable differences in the estimated values, they were split. If no diffs, they were merged.
-Solution to B: Considerable time invested, no optimal solution was found. Ultimately ignored this, since more time investment wasnt feasible or added much value to the goals. TODO: Explain process, what was looked at and why it wasnt good, how we arrived at the end structure.
-
-Risk assessment formula:
-Risk = Probability * Impact.
-Impact was taken as single value between 1 and 4 and estimated through None/Theoretical (0), Low/Intermediate-Step (1), Moderate/Single-Tenant-pwn (2), Severe/Multi-Tenant-pwn (3)
-
-Probability was a bitch to define proberly. Therefore split into four factors: Required Access Level (RAL), Vantage Point, Detectability and Exploitability. Those initially had values between 0 though 3, but outlier values were defined for RAL and Vantage Point (in sync with existing assessment methodologies within HvS).
-Required Access Level: cloud/infrastructure admin (0, since a rogue employee with super-admin can do whatever they want and this is about baseline security); single-cluster/system-admin (1); single-cluster/system user (2); read-only (3); unauthenticated (4)
-Vantage Point: physical access (0, see above since your own or the cloud providers hardware-accessing employees can also do whatever they want); node or management-interface (1); within container (2); within company network (3); from public www (4)
-Detectability: Difficult (1) since it needs custom tools for environment-specific vuln detction; Average (2) since it is either generic but needs simple custom tools or its individualized but can be identified with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to find the vuln
-Exploitability: Theoretical (0, since this is the level of unpublished 0-days and we are still doing baseline security); difficult (1) needs custom tools for environment-specific exploitation; Average(2), since its a generic exploit but needs simple custom tools or its inividualized but can be exploited with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to exploit the vuln
-
+\subsection{Reconaissance through k8s control plane \& cloud provider interfaces}
+Gather information useful for further attacks through interfaces intended to be accessible: the Kubernetes dashboard & apiserver as well as potential cloud provider webinterfaces & apiserver(s)
 TODO
 
-\section{Hijack running container}
-Out of scope, b/c AppSec? But: defense measures through k8s (image scanning, pipeline)!
+\subsection{Read confidentials through k8s control plane interfaces (dashboard, apiserver)}
+Gather confidential information through the Kubernetes dashboard & apiserver (cloud provider interfaces are separately evaluated)
 TODO
 
-\section{Access kubernetes management components}
-dashboard, apiserver, etcd, ..., AND kubelet! -> master + worker nodes
+\subsection{Change configuration through k8s control plane interfaces}
+Change the existing configuration through the Kubernetes dashboard & apiserver (cloud provider interfaces are separately evaluated)
 TODO
 
-\section{Access cloud provider management components}
+\subsection{Read confidentials through cloud provider interfaces (mgmt console/API)}
+Gather confidential information through potential cloud provider webinterfaces & apiserver(s) (Kubernetes interfaces are separately evaluated)
 TODO
 
-\section{Access non public-facing application components}
-Out of scope, b/c AppSec? But: defense measures through k8s!
+\subsection{Change configuration through  cloud provider interfaces (mgmt console/API)}
+Change the existing configuration through potential cloud provider webinterfaces & apiserver(s) (Kubernetes interfaces are separately evaluated)
 TODO
 
-\section{Lateral movement}
-Duplicate to non-public-facing? But: Inside in container != inside in network!
+\subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+This vector comprises reconaissance, leaks of confidentials and configuration changes though Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
 TODO
 
-\section{Container breakout}
+\subsection{Supply compromised container (base) image}
+Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too.
 TODO
 
-\section{Read/Manipulate host}
+\subsection{Supply compromised k8s configuration}
+Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
 TODO
 
-\section{Access host / base infrastructure from outside?}
-Out of scope, b/c classic OpSec? But: included in pitch!
+\subsection{compromise application components (lateral movement from container)}
+Once an attacker gains access to a container, he may try to access more lucrative application components, i.e. databases or containers with more confidential information/traffic.
 TODO
 
-\section{Soft- and Hardware reconnaissance}
+\subsection{R/W \& breakout to host, Privilege Escalation}
+Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
 TODO
 
-\section{Gather secrets, credentials}
+\subsection{compromise local image cache}
+If the cached image of a container can be manipulated, a functionally identical container, which violates security principles, could be started.
 TODO
 
-\section{Start new container(s)}
+\subsection{modify running container}
+Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
 TODO
 
-\section{Access non-public data}
+\subsection{misuse node resources (DOS, cryptojacking)}
+The resources of a single node are used to run a container and may be misconfigured or misused for financial gains (mining cryptocurrencies) or to disrupt service availability (i.e. through fork bombing or misconfiguration)
 TODO
 
-\section{Manipulate container images}
+\subsection{hoard orchestration resources (DOS)}
+The resources of the whole cluster may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
 TODO
 
-\section{Evade detection/logging}
+\subsection{misuse orchestration resources (cryptojacking)}
+The resources of the whole cluster may be misconfigured or misused for financial gains (mining cryptocurrencies)
 TODO
 
-\section{Move to cluster-external areas}
-Out of scope? But: defense measures include cluster-internal things (credential reuse, cloud provider subscriptions, mixing container/non-container workloads, network restrictions)!
+\subsection{add malicious container}
+A malicious container me be started within the cluster
 TODO
 
-\section{Evade detection}
+\subsection{add malicious node}
+A malicious node may be added to the cluster
 TODO
 
-\section{Misuse of resources (Cryptojacking)}
+\subsection{Bad user practice (outside of cluster)}
+This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
 TODO
 
-\section{Denial of resources (DOS)}
+\subsection{Incufficient base infrastructure hardening}
+The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened
 TODO
 
-\section{Influence other tenants}
-duplicate?
+\subsection{Entry through known, unpatched vulnerabilities}
+Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
 TODO
 
-\section{TODO: more?}
+\section{PaaS solution risk analysis}
 TODO
 
-\chapter{PaaS solution risk analysis}
+\subsection{Analysis results}
+TODO: Risk analysis values here
 TODO
 
-\section{Differentiating on-premise and public cloud environments}
+\subsection{On-premise and public cloud environment comparison}
+TODO: Comments on onPrem vs. cloud
 TODO
 
-\section{OPTIONAL: Comparison of cloud-hosted, self-managed environments}
-If this is omitted, the section above will become the chapter
+\subsection{Multi-tenant isolation}
+TODO: Comments on multi-tenant usage
 TODO
 
 \chapter{Best-Practice implementations}
@@ -291,17 +327,29 @@ TODO
 \section{On-premise environment}
 TODO
 
+\subsection{Measure recommendations}
+TODO: Includes comments on resulting (reduced) risk values!
+TODO
+
+\subsection{Practical examples}
+TODO
+
 \section{Public cloud environment}
 TODO
 
-\section{OPTIONAL: cloud-hosted, self-managed environment}
+\subsection{Measure recommendations}
+TODO: Includes comments on resulting (reduced) risk values!
+TODO
+
+\subsection{Practical examples}
 TODO
 
 \chapter{Summary}
+TODO: Include outlook with rootless builds, federated clusters (see: Google Anthos) and more!
 TODO
 
 
-
+%TEMPLATE TO CHOOSE FROM STARTS HERE%
 
 \chapter{Einleitung}
 \section{Anführungszeichen, Zitieren, Fußnoten} 
