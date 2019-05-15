@@ -26,25 +26,15 @@ to a public cloud solution?
 \end{itemize}
 
 Another goal is to recommend security measures for different implementation use cases.
-If achievable within the provided time frame, it will additionally try and answer this question: 
 
-\begin{itemize}
-
-\item Does a cloud-hosted, self-managed solution (buy IaaS, provide PaaS) offer benefits in
-contrast to the solutions compared above? \\
-(In case there are sufficient differences, another set of security measures will be
-recommended for this solution)
-
-\end{itemize}
-
+Possible measures to mitigate those risks will also be explored, evaluated and (if possible) put to use in the practical examples. 
+With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
 
 \section{Scope limitation}
 
 To achieve the aforementioned goals, the view on the problem is limited to a manageable scope by
 focusing on specific components of a few commonly used (Certified Kubernetes) PaaS solutions.
-These components will be OpenShift Container Platform for On-Premise use cases and Azure Kubernetes Service as a public cloud solution. 
-To include a cloud-hosted and self-managed solution, OpenShift running on self-managed instances in Azure serve as an
-example implementation. \\
+These components will be OpenShift Container Platform for On-Premise use cases and Azure Kubernetes Service as a public cloud solution. \\
 Components providing Kubernetes conformity will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. \\
 A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.\\
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
@@ -63,11 +53,30 @@ as well as their potential damage and rate those risks:
 
 \end{itemize}
 
-Possible measures to mitigate those risks will also be explored, evaluated and (if possible) put to use in the practical examples. 
-With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
+In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
+
+\begin{itemize}
+
+\item People in contact with the solution are familiar with conventional security principles and measures, but are new to the technologies used in the solutions within scope. They might even be new to container and cloud solutions in general. This includes both users of the solution like developers and project managers, as well as operators and administrators.
+
+\item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
+
+\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10 (SOURCE: https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).\\
+	The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
+
+\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies. (SOURCE: https://youtu.be/vTgQLzeBfRU?t=185)  \\
+	When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. \\
+	Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
+
+\item Multiple tenants like different customers, teams or projects are separated by kubernetes namespaces, not different clusters. This assumption will be compared to tenant isolation by cluster separation in section X (TODO: HEADING LINK TO TENANT ISOLATION HERE).
+
+\end{itemize}
 
 
 TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubernetes versions.
+
+
+
 
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout this thesis.
@@ -188,11 +197,7 @@ Exploitability: Theoretical (0, since this is the level of unpublished 0-days an
 This leads to a total risk of 0 through 10.5, which is then rounded to one decimal place and capped at 10. In accordance to HvS internal models, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high.
 
 specific values for each vector are estimated in a context with multiple assumptions:
-- Tenants are only divided by namespace, NOT cluster!
-- Default configs are used for everything, or just enough is changed to get the system functional, not secured!
-- Average "usual" (non container-specific) application security measures have been taken (i.e. against the OWASP Top 10)
-- The people administering and using the cluster (devs, cloud administrators, devops and their superiors) are familiar with conventional security principles and measures taken to secure solutions of moderate importance (read: not online banking, no industry-specific compliance requirements. i.e. simple networking and host security without many functionality restrictions)
-- Those people are new to orchestrated container solutions and maybe containers + cloud solutions in general
+TODO: callback to assumptions in scope limitation
 
 - If multiple techniques can be used / impacts can occur to leverage a vector, all factor values of the one with the highest total risk are taken
 - Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
