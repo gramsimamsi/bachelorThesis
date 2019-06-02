@@ -1,0 +1,285 @@
+https://blog.aquasec.com/aqua-3.0-kubernetes-security-deep-dive
+
+https://github.com/aquasecurity/kube-hunter
+https://github.com/aquasecurity/kube-bench
+
+https://www.twistlock.com/resources/make-containers-secure-openshift-security/
+
+https://www.twistlock.com/resources/docker-security-resources-best-practices/
+
+https://www.gartner.com/doc/reprints?id=1-6BU0ZXV&ct=190306
+
+On-prem vs public cloud vs. hybrid:
+https://www.gartner.com/doc/reprints?id=1-5EYO9EK&ct=180906
+
+Gartner: “Market Guide for Public Cloud Container Services”?!
+
+https://sysdig.com/blog/kubernetes-security-guide/
+https://scotch.io/tutorials/google-cloud-platform-iii-handling-sensitive-data-in-a-docker-application-with-kubernetes-secrets
+https://linoxide.com/containers/create-use-kubernetes-secrets/
+https://dev.to/petermbenjamin/kubernetes-security-best-practices-hlk
+https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/
+
+http://www.dasblinkenlichten.com/kubernetes-101-networking/
+
+https://neuvector.com/container-security/enhancing-openshift-kubernetes-container-security/
+
+https://www.aquasec.com/wiki/display/containers/Kubernetes+Guide
+
+https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/#securing-a-cluster
+
+
+https://www.reddit.com/r/netsec/comments/aycqej/an_exercise_in_practical_container_escapology/
+https://www.reddit.com/r/netsec/comments/aphfka/new_vulnerability_in_runc_allows_container_escape/
+https://www.reddit.com/r/netsec/comments/aouw58/gorsair_a_tool_to_remotely_access_exposed_the/
+https://www.reddit.com/r/docker/comments/akrhuv/masters_thesis_docker_and_kubernetes_in_high/
+https://www.reddit.com/r/AskNetsec/comments/ah7ame/how_does_your_organization_handle_container/
+
+https://kubernetes.io/blog/2019/02/11/runc-and-cve-2019-5736/
+
+https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/
+
+https://opensource.com/article/18/3/just-say-no-root-containers
+
+Buch: "Zero trust networks" by Evan Gilman
+
+https://www.brighttalk.com/service/player/en-US/theme/default/channel/15077/webcast/329150/play?showChannelList=true
+https://www.brighttalk.com/service/player/en-US/theme/default/channel/15077/webcast/343469/play?showChannelList=true
+
+
+https://medium.com/@mccode/processes-in-containers-should-not-run-as-root-2feae3f0df3b
+https://medium.com/information-and-technology/so-what-is-apparmor-64d7ae211ed
+https://medium.com/@mccode/understanding-how-uid-and-gid-work-in-docker-containers-c37a01d01cf
+
+
+https://www.amazon.de/Hands-Security-DevOps-continuous-deployment/dp/1788995503
+https://www.oreilly.com/ideas/docker-security
+https://docs.docker.com/engine/security/security/
+https://container-solutions.com/securing-microservices-docker-adrian-mouat-part-1/
+https://container-solutions.com/securing-microservices-sam-newman/
+https://samnewman.io/books/building_microservices/
+
+https://github.com/docker/docker-bench-security
+
+https://www.foi.se/en/foi/news-and-pressroom/news/2017-12-04-virtualized-it-systems-require-risk-assessment.html
+
+
+https://kubesec.io/
+^risk score for K8S YAML
+
+https://sysdig.com/blog/detecting-cryptojacking-with-sysdigs-falco/
+
+https://www.gartner.com/doc/reprints?id=1-5A7U3TN&ct=180801&st=sb
+
+https://sysdig.com/use-cases/continuous-security/
+
+https://dzone.com/articles/20-docker-security-tools-compared-part-1
+
+https://medium.com/@lizrice/a-single-node-openshift-3-10-cluster-aaa63e2deed7
+
+
+AKS hacking walkthrough:
+https://medium.com/@pjbgf/taking-over-a-kubernetes-cluster-challenge-1-46b527d0f086
+https://medium.com/@pjbgf/taking-over-an-aks-kubernetes-cluster-walk-through-challenge-1-51e94d622d11
+
+https://medium.com/@pjbgf/aks-security-challenge-2-reaching-out-to-fellow-pods-eb8a99968a73
+https://itnext.io/aks-kubernetes-security-walk-through-challenge-2-dbe3ed16beec
+
+https://itnext.io/how-a-naughty-docker-image-on-aks-could-give-an-attacker-access-to-your-azure-subscription-6d05b92bf811
+https://itnext.io/using-aad-pod-identity-in-your-azure-kubernetes-clusters-what-to-watch-out-for-73d5d73960f
+
+https://dzone.com/articles/aks-scratch-to-production-ready
+
+https://github.com/coreos/clair
+
+https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+
+https://info.aquasec.com/kubesec2018#overview
+
+https://thenewstack.io/what-your-kubernetes-security-checklist-might-be-missing/
+
+https://azure.microsoft.com/mediahandler/files/resourcefiles/phippy-goes-to-the-zoo/Phippy%20Goes%20To%20The%20Zoo_MSFTonline.pdf
+^MUST HAVE CITATION! 
+
+https://www.youtube.com/playlist?list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU
+^KubeCon talks playlist
+
+INTERESTING KUBECON TALKS:
+TO WATCH:
+https://www.youtube.com/watch?v=H4wkdwlL8ZA&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=294&t=0s	<- istio
+https://www.youtube.com/watch?v=AgHMRJ16RAA&t=0s&index=227&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU	<- multi-tenancy
+https://www.youtube.com/watch?v=HIM0HwWLJ7g&t=0s&index=224&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU	<- runtime security
+https://www.youtube.com/watch?v=OZJkwvAnLb4&t=0s&index=222&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU	<- k8s runtime selection
+https://www.youtube.com/watch?v=3F_XNbhjgxY&t=0s&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=187	<- least priviledge sec & networking
+https://www.youtube.com/watch?v=6P26wg2rWgo&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=194&t=0s	<- vault
+https://www.youtube.com/watch?v=flC9jDFks8k&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=137&t=0s	<- deployment sec
+https://www.youtube.com/watch?v=_OzG4PHihSk&t=0s&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=164	<- sec app telemetry (spiffe & envoy)
+https://www.youtube.com/watch?v=9VhlNbCNIRs&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=171&t=0s	<- multi-tenancy 2
+https://www.youtube.com/watch?v=MTHj0_NdeeM&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=76&t=0s	<- hardening prod
+https://www.youtube.com/watch?v=n_lyUtloc1o&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=95&t=0s	<- k8s admission controllers
+
+WATCHED:
+https://www.youtube.com/watch?v=o8hQ4WFd75U&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=106&t=0s	<- the big k8s CVE
+^"&t=1488": enforce non-root containers with podSecurityPolicy
+^at some point: big distributors get cve's first
+
+https://www.youtube.com/watch?v=IvoId7gLnfU&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=88&t=0s	<- managed k8s in enterprise
+^AWESOME INFO on modding AKS/Cloud cluster&nodes event though you shouldnt. Compliance + Modding. Attack vector?
+
+https://www.youtube.com/watch?v=a03te8xEjUg&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=64&t=0s	<- security general, google
+^"&t=629": Isolation Layers in k8s
+^"&t=925": Future Runtimeclass for pod-specific (isolating/sandboxing) runtime! (beta since k8s 1.14)
+^SLIDES: https://static.sched.com/hosted_files/kccna18/1c/KubeCon%20NA%20-%20This%20year%2C%20it%27s%20about%20security%20-%2020181211.pdf
+
+Pro hosted, heads up about security fixes:
+https://github.com/kubernetes/security/blob/master/private-distributors-list.md
+
+https://cloud.google.com/blog/products/gcp/exploring-container-security-an-overview
+https://cloud.google.com/blog/products/gcp/exploring-container-security-node-and-container-operating-systems
+https://cloud.google.com/blog/products/gcp/exploring-container-security-digging-into-grafeas-container-image-metadata
+https://cloud.google.com/blog/products/gcp/exploring-container-security-protecting-and-defending-your-kubernetes-engine-network
+https://cloud.google.com/blog/products/gcp/exploring-container-security-running-a-tight-ship-with-kubernetes-engine-1-10
+https://cloud.google.com/blog/products/gcp/exploring-container-security-using-cloud-security-comma
+https://cloud.google.com/blog/products/gcp/exploring-container-security-isolation-at-different-layers-of-the-kubernetes-stack
+
+https://www.youtube.com/watch?v=ohTq0no0ZVU	<- Practical Attack & Defense
+^"t=305" demo
+
+https://www.youtube.com/watch?v=v6a37uzFrCw	<- Demo of Attacks
+
+https://www.youtube.com/watch?v=M6db_dK0HF4
+https://www.youtube.com/watch?v=z0neX5-7128
+https://www.youtube.com/watch?v=wlgAWSbY0gI
+https://static.sched.com/hosted_files/kdi19/0c/6-Cindy-Blake.pdf
+https://www.youtube.com/watch?v=D7dBnBRD2_A
+
+https://kccnceu18.sched.com/event/Dqv4/who-shot-the-cluster-audit-logging-in-kubernetes-marian-lobur-mik-vyatskov-google-intermediate-skill-level?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu18.sched.com/event/Dqv1/best-practice-for-container-security-at-scale-dawn-chen-zhengyu-he-google-intermediate-skill-level?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu18.sched.com/event/Dqtx/completely-securing-the-software-supply-chain-using-grafeas-in-toto-lukas-puheringer-nyu-wendy-dembowski-google-any-skill-level?iframe=no&w=100%&sidebar=yes&bg=no
+
+https://www.slideshare.net/SharonVendrov/k8s-security-best-practices-85961183
+
+https://github.com/nccgroup/kube-auto-analyzer
+https://github.com/genuinetools/amicontained
+https://github.com/Ullaakut/Gorsair
+
+
+
+Take into account:
+Arbitrary code from the outside - i.e. code uploaded by untrusted 3rd party by (application) design!
+
+https://microservices-demo.github.io/
+^Demo App: Sockshop!
+
+https://www.amazon.de/Scalable-Container-Infrastructures-Kubernetes-OpenShift-ebook/dp/B07NWT5745
+^Gutes Buch! ISBN  978-3000618864
+
+https://kccnceu18.sched.com/event/Dqvx/kubernetes-runtime-security-what-happens-if-a-container-goes-bad-jen-tong-maya-kaczorowski-google-intermediate-skill-level?iframe=no&w=100%&sidebar=yes&bg=no
+advanced controls, mainly logging/forensics
+
+https://kccnceu18.sched.com/event/Dqvf/secure-pods-tim-allclair-google-advanced-skill-level?iframe=no&w=100%&sidebar=yes&bg=no
+^Good attack vectors!
+
+Pwn cluster through kubelet access:
+https://medium.com/handy-tech/analysis-of-a-kubernetes-hack-backdooring-through-kubelet-823be5c3d67c
+
+TU Darmstadt, SecDevOps:
+https://141a16d4-a-62cb3a1a-s-sites.googlegroups.com/site/lotfibenlothmane/SecDevOps.pdf?attachauth=ANoY7cokP607jU764ZCmPgu2CggJHe9Det9uDrpB5LVi7DVgDwhjlkdafDWw_5wnXYC0IDl39L-SOsb-qBk3gpoQ-J7X7PBbyzxMyAH-9dVgrsW89w72DrzZ0f7Z4AFb_CRyjNESBsFkOgI99RpC3X4jxOXY70O3K91BfvVxO8nhse3cb0adfjzwfIyTnO3DHlVx-HlzPP51KOIpyj0bOrRLwkmX8vCRBQ%3D%3D&attredirects=0
+
+Kubernetes on Azure:
+https://books.google.de/books?hl=en&lr=&id=eCWGDwAAQBAJ&oi=fnd&pg=PP1&dq=kubernetes+security&ots=QxSg_qH5YF&sig=CubVFnfVchrRf8ZXpc-eV-Lz4Wk#v=snippet&q=security&f=false
+
+Container runtime differentiation:
+https://events.linuxfoundation.org/wp-content/uploads/2017/11/How-Container-Runtime-Matters-in-Kubernetes_-OSS-Kunal-Kushwaha.pdf
+
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&ved=2ahUKEwjm1uSwjuvhAhWnTxUIHf5bAwQQFjADegQIBBAC&url=https%3A%2F%2Fissues.alfresco.com%2Fjira%2Fsecure%2Fattachment%2F103759%2FAndrew%2520Martin%2520-%2520Continuous%2520Kubernetes%2520Security%2520%2528Microxchg%252C%2520March%25202018%2529.pdf&usg=AOvVaw2cS3_g8t3cZkB8wlhlB6k-
+^awesome measures / controls, common pwns!
+
+https://control-plane.io/training
+^trainings / practical!
+
+https://edoverflow.com/2019/ci-knew-there-would-be-bugs-here/
+^ci pipeline attack examples
+
+
+FOLLOWED THIS TO ADD A ROOT USER FOR OPENSHIFT INSTALL:
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/2/html/Getting_Started_Guide/ch02s03.html
+
+k8s on azure tutorial:
+https://idursun.com/posts/zero_to_kubernetes/
+
+
+
+kubecon19 interesting talks:
+https://kccnceu19.sched.com/event/MPYp/rootless-reproducible-and-hermetic-secure-container-build-showdown-andrew-martin-control-plane?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPdQ/kubernetes-encrypted-memory-security-privacy-harshal-patil-pradipta-banerjee-ibm?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPgu/tutorial-building-security-into-kubernetes-deployment-pipelines-michael-hough-ibm-sam-irvine-controlplane?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPYd/how-we-used-kubernetes-to-host-a-capture-the-flag-ctf-ariel-zelivansky-liron-levin-twistlock?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPaH/lifecycle-of-a-kubectl-command-harden-kubernetes-setup-with-automation-sanjary-rahman-bookingcom?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPdK/container-forensics-what-to-do-when-your-cluster-is-a-cluster-maya-kaczorowski-ann-wallace-google?iframe=no&w=100%&sidebar=yes&bg=no
+https://kccnceu19.sched.com/event/MPdi/smarter-kubernetes-access-control-a-simpler-approach-to-auth-rob-scott-reactiveops?iframe=no&w=100%&sidebar=yes&bg=no
+
+
+also interesting: SPIFFE (AppSec), OPA (more policy options than pod security policies)
+
+OpenShift vs k8s comparison:
+https://labs.consol.de/devops/2019/02/11/k8s-vs-openshift.html
+
+A Hacker's Guide to Kubernetes and the Cloud - Rory McCune, NCC Group PLC (Intermediate Skill Level)
+https://www.youtube.com/watch?v=dxKpCO2dAy8
+https://static.sched.com/hosted_files/kccnceu18/ea/A%20Hackers%20Guide%20to%20Kubernetes%20and%20the%20cloud.pdf
+^threat models: random attackers(4:58), targeted attackers(6:55), nation-state(8:30)
+attack surfaces: cloud(10:26), github(10:48), dev laptops(12:25), external(13:05 onward) to apiserver, etcd, kubelet, malicious containers (20:17), service account tokens (21:34), other cloud resources (22:30)
+hacking code demo: etcd(15:37), apiserver (16:11), kubelet(19:22)
+top 10 measures: 25:17 onwards
+CIS kubernetes benchmark is NOT meant to be followed fully! (29:23)
+
+Tutorial: Bullet-Proof Kubernetes: Learn by Hacking!!!
+https://www.youtube.com/watch?v=NEfwUxId1Uk
+^good graphic (k8s overview): 7:41
+pivots from compromised container: 17:16
+measure list (prioritized): 21:23
+attackable port list: 21:58
+cheat sheet for attacking: https://github.com/calinah/learn-by-hacking-kccn/blob/master/k8s_cheatsheet.md
+check what your container can do: https://github.com/genuinetools/amicontained
+
+Seccomp/Apparmor profile generation:
+https://github.com/antitree/syscall2seccomp
+https://github.com/genuinetools/bane
+
+Kubelet pentesting tool:
+https://github.com/4ARMED/kubeletmein (not for AKS at the moment :/)
+
+DIY Pen-Testing for Your Kubernetes Cluster !!!
+https://www.youtube.com/watch?v=fVqCAUJiIn0
+^hacking code demos: apiserver probing (8:40), serviceaccount token exfil + exploit from container (14:23), kubelet access (19:18), kube-hunter usage (20:49)
+
+Fine-Grained Permissions in Kubernetes: What’s Missing, and How to Fix That
+https://www.youtube.com/watch?v=TZ73EBP2a9Q
+
+Kubernetes Security and How to Fix K8s Cluster at Scale
+https://www.youtube.com/watch?v=5dWRh301Lno
+
+Kubernetes outlook (K8s Project Update, kubecon19)
+https://www.youtube.com/watch?v=jISu86XmkHE
+(getting more extensible, "nodelease" for scalability, reliability (preventing cascading failures))
+
+MiS, Docker, k8s into (check for graphics!)
+https://www.youtube.com/watch?v=1xo-0gCVhTU
+
+
+Excel for OWASP risk rating method
+https://www.owasp.org/index.php/File:OWASP_Risk_Rating_Template_Example.xlsx
+
+
+Cross-Reference for verification:
+- OCP Container security guide
+https://docs.openshift.com/container-platform/3.11/security/index.html
+- Red Hat - ten layers of container security
+https://www.redhat.com/cms/managed-files/cl-container-security-openshift-cloud-devops-tech-detail-f7530kc-201705-en.pdf
+- Azure AKS best practices
+https://docs.microsoft.com/en-us/azure/aks/best-practices
+- "Open container Security in Microsoft Azure" pdf (see Gdrive)
+
+https://kubernetes.io/docs/concepts/security/overview/
+^kubernetes NEW article cloud native security
