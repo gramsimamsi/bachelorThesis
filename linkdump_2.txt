@@ -283,3 +283,33 @@ https://docs.microsoft.com/en-us/azure/aks/best-practices
 
 https://kubernetes.io/docs/concepts/security/overview/
 ^kubernetes NEW article cloud native security
+
+threat model process
+https://speakerdeck.com/versprite/leveraging-risk-centric-threat-models-for-integrated-risk-management
+
+MISSING DEFAULT NETWORK ISOLATION OCP
+ovs-subnet is default network plugin for OCP 3.11:
+https://docs.openshift.com/container-platform/3.11/install_config/configuring_sdn.html#configuring-sdn-config-pod-network-ansible
+ovs-subnet allows all comms, need OVS-multitenant / ovs-networkpolicy for default project isolation:
+https://docs.openshift.com/container-platform/3.11/architecture/networking/sdn.html#overview
+
+MISSING DEFAULT NETWORK ISOLATION AKS:
+https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/aks/concepts-network.md#network-policies
+
+AKS cluster user rights:
+none by default, cluster admin has to set up role bindings <- OLD INFO?!
+https://github.com/Azure/AKS/issues/505#issuecomment-403170563
+
+users have to explicitly be allowed access to resources (tutorial gives full access to each namespace)
+user access through rolebinding tutorial:
+https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration#create-rbac-binding
+https://docs.microsoft.com/en-us/azure/aks/azure-ad-rbac
+
+OCP explanation slides:
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=2ahUKEwjCjITv1s_iAhUC0qYKHRecCU0QFjAAegQIBBAC&url=http%3A%2F%2Fpeople.redhat.com%2F~duboyd%2FCO_RHUG%2FCOS%2F03_2017%2FOCP-COS-RHUG.pdf&usg=AOvVaw09zRJhkTeNg3HQ-pfRGdyz
+
+AKS problem: cannot remove admin access from user, still in backlog atm -> grab kubeconfig file of cluster admin for PWNAGE!
+https://github.com/Azure/AKS/projects/1#card-21680484
+
+using build process to escape example:
+https://blog.heroku.com/exploration-of-security-when-building-docker-containers
