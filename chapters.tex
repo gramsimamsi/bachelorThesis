@@ -32,6 +32,8 @@ With the results gathered, the thesis will compare different best practice imple
 
 \section{Scope limitation}
 
+%TODO: deriving scenarios from goal%
+
 To achieve the aforementioned goals, the view on the problem is limited to a manageable scope by
 focusing on specific components of a few commonly used (Certified Kubernetes) PaaS solutions.
 These components will be OpenShift Container Platform for On-Premise use cases and Azure Kubernetes Service as a public cloud solution. \\
@@ -73,10 +75,7 @@ In order to achieve a view on the risks more accurately resembling situations wh
 \end{itemize}
 
 
-TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubernetes versions.
-
-
-
+%TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubernetes versions.%
 
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout this thesis.
@@ -166,10 +165,108 @@ TODO
 \section{TODO: Others?}
 TODO
 
-\chapter{Risk Assessment of potential attack vectors}
+\chapter{Deriving the attack surface}
+
+\section{Defining procedure and approach}
+
+%TODO: derive all 20 vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way & which systems/threat actors rolled together in it. List security measures for each.
+
+
+\section{Identified vectors}
+%TODO: write out pretty
+
+\subsection{Reconaissance through Kubernetes \& platform control plane interfaces}
+Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces & apiserver(s)
+
+components: kubernetes dashboard, kubernetes apiserver, OCP web console, 
+
+
 TODO
 
+\subsection{Read confidentials through Kubernetes control plane interfaces}
+Gather confidential information through the Kubernetes dashboard & apiserver (platform interfaces are evaluated separately)
+TODO
+
+\subsection{Change configuration through Kubernetes control plane interfaces}
+Change the existing configuration through the Kubernetes dashboard & apiserver (platform interfaces are evaluated separately)
+TODO
+
+\subsection{Read confidentials through platform interfaces (mgmt console/API)}
+Gather confidential information through platform webinterfaces & apiserver(s) (Kubernetes interfaces are evaluated separately)
+TODO
+
+\subsection{Change configuration through platform interfaces (mgmt console/API)}
+Change the existing configuration through platform webinterfaces & apiserver(s) (Kubernetes interfaces are evaluated separately)
+TODO
+
+\subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+This vector comprises reconaissance, leaks of confidentials and configuration changes through Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
+TODO
+
+\subsection{Supply compromised container (base) image}
+Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too. Additionally, an image build process typically runs as root, leading to compromise possibilities to compromise the node where an image is built from a rogue dockerfile. (TODO: provoking stale image usage to exploit vulns, too?)
+TODO
+
+\subsection{Supply compromised k8s configuration}
+Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
+TODO
+
+\subsection{Compromise other application components (lateral movement)}
+Once an attacker gains access to a container, he may try to access more lucrative application components or information, i.e. sniffing traffic or accessing databases or containers with more confidential information/traffic.
+TODO
+
+\subsection{Container breakout (R/W, Privilege Escalation)}
+Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
+TODO
+
+\subsection{Compromise local image cache}
+If the cached image of a container can be manipulated, another container (which might even seem to fulfill the same function) violating security principles could be started.
+TODO
+
+\subsection{Modify running container}
+Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
+TODO
+
+\subsection{Misuse node resources (sabotage, cryptojacking)}
+The resources of a single node are used to run a container and may be misconfigured or misused for financial gains (mining cryptocurrencies) or to disrupt service availability (i.e. through fork bombing or misconfiguration)
+TODO
+
+\subsection{Hoard orchestration resources (sabotage)}
+The resources of the whole cluster may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
+TODO
+
+\subsection{Misuse orchestration resources (cryptojacking)}
+The resources of the whole cluster may be misconfigured or misused for financial gains (mining cryptocurrencies)
+TODO
+
+\subsection{Add malicious container}
+A malicious container may be started within the cluster
+TODO
+
+\subsection{Add malicious node}
+A malicious node may be added to the cluster
+TODO
+
+\subsection{Bad user practice (outside of cluster)}
+This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
+TODO
+
+\subsection{Incufficient base infrastructure hardening}
+The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened
+%TODO: also other (external) parts of company infrastructure
+TODO
+
+\subsection{Entry through known, unpatched vulnerabilities}
+Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
+TODO
+
+
+\chapter{Assessing the attack surface risk}
+%TODO: derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies%
+
 \section{Defining procedures and approach}
+
+%START OLD STUFF, REVISIT%
 Focus on three scenarios: attack through network, hijacked container, bad user
 
 Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
@@ -229,94 +326,50 @@ Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on d
 -> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
 TODO: apply OCP updates when incoming?
 
-\section{Identified vectors}
+%END OLD STUFF, REVISIT%
 
-\subsection{Reconaissance through k8s control plane \& cloud provider interfaces}
-Gather information useful for further attacks through interfaces intended to be accessible: the Kubernetes dashboard & apiserver as well as potential cloud provider webinterfaces & apiserver(s)
-TODO
+\section{Estimating the risk}
+%TODO: derive & explain values for each vector
 
-\subsection{Read confidentials through k8s control plane interfaces (dashboard, apiserver)}
-Gather confidential information through the Kubernetes dashboard & apiserver (cloud provider interfaces are separately evaluated)
-TODO
+\chapter{Managing the attack surface risk}
 
-\subsection{Change configuration through k8s control plane interfaces}
-Change the existing configuration through the Kubernetes dashboard & apiserver (cloud provider interfaces are separately evaluated)
-TODO
+\section{Defining procedures and approach}
+%TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)%
 
-\subsection{Read confidentials through cloud provider interfaces (mgmt console/API)}
-Gather confidential information through potential cloud provider webinterfaces & apiserver(s) (Kubernetes interfaces are separately evaluated)
-TODO
+\section{Managing the risk of V20 - Entry through known, unpatched vulnerabilities}
 
-\subsection{Change configuration through  cloud provider interfaces (mgmt console/API)}
-Change the existing configuration through potential cloud provider webinterfaces & apiserver(s) (Kubernetes interfaces are separately evaluated)
-TODO
+\subsection{Demonstrating the successful attack without security measures}
 
-\subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
-This vector comprises reconaissance, leaks of confidentials and configuration changes though Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
-TODO
+\subsection{Selecting security measures}
 
-\subsection{Supply compromised container (base) image}
-Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too.
-TODO
+\subsection{Demonstration with implemented security measures}
 
-\subsection{Supply compromised k8s configuration}
-Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
-TODO
+\subsection{Risk reassessment}
 
-\subsection{compromise application components (lateral movement from container)}
-Once an attacker gains access to a container, he may try to access more lucrative application components, i.e. databases or containers with more confidential information/traffic.
-TODO
+\section{Managing the risk of V20 - Entry through known, unpatched vulnerabilities}
 
-\subsection{R/W \& breakout to host, Privilege Escalation}
-Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
-TODO
+\subsection{Demonstrating the successful attack without security measures}
 
-\subsection{compromise local image cache}
-If the cached image of a container can be manipulated, a functionally identical container, which violates security principles, could be started.
-TODO
+\subsection{Selecting security measures}
 
-\subsection{modify running container}
-Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
-TODO
+\subsection{Demonstration with implemented security measures}
 
-\subsection{misuse node resources (DOS, cryptojacking)}
-The resources of a single node are used to run a container and may be misconfigured or misused for financial gains (mining cryptocurrencies) or to disrupt service availability (i.e. through fork bombing or misconfiguration)
-TODO
+\subsection{Risk reassessment}
 
-\subsection{hoard orchestration resources (DOS)}
-The resources of the whole cluster may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
-TODO
+\section{Managing the risk of V08 - Supply compromised k8s configuration}
 
-\subsection{misuse orchestration resources (cryptojacking)}
-The resources of the whole cluster may be misconfigured or misused for financial gains (mining cryptocurrencies)
-TODO
+\subsection{Demonstrating the successful attack without security measures}
 
-\subsection{add malicious container}
-A malicious container me be started within the cluster
-TODO
+\subsection{Selecting security measures}
 
-\subsection{add malicious node}
-A malicious node may be added to the cluster
-TODO
+\subsection{Demonstration with implemented security measures}
 
-\subsection{Bad user practice (outside of cluster)}
-This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
-TODO
+\subsection{Risk reassessment}
 
-\subsection{Incufficient base infrastructure hardening}
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened
-TODO
+\section{How to proceed}
+%process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
 
-\subsection{Entry through known, unpatched vulnerabilities}
-Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
-TODO
-
-\section{PaaS solution risk analysis}
-TODO
-
-\subsection{Analysis results}
-TODO: Risk analysis values here
-TODO
+\chapter{Conclusion}
 
 \subsection{On-premise and public cloud environment comparison}
 TODO: Comments on onPrem vs. cloud
@@ -324,173 +377,10 @@ TODO
 
 \subsection{Multi-tenant isolation}
 TODO: Comments on multi-tenant usage
-TODO
+%TODO: keep this in? not a well-defined question in the beginning%
 
-\chapter{Best-Practice implementations}
-TODO
+\subsection{Summary}
+%with outlook to future?%
 
-\section{Defining procedures and approach}
-OpenShift Setup: Minimum set for production use (Source: https://docs.openshift.com/container-platform/3.11/install/prerequisites.html)
-2 VMs, one master and one worker node.
-Master: 4 vCPU, 16GB RAM, 64GB Disk space with RHEL 7.5
-Worker: 1 vCPU, 8GB RAM, 32GB Disk space with RHEL 7.5
-TODO
+% rootless container runtime & build: https://github.com/moby/moby/pull/38050 %
 
-\section{On-premise environment}
-TODO
-
-\subsection{Measure recommendations}
-TODO: Includes comments on resulting (reduced) risk values!
-TODO
-
-\subsection{Practical examples}
-TODO
-
-\section{Public cloud environment}
-TODO
-
-\subsection{Measure recommendations}
-TODO: Includes comments on resulting (reduced) risk values!
-TODO
-
-\subsection{Practical examples}
-TODO
-
-\chapter{Summary}
-TODO: Include outlook with rootless builds, federated clusters (see: Google Anthos) and more!
-TODO
-
-
-%TEMPLATE TO CHOOSE FROM STARTS HERE%
-
-\chapter{Einleitung}
-\section{Anführungszeichen, Zitieren, Fußnoten} 
-\label{kap:beschda}
-Quellen stehen in der Datei thesis.bib!\\
-Da gibt es auch ein tag, um Bücher von Online-Quellen zu unterscheiden.\\
-
-So wird zitiert\cite{booktest}. Das ist eine Quelle für Bücher. \\
-Das ist eine Online-Quelle\cite{wikimoscow}.
-Um kleine Definitionen zu verlinken benutze ich Fußnoten\footnote{\url{ https://www.eclipse.org/4diac/} (Abgerufen am 07.02.2019)}
-
-So werden in Deutschland Anführungszeichen gemacht: \glqq Sehr wichtig!!\grqq{}  \\
-
-Die Abkürzungen stehen in der Datei abbreviations.tex! \\
-Das abkürzungsverzeichnis wird natürlich automatisch erstellt.\\
-
-So eine \gls{led} ist schon toll.
-
-\begin{figure}[H]
-\includegraphics[scale=0.5]{pictures/GatewayKommunikation.png} 
-\caption{Bild wird automatisch im Abbildungsverzeichnis eingefügt!}
-\label{fig:gateway}
-\end{figure}
-
-
-\chapter{Einführung und Analyse der Anforderungen}
-Die Abbildung \ref{fig:archgrob} zeigt...
-\begin{figure}[H]
-\includegraphics[scale=0.3]{pictures/Architektur-grob.png} 
-\caption{Bild wird automatisch im Abbildungsverzeichnis eingefügt!}
-\label{fig:archgrob}
-\end{figure}
-
-
-\section{Tabelle und Liste}
-
-Hier gibts eine Fancy Tabelle:\\
-\begin{table}[H]
-\begin{tabularx}{\textwidth}{| c | X | X | c |}	\hline	
-\textbf{Nr.} & \textbf{Anforderung} & \textbf{Erklärung} & \textbf{Priorisierung} \\ 
-\hline	
-(1a) & Einfache Installation & einfache \glqq Out-of-the-box\grqq{} Installation und intuitives Anlegen von Nutzerkonten & Must \\
-\hline 
-\end{tabularx}
-\renewcommand{\arraystretch}{1}\\	
-\caption{Anforderungen an die Sprachsteuerung} 	
-\label{tab:anfsprachsteuerung}
-\end{table}
-
-
-Liste um alles etwas in die Länge zu strecken:
-\begin{itemize}\itemsep0pt
-	\item Blah
-	\item Blah
-\end{itemize}
-
-Bilder:
-
-\begin{figure}[H]
-\includegraphics[scale=0.3]{pictures/4diac.png} 
-\caption{Bild wird automatisch im Abbildungsverzeichnis eingefügt!}
-\label{fig:4diaclogo}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[scale=1]{pictures/IEC61499Modelle.png} 
-\caption{Bild wird automatisch im Abbildungsverzeichnis eingefügt!}
-\label{fig:iecwiki}
-\end{figure}
-
-
-\chapter{Automat mit tikz}
-
-Falls jemand bock hat einen Automaten zu basteln, hier ist eine kleine Vorlage:
-
-%siehe http://texample.net/tikz/examples/state-machine/
-
-\begin{figure}[H]
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.5cm,
- thick,state/.style={circle,fill=blue!20,draw,
- font=\sffamily\Large\bfseries,minimum size=15mm}]
-
- \node[state,initial,accepting] (AlexaReady) {Ready};
- \node[state] (Welcome) [below of=AlexaReady] {Load};
- \node[state] (Wait) [below of=Welcome] {Wait};
- \node[state] (set) [left of=Wait] {Set};
- \node[state] (get) [below of=Wait] {Get};
-
-
- \path[every node/.style={font=\sffamily\small,
- 		fill=white,inner sep=1pt}]
- (AlexaReady) edge [bend left=20] node[right=1mm] {Nutzer: \glqq Starte die Sprachsteuerung\grqq{}} (Welcome)
- (Welcome) edge [bend left=20] node[right=1mm] {Alexa: \glqq Willkommen bei der Bachelorarbeit\grqq{}} (Wait)
-
- (set) edge [bend left=20] node[above=1mm] {Alexa: \glqq Okay, Licht an.\grqq{}} (Wait)
- (Wait) edge [bend left=20] node[below=1mm] {Nutzer: \glqq Licht an\grqq{}} (set)
-
- (get) edge [bend left=20] node[left=1mm] {Alexa: \glqq Licht, aktueller Zustand: an.\grqq{}} (Wait)
- (Wait) edge [bend left=20] node[right=1mm] {Nutzer: \glqq Ist das Licht an?\grqq{}} (get)
-
- (Wait) edge [bend left=20] node[left=1mm] {Nutzer: \glqq Danke\grqq{}} (AlexaReady)
- (Wait) edge [loop right] node[right=1mm] {(Ausgabe einer Hilfe)} (Wait);
- 
-\end{tikzpicture}
-\caption{Automat des dialogbasierten Alexa Skill}
-\label{fig:alexa-automat}
-\end{figure}
-
-\subsection{verlinken}
-
-Verlinken mit Abbildungsnummer und Seite: \\
-In der Abbildung \ref{fig:alexa-automat} auf Seite \pageref{fig:alexa-automat} wird gezeigt wie nice tikz sein kann.
-
-
-\chapter{Listings}
-
-Immer nice, Listings mit Synthax-Highlighting!\\
-
-\lstinputlisting[style=custombash, firstline=31, lastline=48,
-caption={Datei: setup-posix-mqtt.sh, Zeilen 31-48},
-label={fig:setupmqtt}
-]{sourcecode/setup-posix-mqtt.sh}
-
-So wird verlinkt: \\
-
-Das \autoref{fig:setupmqtt} auf Seite \pageref{fig:setupmqtt} zeigt in den Zeilen 34 bis 56 wie hässlich ein Shellscript werden kann. Hier wurde der Style custombash verwendet. Im \autoref{lst:skilllaunch} auf Seite \pageref{lst:skilllaunch} wird der customc-Style verwendet.
-
-
-\lstinputlisting[style=customc,
-caption={IntentHandler für den LaunchRequest},
-label={lst:skilllaunch}
-]{sourcecode/index-launchRequest.js}
