@@ -346,9 +346,11 @@ TODO: apply OCP updates when incoming?
 
 \subsection{Risk reassessment}
 
-\section{Managing the risk of V20 - Entry through known, unpatched vulnerabilities}
+\section{Managing the risk of V10 - Container Breakout}
 
 \subsection{Demonstrating the successful attack without security measures}
+
+%see file container_breakout.yaml!%
 
 \subsection{Selecting security measures}
 
@@ -356,9 +358,16 @@ TODO: apply OCP updates when incoming?
 
 \subsection{Risk reassessment}
 
-\section{Managing the risk of V08 - Supply compromised k8s configuration}
+\section{Managing the risk of V09 - lateral movement}
 
 \subsection{Demonstrating the successful attack without security measures}
+
+%default kubeconfig file location on user machine: $HOME/.kube/config <- contains certs + tokens for login, specifies which apiservers, ...
+%get token from user: oc whoami --token
+% call API with user token:	curl -X GET -H "Authorization: Bearer <token>" https://openshift.redhat.com:8443/oapi/v1 --insecure %
+% login with user token:	oc login --token '<token>'
+% check user rights: 
+
 
 \subsection{Selecting security measures}
 

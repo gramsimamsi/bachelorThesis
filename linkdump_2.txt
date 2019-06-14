@@ -313,3 +313,9 @@ https://github.com/Azure/AKS/projects/1#card-21680484
 
 using build process to escape example:
 https://blog.heroku.com/exploration-of-security-when-building-docker-containers
+
+good attack & defense on k8s RBAC:
+https://www.cyberark.com/threat-research-blog/securing-kubernetes-clusters-by-eliminating-risky-permissions/
+
+tooling for cloud offense/defense:
+https://www.marcolancini.it/2018/blog-arsenal-cloud-native-security-tools/
