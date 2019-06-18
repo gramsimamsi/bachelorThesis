@@ -319,3 +319,15 @@ https://www.cyberark.com/threat-research-blog/securing-kubernetes-clusters-by-el
 
 tooling for cloud offense/defense:
 https://www.marcolancini.it/2018/blog-arsenal-cloud-native-security-tools/
+
+aks podsecuritypolicies are preview-only:
+https://docs.microsoft.com/en-us/azure/aks/use-pod-security-policies#install-aks-preview-cli-extension
+
+ssh into aks node:
+https://docs.microsoft.com/en-us/azure/aks/ssh
+
+aks network policies NOT POSSIBLE WITHOUT CLUSTER REBUILD with default configs! (needs advanced network config):
+https://docs.microsoft.com/en-us/azure/aks/configure-azure-cni#configure-networking---portal
+
+NIST link to red hat openshift config guide:
+https://nvd.nist.gov/ncp/checklist/866/download/3337
