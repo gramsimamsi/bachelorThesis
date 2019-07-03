@@ -331,3 +331,6 @@ https://docs.microsoft.com/en-us/azure/aks/configure-azure-cni#configure-network
 
 NIST link to red hat openshift config guide:
 https://nvd.nist.gov/ncp/checklist/866/download/3337
+
+privileged container vs. root user container:
+https://brauner.github.io/2019/02/12/privileged-containers.html
