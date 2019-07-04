@@ -1,13 +1,13 @@
 \chapter{Introduction}
-With this chapter, the reader should be able to comprehend why this thesis was written, what it tries to accomplish and which topics are considered in this work.
+With this chapter, the reader should be able to comprehend why this thesis was written, 
+what it tries to accomplish and which topics are considered within the scope of this work.
 
 \section{Motivation}
 
-The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments and
-microservice architectures introduces new attack scenarios. This creates the need for new defense
-strategies in both Development and Operations. Especially solutions providing (Kubernetes
-conformant) container orchestration are identifiably different and in high demand compared to long
-established solutions. This calls for a more detailed, focused examination. \\
+The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments and microservice architectures introduce new attack scenarios. 
+This creates the need for new defense strategies in both Development and Operations. 
+Especially solutions providing \gls{k8s} compliant container orchestration are identifiably different and in high demand compared to long established solutions. 
+This calls for a more detailed, focused examination. 
 
 \section{Objective}
 
@@ -26,24 +26,26 @@ to a public cloud solution?
 \end{itemize}
 
 Another goal is to recommend security measures for different implementation use cases.
+A comparison of existing risks and the need for action derived from it should serve as central point of view.
 
-Possible measures to mitigate those risks will also be explored, evaluated and (if possible) put to use in the practical examples. 
+Possible measures to mitigate those risks shall be explored, evaluated and exemplary put to use in practical examples.
+Subsequently the risk will be re-evaluated in order to illustrate a viable risk management method.
 With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
 
 \section{Scope limitation}
 
+To achieve the aforementioned goals, the thesis will first limit the view on the problem to a manageable scope by
+concentrating on the components enabled by default and those required for operations of two established and \gls{k8s} compliant solutions.
+These solutions will be \gls{ocp} as an on-premise solution and \gls{aks} as a public cloud solution.
+Components providing \gls{k8s} compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
+A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.
+This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
+As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 
+In short, the goal is to improve the security of your \gls{k8s} cluster, not \gls{k8s} itself.
+
 %TODO: deriving scenarios from goal%
 
-To achieve the aforementioned goals, the view on the problem is limited to a manageable scope by
-focusing on specific components of a few commonly used (Certified Kubernetes) PaaS solutions.
-These components will be OpenShift Container Platform for On-Premise use cases and Azure Kubernetes Service as a public cloud solution. \\
-Components providing Kubernetes conformity will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. \\
-A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.\\
-This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
-As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. \\
-In short, the goal is to improve the security of your Kubernetes cluster, not Kubernetes itself.\\
-Looking at three common attack scenarios, it will then determine vulnerabilities and attack vectors,
-as well as their potential damage and rate those risks:
+Thus, the three attack scenarios are:
 
 \begin{itemize}
 
@@ -63,61 +65,60 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
 
-\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10 (SOURCE: LINK IN COMMENTS %https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).\\
+\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10.\footnotemark \\
 	The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
 
-\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies. (SOURCE: https://youtu.be/vTgQLzeBfRU?t=185)  \\
+	\footnotetext{\cite{topten}}
+
+\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footnotemark\\
 	When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. \\
 	Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
 
-\item Multiple tenants like different customers, teams or projects are separated by kubernetes namespaces, not different clusters. This assumption will be compared to tenant isolation by cluster separation in section X (TODO: HEADING LINK TO TENANT ISOLATION HERE).
+	\footnotetext{\cite{hackAndHarden}}
+
+\item Multiple tenants like different customers, teams or projects are separated by \gls{k8s} namespaces or \gls{ocp} projects respectively, not by clusters.
 
 \end{itemize}
-
 
 %TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubernetes versions.%
 
 \chapter{Theory}
-With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout this thesis.
-
+With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
+should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
 \section{Infrastructure-as-a-Service}
 In \gls{iaas} environments, a consumer trusts his \gls{iaas} provider with the management and control of the infrastructure needed to deploy his applications.
-The provided service ends at provisioning or processing, storage, networks and other computing resources \cite{nistcloud}
-(TODO Quelle: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf ). 
+The provided service ends at provisioning of processing, storage, networks and other computing resources.\footnotemark \\
+
+	\footnotetext{\cite{nistcloud}}
+
 Therefore consumers do not need to manage their own data centers or topics like system uplink availability.
 As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the \gls{os} layer and everything above it.
 
-(TODO: you manage <-> other manages LINK IN COMMENTS %https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/ )
-
-\cite{servicecomparison}
-
-citation test 1\cite{servicecomparison} \\
-cit test 3~\cite{servicecomparison} \\
-cit \citation{servicecomparison}
-
 \begin{figure}[H]
 \includegraphics[scale=0.4]{pictures/ServiceComparison.jpg} 
-\caption{captionright\protect\footnotemark}
-%% \caption{Comparison of responsibilities in different service models }
+\caption{Comparison of responsibilities in different service models\protect\footnotemark}
 \label{fig:servicecomparison}
 \end{figure}
 
-\footnotetext{Source:  \cite{servicecomparison} }
+	\footnotetext{\cite{servicecomparison}}
 
 \section{Platform-as-a-Service}
 
-In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}. 
-(TODO Quelle: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf )
-In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis 
-(TODO Quelle: https://docs.microsoft.com/en-us/azure/data-explorer/ )
- and allows him to focus on other tasks, i.e. application development. As a downside to this, a consumer might only have limited control on, among others, the software installed on the  machines provisioned. 
-Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
-Figure X  (TODO: Picture link) shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
-A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, again resulting in middleware responsibilities for the consumer. 
-A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
-Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates. 
-(TODO Quelle: LINK COMMENTED % https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview\#process-node-updates-and-reboots-using-kured )
+In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}.\footnotemark
+\footnotetext{\cite{nistcloud}}
+In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis\footnotemark and allows him to focus on other tasks, i.e. application development.
 
+	\footnotetext{\cite{msPaas}}
+
+As a downside to this, a consumer might only have limited control on, among other factors, the software installed on the provisioned machines. 
+Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
+Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
+A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, 
+again resulting in middleware responsibilities for the consumer. 
+A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
+Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates.\footnotemark
+
+	\footnotetext{\cite{msVmReboot}}
 
 \section{Containers, Docker}
 TODO
@@ -132,7 +133,7 @@ Citations: TODO Look for books!
 \section{Container Orchestration}
 TODO
 
-idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in AKS/Openshift specifically.
+idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in \gls{aks} and \gls{ocp} specifically.
 
 \subsection{Kubernetes}
 LINKS COMMENTED
@@ -315,7 +316,7 @@ Default values are defined as the following:
 SETUP OF PRACTICAL PART:
 
 Version freeze:
-OpenShift Container Platform 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
+\gls{ocp} 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
 AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
 
 Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
