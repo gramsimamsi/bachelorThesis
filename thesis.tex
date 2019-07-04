@@ -86,7 +86,8 @@
 
 
 % Literaturangaben
-\usepackage[backend=biber,
+\usepackage[
+backend=biber,
 style=alphabetic-verb, % numeric-verb oder alphabetic-verb
 sorting=none,
 backref=true
@@ -176,17 +177,17 @@ backref=true
 }
 % Eigener bash style
 \lstdefinestyle{custombash}{
-	belowcaptionskip=1\baselineskip,
-	breaklines=true,
-	frame=L,
-	xleftmargin=\parindent,
-	language=bash,
-	showstringspaces=false,
-	basicstyle=\footnotesize\ttfamily,
-	keywordstyle=\bfseries\color{green!40!black},
-	commentstyle=\itshape\color{purple!40!black},
-	identifierstyle=\color{blue},
-	stringstyle=\color{orange},
+belowcaptionskip=1\baselineskip,
+breaklines=true,
+frame=L,
+xleftmargin=\parindent,
+language=bash,
+showstringspaces=false,
+basicstyle=\footnotesize\ttfamily,
+keywordstyle=\bfseries\color{green!40!black},
+commentstyle=\itshape\color{purple!40!black},
+identifierstyle=\color{blue},
+stringstyle=\color{orange},
 }
 
 
@@ -224,12 +225,9 @@ backref=true
 \include{chapters}
 
 % Literaturangaben
-
-
-% Literaturangaben
 \printbibheading
-\printbibliography[keyword={book},heading=subbibliography,title={Bücher}]
-\printbibliography[keyword={online},heading=subbibliography,title={Online Quellen}]
+\printbibliography[keyword={@book},heading=subbibliography,title={Books}]
+\printbibliography[keyword={online},heading=subbibliography,title={Online sources}]
 \cleardoublepage
 
 \end{document}

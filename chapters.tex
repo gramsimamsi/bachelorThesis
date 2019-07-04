@@ -63,7 +63,7 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
 
-\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10 (SOURCE: https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).\\
+\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10 (SOURCE: LINK IN COMMENTS %https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project).\\
 	The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
 
 \item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies. (SOURCE: https://youtu.be/vTgQLzeBfRU?t=185)  \\
@@ -87,7 +87,9 @@ The provided service ends at provisioning or processing, storage, networks and o
 Therefore consumers do not need to manage their own data centers or topics like system uplink availability.
 As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the \gls{os} layer and everything above it.
 
-(TODO: you manage <-> other manages https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/ )
+(TODO: you manage <-> other manages LINK IN COMMENTS %https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/ )
+
+\cite{servicecomparison}
 
 citation test 1\cite{servicecomparison} \\
 cit test 3~\cite{servicecomparison} \\
@@ -114,7 +116,7 @@ Figure X  (TODO: Picture link) shows middleware and runtime as provided, but the
 A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, again resulting in middleware responsibilities for the consumer. 
 A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
 Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates. 
-(TODO Quelle: https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview\#process-node-updates-and-reboots-using-kured )
+(TODO Quelle: LINK COMMENTED % https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview\#process-node-updates-and-reboots-using-kured )
 
 
 \section{Containers, Docker}
@@ -133,10 +135,11 @@ TODO
 idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in AKS/Openshift specifically.
 
 \subsection{Kubernetes}
+LINKS COMMENTED
 
-https://kubernetes.io/docs/concepts/\#overview \\
-https://kubernetes.io/docs/concepts/overview/components/ \\
-https://res.cloudinary.com/dukp6c7f7/image/upload/f\_auto,fl\_lossy,q\_auto/s3-ghost/2016/06/o7leok.png \\
+%https://kubernetes.io/docs/concepts/\#overview \\
+%https://kubernetes.io/docs/concepts/overview/components/ \\
+%https://res.cloudinary.com/dukp6c7f7/image/upload/f\_auto,fl\_lossy,q\_auto/s3-ghost/2016/06/o7leok.png \\
 
 \subsubsection{Kubernetes Objects}
 TODO
@@ -169,33 +172,33 @@ TODO
 
 \section{Defining procedure and approach}
 
-%TODO: derive all 20 vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way & which systems/threat actors rolled together in it. List security measures for each.
+%TODO: derive all 20 vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
 
 
 \section{Identified vectors}
 %TODO: write out pretty
 
-\subsection{Reconaissance through Kubernetes \& platform control plane interfaces}
-Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces & apiserver(s)
+\subsection{Reconaissance through Kubernetes and platform control plane interfaces}
+Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
 components: kubernetes dashboard, kubernetes apiserver, OCP web console, 
 
 TODO
 
 \subsection{Read confidentials through Kubernetes control plane interfaces}
-Gather confidential information through the Kubernetes dashboard & apiserver (platform interfaces are evaluated separately)
+Gather confidential information through the Kubernetes dashboard \& apiserver (platform interfaces are evaluated separately)
 TODO
 
 \subsection{Change configuration through Kubernetes control plane interfaces}
-Change the existing configuration through the Kubernetes dashboard & apiserver (platform interfaces are evaluated separately)
+Change the existing configuration through the Kubernetes dashboard \& apiserver (platform interfaces are evaluated separately)
 TODO
 
 \subsection{Read confidentials through platform interfaces (mgmt console/API)}
-Gather confidential information through platform webinterfaces & apiserver(s) (Kubernetes interfaces are evaluated separately)
+Gather confidential information through platform webinterfaces \& apiserver(s) (Kubernetes interfaces are evaluated separately)
 TODO
 
 \subsection{Change configuration through platform interfaces (mgmt console/API)}
-Change the existing configuration through platform webinterfaces & apiserver(s) (Kubernetes interfaces are evaluated separately)
+Change the existing configuration through platform webinterfaces \& apiserver(s) (Kubernetes interfaces are evaluated separately)
 TODO
 
 \subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
@@ -316,17 +319,17 @@ OpenShift Container Platform 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fix
 AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
 
 Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
-- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (#65799, @dekkagaijin)
+- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (\#65799, @dekkagaijin)
 - https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
-- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (#65499, @krunaljain)
-- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (#65739, @liggitt)
-The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (#65593, @bsalamat)
+- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (\#65499, @krunaljain)
+- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (\#65739, @liggitt)
+The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (\#65593, @bsalamat)
 
 no major changes => OCP 3.11, AKS-k8s 1.11.9!
 
 Dependency compatibilities:
-OCP 3.11: docker 1.13, CRI-O 1.11 (Source: https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
-k8s-1.11: docker 1.11.2 to 1.13.1  (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
+OCP 3.11: docker 1.13, CRI-O 1.11 (Source: LINK COMMENTED %https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
+k8s-1.11: docker 1.11.2 to 1.13.1  (Source: LINK COMMENTED % https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
 Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
 
 -> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
@@ -335,9 +338,9 @@ TODO: apply OCP updates when incoming?
 %TODO: END OLD STUFF, REVISIT%
 
 \section{Estimating the risk}
-%TODO: derive & explain values for each vector
+%TODO: derive \& explain values for each vector
 
-\subsection{Reconaissance through Kubernetes & platform control plane interfaces}
+\subsection{Reconaissance through Kubernetes \& platform control plane interfaces}
 
 %OCP
 A user with access to the apiserver / webinterface(s) and read access can scout out information.
@@ -425,7 +428,7 @@ Exactly the same as OCP
 
 \subsection{Compromise other application components (lateral movement)}
 %OCP
-Once an attacker sits within a container, he can scan the network for other containers, hosts, services, apis or similar interfaces to further his access. By default, all containers in all projects (except master & infra components) are put in the same subnet, allowing everyone to communicate with anyone else.
+Once an attacker sits within a container, he can scan the network for other containers, hosts, services, apis or similar interfaces to further his access. By default, all containers in all projects (except master \& infra components) are put in the same subnet, allowing everyone to communicate with anyone else.
 This is especially troubling for securing an environment with multiple tenants – even if the DB is not publically accessible, unauthorized access can be leveraged by anyone in the cluster.
 
 Scanning tools like nmap etc. to find components to talk to are readily available, but their results are cluster-specific (everyone runs something different). Therefore some technical expertise is needed to leverage the network access needed. 
@@ -538,11 +541,11 @@ Same as OCP, except accessible from anywhere (cloud, duh).
 
 \subsection{Incufficient base infrastructure hardening}
 %OCP
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre & Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
+The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
 Vector exists mostly to sink all “classic” infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
 
 Among worst case: unauthenticated access to run commands which is hosted publically on the internet for anyone to access and indexed by shodan. Bye bye cluster.
-(Too many scenarios to hypothesize here, I’ll just point the finger at conventional server & infra hardening standards and guidelines)
+(Too many scenarios to hypothesize here, I’ll just point the finger at conventional server \& infra hardening standards and guidelines)
 
 -> Well known, still needs some technical skill to find vulns and exploit them
 
@@ -617,5 +620,5 @@ Same as OCP. Even infra still needs user interaction to be patched, see precedin
 \subsection{Summary}
 %with outlook to future?%
 
-% rootless container runtime & build: https://github.com/moby/moby/pull/38050 %
+% rootless container runtime \& build: https://github.com/moby/moby/pull/38050 %
 
