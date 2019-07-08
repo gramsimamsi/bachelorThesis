@@ -26,8 +26,7 @@ to a public cloud solution?
 \end{itemize}
 
 Another goal is to recommend security measures for different implementation use cases.
-A comparison of existing risks and the need for action derived from it should serve as central point of view.
-
+A comparison of existing risks and the need for action derived from it should serve as central point of view. 
 Possible measures to mitigate those risks shall be explored, evaluated and exemplary put to use in practical examples.
 Subsequently the risk will be re-evaluated in order to illustrate a viable risk management method.
 With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
@@ -36,102 +35,99 @@ With the results gathered, the thesis will compare different best practice imple
 
 To achieve the aforementioned goals, the thesis will first limit the view on the problem to a manageable scope by
 concentrating on the components enabled by default and those required for operations of two established and \gls{k8s} compliant solutions.
-These solutions will be \gls{ocp} as an on-premise solution and \gls{aks} as a public cloud solution.
+These solutions will be \gls{ocp} as an on-premise solution and \gls{aks} as a public cloud solution. 
+The latest stable version of \gls{ocp} during the work on this thesis was version 3.11\footcite{ocpRelease}, which is based on the \gls{okd} 3.11. \gls{okd} is a fork of \gls{k8s} 1.11.0 with additional edits and updates (refer to section \ref{openshiftExplanation} for details).
+Through \gls{aks}, kubernetes v1.13.5 was already available at the same point in time. In order to better compare both implementations, the available \gls{k8s} version 1.11 was chosen for \gls{aks}.
+%TODO add proof of azure version availability in appendix and reference it! (see screenshot pptx)
 Components providing \gls{k8s} compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
 A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.
+In order to be applicable to a higher number of use cases, attacks and measures seen in environments with exceptionally high security requirements might be mentioned , but not  covered in their entirety. This might entail state-sponsored actors deploying zero-day exploits, which are not applicable to a majority of solutions deployed.
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
 As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 
 In short, the goal is to improve the security of your \gls{k8s} cluster, not \gls{k8s} itself.
+To follow the OWASP Risk Rating Methodology\footcite{riskRating} down the line, we need to define our threat agents. It is recommended to minimize the number of threat agents by treating them as equivalent classes when applicable\footcite{threatModeling}. Examining a list of threat actors published through SANS\footcite{sansThreatActors}, we can will only exclude state-sponsored actors. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
+Grouping the remaining actors by the factors used to estimate risks in section \ref{riskEstimate}, we can identify find three scenarios that encompass all of the actors:
 
-%TODO: deriving scenarios from goal%
-
-Thus, the three attack scenarios are:
-
+%TODO Mention baseline security in summary!
+%TODO change summary to fit the items here!
 \begin{itemize}
 
-\item Malicious third party attacking the underlying infrastructure from within the LAN and/or the internet
+\item Malicious third party attacking the solution from within the \gls{lan} and/or the internet
 
 \item Malicious third party attacking from inside a hijacked container, i.e. remotely executing code or commands
 
-\item Bad user, i.e. a negligent, hijacked or malicious developer (account) risking compromise of his own and/or other applications
+\item Bad user, i.e. a negligent, hijacked or malicious account risking compromise of their own and/or other applications
 
 \end{itemize}
-
-In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
-
-\begin{itemize}
-
-\item People in contact with the solution are familiar with conventional security principles and measures, but are new to the technologies used in the solutions within scope. They might even be new to container and cloud solutions in general. This includes both users of the solution like developers and project managers, as well as operators and administrators.
-
-\item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
-
-\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10.\footnotemark \\
-	The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
-
-	\footnotetext{\cite{topten}}
-
-\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footnotemark\\
-	When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. \\
-	Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
-
-	\footnotetext{\cite{hackAndHarden}}
-
-\item Multiple tenants like different customers, teams or projects are separated by \gls{k8s} namespaces or \gls{ocp} projects respectively, not by clusters.
-
-\end{itemize}
-
-%TODO: Versioning Freeze! Openshift, AKS (not possible...), Docker engine, Kubernetes versions.%
 
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
 should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
+
 \section{Infrastructure-as-a-Service}
 In \gls{iaas} environments, a consumer trusts his \gls{iaas} provider with the management and control of the infrastructure needed to deploy his applications.
-The provided service ends at provisioning of processing, storage, networks and other computing resources.\footnotemark \\
-
-	\footnotetext{\cite{nistcloud}}
-
+The provided service ends at provisioning of processing, storage, networks and other computing resources.\footcite{nistcloud}
 Therefore consumers do not need to manage their own data centers or topics like system uplink availability.
 As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the \gls{os} layer and everything above it.
 
 \begin{figure}[H]
 \includegraphics[scale=0.4]{pictures/ServiceComparison.jpg} 
-\caption{Comparison of responsibilities in different service models\protect\footnotemark}
+\caption{Comparison of responsibilities in different service models\protect\footcite{servicecomparison}}
 \label{fig:servicecomparison}
 \end{figure}
 
-	\footnotetext{\cite{servicecomparison}}
-
 \section{Platform-as-a-Service}
 
-In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}.\footnotemark
-\footnotetext{\cite{nistcloud}}
-In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis\footnotemark and allows him to focus on other tasks, i.e. application development.
-
-	\footnotetext{\cite{msPaas}}
-
+In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}.\footcite{nistcloud}
+In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis\footcite{msPaas} and allows him to focus on other tasks, i.e. application development.
 As a downside to this, a consumer might only have limited control on, among other factors, the software installed on the provisioned machines. 
 Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
 Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
 A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, 
 again resulting in middleware responsibilities for the consumer. 
 A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
-Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates.\footnotemark
+Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates.\footcite{msVmReboot}
 
-	\footnotetext{\cite{msVmReboot}}
+\section{Containers}
 
-\section{Containers, Docker}
+In order to run and manage containers, several components and systems are needed. The most important ones will be introduced here.
+
+\subsection{What are containers?}
+As the Docker website puts it, a container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.\footcite{whatContainer}
+From a technical viewpoint, a container is an isolated process running in the userspace on a host \gls{os}. The host system shares the kernel with all containers on it and might share other resources, but containers are built from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on.\footcite{containerIntro}
+
+Linux containers were widely popularized through Docker, a container system initially based on \gls{lxc}.\footcite{containerHistory}
+Containers provide isolation of multiple appllications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple \gls{vm}s, which is why they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
+
+\begin{figure}[H]
+\includegraphics[scale=0.3]{pictures/VMsVsContainers.jpg} 
+\caption{Comparison of different application deployments on the same hardware\protect\footcite{k8sDocsVmsContainers}}
+\label{fig:VMsVsContainers}
+\end{figure}
+
+\subsection{Differentiating docker}
+Talking about docker can be quite difficult, since the term refers to multiple things at once - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (Docker, now called Moby).\footcite{dockerMoby}
+Additionally, there is a \gls{cli} called docker engine, which serves as an interface to the containers running on a host. It includes a high-level container runtime (which will be talked about in the following section).\footcite{dockerEngine}
+Some sources also talk about docker-formatted containers if those implement the same interfaces as the docker container runtime.\footcite{dockerFormatted}
+
+\subsection{Container images}
+%TODO
 TODO
 
-concept of container vs. VM, upsides vs. downsides (?), docker-specific b/c highest market share
-automation \& load elasticity -> need for orchestration
+\subsection{Container standards and interfaces}
 
-https://www.docker.com/resources/what-container\\
-https://www.docker.com/sites/default/files/d8/2018-11/docker-containerized-and-vm-transparent-bg.png
-Citations: TODO Look for books! 
+Without going into the nuances and historical developments, there are a multitude of programs mostly implementing two interfaces for container management.
+The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed.\footcite{ociStandards}
+The \gls{oci} also maintains a reference implementation called runc, alternatives include rkt and lmctfy.\footcite{lowLevelRuntimes}
+Runc and similar programs implementing these specifications are commonly called low level runtimes, in contrast to the high level runtimes that control them.
+These high level runtimes like containerd or CRI-O commonly manage more abstract features like downloading and verifying container images.\footcite{highLevelRuntimes}
+Many high level runtimes today adhere to the \gls{cri} so they can be used interchangeably by container orchestrators.\footcite{criDocs}
+
+%TODO maybe shorten and just talk about CRI upwards?
 
 \section{Container Orchestration}
 TODO
+%TODO automation \& load elasticity -> need for orchestration
 
 idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in \gls{aks} and \gls{ocp} specifically.
 
@@ -160,8 +156,9 @@ build from scratch, buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/feat
 
 https://kubernetes.io/docs/setup/pick-right-solution/
 
-\subsubsection{OpenShift}
+\subsubsection{OpenShift} \label{openshiftExplanation}
 TODO
+%TODO OCP-> OKD -> k8s, mention that security fixes of k8s upstream are applied!
 
 \subsubsection{Azure Kubernetes Service}
 TODO
@@ -276,6 +273,23 @@ TODO
 
 \section{Defining procedures and approach}
 
+In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
+
+\begin{itemize}
+
+\item People in contact with the solution are familiar with conventional security principles and measures, but are new to the technologies used in the solutions within scope. They might even be new to container and cloud solutions in general. This includes both users of the solution like developers and project managers, as well as operators and administrators.
+
+\item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
+
+\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10.\footcite{topten} The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
+
+\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footcite{hackAndHarden} When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
+
+\item Multiple tenants like different customers, teams or projects are separated by \gls{k8s} namespaces or \gls{ocp} projects respectively, not by clusters.
+
+\end{itemize}
+
+
 %START OLD STUFF, REVISIT%
 Focus on three scenarios: attack through network, hijacked container, bad user
 
@@ -338,7 +352,7 @@ TODO: apply OCP updates when incoming?
 
 %TODO: END OLD STUFF, REVISIT%
 
-\section{Estimating the risk}
+\section{Estimating the risk} \label{riskEstimate}
 %TODO: derive \& explain values for each vector
 
 \subsection{Reconaissance through Kubernetes \& platform control plane interfaces}
