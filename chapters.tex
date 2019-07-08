@@ -110,13 +110,15 @@ Talking about docker can be quite difficult, since the term refers to multiple t
 Additionally, there is a \gls{cli} called docker engine, which serves as an interface to the containers running on a host. It includes a high-level container runtime (which will be talked about in the following section).\footcite{dockerEngine}
 Some sources also talk about docker-formatted containers if those implement the same interfaces as the docker container runtime.\footcite{dockerFormatted}
 
-\subsection{Container images}
-%TODO
-TODO
+\subsection{Images, image building and Dockerfiles}
+A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags.\footcite{redhatImages}
+Container images are sometimes referred to as docker images or docker-formatted images, but they can be run by other container runtimes and vice-versa.
+In order to create a container image, you have to build it. This is often done through a build process executed by a container runtime. The instructions for container builds are commonly defined and documented in a Dockerfile\footcite{dockerfileDocs} (which may also be done by non-docker programs, adding onto the vocabulary confusion).
+Container images can be distributed through container image registries, where images can be uploaded to and downloaded from. A commonly known example is docker hub, a public registry run by Docker Inc.
 
 \subsection{Container standards and interfaces}
 
-Without going into the nuances and historical developments, there are a multitude of programs mostly implementing two interfaces for container management.
+Without going into the nuances and historical developments, there are a multitude of programs mostly implementing three interfaces for container management.
 The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed.\footcite{ociStandards}
 The \gls{oci} also maintains a reference implementation called runc, alternatives include rkt and lmctfy.\footcite{lowLevelRuntimes}
 Runc and similar programs implementing these specifications are commonly called low level runtimes, in contrast to the high level runtimes that control them.
@@ -126,9 +128,11 @@ Many high level runtimes today adhere to the \gls{cri} so they can be used inter
 %TODO maybe shorten and just talk about CRI upwards?
 
 \section{Container Orchestration}
-TODO
-%TODO automation \& load elasticity -> need for orchestration
+Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when some containers fail, the need for automated systems to manage these containers arises. Orchestrators can also provide many other advantages, like load balancing and automated scaling.
+Kubernetes systems are the most prevalent orchestrators currently in use.
+%TODO citation for kubernetes market share?
 
+%TODO
 idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in \gls{aks} and \gls{ocp} specifically.
 
 \subsection{Kubernetes}
@@ -156,11 +160,11 @@ build from scratch, buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/feat
 
 https://kubernetes.io/docs/setup/pick-right-solution/
 
-\subsubsection{OpenShift} \label{openshiftExplanation}
+\subsection{OpenShift} \label{openshiftExplanation}
 TODO
 %TODO OCP-> OKD -> k8s, mention that security fixes of k8s upstream are applied!
 
-\subsubsection{Azure Kubernetes Service}
+\subsection{Azure Kubernetes Service}
 TODO
 
 \section{TODO: Others?}
