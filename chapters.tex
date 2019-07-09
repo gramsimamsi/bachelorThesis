@@ -116,7 +116,7 @@ Container images are sometimes referred to as docker images or docker-formatted 
 In order to create a container image, you have to build it. This is often done through a build process executed by a container runtime. The instructions for container builds are commonly defined and documented in a Dockerfile\footcite{dockerfileDocs} (which may also be done by non-docker programs, adding onto the vocabulary confusion).
 Container images can be distributed through container image registries, where images can be uploaded to and downloaded from. A commonly known example is docker hub, a public registry run by Docker Inc.
 
-\subsection{Container standards and interfaces}
+\subsection{Container standards and interfaces} \label{runtimes}
 
 Without going into the nuances and historical developments, there are a multitude of programs mostly implementing three interfaces for container management.
 The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed.\footcite{ociStandards}
@@ -127,22 +127,48 @@ Many high level runtimes today adhere to the \gls{cri} so they can be used inter
 
 %TODO maybe shorten and just talk about CRI upwards?
 
-\section{Container Orchestration}
+\section{Container orchestration}
 Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when some containers fail, the need for automated systems to manage these containers arises. Orchestrators can also provide many other advantages, like load balancing and automated scaling.
-Kubernetes systems are the most prevalent orchestrators currently in use.
+Kubernetes systems are popular orchestrators currently in use.
+The sum of hosts running and controlling containers and the orchestrator are called a cluster.
 %TODO citation for kubernetes market share?
 
-%TODO
-idea: control system, architecture (control plane vs. application(s), kubelet, master/non-master nodes, ...), standard (can have other implementations), certification requirements, uses in general and in \gls{aks} and \gls{ocp} specifically.
 
 \subsection{Kubernetes}
-LINKS COMMENTED
+At its base, \gls{k8s} is a control system for containers.
+It constantly compares the current state with the set target state and tries to correct towards the target when needed, i.e. when a container crashes.
+When a user wants to deploy his application, it is intended for him to manipulate the target state and let the \gls{k8s} system take care of the rest.\footcite{k8sBasics}
 
-%https://kubernetes.io/docs/concepts/\#overview \\
-%https://kubernetes.io/docs/concepts/overview/components/ \\
-%https://res.cloudinary.com/dukp6c7f7/image/upload/f\_auto,fl\_lossy,q\_auto/s3-ghost/2016/06/o7leok.png \\
+There are many \gls{k8s} distributions, many of which are certified kubernetes offerings, meaning they all comply to the same standards set by the Linux Foundation through the \gls{cncf}, which oversees the project.
+The kubernetes code base is open source and maintained on Github, but any implementation fulfilling the (publicised) requirements can become \gls{k8s} certified, regardless of how much code they changed.\footcite{cncf} You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
 
-\subsubsection{Kubernetes Objects}
+\subsubsection{Kubernetes components}
+
+In order to deliver a functioning \gls{k8s} cluster, multiple binary components are needed.
+Master components provide the control plane, while node components are run on each underlying machine in order to maintain and provide the environment to execute the containers you want to run eventually.
+Master components are often exclusively run on machines dedicated to them, which are called master nodes - in contrast to worker nodes, which run the containers your applications consist of.\footcite{k8sComponents}
+
+The most relevant master components from the perspective of this thesis are:
+\begin{itemize}
+
+\item The kube-apiserver, which exposes the Kubernetes API. It is the front-end for the Kubernetes control plane; User commands are typically directed at and processed by this component.
+
+\item Etcd, a distributed high-availability key value store where, among other things, secrets and authentication information is stored.
+
+\end{itemize}
+
+The important node components include:
+\begin{itemize}
+
+\item The kubelet, an agent running on each node in the cluster. It mostly monitors the state of any containers running because of kubernetes and interacts with the master components.
+
+\item The container runtime which is responsible for actually running containers. \gls{ocp} uses Docker while \gls{aks} uses Moby, but any implementation of the \gls{cri} is supported.\footnote{For additional information, refer to section \ref{runtimes}} 
+
+\end{itemize}
+
+%TODO component functions and number may vary per distribution
+
+\subsubsection{Kubernetes objects}
 TODO
 higher-level idea behind objects
 Pods, Services, Volumes, Namespaces
