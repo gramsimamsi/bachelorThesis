@@ -267,7 +267,7 @@ As new minor versions of \gls{k8s} release approximately every tree months and t
 These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, we will generically mention the applicable measures and mention specific examples for \gls{aks} and \gls{ocp}.
 In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broeadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
 
-\subsection{Research basis and its limits}
+\section{Research basis and its limits}
 %TODO list sources, explain that only best effort and stuff is still building
 
 During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures an explain the sort or attacks they defend against.
@@ -299,82 +299,81 @@ As with all systems, new attacks and vulnerabilities may emerge at any point in 
 %TODO full list of sources in appendix & reference here?
 
 \section{Identified vectors}
-%TODO vector merging?!
-%TODO write out pretty
+%TODO write out pretty, absorb explanations from risk estimate chapter
+The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as Vxx.
 
-\subsection{Reconaissance through Kubernetes and platform control plane interfaces}
+\subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
 Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
 components: kubernetes dashboard, kubernetes apiserver, OCP web console, 
 
 TODO
 
-\subsection{Read confidentials through Kubernetes control plane interfaces}
-Gather confidential information through the Kubernetes dashboard \& apiserver (platform interfaces are evaluated separately)
+\subsection{V02 - Read confidentials through Kubernetes \& platform control plane interfaces}
+Gather confidential information through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
+
 TODO
 
-\subsection{Change configuration through Kubernetes control plane interfaces}
-Change the existing configuration through the Kubernetes dashboard \& apiserver (platform interfaces are evaluated separately)
+\subsection{V03 - Change configuration through Kubernetes \& platform control plane interfaces}
+Change the existing configuration through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 TODO
 
-\subsection{Read confidentials through platform interfaces (mgmt console/API)}
-Gather confidential information through platform webinterfaces \& apiserver(s) (Kubernetes interfaces are evaluated separately)
-TODO
-
-\subsection{Change configuration through platform interfaces (mgmt console/API)}
-Change the existing configuration through platform webinterfaces \& apiserver(s) (Kubernetes interfaces are evaluated separately)
-TODO
-
-\subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+\subsection{V04 - Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
 This vector comprises reconaissance, leaks of confidentials and configuration changes through Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
+
 TODO
 
-\subsection{Supply compromised container (base) image}
+\subsection{V05 - Supply compromised container (base) image}
 Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too. Additionally, an image build process typically runs as root, leading to compromise possibilities to compromise the node where an image is built from a rogue dockerfile. (TODO: provoking stale image usage to exploit vulns, too?)
+
 TODO
 
-\subsection{Supply compromised k8s configuration}
+\subsection{V06 - Supply compromised k8s configuration}
 Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
+
 TODO
 
-\subsection{Compromise other application components (lateral movement)}
+\subsection{V07 - Compromise other application components (lateral movement)}
 Once an attacker gains access to a container, he may try to access more lucrative application components or information, i.e. sniffing traffic or accessing databases or containers with more confidential information/traffic.
+
 TODO
 
-\subsection{Container breakout (R/W, Privilege Escalation)}
+\subsection{V08 - Container breakout (R/W, Privilege Escalation)}
 Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
+
 TODO
 
-\subsection{Compromise local image cache}
+\subsection{V09 - Compromise local image cache}
 If the cached image of a container can be manipulated, another container (which might even seem to fulfill the same function) violating security principles could be started.
+
 TODO
 
-\subsection{Modify running container}
+\subsection{V10 - Modify running container}
 Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
+
 TODO
 
-\subsection{Misuse node resources (sabotage, cryptojacking)}
-The resources of a single node are used to run a container and may be misconfigured or misused for financial gains (mining cryptocurrencies) or to disrupt service availability (i.e. through fork bombing or misconfiguration)
+\subsection{V11 - Hoard resources (sabotage)}
+The provided resources may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
+
 TODO
 
-\subsection{Hoard orchestration resources (sabotage)}
-The resources of the whole cluster may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
+\subsection{V12 - Misuse resources (cryptojacking)}
+The provided resources may be misconfigured or misused for financial gains (mining cryptocurrencies)
+
 TODO
 
-\subsection{Misuse orchestration resources (cryptojacking)}
-The resources of the whole cluster may be misconfigured or misused for financial gains (mining cryptocurrencies)
-TODO
-
-\subsection{Add malicious container}
+\subsection{V13 - Add malicious container}
 A malicious container may be started within the cluster
 TODO
 
-\subsection{Add malicious node}
+\subsection{V14 - Add malicious node}
 A malicious node may be added to the cluster
 TODO
 
-\subsection{Bad user practice (outside of cluster)}
+\subsection{V15 - Bad user practice (outside of cluster)}
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
+
 TODO
 
 %TODO: dont forget
@@ -384,19 +383,21 @@ TODO
 % login with user token:	oc login --token '<token>'
 % check user rights: 
 
-\subsection{Incufficient base infrastructure hardening}
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened
+\subsection{V16 - Incufficient base infrastructure hardening}
+The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown
+
 %TODO: also other (external) parts of company infrastructure
 TODO
 
-\subsection{Entry through known, unpatched vulnerabilities}
+\subsection{V17 - Entry through known, unpatched vulnerabilities}
 Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
-TODO
 
+TODO
 
 \chapter{Assessing the attack surface risk}
 %TODO: derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies
-derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies
+
+With the attack vectors identified, we introduce a customized risk estimation model for our purpose and explain the challenges of developing it. The model is then used to estimate the relative risk of each vector.
 
 \section{Defining procedures and approach}
 In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
@@ -482,7 +483,6 @@ TODO: apply OCP updates when incoming?
 %TODO: derive \& explain values for each vector
 derive \& explain values for each vector
 
-\subsection{Risk estimation result}
 %TODO
 TODO results upfront, values will be derived in the following subsections
 
@@ -494,7 +494,7 @@ TODO split figure vertically (one AKS, one OCP)
 \label{fig:estimateResult}
 \end{figure}
 
-\subsection{Reconaissance through Kubernetes \& platform control plane interfaces}
+\subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
 
 %OCP
 A user with access to the apiserver / webinterface(s) and read access can scout out information.
@@ -506,7 +506,7 @@ The information gathering processes and interfaces are known and documented pret
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn’t change total risk value
 
-\subsection{Read confidentials through Kubernetes control plane interfaces}
+\subsection{V02 - Read confidentials through Kubernetes \& platform control plane interfaces}
 %OCP
 In addition to V01, a user with access to the apiserver / webinterface(s) and read access can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain privileged access like pull/push images, trigger actions in other applications / containers, …
 These can be gathered and used for further access by an attacker.
@@ -517,7 +517,7 @@ Kube-hunter is a readily available tool and checks for this automatically.
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, pushing it just over the edge from medium to high
 
-\subsection{Change configuration through Kubernetes control plane interfaces}
+\subsection{V03 - Change configuration through Kubernetes \& platform control plane interfaces}
 %OCP
 In adition to both V01 and V02, a user with access to the apiserver / webinterface(s) and write access can change configurations on the cluster. By default, each account (project admin or project user, but not cluster admin) can only change the configuration of namespaces resources (i.e. access to project-specific resources like pods, services, routes, but not cluster-global resources like nodes, SCCs or interface/authorization configurations). 
 
@@ -527,21 +527,8 @@ The capabilities can be looked up through the API, what you can achieve with it 
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated high in the end
 
-\subsection{Read confidentials through platform interfaces (mgmt console/API)}
-%OCP
-Same as V02, TODO: merge
 
-%AKS
-Same as V02, TODO: merge
-
-\subsection{Change configuration through platform interfaces (mgmt console/API)}
-%OCP
-Same as V03, TODO: merge
-
-%AKS
-Same as V03, TODO: merge
-
-\subsection{Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+\subsection{V04 - Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
 %OCP
 Misconfiguration of internal Kubernetes components (accessible by systems it is not assigned to be accessible by) could lead to a full cluster compromise. The cluster configuration and all secrets / authorization credentials are stored in the etcd instance(s). One would need to seriously fuck up the setup, since OCP configures everything through ansible and you would have to knowingly change some internal settings not intended to be changed in order to achieve this. Configurations are maintained by red hat, meaning config changes will be applied in updates and additionally sent out to notify relevant people subscribed to those alerts.
 
@@ -552,7 +539,7 @@ Same as OCP, except accessible from anywhere (cloud, duh).
 The master components are updated, configured and maintained by Microsoft, only when a restart is required the cluster administrator has to trigger it manually.
 -> increases total risk value slightly, both are still rated medium in the end
 
-\subsection{Supply compromised container (base) image}
+\subsection{V05 - Supply compromised container (base) image}
 %OCP
 This has two facettes: it can be untargeted (image spraying) and targeted (compromising a specific image known to be used by the target).
 
@@ -570,7 +557,7 @@ Base containers and malware / known vulnerable versions are readily available fr
 %AKS
 Exactly the same as OCP
 
-\subsection{Supply compromised k8s configuration}
+\subsection{V06 - Supply compromised k8s configuration}
 %OCP
 Similar to V07, this can be done either untargeted by spraying to tutorials / help forums or targeted, similar to spear phising.
 If a cluster administrator does not fully analyze or understand the configuration he gets from public sources, the cluster could be compromised fully, i.e. by implementing backdoors through malicious containers with special access and ability to be remotely accessed by the attacker.
@@ -580,7 +567,7 @@ Examples are readily available from public sources, but need some technical expe
 %AKS
 Exactly the same as OCP
 
-\subsection{Compromise other application components (lateral movement)}
+\subsection{V07 - Compromise other application components (lateral movement)}
 %OCP
 Once an attacker sits within a container, he can scan the network for other containers, hosts, services, apis or similar interfaces to further his access. By default, all containers in all projects (except master \& infra components) are put in the same subnet, allowing everyone to communicate with anyone else.
 This is especially troubling for securing an environment with multiple tenants – even if the DB is not publically accessible, unauthorized access can be leveraged by anyone in the cluster.
@@ -591,7 +578,7 @@ Scanning tools like nmap etc. to find components to talk to are readily availabl
 Same as OCP. 
 The worst AKS-specific problem with this is the mitigation. This risk is not clearly documented in the setup section of the documentation. If one stumbles upon this information in further sections of the docs after setting up his cluster, he might postpone or deny changing the setting to isolate different projects by default. This is because a full cluster rebuild is needed to change this setting!
 
-\subsection{Container breakout (R/W, Privilege Escalation)}
+\subsection{V08 - Container breakout (R/W, Privilege Escalation)}
 %OCP
 A deployed container poses the risk of allowing access to the node it is running on, thus allowing an attacker to “break out” of the container and perform actions on the node.
 This poses a considerable threat, since any container may run on any node by default, allowing an attacker full access to any containers running on the node he controls, which will – especially over time – have a great chance to include containers belonging to other projects.
@@ -606,7 +593,7 @@ This is more on the usability>security side of things.
 -> raises risk, jumping from medium to high.
 
 
-\subsection{Compromise local image cache}
+\subsection{V09 - Compromise local image cache}
 %OCP
 If you can swap out the cached container image on a host, the swapped-in version will run the next time this node spins up this container.
 This is a very sneaky way to inject a malicious container, but within the default settings, access to the host file system is required.
@@ -616,7 +603,7 @@ Not well known and not entirely trivial to do (sneakily).
 %AKS
 Same as OCP.
 
-\subsection{Modify running container}
+\subsection{V10 - Modify running container}
 %OCP
 Instead of deploying a container with malicious contents, an attacker can try to modify and use an already running container to its needs by loading additional tools/binaries, changing configurations or exfiltrating data. This could be done through an RCE vuln, ssh access or others, just like any compromised linux machine.
 
@@ -625,18 +612,7 @@ Instead of deploying a container with malicious contents, an attacker can try to
 %AKS
 Same as OCP.
 
-\subsection{Misuse node resources (sabotage, cryptojacking)}
-%OCP
-This is a vector in contrast to orchestration resources.
-Assuming a cluster suitable for production (more than one worker node, probably more than a handful), the failure or misuse of a single node may be of use to the attacker, but has very limited impact to operations. This is because a significant part of the cluster is built to heal from failures of any node and/or container.
-TODO: absorb this with V14 and V15, since the risk is always lower than them and they cover everything?
-
-Mining containers/binaries and/or fork-bombing tools with accompanying tutorials are easy to find publically. Cryptojacking is regularly cited as an up-and-coming attack.
-
-%AKS
-Same as OCP.
-
-\subsection{Hoard orchestration resources (sabotage)}
+\subsection{V11 - Hoard resources (sabotage)}
 %OCP
 With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting DOS attacks or wiping nodes or cluster configurations. Since it is a complex system, finding the sabotaged component can take considerable know-how and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
 
@@ -646,7 +622,7 @@ Wiping is common sense, sabotaging the cluster in a complex and effective way ma
 Difference to OCP: you can easily spin up more resources in the cloud -> less impact
 -> risk decreases by a considerable margin, high to medium
 
-\subsection{Misuse orchestration resources (cryptojacking)}
+\subsection{V12 - Misuse resources (cryptojacking)}
 %OCP
 In contrast to V14, an attacker will try to be sneaky if done well.
 The goal here is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
@@ -657,7 +633,7 @@ Cryptojacking is regularly cited as an up-and-coming attack, but to do it with a
 Difference to OCP: an attacker can easily spin up more resources in the cloud -> more impact
 -> risk increases by a considerable margin, medium to high
 
-\subsection{Add malicious container}
+\subsection{V13 - Add malicious container}
 %OCP
 Instead of manipulating running containers, an attacker with user access and permissions to spin up containers may start their own ones. (BYOC – bring-your-own-container?)
 This is still restricted by container admission restrictions on the user/project, but at least he can install all needed binaries beforehand and his shell doesn’t die whenever the underlying container might be stopped.
@@ -668,7 +644,7 @@ Doing this is common sense, as before some technical skill is required to prepar
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated medium in the end
 
-\subsection{Add malicious node}
+\subsection{V14 - Add malicious node}
 %OCP
 An attacker could try to add a malicious node to the cluster and inspect or manipulate data in or exfiltrate data from containers scheduled on it. Since any container may run anywhere, there is a high chance of all containers eventually being run on a given node over time, exposing the whole cluster to an attacker. This could be sped up by manipulating the reports of remaining resources on the node towards the scheduler.
 By design, cluster administrator access is needed to add a node within OCP.
@@ -681,7 +657,7 @@ Accessible from anywhere (cloud).
 In contrast to OCP, you can spin up additional nodes more easily in AKS if configured on creation, but to access/control/manipulate them you still need cluster administrator access.
 A tutorial on getting ssh access is available, but that’s lengthy and not trivial.
 
-\subsection{Bad user practice (outside of cluster)}
+\subsection{V15 - Bad user practice (outside of cluster)}
 %OCP
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories, password reuse, scouting specific software or container images used, publishing logs with information valuable to an attacker and more.
 Could be done targeted (i.e. specific OSINT) or untargeted through github crawlers, scanning account/password dumps, …
@@ -693,7 +669,7 @@ There are tools available to do this, using them effectively requires some techn
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn’t change total risk value
 
-\subsection{Incufficient base infrastructure hardening}
+\subsection{V16 - Incufficient base infrastructure hardening}
 %OCP
 The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
 Vector exists mostly to sink all “classic” infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
@@ -708,7 +684,7 @@ Suprisingly, same as OCP (despite the azure promise of PaaS-we-manage-your-infra
 That’s the case since security updates on nodes that require a reboot are not done automatically, but have to be triggered manually or configured to trigger automatically.
 Remediation is far less work though.
 
-\subsection{Entry through known, unpatched vulnerabilities}
+\subsection{V17 - Entry through known, unpatched vulnerabilities}
 %OCP
 Sinkhole vector for patch management. Would be a measure against every preceding vector otherwise.
 Worst case could be anything, thus maximum risk. (See kubernetes CVE with 9.8 / 10)
@@ -720,60 +696,64 @@ Same as OCP. Even infra still needs user interaction to be patched, see precedin
 
 \chapter{Managing the attack surface risk}
 
+With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} will be continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
+
 \section{Defining procedures and approach}
 %TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)
-explain what to do if doing everything, will only implement two examples (list all measures and post-measure risks in annex anyway)
+TODO explain what to do if doing everything, will only implement two examples (list all measures and post-measure risks in annex anyway)
 
-\section{Managing the risk of V09 - Lateral movement from container}
+\section{Managing the risk of V07 - Lateral movement from container}
 %TODO: write out all from ppt with commands, pictures
 
 \subsection{Demonstrating the successful attack without security measures}
 
-see powerpoint
+TODO see powerpoint
 
 \subsection{Selecting security measures}
 
-dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
+TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 
 \subsection{Demonstration with implemented security measures}
 
-see powerpoint
+TODO see powerpoint
 
 \subsection{Risk reassessment}
 
-\section{Managing the risk of V10 - Container Breakout}
+\section{Managing the risk of V08 - Container Breakout}
 %TODO: write out all from ppt with commands, pictures
 
 \subsection{Demonstrating the successful attack without security measures}
 
-see powerpoint
+TODO see powerpoint
 
 \subsection{Selecting security measures}
 
-use multitenant network plugin (ocp), networkpolicies (aks)
+TODO use multitenant network plugin (ocp), networkpolicies (aks)
 
 \subsection{Demonstration with implemented security measures}
 %TODO: maybe show again without privileged, but with uid 0?
 
-see powerpoint
+TODO see powerpoint
 
 \section{How to proceed}
 %process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
 
-process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
+TODO process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
 
 \chapter{Conclusion}
 
 \subsection{On-premise and public cloud environment comparison}
 %TODO: Comments on onPrem vs. cloud
-
+TODO Comments on onPrem vs. cloud
 
 \subsection{Multi-tenant isolation}
 %TODO: Comments on multi-tenant usage
 %TODO: keep this in? not a well-defined question in the beginning
 
+TODO Comments on multi-tenant usage
+
 \subsection{Summary}
 %with outlook to future?%
 
 % rootless container runtime \& build: https://github.com/moby/moby/pull/38050 %
-
+TODO
