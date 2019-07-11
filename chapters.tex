@@ -44,7 +44,7 @@ In order to be applicable to a higher number of use cases, attacks and measures 
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
 As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 
 In short, the goal is to improve the security of your \gls{k8s} cluster, not \gls{k8s} itself.
-To follow the OWASP Risk Rating Methodology\footcite{riskRating} down the line, we need to define our threat agents and group them when applicable\footcite{threatModeling}. Examining a list of threat actors published through SANS\footcite{sansThreatActors}, we will only exclude state-sponsored actors. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
+To follow the \gls{owasp} Risk Rating Methodology\footcite{riskRating} down the line, we need to define our threat agents and group them when applicable\footcite{threatModeling}. Examining a list of threat actors published through SANS\footcite{sansThreatActors}, we will only exclude state-sponsored actors. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
 Grouping the remaining actors by the factors used to estimate risks in section \ref{riskEstimate}, we can identify find three scenarios that encompass all of the actors:
 %TODO Mention baseline security in summary!
 %TODO change summary to fit the items here!
@@ -60,7 +60,7 @@ Grouping the remaining actors by the factors used to estimate risks in section \
 
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
-should be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
+will be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
 
 \section{Infrastructure-as-a-Service}
 In \gls{iaas} environments, a consumer trusts his \gls{iaas} provider with the management and control of the infrastructure needed to deploy his applications.
@@ -82,20 +82,21 @@ As a downside to this, a consumer might only have limited control on, among othe
 Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
 Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
 A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, 
-again resulting in middleware responsibilities for the consumer. 
-A consumer might also have to extensively configure the application-hosting environment for compliance or security purposes. 
+resulting in some middleware responsibilities falling back to the consumer. 
+A consumer might also have to extensively configure or modify the application-hosting environment for compliance or security purposes. 
 Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates.\footcite{msVmReboot}
 
 \section{Containers}
 
+Unsurprisingly, a basic building block of running containerized applications are containers.
 In order to run and manage containers, several components and systems are needed. The most important ones will be introduced here.
 
 \subsection{What are containers?}
-As the Docker website puts it, a container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.\footcite{whatContainer}
-From a technical viewpoint, a container is an isolated process running in the userspace on a host \gls{os}. The host system shares the kernel with all containers on it and might share other resources, but containers are built from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on.\footcite{containerIntro}
+A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.\footcite{whatContainer}
+From a technical viewpoint, a container is an isolated process running in the userspace of a host \gls{os}. The host system shares the kernel with all containers on it and might share other resources, but containers are run from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on (except the kernel).\footcite{containerIntro}
 
 Linux containers were widely popularized through Docker, a container system initially based on \gls{lxc}.\footcite{containerHistory}
-Containers provide isolation of multiple appllications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple \gls{vm}s, which is why they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
+Containers provide isolation of multiple appllications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple \gls{vm}s. Thus, they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
 
 \begin{figure}[H]
 \includegraphics[scale=0.3]{pictures/VMsVsContainers.jpg} 
@@ -104,9 +105,9 @@ Containers provide isolation of multiple appllications running on the same machi
 \end{figure}
 
 \subsection{Differentiating docker}
-Talking about docker can be quite difficult, since the term refers to multiple things at once - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (Docker, now called Moby).\footcite{dockerMoby}
+Talking about docker can be quite difficult, since the term is overloaded with different meanings - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (formerly known as Docker, now called Moby).\footcite{dockerMoby}
 Additionally, there is a \gls{cli} called docker engine, which serves as an interface to the containers running on a host. It includes a high-level container runtime (which will be talked about in the following section).\footcite{dockerEngine}
-Some sources also talk about docker-formatted containers if those implement the same interfaces as the docker container runtime.\footcite{dockerFormatted}
+Some sources also talk about docker-formatted containers when they implement the same interfaces as the docker container runtime.\footcite{dockerFormatted}
 
 \subsection{Images, image building and Dockerfiles}
 A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags.\footcite{redhatImages}
@@ -118,7 +119,7 @@ Container images can be distributed through container image registries, where im
 
 Without going into the nuances and historical developments, there are a multitude of programs mostly implementing three interfaces for container management.
 The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed.\footcite{ociStandards}
-The \gls{oci} also maintains a reference implementation called runc, alternatives include rkt and lmctfy.\footcite{lowLevelRuntimes}
+The \gls{oci} also maintains a commonly used reference implementation called runc, alternatives include rkt and lmctfy.\footcite{lowLevelRuntimes}
 Runc and similar programs implementing these specifications are commonly called low level runtimes, in contrast to the high level runtimes that control them.
 These high level runtimes like containerd or CRI-O commonly manage more abstract features like downloading and verifying container images.\footcite{highLevelRuntimes}
 Many high level runtimes today adhere to the \gls{cri} so they can be used interchangeably by container orchestrators.\footcite{criDocs}
@@ -126,19 +127,18 @@ Many high level runtimes today adhere to the \gls{cri} so they can be used inter
 %TODO maybe shorten and just talk about CRI upwards?
 
 \section{Container orchestration}
-Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when some containers fail, the need for automated systems to manage these containers arises. Orchestrators can also provide many other advantages, like load balancing and automated scaling.
+Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when a container or machine fails, the need for automated systems to manage these containers arises. Orchestrators can also provide other advantages like load balancing and automated scaling.
 Kubernetes systems are popular orchestrators currently in use.
-The sum of hosts running and controlling containers and the orchestrator are called a cluster.
+The sum of hosts running the orchestrator and containers are called a cluster.
 %TODO citation for kubernetes market share?
 
 
 \subsection{Kubernetes}
 At its core, \gls{k8s} is a control system for containers.
 It constantly compares the current state with the set target state and tries to correct towards the target when needed, i.e. when a container crashes.
-When a user wants to deploy his application, it is intended for him to manipulate the target state and let the \gls{k8s} system take care of the rest.\footcite{k8sBasics}
-
-There are many \gls{k8s} distributions, many of which are certified kubernetes offerings, meaning they all comply to the same standards set by the Linux Foundation through the \gls{cncf}, which oversees the project.\footcite{certifiedK8s}
-The kubernetes code base is open source and maintained on Github, but any implementation fulfilling the (publicised) requirements can become \gls{k8s} certified, regardless of how much code they changed.\footcite{cncf} You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
+The intended way for a user to deploy or change their application is to manipulate the target state and let the \gls{k8s} system take care of the rest.\footcite{k8sBasics}
+There are many \gls{k8s} distributions, many of which are certified kubernetes offerings, meaning they all comply to the same standards and interfaces. These are set by the Linux Foundation through the \gls{cncf} which oversees the project.\footcite{certifiedK8s}
+The kubernetes code base is open source and maintained on GitHub, but any implementation fulfilling the (publicised) requirements can become \gls{k8s} certified, regardless of how much code they changed.\footcite{cncf} You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
 
 \subsubsection{Kubernetes components}
 
@@ -177,17 +177,16 @@ Figure \ref{fig:k8s-big-picture} illustrates these components in context. It is 
 
 \subsubsection{Kubernetes objects}
 Kubernetes objects are persistent entities that represent the desired state of your cluster. They can describe what containers should run, which resources are available to what system and the policies to apply (i.e. automatic restart behaviour and communication restrictions).
-They are typically represented by 
 The intent is to modify these objects in order to change the target state, which the \gls{k8s} system then works towards by adjusting the current state to match.\footcite{k8sObjects}
-Some objects, i.e. pods, belong to a specific namespace, meaning a virtual cluster of many in a shared physical cluster. Others like node objects describing the underlying machine exist outside of a specific namespace.
-
+Some objects, i.e. pods, belong to a specific namespace, meaning a virtual cluster of many in a shared physical cluster. Others, like node objects describing the underlying machine, exist outside of a specific namespace.
 In order to understand how one can make the \gls{k8s} system run an application according to its requirements, an understanding of the basic objects is needed.
-
 %TODO make object names bold/italics? also do that to all other important names/definitions in the theory chapter?
 
 A pod is the basic \gls{k8s} object and encapsulates a container with some resources like an IP, storage and policies. Pods are typically each comprised of one container, a single instance of an application in \gls{k8s}. They may contain more than one container for cases where these are tightly coupled and directly share resources.\footcite{k8sPods}
 That's all the pods do. They run.\footcite{phippy}
+
 Pods are usually not created manually, but started and stopped by a ReplicaSet. As a \gls{k8s} controller, its purpose is to maintain a stable set of replica pods running at any time in order to ensure availability of the function this type of pod provides.\footcite{k8sReplicaSets}
+
 ReplicaSets are in turn managed by deployments. Just as replicaSets control pods, deployments control replicaSets in order to maintain the currently desired state of a cluster.
 Figure \ref{fig:k8s-deployments} illustrates this connection.
 
@@ -209,11 +208,8 @@ Since multiple identical pods may provide the same functionality and instances o
 
 \subsubsection{Using Kubernetes}
 There are many ways and solutions to set up a \gls{k8s} cluster. Anyone can write their own one from scratch, but so-called turnkey solutions for cloud and on-premise environments exist, too, which significantly reduce the time and effort required to set up and run a cluster.\footcite{turnkey}
-
 %TODO maybe: buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/features from different products
-
 Once your cluster is set up, it is typically interacted with through the \gls{k8s} API. For human interaction, kubectl is a \gls{cli} reference implementation which enables remote interaction with it.\footcite{k8sApi}
-
 In order to create or manipulate an object, you need to provide its new specification. This is typcally supplied to kubectl as a .yaml file, an example of which can be seen in listing \ref{lst:example-yaml-file}.\footcite{k8sObjects}
 
 \begin{lstlisting}[
@@ -261,13 +257,46 @@ The computing resources used to run the cluster are pre-configured and provision
 
 \chapter{Deriving the attack surface}
 
-Picking up the three scenarios of section \ref{scopeLimit}, we identify the possible attack vectors in this chapter to get an overview of the attack surface that is posed by \gls{k8s} systems.
+Picking up the three scenarios of section \ref{scopeLimit}, we identify the possible attack vectors in this chapter to get an overview of the attack surface that is posed by \gls{k8s} systems. Vectors and the possible attacks by different threat actors are explained and possible security measures are introduced.
 
 \section{Defining procedure and approach}
-%TODO derive all 20 vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
+%TODO derive all vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
 
-TODO
-derive all vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
+The identification of attack vectors within scope turned out to be a big challenge, both in research and preparation for a clear presentation. 
+As new minor versions of \gls{k8s} release approximately every tree months and the Kubernetes project only maintains release branches for the most recent three minor releases\footcite{k8sSupport}, the underlying system evolves continuously. Due to lengthy review processes, accredited literature about the topic are rare and risk being outdated quite quickly. Even less formal sources like blog posts or guidelines published by organizations are both rare, still unfinished at the point of this writing or updated continually, further complicating the creation of a snapshot regarding the current state. Nonetheless, we tried to achieve it on a best-effort basis.
+These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, we will generically mention the applicable measures and mention specific examples for \gls{aks} and \gls{ocp}.
+In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broeadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
+
+\subsection{Research basis and its limits}
+%TODO list sources, explain that only best effort and stuff is still building
+
+During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures an explain the sort or attacks they defend against.
+In addition to that, many of them are still works in progress, either unfinished or outdated.
+
+Some of the sources commonly referenced include (in alphabetical order):
+\begin{itemize}
+
+\item The \gls{cis} Docker Benchmark\footcite{cisDocker}
+
+\item The \gls{cis} Kubernetes Benchmark\footcite{cisK8s}
+
+\item The book "Kubernetes Security - How to Build and Operate Applications Securely in Kubernetes"\footcite{k8sBook}
+
+\item The NIST Application Container Security Guide\footcite{nistK8s}
+
+\item The \gls{owasp} \gls{csvs}\footcite{csvsGithub}
+
+\item The \gls{owasp} Docker Top 10\footcite{dockerTop10Github}
+
+\end{itemize}
+
+Other sources include solution specific advisories, i.e. for \gls{ocp}\footcite{ocpSecTips} and \gls{aks}\footcite{aksSecTips}, as well as recorded and openly available talks by different people in the industry. Especially the talks at KubeCon, the annual \gls{k8s} conference, are accessible through the \gls{cncf} youtube presence\footnote{Channel Link: https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA/videos}. Many speakers include recognized people in the industry, contributors to the \gls{k8s} project and employees of reputable companies like Google, Red Hat and Microsoft.
+A considerable number of other online sources were referenced in the in the sources above or found with online search engines.
+These common recommendations exist, but neither claim to be exhaustive nor applicable to all future versions. In case of the \gls{cis} benchmarks, they are not even intended to be followed in full, but just as basis for security considerations.\footcite{cisJustRecommendation}
+In accordance to this, we can only claim to provide these findings on a best-effort basis and not without reservation towards possible changes through future software versions or new information.
+As with all systems, new attacks and vulnerabilities may emerge at any point in time. With sufficient research, the chance to have identified the most common attack vectors is probable but we want to empasize the limitations of this research.
+
+%TODO full list of sources in appendix & reference here?
 
 \section{Identified vectors}
 %TODO vector merging?!
@@ -378,7 +407,7 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \item It is assumed that no special requirements like industry-specific compliance requirements have to be followed and the workloads processed within the solution have no exceptionally high security requirements. 
 
-\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the OWASP Top 10.\footcite{topten} The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
+\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the \gls{owasp} Top 10.\footcite{topten} The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
 
 \item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footcite{hackAndHarden} When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
 
