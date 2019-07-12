@@ -9,7 +9,7 @@ This creates the need for new defense strategies in both Development and Operati
 Especially solutions providing \gls{k8s} compliant container orchestration are identifiably different and in high demand compared to long established solutions. 
 This calls for a more detailed, focused examination. 
 
-\section{Objective}
+\section{Objective} \label{goal}
 
 This thesis aims to answer the following questions:
 
@@ -57,6 +57,36 @@ Grouping the remaining actors by the factors used to estimate risks in section \
 \item Bad user, i.e. a negligent, hijacked or malicious account risking compromise of their own and/or other applications
 
 \end{itemize}
+
+\section{Research basis and its limits}
+
+During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures an explain the sort or attacks they defend against. The only commonly referenced source that specifically introduces major risks for container technologies, without rating them, is the NIST Application Container Security Guide.\footcite{nistK8s}
+In addition to that, many of them are still works in progress, either unfinished or outdated.
+
+Some of the sources commonly referenced include (in alphabetical order):
+\begin{itemize}
+
+\item The \gls{cis} Docker Benchmark\footcite{cisDocker}
+
+\item The \gls{cis} Kubernetes Benchmark\footcite{cisK8s}
+
+\item The book "Kubernetes Security - How to Build and Operate Applications Securely in Kubernetes"\footcite{k8sBook}
+
+\item The NIST Application Container Security Guide\footcite{nistK8s}
+
+\item The \gls{owasp} \gls{csvs}\footcite{csvsGithub}
+
+\item The \gls{owasp} Docker Top 10\footcite{dockerTop10Github}
+
+\end{itemize}
+
+Other sources include solution specific advisories, i.e. for \gls{ocp}\footcite{ocpSecTips} and \gls{aks}\footcite{aksSecTips}, as well as recorded and openly available talks by different people in the industry. Especially the talks at KubeCon, the annual \gls{k8s} conference, are accessible through the \gls{cncf} youtube presence\footnote{Channel Link: https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA/videos}. Many speakers include recognized people in the industry, contributors to the \gls{k8s} project and employees of reputable companies like Google, Red Hat and Microsoft.
+A considerable number of other online sources were referenced in the in the sources above or found with online search engines.
+These common recommendations exist, but neither claim to be exhaustive nor applicable to all future versions. In case of the \gls{cis} benchmarks, they are not even intended to be followed in full, but just as basis for security considerations.\footcite{cisJustRecommendation}
+In accordance to this, we can only claim to provide these findings on a best-effort basis and not without reservation towards possible changes through future software versions or new information.
+As with all systems, new attacks and vulnerabilities may emerge at any point in time. With sufficient research, the chance to have identified the most common attack vectors is probable but we want to empasize the limitations of this research.
+
+%TODO full list of sources in appendix & reference here?
 
 \chapter{Theory}
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
@@ -243,6 +273,8 @@ spec:
 OpenShift is a commercial Kubernetes container platform by Red Hat. There are several different options to choose, deployable in different environments. OpenShift Online is hosted in a public cloud, while OpenShift Dedicated is hosted on dedicated nodes in a virtual private cloud. The option most relevant to this thesis is \gls{ocp}, which can be deployed on any infrastructure, including on-premise environments.\footcite{openShiftOptions}
 Red Hat sponsors and supports the development of Fedora, a Linux distribution on which they base their \gls{rhel} \gls{os} on. \gls{rhel} is then used by them commercially by supplying its binaries and updates through commercial licenses.
 Similar to this, Red Hat develops and supports a \gls{k8s} distribution called \gls{okd}, which then serves as a base for their OpenShift products, including \gls{ocp}.\footcite{ocpVsOkd}
+\gls{okd} release versions correspond to the \gls{k8s} version it is based on, i.e. \gls{okd} 1.11 is based on \gls{k8s} 1.11.\footcite{okd}
+\gls{ocp} versions may differ, but Red Hat maintains a list of tested integrations for each major \gls{ocp} release, giving insight to which \gls{k8s} version it is based on.\footcite{ocpK8sVersions}
 \gls{ocp} is a certified kubernetes distribution, which means it implements the same interfaces as all the others.\footcite{certifiedK8s}
 Despite this, the differences in intended usage become apparent quite quickly, starting with the \gls{cli} used to interact with a cluster (oc instead of kubectl).\footcite{ocpCli}
 Even basic concepts like namespaces are different, as \gls{ocp} uses the similar but not identical concept of projects.\footcite{ocpProjects}
@@ -251,13 +283,16 @@ Even basic concepts like namespaces are different, as \gls{ocp} uses the similar
 \subsection{Azure Kubernetes Service}
 
 The Azure Kubernetes Service is a managed \gls{k8s} solution offered by Microsoft and running on the Azure public cloud. 
-The computing resources used to run the cluster are pre-configured and provisioned \gls{vm}s in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built.\footcite{dockerMoby} As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite{aadAksAuth}
+The computing resources used to run the cluster are pre-configured and provisioned \gls{vm}s in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built.\footcite{dockerMoby} 
+\gls{k8s} versions in \gls{aks} directly correspond to the \gls{k8s} version they are based on.
+As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite{aadAksAuth}
+
 
 %TODO any context missed here?
 
-\chapter{Deriving the attack surface}
+\chapter{Deriving the attack surface and security measures}
 
-Picking up the three scenarios of section \ref{scopeLimit}, we identify the possible attack vectors in this chapter to get an overview of the attack surface that is posed by \gls{k8s} systems. Vectors and the possible attacks by different threat actors are explained and possible security measures are introduced.
+Picking up the three scenarios of section \ref{scopeLimit}, we identify the possible attack vectors in this chapter to get an overview of the attack surface that is posed by \gls{k8s} systems. Vectors and the possible attacks by different threat actors are explained as well as possible security measures introduced.
 
 \section{Defining procedure and approach}
 %TODO derive all vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
@@ -267,39 +302,9 @@ As new minor versions of \gls{k8s} release approximately every tree months and t
 These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, we will generically mention the applicable measures and mention specific examples for \gls{aks} and \gls{ocp}.
 In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broeadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
 
-\section{Research basis and its limits}
-%TODO list sources, explain that only best effort and stuff is still building
-
-During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures an explain the sort or attacks they defend against.
-In addition to that, many of them are still works in progress, either unfinished or outdated.
-
-Some of the sources commonly referenced include (in alphabetical order):
-\begin{itemize}
-
-\item The \gls{cis} Docker Benchmark\footcite{cisDocker}
-
-\item The \gls{cis} Kubernetes Benchmark\footcite{cisK8s}
-
-\item The book "Kubernetes Security - How to Build and Operate Applications Securely in Kubernetes"\footcite{k8sBook}
-
-\item The NIST Application Container Security Guide\footcite{nistK8s}
-
-\item The \gls{owasp} \gls{csvs}\footcite{csvsGithub}
-
-\item The \gls{owasp} Docker Top 10\footcite{dockerTop10Github}
-
-\end{itemize}
-
-Other sources include solution specific advisories, i.e. for \gls{ocp}\footcite{ocpSecTips} and \gls{aks}\footcite{aksSecTips}, as well as recorded and openly available talks by different people in the industry. Especially the talks at KubeCon, the annual \gls{k8s} conference, are accessible through the \gls{cncf} youtube presence\footnote{Channel Link: https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA/videos}. Many speakers include recognized people in the industry, contributors to the \gls{k8s} project and employees of reputable companies like Google, Red Hat and Microsoft.
-A considerable number of other online sources were referenced in the in the sources above or found with online search engines.
-These common recommendations exist, but neither claim to be exhaustive nor applicable to all future versions. In case of the \gls{cis} benchmarks, they are not even intended to be followed in full, but just as basis for security considerations.\footcite{cisJustRecommendation}
-In accordance to this, we can only claim to provide these findings on a best-effort basis and not without reservation towards possible changes through future software versions or new information.
-As with all systems, new attacks and vulnerabilities may emerge at any point in time. With sufficient research, the chance to have identified the most common attack vectors is probable but we want to empasize the limitations of this research.
-
-%TODO full list of sources in appendix & reference here?
-
 \section{Identified vectors}
 %TODO write out pretty, absorb explanations from risk estimate chapter
+%TODO rename vectors - make shorter
 The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as Vxx.
 
 \subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
@@ -480,19 +485,102 @@ TODO: apply OCP updates when incoming?
 %TODO: END OLD STUFF, REVISIT%
 
 \section{Estimating the risk} \label{riskEstimate}
-%TODO: derive \& explain values for each vector
-derive \& explain values for each vector
+%TODO put full tables into appendix + only reference here.
+%TODO get cell background colour working in latex tables
 
-%TODO
-TODO results upfront, values will be derived in the following subsections
+The resulting risk estimation is illustrated in Table \ref{tab:estimateComparison}. The individual values these results are derived from can be seen in tables \ref{tab:ocpRiskTable} and \ref{tab:aksRiskTable}. The details on how these values were determined are explained hereafter.
 
-TODO split figure vertically (one AKS, one OCP)
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|c|c|}
+\hline
+{\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & {\ul OCP Risk} & {\ul AKS Risk} \\ \hline
+V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & \textbf{3}     & \textbf{3}     \\ \hline
+V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & \textbf{6}     & \textbf{7}     \\ \hline
+V03             & Change configuration through Kubernetes \& platform control plane interfaces           & \textbf{7}     & \textbf{8}     \\ \hline
+V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & \textbf{5}     & \textbf{6}     \\ \hline
+V05             & Supply compromised container (base) image                                              & \textbf{7}     & \textbf{7}     \\ \hline
+V06             & Supply compromised k8s configuration                                                   & \textbf{10}    & \textbf{10}    \\ \hline
+V07             & Compromise other application components (lateral movement)                             & \textbf{7}     & \textbf{7}     \\ \hline
+V08             & Container breakout (R/W, Privilege Escalation)                                         & \textbf{5}     & \textbf{7}     \\ \hline
+V09             & Compromise local image cache                                                           & \textbf{3}     & \textbf{3}     \\ \hline
+V10             & Modify running container                                                               & \textbf{5}     & \textbf{5}     \\ \hline
+V11             & Hoard resources (sabotage)                                                             & \textbf{8}     & \textbf{5}     \\ \hline
+V12             & Misuse resources (cryptojacking)                                                       & \textbf{5}     & \textbf{8}     \\ \hline
+V13             & Add malicious container                                                                & \textbf{5}     & \textbf{6}     \\ \hline
+V14             & Add malicious node                                                                     & \textbf{6}     & \textbf{6}     \\ \hline
+V15             & Bad user practice (outside of cluster)                                                 & \textbf{6}     & \textbf{6}     \\ \hline
+V16             & Incufficient base infrastructure hardening                                             & \textbf{9}     & \textbf{9}     \\ \hline
+V17             & Entry through known, unpatched vulnerabilities                                         & \textbf{10}    & \textbf{10}    \\ \hline
+\end{tabular}%
+}
+\caption{A comparison of the resulting risk for the OCP and AKS environment}
+\label{tab:estimateComparison}
+\end{table}
 
-\begin{figure}[H]
-\includegraphics[scale=0.45]{pictures/RiskAssess.jpg} 
-\caption{Result of the risk estimation pre security measures TODO}
-\label{fig:estimateResult}
-\end{figure}
+
+\begin{landscape}
+\begin{table}[]
+\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
+\label{tab:ocpRiskTable}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|cccc|cc|c|}
+\hline
+{\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
+V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
+V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
+V03             & Change configuration through Kubernetes \& platform control plane interfaces           & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & 3                                        & 1                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
+V05             & Supply compromised container (base) image                                              & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V06             & Supply compromised k8s configuration                                                   & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V07             & Compromise other application components (lateral movement)                             & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V08             & Container breakout (R/W, Privilege Escalation)                                         & 2                                        & 2                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
+V09             & Compromise local image cache                                                           & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
+V10             & Modify running container                                                               & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
+V11             & Hoard resources (sabotage)                                                             & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V12             & Misuse resources (cryptojacking)                                                       & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V13             & Add malicious container                                                                & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V14             & Add malicious node                                                                     & 3                                        & 1                              & 2                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V15             & Bad user practice (outside of cluster)                                                 & 3                                        & 4                              & 2                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
+V16             & Incufficient base infrastructure hardening                                             & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
+V17             & Entry through known, unpatched vulnerabilities                                         & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+\end{tabular}%
+}
+\end{table}
+\end{landscape}
+
+
+\begin{landscape}
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|cccc|cc|c|}
+\hline
+{\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
+V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
+V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V03             & Change configuration through Kubernetes \& platform control plane interfaces           & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & 4                                        & 1                              & 3                                        & 0                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V05             & Supply compromised container (base) image                                              & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V06             & Supply compromised k8s configuration                                                   & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V07             & Compromise other application components (lateral movement)                             & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V08             & Container breakout (R/W, Privilege Escalation)                                         & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V09             & Compromise local image cache                                                           & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
+V10             & Modify running container                                                               & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
+V11             & Hoard resources (sabotage)                                                             & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V12             & Misuse resources (cryptojacking)                                                       & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V13             & Add malicious container                                                                & 4                                        & 2                              & 3                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
+V14             & Add malicious node                                                                     & 4                                        & 1                              & 1                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V15             & Bad user practice (outside of cluster)                                                 & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 2            & \textbf{6}           \\ \hline
+V16             & Incufficient base infrastructure hardening                                             & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
+V17             & Entry through known, unpatched vulnerabilities                                         & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+\end{tabular}%
+}
+\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
+\label{tab:aksRiskTable}
+\end{table}
+\end{landscape}
 
 \subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
 
@@ -696,11 +784,13 @@ Same as OCP. Even infra still needs user interaction to be patched, see precedin
 
 \chapter{Managing the attack surface risk}
 
-With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} will be continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
+With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} is continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
 
 \section{Defining procedures and approach}
 %TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)
-TODO explain what to do if doing everything, will only implement two examples (list all measures and post-measure risks in annex anyway)
+Normally one should start with the vector currently having the highest overall risk. We chose two other vectors, since these were more representative of the environments within scope and concise enough to properly present the process. Securing the underlying physical servers or \gls{vm}s is not an optimal example representing the process of securing a solution based on orchestrated containers.
+
+TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
 
 \section{Managing the risk of V07 - Lateral movement from container}
 %TODO: write out all from ppt with commands, pictures
@@ -717,7 +807,9 @@ TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 
 TODO see powerpoint
 
-\subsection{Risk reassessment}
+\subsection{Risk reassessment 1}
+
+TODO updated table of risk for ocp AND aks
 
 \section{Managing the risk of V08 - Container Breakout}
 %TODO: write out all from ppt with commands, pictures
@@ -735,25 +827,38 @@ TODO use multitenant network plugin (ocp), networkpolicies (aks)
 
 TODO see powerpoint
 
+\subsection{Risk reassessment 2}
+
+TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
+
 \section{How to proceed}
 %process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
 
-TODO process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
+TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
 
 \chapter{Conclusion}
+This chapter aims to provide answers to the remaining questions posed in chapter \ref{goal}.
 
 \subsection{On-premise and public cloud environment comparison}
-%TODO: Comments on onPrem vs. cloud
-TODO Comments on onPrem vs. cloud
+%TODO 2 subsubsections, generic cloud vs on-prem + AKS vs OCP?
+TODO 2 subsubsections, generic and solution-example specific?
+
+TODO both have pros and cons, regardless of specific solution picked.  Specific solutions have their pros and cons, too. cloud risk may be higher initially (both in the solutions we looked at and in general), but there are measures to reduce that to acceptable level for baseline security. some usecases benefit from buy-iaas-provide-paas, since more control with you as provider. high-security requirements on-prem probably better (and may be needed for compliance).
+-> our POV both work, would have to be decided on a case-by-case basis as they depend on many factors (integration with other offers or services very valuable for cloud-specific, pre-existing on-prem datacenters make on-prem easier).
 
 \subsection{Multi-tenant isolation}
 %TODO: Comments on multi-tenant usage
 %TODO: keep this in? not a well-defined question in the beginning
 
-TODO Comments on multi-tenant usage
+TODO namespace/project isolation vs. cluster isolation. refer to separate-tenants-by-cluster measure in vector identification section. Is possible, but more complex and tedious ATM. refer to growing projects for cluster federation and clusters-as-cattle (instead of container-as-cattle and cluster-as-pet)
+-> may be better in future, only do today for super-high-security apps in their own cluster. costs more resources, at which point one may simply run the stuff on isolated and dedicated servers anyway (except when needed for workflow, high availability or mircoservice arch offsets complexity needed)?
 
 \subsection{Summary}
-%with outlook to future?%
+%TODO summary of thesis process, outlook, commentary
 
+TODO summary of thesis process - huge scope, could have been better defined beforehand. risk estimate formula still isnt perfect, but time would probably still be better allocated to practical stuff or more research, both for thesis and others trying to follow the process. no use in better knowing which one is the biggest problem if no time left to reduce risk in the end. hope that more sources are published and industry standards crystallize so not everyone has to do that much research on their own.
+
+TODO outlook - stuff will continue to move fast, hopefully with security in mind. we are currently far better with security than i.e. pre k8s-1.8. more security features will be introduced or go stable (refer to future k8s pod sandbox option in YAML files). as mentioned in multi-tenant isolation, cluster federation might help and will introduce new solutions, but probably also new problems. rootless builds, currently through buildah etc, becoming more mainstream will probably be the next big security thing here.
 % rootless container runtime \& build: https://github.com/moby/moby/pull/38050 %
-TODO
+
+TODO commentary - hope this helps someone and spares some time. am excited for future tools and platform developments.
