@@ -1449,7 +1449,7 @@ TODO this was done on AKS and OCP, but needed changes in default OCP settings to
 \subsection{Demonstrating the successful attack without security measures}
 
 BREAKOUT DEMO OCP COMMANDS
-
+\iffalse
 cat container_breakout.yaml
 
 oc apply -f container_breakout.yaml
@@ -1466,7 +1466,7 @@ oc adm policy scc-review -z default -f container_breakout.yaml
 
 (to add again: )
 oc adm policy add-scc-to-user privileged -z default
-
+\fi
 CONTAINER BREAKOUT OCP TEXT DUMP
 \iffalse
 \begin{lstlisting}[
@@ -1660,7 +1660,7 @@ ssh -i id_rsa azureuser@[NODE_IP_HERE]
 \end{lstlisting}
 \fi
 CONTAINER BREAKOUT AKS COMMANDS
-
+\iffalse
 cat container_breakout.yaml
 
 kubectl apply -f container_breakout.yaml
@@ -1668,7 +1668,7 @@ kubectl apply -f container_breakout.yaml
 (wait until run through)
 
 kubectl logs breakout
-
+\fi
 CONTAINER BREAKOUT AKS TEXT DUMP
 \iffalse
 \begin{lstlisting}[
@@ -1900,7 +1900,7 @@ RESOURCE   SERVICE ACCOUNT   ALLOWED BY
 \end{lstlisting}
 \fi
 CONTAINER BREAKOUT AKS REMEDIATION CMDs
-
+\iffalse
 Enable PSP on the cluster:
 az aks update --resource-group kubernetes-ba-test --name demo-cluster-LGR --enable-pod-security-policy
 Create (non-admin) account:
@@ -1910,7 +1910,7 @@ Delete \& (try) redeploy breakout container (as non-admin):
 kubectl delete pod breakout
 kubectl --as=system:serviceaccount:testuser:nonadmin-user apply -f container_breakout.yaml
 (OPTIONAL: Check why - Kubectl get psp)
-
+\fi
 CONTAINER BREAKOUT AKS REMEDIATION DUMP
 \iffalse
 \begin{lstlisting}[
