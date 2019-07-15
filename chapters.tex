@@ -44,7 +44,7 @@ In order to be applicable to a higher number of use cases, attacks and measures 
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigations thereof. 
 As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 
 In short, the goal is to improve the security of your \gls{k8s} cluster, not \gls{k8s} itself.
-To follow the \gls{owasp} Risk Rating Methodology\footcite{riskRating} down the line, we need to define our threat agents and group them when applicable\footcite{threatModeling}. Examining a list of threat actors published through SANS\footcite{sansThreatActors}, we will only exclude state-sponsored actors. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
+To follow the \gls{owasp} Risk Rating Methodology\footcite{riskRating} down the line, we need to define our threat agents and group them when applicable\footcite{threatModeling}. Examining a list of threat actors published through SANS\footcite[][p. 12 to 17]{sansThreatActors}, we will only exclude state-sponsored actors. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
 Grouping the remaining actors by the factors used to estimate risks in section \ref{riskEstimate}, we can identify find three scenarios that encompass all of the actors:
 %TODO Mention baseline security in summary!
 %TODO change summary to fit the items here!
@@ -106,7 +106,7 @@ As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for t
 
 \section{Platform-as-a-Service}
 
-In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}.\footcite{nistcloud}
+In \gls{paas} environments, a consumer trusts his \gls{paas} provider with the management and control of even more resources needed to deploy his applications beyond those covered by \gls{iaas}.\footcite[][p. 2 to 3]{nistcloud}
 In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like log data collection and analysis\footcite{msPaas} and allows him to focus on other tasks, i.e. application development.
 As a downside to this, a consumer might only have limited control on, among other factors, the software installed on the provisioned machines. 
 Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
@@ -213,7 +213,7 @@ In order to understand how one can make the \gls{k8s} system run an application 
 %TODO make object names bold/italics? also do that to all other important names/definitions in the theory chapter?
 
 A pod is the basic \gls{k8s} object and encapsulates a container with some resources like an IP, storage and policies. Pods are typically each comprised of one container, a single instance of an application in \gls{k8s}. They may contain more than one container for cases where these are tightly coupled and directly share resources.\footcite{k8sPods}
-That's all the pods do. They run.\footcite{phippy}
+That's all the pods do. They run.\footcite[][p. 4]{phippy}
 
 Pods are usually not created manually, but started and stopped by a ReplicaSet. As a \gls{k8s} controller, its purpose is to maintain a stable set of replica pods running at any time in order to ensure availability of the function this type of pod provides.\footcite{k8sReplicaSets}
 
@@ -2002,12 +2002,11 @@ TODO would start with highest vector, check possible measures and implement when
 \chapter{Conclusion}
 This chapter aims to provide answers to the remaining questions posed in chapter \ref{goal}.
 
-\subsection{On-premise and public cloud environment comparison}
+%\subsection{On-premise and public cloud environment comparison}
 %TODO 2 subsubsections, generic cloud vs on-prem + AKS vs OCP?
-TODO 2 subsubsections, generic and solution-example specific?
 
-TODO both have pros and cons, regardless of specific solution picked.  Specific solutions have their pros and cons, too. cloud risk may be higher initially (both in the solutions we looked at and in general), but there are measures to reduce that to acceptable level for baseline security. some usecases benefit from buy-iaas-provide-paas, since more control with you as provider. high-security requirements on-prem probably better (and may be needed for compliance).
--> our POV both work, would have to be decided on a case-by-case basis as they depend on many factors (integration with other offers or services very valuable for cloud-specific, pre-existing on-prem datacenters make on-prem easier).
+%TODO both have pros and cons, regardless of specific solution picked.  Specific solutions have their pros and cons, too. cloud risk may be higher initially (both in the solutions we looked at and in general), but there are measures to reduce that to acceptable level for baseline security. some usecases benefit from buy-iaas-provide-paas, since more control with you as provider. high-security requirements on-prem probably better (and may be needed for compliance).
+%-> our POV both work, would have to be decided on a case-by-case basis as they depend on many factors (integration with other offers or services very valuable for cloud-specific, pre-existing on-prem datacenters make on-prem easier).
 
 \subsection{Multi-tenant isolation}
 %TODO: Comments on multi-tenant usage
