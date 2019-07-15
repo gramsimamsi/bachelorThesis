@@ -94,7 +94,7 @@ will be able to grasp the specialized technologies discussed within the thesis a
 
 \section{Infrastructure-as-a-Service}
 In \gls{iaas} environments, a consumer trusts his \gls{iaas} provider with the management and control of the infrastructure needed to deploy his applications.
-The provided service ends at provisioning of processing, storage, networks and other computing resources.\footcite{nistcloud}
+The provided service ends at provisioning of processing, storage, networks and other computing resources.\footcite[][p. 2 to 3]{nistcloud}
 Therefore consumers do not need to manage their own data centers or topics like system uplink availability.
 As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the \gls{os} layer and everything above it.
 
@@ -1847,7 +1847,7 @@ lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vml
 CONTAINER BREAKOUT AKS RESULT DUMP
 \iffalse
 \begin{lstlisting}[
-\fi
+
 
 azureuser@aks-agentpool-35206649-1:~$ ls -la /
 total 100
@@ -1881,7 +1881,7 @@ drwxr-xr-x  14 root root  4096 May 23 19:05 var
 lrwxrwxrwx   1 root root    30 Jun 17 07:58 vmlinuz -> boot/vmlinuz-4.15.0-1046-azure
 lrwxrwxrwx   1 root root    30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
 \end{lstlisting}
-
+\fi
 \subsection{Selecting security measures}
 
 TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
