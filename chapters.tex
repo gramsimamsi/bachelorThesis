@@ -284,15 +284,15 @@ The computing resources used to run the cluster are pre-configured and provision
 \gls{k8s} versions in \gls{aks} directly correspond to the \gls{k8s} version they are based on.
 As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite[][, first paragraph]{aadAksAuth}
 
-
-%TODO any context missed here?
+%TODO any context missing here?
 
 \chapter{Deriving the attack surface and security measures}
+%derive all vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
+%TODO review when done - missed anything of ^this?
 
 Picking up the three scenarios of section \ref{scopeLimit}, we identify the possible attack vectors in this chapter to get an overview of the attack surface that is posed by \gls{k8s} systems. Vectors and the possible attacks by different threat actors are explained as well as possible security measures introduced.
 
 \section{Defining procedure and approach}
-%TODO derive all vectors from the three scenarios, explain why you cannot prove that this is/will be everything, explain why grouped this way \& which systems/threat actors rolled together in it. List security measures for each.
 
 The identification of attack vectors within scope turned out to be a big challenge, both in research and preparation for a clear presentation. 
 As new minor versions of \gls{k8s} release approximately every tree months and the Kubernetes project only maintains release branches for the most recent three minor releases\footcite[][, section 'Supported versions']{k8sSupport}, the underlying system evolves continuously. Due to lengthy review processes, accredited literature about the topic are rare and risk being outdated quite quickly. Even less formal sources like blog posts or guidelines published by organizations are both rare, still unfinished at the point of this writing or updated continually, further complicating the creation of a snapshot regarding the current state. Nonetheless, we tried to achieve it on a best-effort basis.
@@ -301,9 +301,9 @@ In order to give a more comprehensible picture, the scope of these vectors varie
 
 \section{Identified vectors}
 %TODO write out pretty, absorb explanations from risk estimate chapter
-%TODO rename vectors - make shorter
-The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as Vxx.
+The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as V\textit{xx}.
 
+%TODO
 TODO mention these generic measures
 LOG ALL THE THINGS
 	ELK/EFK-stack or Splunk with log forwarding/aggregation (container AND nodes), k8s audit logging (k8s)
