@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="mdl-js" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Container Runtimes Part 3: High-Level Runtimes - Ian Lewis</title>
+    
+    <link rel="stylesheet" href="Lew19b_files/64f3050b9156.css" type="text/css"><link rel="stylesheet" href="Lew19b_files/c6a4289876bd.css" type="text/css" media="screen">
+    
+
+    
+
+
+    <meta name="keywords" content="containers container-runtime-series"> 
+    <meta name="description" content="This is the third part in a four-part series on container runtimes. It's been a while since part 1, but in that post I gave an overview of container r...">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    
+<meta http-equiv="content-language" content="en">
+
+<link rel="canonical" href="http://www.ianlewis.org/en/container-runtimes-part-3-high-level-runtimes">
+
+    
+
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="http://feeds.feedburner.com/IanLewisBlog">
+
+
+    
+<script src="Lew19b_files/cbgapi.loaded_0" async=""></script><script type="text/javascript" async="" src="Lew19b_files/ga.js"></script><script type="text/javascript" async="" src="Lew19b_files/plusone.js" gapi_processed="true"></script><script type="text/javascript">var SHARETHIS = {addEntry: function() {}};</script>
+
+    
+    
+  <script type="text/javascript" async="" src="Lew19b_files/embed.js"></script><script charset="utf-8" src="Lew19b_files/button.js"></script><link rel="prefetch" as="style" href="Lew19b_files/a_data/lounge.css"><link rel="prefetch" as="script" href="Lew19b_files/a_data/common.js"><link rel="prefetch" as="script" href="Lew19b_files/a_data/lounge.js"><link rel="prefetch" as="script" href="Lew19b_files/a_data/config.js"></head>
+  <body>
+    <div class="mdl-layout__container"><div class="base-layout mdl-layout mdl-js-layout mdl-layout--fixed-header has-drawer is-upgraded" data-upgraded=",MaterialLayout">
+      <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-800 is-casting-shadow"><div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button mdl-layout--small-screen-only"><i class="material-icons"></i></div>
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title"><a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/">Ian Lewis</a></span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation. We hide it in small screens. -->
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/en">English Blog</a>
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/jp">日本語ブログ</a>
+            
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/en/about/">About</a>
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer mdl-layout--small-screen-only" aria-hidden="true">
+        <span class="mdl-layout-title">Ian Lewis</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/">Home</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/en">English Blog</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/jp">日本語ブログ</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/en/about/">About</a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <div class="bg-ribbon"></div>
+          <div class="content">
+            
+<div class="mdl-grid">
+  <div class="post-detail mdl-color--white mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+    <h1 class="title" itemprop="title">Container Runtimes Part 3: High-Level Runtimes</h1>
+    <div><em>Oct. 30, 2018</em></div>
+    <div style="float:right; ">
+      <iframe id="twitter-widget-0" scrolling="no" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 61px; height: 20px;" title="Twitter Tweet Button" src="Lew19b_files/tweet_button.html" frameborder="0"></iframe>
+    </div>
+    <p>
+      
+      <a href="https://www.ianlewis.org/en/tag/containers" class="mdl-chip">
+        <span class="mdl-chip__text">containers</span></a>
+      
+      
+      <a href="https://www.ianlewis.org/en/tag/container-runtime-series" class="mdl-chip">
+        <span class="mdl-chip__text">container-runtime-series</span></a>
+      
+      
+    </p>
+
+
+    <div class="post-content">
+      <p><em>This is the third part in a four-part series on container runtimes. It's been a while since <a href="https://www.ianlewis.org/en/container-runtimes-part-1-introduction-container-r">part 1</a>,
+ but in that post I gave an overview of container runtimes and discussed
+ the differences between low-level and high-level runtimes. In <a href="https://www.ianlewis.org/en/container-runtimes-part-2-anatomy-low-level-contai">part 2</a> I went into detail on low-level container runtimes and built a simple low-level runtime.</em></p>
+<p>High-level runtimes are higher up the stack than low-level runtimes. 
+While low-level runtimes are responsible for the mechanics of actually 
+running a container, high-level runtimes are responsible for transport 
+and management of container images, unpacking the image, and passing off
+ to the low-level runtime to run the container. Typically, high-level 
+runtimes provide a daemon application and an API that remote 
+applications can use to logically run containers and monitor them but 
+they sit on top of and delegate to low-level runtimes or other 
+high-level runtimes for the actual work.</p>
+<p>High-level runtimes can also provide features that sound low-level, 
+but are used across individual containers on a machine. For example, one
+ feature might be the management of network namespaces, and allowing 
+containers to join another container's network namespace.</p>
+<p>Here's a conceptual diagram to understand how the components fit together:</p>
+<p><img src="Lew19b_files/runtime-architecture.png" alt="Runtime architecture diagram" class="align-center"></p>
+<h1>Examples of High-Level Runtimes</h1>
+<p>To better understand high-level runtimes, it’s helpful to look at a 
+few examples. Like low-level runtimes, each runtime implements different
+ features.</p>
+<h2>Docker</h2>
+<p>Docker is one of the first open source container runtimes. It was 
+developed by the platform-as-a-service company dotCloud, and was used to
+ run their users' web applications in containers.</p>
+<p>Docker is a container runtime that incorporates building, packaging, 
+sharing, and running containers. Docker has a client/server architecture
+ and was originally built as a monolithic daemon, <code>dockerd</code>, and the <code>docker</code>
+ client application. The daemon provided most of the logic of building 
+containers, managing the images, and running containers, along with an 
+API. The command line client could be run to send commands and to get 
+information from the daemon.</p>
+<p>It was the first popular runtime to incorporate all of the features 
+needed during the lifecycle of building and running containers.</p>
+<p>Docker originally implemented both high-level and low-level runtime 
+features, but those pieces have since been broken out into separate 
+projects as runc and containerd. Docker now consists of the <code>dockerd</code> daemon, and the <code>docker-containerd</code> daemon along with <code>docker-runc</code>. <code>docker-containerd</code> and <code>docker-runc</code> are just Docker packaged versions of vanilla <code>containerd</code> and <code>runc</code>.</p>
+<p><img src="Lew19b_files/docker.png" alt="Docker architecture diagram" class="align-center"></p>
+<p><code>dockerd</code> provides features such as building images, and dockerd uses <code>docker-containerd</code>
+ to provide features such as image management and running containers. 
+For instance, Docker's build step is actually just some logic that 
+interprets a Dockerfile, runs the necessary commands in a container 
+using <code>containerd</code>, and saves the resulting container file system as an image.</p>
+<h2>containerd</h2>
+<p><a href="https://containerd.io/">containerd</a> is a high-level 
+runtime that was split off from Docker. Like runc, which was broken off 
+as the low-level runtime piece, containerd was broken off as the 
+high-level runtime piece of Docker. <code>containerd</code> implements 
+downloading images, managing them, and running containers from images. 
+When it needs to run a container it unpacks the image into an OCI 
+runtime bundle and shells out to <code>runc</code> to run it.</p>
+<p>Containerd also provides an API and client application that can be 
+used to interact with it. The containerd command line client is <code>ctr</code>.</p>
+<p><code>ctr</code> can be used to tell <code>containerd</code> to pull a container image:</p>
+<div class="highlight"><pre><span></span>$ sudo ctr images pull docker.io/library/redis:latest
+</pre></div>
+
+
+<p>List the images you have:</p>
+<div class="highlight"><pre><span></span>$ sudo ctr images list
+</pre></div>
+
+
+<p>Run a container based on an image:</p>
+<div class="highlight"><pre><span></span>$ sudo ctr container create docker.io/library/redis:latest redis
+</pre></div>
+
+
+<p>List the running containers:</p>
+<div class="highlight"><pre><span></span>$ sudo ctr container list
+</pre></div>
+
+
+<p>Stop the container:</p>
+<div class="highlight"><pre><span></span>$ sudo ctr container delete redis
+</pre></div>
+
+
+<p>These commands are similar to how a user interacts with Docker. 
+However, in contrast with Docker, containerd is focused solely on 
+running containers, so it does not provide a mechanism for building 
+containers. Docker was focused on end-user and developer use cases, 
+whereas containerd is focused on operational use cases, such as running 
+containers on servers. Tasks such as building container images are left 
+to other tools.</p>
+<h1>rkt</h1>
+<p>In the previous post, I mentioned that <code>rkt</code> is a runtime 
+that has both low-level and high-level features. For instance, much like
+ Docker, rkt allows you to build container images, fetch and manage 
+container images in a local repository, and run them all from a single 
+command. <code>rkt</code> stops short of Docker's functionality, however, in that it doesn't provide a long-running daemon and remote API. </p>
+<p>You can fetch remote images:</p>
+<div class="highlight"><pre><span></span>$ sudo rkt fetch coreos.com/etcd:v3.3.10
+</pre></div>
+
+
+<p>You can then list the images installed locally:</p>
+<div class="highlight"><pre><span></span>$ sudo rkt image list
+ID                      NAME                                    SIZE    IMPORT TIME     LAST USED
+sha512-07738c36c639     coreos.com/rkt/stage1-fly:1.30.0        44MiB   <span class="m">2</span> minutes ago   <span class="m">2</span> minutes ago
+sha512-51ea8f513d06     coreos.com/oem-gce:1855.5.0             591MiB  <span class="m">2</span> minutes ago   <span class="m">2</span> minutes ago
+sha512-2ba519594e47     coreos.com/etcd:v3.3.10                 69MiB   <span class="m">25</span> seconds ago  <span class="m">24</span> seconds ago
+</pre></div>
+
+
+<p>And delete images:</p>
+<div class="highlight"><pre><span></span>sudo rkt image rm coreos.com/etcd:v3.3.10                       
+successfully removed aci for image: "sha512-2ba519594e4783330ae14e7691caabfb839b5f57c0384310a7ad5fa2966d85e3"
+rm: 1 image(s) successfully removed
+</pre></div>
+
+
+<p>Though rkt doesn't seem to be actively developed very much anymore it
+ is an interesting tool and an important part of the history of 
+container technology.</p>
+<h1>Onward, Upward</h1>
+<p>In the next post I'll move up the stack and talk about runtimes from 
+the perspective of Kubernetes and how they work. Be sure to add <a href="https://www.ianlewis.org/feed/enfeed">my RSS feed</a> or follow me on Twitter to get notified when the next blog post comes out.</p>
+<blockquote>
+<p>Update: Please continue on and check out <a href="https://www.ianlewis.org/en/container-runtimes-part-4-kubernetes-container-run">Container Runtimes Part 4: Kubernetes Container Runtimes &amp; CRI</a></p>
+</blockquote>
+<p>Until then, you can get more involved with the Kubernetes community via these channels:</p>
+<ul>
+<li>Post and answer questions on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a></li>
+<li>Follow <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> on Twitter</li>
+<li>Join the Kubernetes<a href="http://slack.k8s.io/"> Slack</a> and chat with us. (I'm ianlewis so say Hi!)</li>
+<li>Contribute to the Kubernetes project on<a href="https://github.com/kubernetes/kubernetes"> GitHub</a></li>
+</ul>
+<p>If you have any suggestions or ideas for blog posts, send them to me on Twitter at <a href="https://twitter.com/IanMLewis">@IanMLewis</a> via either a reply or DM. Thanks!</p>
+<p><em>&gt; Thanks to <a href="https://twitter.com/craigbox">Craig Box</a>, <a href="https://twitter.com/marcjoha">Marcus Johansson</a>, Steve Perry, and Nicolas Lacasse for reviewing drafts of this post.</em></p>
+    </div>
+
+    <hr>
+
+    
+    <div id="disqus_thread"><iframe id="dsq-app9668" name="dsq-app9668" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 390px !important;" src="Lew19b_files/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+      var disqus_shortname = 'ianlewisblog';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    /* ]]> */
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+    
+  </div>
+</div>
+</div>
+          </div>
+        <footer class="mdl-mini-footer">
+          <div class="mdl-mini-footer__left-section">
+            <div class="mdl-logo">© 2012 Ian Lewis</div>
+            <ul class="mdl-mini-footer__link-list">
+
+              <li><a href="https://www.ianlewis.org/">Home</a></li>
+              <li><a href="https://www.ianlewis.org/en/about/">About</a></li>
+              <li><a href="https://plus.google.com/103970721692220852299/?rel=author">Google+</a></li>
+            </ul>
+          </div>
+        </footer>
+      </main>
+    <div class="mdl-layout__obfuscator"></div></div></div>
+    <script defer="defer" src="Lew19b_files/material.js"></script>
+    <script type="text/javascript" src="Lew19b_files/jquery-3.js"></script>
+    <script type="text/javascript">
+      STATIC_URL='/static/';
+      $('a[href="#"]').click(function(){return false;});
+    </script>
+    
+
+<script type="text/javascript" src="Lew19b_files/widgets.js"></script>
+<script type="text/javascript">
+twttr.events.bind('tweet', function(event) {
+  if (event) {
+    _gaq.push(['_trackSocial', 'twitter', 'tweet', undefined]);
+  }
+});
+</script>
+
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-2149299-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+    
+  
+
+<iframe scrolling="no" allowtransparency="true" src="Lew19b_files/widget_iframe.html" title="Twitter settings iframe" style="display: none;" frameborder="0"></iframe><iframe style="display: none;"></iframe></body></html>

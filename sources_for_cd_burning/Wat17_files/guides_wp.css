@@ -1,0 +1,278 @@
+//New Added Css
+.section-wrap-header {
+    position: relative;
+	padding-bottom: 0;
+	color: #fff;
+    overflow: hidden;
+	width: 100%;
+}
+.section-wrap-header .js-content-center-item{
+	position: relative;
+    z-index: 1;
+    min-height: 300px;
+	display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+	-webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.section-wrap-header .js-content-center-item .inner{
+    width: 100%;
+}
+.bannerContent {
+	height: 420px;
+	padding-top: 10px;
+    min-height: 500px;
+	display: flex;
+	align-items: center;
+}
+.bannerContent .layout-inner-wrap {
+    text-align: left;
+	width: 100%;
+	margin: 0 auto;
+    max-width: 1180px;
+    padding: 0 1.55556rem;
+}
+.bannerContent .layout-inner-wrap .flex-item {
+    margin-left: 65px;
+	width: 50%;
+	/*width: 100%;*/
+	box-sizing: border-box;
+    float: left;
+}
+.bannerContent .layout-inner-wrap .flex-item h1 {
+    /* margin-bottom: 17px; */
+	margin-bottom: 70px !important;
+    font-size: 50px;
+    margin-right: 0;
+    margin-left: 0;
+	color: #fff;
+}
+
+//New Added CSS
+.whiteBackground {
+	 background: #fff;
+	 padding: 1rem;
+}
+ .author-comp {
+	 display: block;
+	 text-align: center;
+	 position: relative;
+	 z-index: 11;
+	 background: #fff;
+}
+ .author-comp .author-img {
+	 background: #fff;
+	 border-radius: 50%;
+	 -moz-border-radius: 50%;
+	 -webkit-border-radius: 50%;
+	 border: 5px solid #fff;
+	 margin: -57px 0 10px;
+	 vertical-align: middle;
+	 box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .15);
+	 -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .15);
+	 -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .15);
+	 position: relative;
+	 z-index: 11;
+	 display: inline-block;
+	 overflow: hidden;
+	 max-width: 100px;
+	 max-height: 100px;
+}
+ .author-comp .author-img img {
+	 height: auto;
+	 vertical-align: middle;
+	 -ms-interpolation-mode: bicubic;
+}
+ .author-comp .author-wrapped {
+	 font-size: 18px;
+}
+ .author-comp .author-wrapped .author_name a {
+	 color: #fe5000;
+}
+ .guides {
+	/* background: #f6f6f6;*/
+}
+ .guides aside {
+	 position: relative;
+}
+ .guides aside .stickyComponent {
+	 display: inline-block;
+}
+ .guides aside li {
+	 list-style: none;
+}
+ .guides aside ul {
+	 padding: 0;
+}
+ aside.guides .stickyComponent.is_stuck {
+	position:fixed;
+	top: 80px;
+	width: 100%;
+	max-width: 300px;
+
+}
+.cta-sidebar{
+	display:none;
+}
+.cta-sidebar.visible{
+	display:block;
+	position: fixed; 
+    bottom: 25rem;
+}
+ aside.guides .stickyComponent.bottom_stick {
+	--position: absolute;
+   --bottom: 0px;
+    --top: auto;
+}
+.right_ral_sidebar_cta.hide{
+	display:none;
+}
+.right_ral_sidebar_cta.show{
+	display:block;
+}
+ .guides .sm-col-3, .guides .sm-col-9 {
+	 float: none;
+}
+
+@media only screen and (min-width:0) and (max-width: 767px) {
+	.bannerContent .layout-inner-wrap .flex-item {
+		margin-left: 0px;
+		width: 100%;
+		box-sizing: border-box;
+		float: left;
+		text-align: center;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	 .guides .sm-col-3, .guides .sm-col-9 {
+		 float: left;
+	}
+	
+}
+.guides .collapsibleComponent {
+	border: solid 1px #cacaca;
+} 
+.guides .collapsibleComponent.collapsibleScroll{
+	--height: 400px;
+	overflow: auto;
+}
+@media screen\0 {
+	.guides .collapsibleComponent.collapsibleScroll{
+		/*height: 320px;*/
+		height:auto;
+	}
+}
+ .guides .collapsibleComponent .collapsibleHeader {
+	 background: #29a5d6;
+	 margin-bottom: 0;
+	 padding: 0.7rem;
+	 cursor: pointer;
+}
+ .guides .collapsibleComponent .collapsibleHeader a {
+	 color: #fff;
+	 margin-left: 1rem;
+}
+ .guides .collapsibleComponent .collapsibleHeader a:before {
+	/* font-family: "icomoon";
+	 font-size: 17px;
+	 content: "";*/
+}
+ .guides .collapsibleComponent .collapsibleHeader a:after {
+	 font-family: "icomoon";
+	 content: "\e603";
+	 float: right;
+	/* font-size: 1rem;*/
+}
+ .guides .collapsibleComponent .collapsibleHeader a:hover, .guides .collapsibleComponent .collapsibleHeader a:active, .guides .collapsibleComponent .collapsibleHeader a:focus {
+	 outline: none;
+	 text-decoration: none;
+}
+ .guides .collapsibleComponent.visited .collapsibleHeader a:after {
+	 font-family: "icomoon";
+	 content: "\e601";
+}
+ .guides .collapsibleComponent .collapsibleBody {
+	 padding: 0 0.7rem;
+}
+ .guides .collapsibleComponent .collapsibleBody .heading {
+	 font-size: 16px;
+	 color: #fe5000;
+}
+ .guides .collapsibleComponent .collapsibleBody ol {
+	 margin-bottom: 0.5em;
+}
+ .guides .collapsibleComponent .collapsibleBody ol li {
+	 margin-bottom: 0.5em;
+	 list-style: decimal;
+	 font-size: 13px;
+}
+ .guides .collapsibleComponent .collapsibleBody ol ol {
+	 margin: 0;
+	 padding-left: 10px;
+}
+ .guides .collapsibleComponent .collapsibleBody ol ol li {
+	 list-style: none;
+}
+ .guides .collapsibleComponent.visible {
+	 display: block;
+}
+ .guides .collapsibleComponent.notVisible {
+	 display: none;
+}
+ .guides .next, .guides .prev {
+	 margin: 0.5rem 0;
+	 padding: 0.5rem;
+	 display: block;
+	 background-color: #29a5d6;
+	border-color: #29a5d6;
+	color: #fff;
+	text-align:left;
+}
+.guides .next:hover, .guides .prev:hover {
+    text-decoration: none;
+}
+ .guides .bottom_cta .sm-col-6 {
+	 float: left;
+}
+ .guides .bottom_cta .bottom_CTA_box_left {
+	 width: 50%;
+	 padding: 10px;
+	 height: auto;
+	 background-color: #fff !important;
+}
+ .guides .bottom_cta .bottom_CTA_box_left .alignleft {
+	 display: inline;
+	 float: left;
+}
+ .guides .bottom_cta .bottom_CTA_box_left img {
+	 margin: 0 24px 16px 0;
+}
+ .guides1 .bannerContent .inner {
+	 padding: 0 2rem;
+}
+ .guides1 .bannerContent .inner .hc {
+	 font-size: 2rem;
+}
+ @media only screen and (min-width: 768px) and (max-width: 1023px) {
+	 .guides1 .bannerContent .inner {
+		 padding: 0 5rem;
+	}
+	
+
+}
+ @media only screen and (min-width: 1024px) {
+	 .guides1 .bannerContent .inner {
+		 padding: 0 10rem;
+	}
+}
+ .guides1 .product-category-header {
+	 min-height: 350px;
+}
+ .guides1 .product-category-header .bannerContent {
+	 min-height: 250px;
+}
+ 

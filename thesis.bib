@@ -1,88 +1,62 @@
-%% EXAMPLE TEMPLATES %%
-
-%% linked to via '' \cite{booktest} '' %% 
-@book{booktest,
-	author       = {Erich Gamma and Richard Helm and Ralph Johnson and John Vlissides},
-	title        = {Design Patterns Elements of Reusable Object Oriented Software},
-	publisher    = {Addison Wesley},
-	pages        = {326 to 337},
-	date         = {1997},
-	keywords     = {book},
-}
-
-%% linked to via '' \cite{wikimoscow} '' %% 
-@online{wikimoscow,
-	author       = {Wikipedia},
-	title        = {MoSCoW-Priorisierung},
-	date         = {2019},
-	urldate      = {2019-02-07},
-	url          = {https://de.wikipedia.org/wiki/MoSCoW-Priorisierung},
+@online{nistcloud,
+	author       = {National Institute of Standards and Technology},
+	title        = {SP 800-145 The NIST Definition of Cloud Computing},
+	date         = {2011},
+	urldate      = {2019-07-16},
+	url          = {https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf},
 	keywords     = {online},
 }
 
-%% OWN SOURCES %%
-
-@book{nistcloud,
-	author       = {National Institute of Standards and Technology},
-	title        = {SP 800-145 The NIST Definition of Cloud Computing},
-	publisher    = {U.S. Department of Commerce},
-%	pages        = {2 to 3},
-	date         = {2011},
-	keywords     = {book},
-}
-
-@book{sansThreatActors,
-	author       = {Stephen Irwin},
-	title        = {Creating a Threat Profile forYour Organization},
-	publisher    = {SANS Institute},
-%	pages        = {12 to 17},
+@online{sansThreatActors,
+	author       = {Irwin, Stephen},
+	title        = {Creating a Threat Profile for Your Organization},
 	date         = {2014},
-	keywords     = {book},
+	urldate      = {2019-07-16},
+	url          = {https://www.sans.org/reading-room/whitepapers/threats/creating-threat-profile-organization-35492},
+	keywords     = {online},
 }
-% SOURCE: https://www.sans.org/reading-room/whitepapers/threats/creating-threat-profile-organization-35492
 
 @book{k8sBook,
-	author       = {Liz Rice, Michael Hausenblas},
+	author       = {Rice, Liz and Hausenblas, Michael},
 	title        = {Kubernetes Security - How to Build and Operate Applications Securely in Kubernetes},
 	publisher    = {O'Reilly Media, Inc.},
 	date         = {2018},
+	url          = {https://info.aquasec.com/kubernetes-security},
 	keywords     = {book},
 }
-% SOURCE: https://info.aquasec.com/kubernetes-security
 
-@book{phippy,
-	author       = {Matt Butcher and Karen Chu},
+@online{phippy,
+	author       = {Butcher, Matt and Chu, Karen},
 	title        = {Phippy goes to the Zoo},
-	publisher    = {The Linux Foundation},
-%	pages        = {4},
 	date         = {2018},
-	keywords     = {book},
+	urldate      = {2019-07-16},
+	url          = {https://www.cncf.io/wp-content/uploads/2018/12/Phippy-Goes-To-The-Zoo.pdf},
+	keywords     = {online},
 }
-% SOURCE: https://www.cncf.io/wp-content/uploads/2018/12/Phippy-Goes-To-The-Zoo.pdf
 
-@book{nistK8s,
-	author       = {Murugiah Souppaya, John Morello, Karen Scarfone},
+@online{nistK8s,
+	author       = {Souppaya, Murugiah and Morello, John and Scarfone, Karen},
 	title        = {NIST Special Publication 800-190 Application Container Security Guide},
-	publisher    = {National Institute of Standards and Technology, U.S. Department of Commerce},
 	date         = {2011},
-	keywords     = {book},
+	urldate      = {2019-07-16},
+	url          = {https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf},
+	keywords     = {online},
 }
-% SOURCE: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf
 
-@book{ocpSecTips,
-	author		= {Red Hat, Inc.},
+@online{ocpSecTips,
+	author		= {Red Hat Inc.},
 	title 		= {OpenShift Container Platform 3.11 Container Security Guide},
-	publisher   = {Red Hat, Inc.},
 	date        = {2019},
-	keywords    = {book},
+	urldate     = {2019-07-16},
+	url         = {https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/pdf/container_security_guide/OpenShift_Container_Platform-3.11-Container_Security_Guide-en-US.pdf},
+	keywords    = {online},
 }
-% SOURCE: https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/pdf/container_security_guide/OpenShift_Container_Platform-3.11-Container_Security_Guide-en-US.pdf
 
 @online{servicecomparison,
-	author       = {Stephen Watts},
+	author       = {Watts, Stephen},
 	title        = {SaaS vs PaaS vs IaaS: What’s The Difference and How To Choose},
 	date         = {2017},
-	urldate      = {2019-04-02},
+	urldate      = {2019-07-16},
 	url          = {https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/},
 	keywords     = {online},
 }
@@ -97,12 +71,12 @@
 }
 
 @online{hackAndHarden,
-	author		= {Brad Geesaman},
-	title 		= {Hacking and Hardening Kubernetes Clusters by Example [I] - Brad Geesaman, Symantec [3:05]},
+	author		= {Geesaman, Brad},
+	title 		= {Hacking and Hardening Kubernetes Clusters by Example [I] - Brad Geesaman, Symantec},
 	date        = {2017},
 	urldate     = {2019-04-16},
 	url         = {https://www.youtube.com/watch?v=vTgQLzeBfRU&feature=youtu.be&t=185},
-	keywords    = {online},
+	keywords    = {video},
 }
 
 @online{msPaas,
@@ -119,7 +93,7 @@
 	title 		= {What is PaaS? Platform as a Service},
 	date        = {2019},
 	urldate     = {2019-04-03},
-	url         = {https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview%5C#process-linux-node-updates-and-reboots-using-kured},
+	url         = {https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-cluster-security?view=azuremgmtbilling-1.1.0-preview%5C},
 	keywords    = {online},
 }
 
@@ -137,12 +111,12 @@
 	title 		= {Threat Modeling Cheat Sheet},
 	date        = {2019},
 	urldate     = {2019-07-05},
-	url         = {https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Threat_Modeling_Cheat_Sheet.md#define-all-possible-threats},
+	url         = {https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Threat_Modeling_Cheat_Sheet.md},
 	keywords    = {online},
 }
 
 @online{ocpRelease,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Generally Available today: Red Hat OpenShift Container Platform 3.11 is ready to power enterprise Kubernetes deployments},
 	date        = {2018},
 	urldate     = {2019-07-08},
@@ -160,7 +134,7 @@
 }
 
 @online{containerIntro,
-	author		= {Mike Raab},
+	author		= {Raab, Mike},
 	title 		= {Intro to DockerContainers},
 	date        = {2018},
 	urldate     = {2019-07-08},
@@ -169,7 +143,7 @@
 }
 
 @online{containerHistory,
-	author		= {Rani Osnat},
+	author		= {Osnat, Rani},
 	title 		= {A brief history of containers: From the 1970s to 2017},
 	date        = {2018},
 	urldate     = {2019-07-08},
@@ -178,7 +152,7 @@
 }
 
 @online{dockerMoby,
-	author		= {Nick Chase},
+	author		= {Chase, Nick},
 	title 		= {OK, I give up. Is Docker now Moby? And what is LinuxKit?},
 	date        = {2017},
 	urldate     = {2019-07-08},
@@ -196,11 +170,11 @@
 }
 
 @online{dockerFormatted,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Getting Started with Containers},
 	date        = {2019},
 	urldate     = {2019-07-08},
-	url         = {https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/index#working_with_docker_formatted_containers},
+	url         = {https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/index},
 	keywords    = {online},
 }
 
@@ -214,7 +188,7 @@
 }
 
 @online{lowLevelRuntimes,
-	author		= {Ian Lewis},
+	author		= {Lewis, Ian},
 	title 		= {Container Runtimes Part 2: Anatomy of a Low-Level Container Runtime},
 	date        = {2019},
 	urldate     = {2019-07-08},
@@ -223,7 +197,7 @@
 }
 
 @online{highLevelRuntimes,
-	author		= {Ian Lewis},
+	author		= {Lewis, Ian},
 	title 		= {Container Runtimes Part 3: High-Level Runtimes},
 	date        = {2019},
 	urldate     = {2019-07-08},
@@ -232,30 +206,21 @@
 }
 
 
-@online{criDocs,
-	author		= {The Kubernetes Project},
+@online{criGithub,
+	author		= {The Kubernetes Authors},
 	title 		= {Container Runtimes Part 3: High-Level Runtimes},
-	date        = {2016},
-	urldate     = {2019-07-08},
-	url         = {https://github.com/kubernetes/kubernetes/blob/242a97307b34076d5d8f5bbeb154fa4d97c9ef1d/docs/devel/container-runtime-interface.md},
-	keywords    = {online},
-}
-
-@online{k8sDocsVmsContainers,
-	author		= {The Kubernetes Project},
-	title 		= {What is Kubernetes},
 	date        = {2019},
-	urldate     = {2019-07-08},
-	url         = {https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#going-back-in-time},
+	urldate     = {2019-07-16},
+	url         = {https://github.com/kubernetes/cri-api/},
 	keywords    = {online},
 }
 
 @online{redhatImages,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Containers and Images},
 	date        = {2018},
 	urldate     = {2019-07-08},
-	url         = {https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/containers_and_images.html#docker-images},
+	url         = {https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/containers_and_images.html},
 	keywords    = {online},
 }
 
@@ -269,7 +234,7 @@
 }
 
 @online{k8sBasics,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {What is Kubernetes},
 	date        = {2019},
 	urldate     = {2019-07-09},
@@ -277,17 +242,8 @@
 	keywords    = {online},
 }
 
-@online{cncf,
-	author		= {The Linux Foundation},
-	title 		= {Sustaining and Integrating Open Source Technologies},
-	date        = {2019},
-	urldate     = {2019-07-09},
-	url         = {https://www.cncf.io/},
-	keywords    = {online},
-}
-
 @online{k8sComponents,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {Kubernetes Components},
 	date        = {2019},
 	urldate     = {2019-07-09},
@@ -296,7 +252,7 @@
 }
 
 @Misc{nicoPictures,
-	author		= {Nico Meisenzahl},
+	author		= {Meisenzahl, Nico},
 	title 		= {docker-drawings},
 	date        = {2019},
 	note		= {A collection of graphics given to Lukas Grams by Nico Meisenzahl at the Global Azure Bootcamp Rosenheim on 2019-04-27},
@@ -304,7 +260,7 @@
 }
 
 @online{k8sObjects,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {Understanding Kubernetes Objects},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -313,16 +269,16 @@
 }
 
 @online{k8sPods,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {Pod Overview},
 	date        = {2019},
 	urldate     = {2019-07-10},
-	url         = {https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/#understanding-pods},
+	url         = {https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/},
 	keywords    = {online},
 }
 
 @online{k8sReplicaSets,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {ReplicaSet},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -331,7 +287,7 @@
 }
 
 @online{turnkey,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {Picking the Right Solution},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -340,7 +296,7 @@
 }
 
 @online{k8sApi,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {The Kubernetes API},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -349,7 +305,7 @@
 }
 
 @online{openShiftOptions,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {OpenShift plans and pricing},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -358,7 +314,7 @@
 }
 
 @online{ocpVsOkd,
-	author		= {Brian Harrington},
+	author		= {Harrington, Brian},
 	title 		= {OpenShift and Kubernetes: What's the difference?},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -376,7 +332,7 @@
 }
 
 @online{ocpCli,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Get Started with the CLI},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -385,7 +341,7 @@
 }
 
 @online{ocpProjects,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Managing Projects},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -394,7 +350,7 @@
 }
 
 @online{ocpCrio,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {Using the CRI-O Container Engine},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -403,7 +359,7 @@
 }
 
 @online{aadAksAuth,
-	author		= {Microsoft},
+	author		= {Microsoft Corporation},
 	title 		= {Integrate Azure Active Directory with Azure Kubernetes Service},
 	date        = {2019},
 	urldate     = {2019-07-10},
@@ -412,25 +368,25 @@
 }
 
 @online{k8sSupport,
-	author		= {The Kubernetes Project},
+	author		= {The Kubernetes Authors},
 	title 		= {Kubernetes version and version skew support policy},
 	date        = {2019},
 	urldate     = {2019-07-11},
-	url         = {https://kubernetes.io/docs/setup/release/version-skew-policy/#supported-versions},
+	url         = {https://kubernetes.io/docs/setup/release/version-skew-policy/},
 	keywords    = {online},
 }
 
 @online{cisJustRecommendation,
-	author		= {Rory McCune},
-	title 		= {A Hacker's Guide to Kubernetes and the Cloud - Rory McCune, NCC Group PLC (Intermediate Skill Level) [29:18]},
+	author		= {McCune, Rory},
+	title 		= {A Hacker's Guide to Kubernetes and the Cloud - Rory McCune, NCC Group PLC (Intermediate Skill Level)},
 	date        = {2018},
 	urldate     = {2019-04-25},
 	url         = {https://youtu.be/dxKpCO2dAy8?t=1758},
-	keywords    = {online},
+	keywords    = {video},
 }
 
 @online{csvsGithub,
-	author		= {RedGuard, OWASP Foundation},
+	author		= {RedGuard and OWASP Foundation},
 	title 		= {Container Security Verification Standard},
 	date        = {2019},
 	urldate     = {2019-04-24},
@@ -452,7 +408,7 @@
 	title 		= {CIS Docker Community Edition Benchmark},
 	date        = {2019},
 	urldate     = {2019-07-11},
-	url         = {https://github.com/OWASP/Docker-Security},
+	url         = {https://www.cisecurity.org/benchmark/docker/},
 	keywords    = {online},
 }
 
@@ -461,12 +417,12 @@
 	title 		= {CIS Kubernetes Benchmark},
 	date        = {2019},
 	urldate     = {2019-07-11},
-	url         = {https://github.com/OWASP/Docker-Security},
+	url         = {https://www.cisecurity.org/benchmark/kubernetes/},
 	keywords    = {online},
 }
 
 @online{aksSecTips,
-	author		= {Microsoft},
+	author		= {Microsoft Corporation},
 	title 		= {Best practices for cluster security and upgrades in Azure Kubernetes Service (AKS)},
 	date        = {2018},
 	urldate     = {2019-07-11},
@@ -475,7 +431,7 @@
 }
 
 @online{okd,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {The Origin Community Distribution of Kubernetes that powers Red Hat OpenShift.},
 	date        = {2019},
 	urldate     = {2019-07-12},
@@ -484,7 +440,7 @@
 }
 
 @online{ocpK8sVersions,
-	author		= {Red Hat, Inc.},
+	author		= {Red Hat Inc.},
 	title 		= {OpenShift Container Platform 3.x Tested Integrations },
 	date        = {2019},
 	urldate     = {2019-04-09},
@@ -492,4 +448,11 @@
 	keywords    = {online},
 }
 
-
+@online{k8sDocsSecurity,
+	author		= {The Kubernetes Authors},
+	title 		= {Overview of Cloud Native Security},
+	date        = {2019},
+	urldate     = {2019-07-16},
+	url         = {https://kubernetes.io/docs/concepts/security/overview/},
+	keywords    = {online},
+}

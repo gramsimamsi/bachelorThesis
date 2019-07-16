@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html id="docs" class="" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	
+
+<script id="pd-rating-js" src="Aut19h_files/rating.js"></script><script async="" src="Aut19h_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36037335-10');
+</script>
+<meta charset="utf-8">
+<title>Picking the Right Solution - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="https://v1-13.docs.kubernetes.io/images/favicon.png">
+<style class="anchorjs"></style><link rel="stylesheet" href="Aut19h_files/base_fonts.css">
+<link rel="stylesheet" href="Aut19h_files/styles.css">
+<link rel="stylesheet" href="Aut19h_files/jquery-ui.css">
+<link rel="stylesheet" href="Aut19h_files/sweetalert.css">
+<link rel="stylesheet" href="Aut19h_files/callouts.css">
+<link rel="stylesheet" href="Aut19h_files/tags.css">
+
+
+
+<meta name="description" content="">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:url" content="https://kubernetes.io/docs/setup/pick-right-solution/">
+<meta property="og:title" content="Picking the Right Solution">
+<meta name="twitter:title" content="Picking the Right Solution">
+
+<meta name="twitter:image:alt" content="Kubernetes">
+
+<meta property="og:image" content="/images/kubernetes-horizontal-color.png">
+
+<meta property="og:type" content="article">
+<script src="Aut19h_files/anchor-4.js"></script>
+<script src="Aut19h_files/jquery-3.js"></script>
+<script src="Aut19h_files/jquery-ui-1.js"></script>
+<script src="Aut19h_files/bootstrap-3.js"></script>
+<script src="Aut19h_files/sweetalert-1.js"></script>
+<script src="Aut19h_files/script.js"></script>
+<script src="Aut19h_files/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="https://v1-13.docs.kubernetes.io/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="https://v1-13.docs.kubernetes.io/docs/" class="active">Documentation</a></li>
+            
+            <li><a href="https://v1-13.docs.kubernetes.io/blog/">Blog</a></li>
+            
+            <li><a href="https://v1-13.docs.kubernetes.io/partners/">Partners</a></li>
+            
+            <li><a href="https://v1-13.docs.kubernetes.io/community/">Community</a></li>
+            
+            <li><a href="https://v1-13.docs.kubernetes.io/case-studies/">Case Studies</a></li>
+            
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://v1-13.docs.kubernetes.io/ko/docs/setup/pick-right-solution/">한국어 Korean</a></li>
+                
+                    <li><a href="https://v1-13.docs.kubernetes.io/ja/docs/setup/pick-right-solution/">日本語 Japanese</a></li>
+                
+                    <li><a href="https://v1-13.docs.kubernetes.io/fr/docs/setup/pick-right-solution/">Français</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.13 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io/">v1.15</a></li>
+                
+                    <li><a href="https://v1-14.docs.kubernetes.io/">v1.14</a></li>
+                
+                    <li><a href="https://v1-13.docs.kubernetes.io/">v1.13</a></li>
+                
+                    <li><a href="https://v1-12.docs.kubernetes.io/">v1.12</a></li>
+                
+                    <li><a href="https://v1-11.docs.kubernetes.io/">v1.11</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="https://v1-13.docs.kubernetes.io/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude="">Learn Kubernetes Basics</a>
+        
+
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude=""><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+         
+           <div class="nav-box">
+            <h3><a href="https://v1-13.docs.kubernetes.io/docs/tutorials/hello-minikube/">Get Started</a></h3>
+           <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+
+        </div>
+         
+           <div class="nav-box">
+            <h3><a href="https://v1-13.docs.kubernetes.io/docs/home/">Documentation</a></h3>
+           <p>Learn how to use Kubernetes with conceptual, tutorial, and reference documentation. You can even <a href="https://v1-13.docs.kubernetes.io/editdocs/" data-auto-burger-exclude="">help contribute to the docs</a>!</p>
+
+        </div>
+         
+           <div class="nav-box">
+            <h3><a href="https://v1-13.docs.kubernetes.io/blog/">Blog</a></h3>
+           <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+
+        </div>
+         
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude="">View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack Slack</span></a>
+                <a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io/" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/home/">HOME</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/reference/">REFERENCE</a></li>
+		
+		
+		<li><a href="https://v1-13.docs.kubernetes.io/docs/contribute/">CONTRIBUTE</a></li>
+		
+	</ul>
+	<form id="searchBox" action="/docs/search/">
+		<input type="text" id="search" name="q" placeholder="Search" aria-label="Search">
+	</form>
+</div>
+
+		</section>
+		
+		
+<section id="deprecationWarning">
+  <main>
+    <div class="content deprecation-warning">
+      <h3>
+	 Kubernetes v1.13
+	  documentation is no longer actively maintained. The version you are 
+currently viewing is a static snapshot. For up-to-date documentation, 
+see the 
+	 <a href="">latest version.</a>
+      </h3>
+    </div>
+  </main>
+</section>
+
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion"><div class="container">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="https://v1-13.docs.kubernetes.io/docs/setup/"><div class="title">Setup</div></a>
+
+	
+	
+	
+	
+		
+			
+
+<a class="item yah" data-title="Picking the Right Solution" href="https://v1-13.docs.kubernetes.io/docs/setup/pick-right-solution/"><div class="title">Picking the Right Solution</div></a>
+
+		
+	
+		
+			
+<div class="item" data-title="Downloading Kubernetes"><div class="title">Downloading Kubernetes</div><div class="wrapper" style="height: 0px;"><div class="content">
+	<div class="container">
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Building a release" href="https://v1-13.docs.kubernetes.io/docs/setup/release/building-from-source/"><div class="title">Building a release</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="v1.13 Release Notes" href="https://v1-13.docs.kubernetes.io/docs/setup/release/notes/"><div class="title">v1.13 Release Notes</div></a>
+
+		
+	
+
+	</div>
+</div></div></div>
+
+		
+	
+		
+			
+<div class="item" data-title="Bootstrapping Clusters with kubeadm"><div class="title">Bootstrapping Clusters with kubeadm</div><div class="wrapper" style="height: 0px;"><div class="content">
+	<div class="container">
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Installing kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/install-kubeadm/"><div class="title">Installing kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"><div class="title">Creating a single master cluster with kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/control-plane-flags/"><div class="title">Customizing control plane configuration with kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Options for Highly Available Topology" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/ha-topology/"><div class="title">Options for Highly Available Topology</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/high-availability/"><div class="title">Creating Highly Available Clusters with kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Set up a High Availability etcd cluster with kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/setup-ha-etcd-with-kubeadm/"><div class="title">Set up a High Availability etcd cluster with kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Configuring each kubelet in your cluster using kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/kubelet-integration/"><div class="title">Configuring each kubelet in your cluster using kubeadm</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Troubleshooting kubeadm" href="https://v1-13.docs.kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/"><div class="title">Troubleshooting kubeadm</div></a>
+
+		
+	
+
+	</div>
+</div></div></div>
+
+		
+	
+		
+			
+<div class="item" data-title="Turnkey Cloud Solutions"><div class="title">Turnkey Cloud Solutions</div><div class="wrapper" style="height: 0px;"><div class="content">
+	<div class="container">
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/aws/"><div class="title">Running Kubernetes on AWS EC2</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/alibaba-cloud/"><div class="title">Running Kubernetes on Alibaba Cloud</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on Azure" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/azure/"><div class="title">Running Kubernetes on Azure</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/clc/"><div class="title">Running Kubernetes on CenturyLink Cloud</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/gce/"><div class="title">Running Kubernetes on Google Compute Engine</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with IBM Cloud Private" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/icp/"><div class="title">Running Kubernetes on Multiple Clouds with IBM Cloud Private</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/stackpoint/"><div class="title">Running Kubernetes on Multiple Clouds with Stackpoint.io</div></a>
+
+		
+	
+
+	</div>
+</div></div></div>
+
+		
+	
+		
+			
+<div class="item" data-title="Custom Cloud Solutions"><div class="title">Custom Cloud Solutions</div><div class="wrapper" style="height: 0px;"><div class="content">
+	<div class="container">
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="https://v1-13.docs.kubernetes.io/docs/setup/custom-cloud/kubespray/"><div class="title">Installing Kubernetes On-premises/Cloud Providers with Kubespray</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="https://v1-13.docs.kubernetes.io/docs/setup/custom-cloud/kops/"><div class="title">Installing Kubernetes on AWS with kops</div></a>
+
+		
+	
+
+	</div>
+</div></div></div>
+
+		
+	
+		
+			
+<div class="item" data-title="On-Premises VMs"><div class="title">On-Premises VMs</div><div class="wrapper" style="height: 0px;"><div class="content">
+	<div class="container">
+		
+		
+	
+	
+	
+	
+		
+			
+
+<a class="item" data-title="Cloudstack" href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/cloudstack/"><div class="title">Cloudstack</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes on DC/OS" href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/dcos/"><div class="title">Kubernetes on DC/OS</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="oVirt" href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/ovirt/"><div class="title">oVirt</div></a>
+
+		
+	
+
+	</div>
+</div></div></div>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Kubernetes Version and Version Skew Support Policy" href="https://v1-13.docs.kubernetes.io/docs/setup/version-skew-policy/"><div class="title">Kubernetes Version and Version Skew Support Policy</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Building Large Clusters" href="https://v1-13.docs.kubernetes.io/docs/setup/cluster-large/"><div class="title">Building Large Clusters</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running in Multiple Zones" href="https://v1-13.docs.kubernetes.io/docs/setup/multiple-zones/"><div class="title">Running in Multiple Zones</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="CRI installation" href="https://v1-13.docs.kubernetes.io/docs/setup/cri/"><div class="title">CRI installation</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Installing Kubernetes with Digital Rebar Provision (DRP) via KRIB" href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-metal/krib/"><div class="title">Installing Kubernetes with Digital Rebar Provision (DRP) via KRIB</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="PKI Certificates and Requirements" href="https://v1-13.docs.kubernetes.io/docs/setup/certificates/"><div class="title">PKI Certificates and Requirements</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="https://v1-13.docs.kubernetes.io/docs/setup/minikube/"><div class="title">Running Kubernetes Locally via Minikube</div></a>
+
+		
+	
+		
+			
+
+<a class="item" data-title="Validate Node Setup" href="https://v1-13.docs.kubernetes.io/docs/setup/node-conformance/"><div class="title">Validate Node Setup</div></a>
+
+		
+	
+
+
+
+
+
+     </div></div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+
+			<div id="docsContent">
+        
+
+<p>
+  <a href="https://github.com/kubernetes/website/edit/master/content/en/docs/setup/pick-right-solution.md" id="editPageButton" target="_blank">
+    Edit This Page
+  </a>
+</p>
+
+<h1>Picking the Right Solution</h1>
+
+
+
+<p>Kubernetes can run on various platforms: from your laptop, to VMs on a cloud provider, to a rack of
+bare metal servers. The effort required to set up a cluster varies from running a single command to
+crafting your own customized cluster. Use this guide to choose a solution that fits your needs.</p>
+
+<p>If you just want to “kick the tires” on Kubernetes, use the <a href="#local-machine-solutions">local Docker-based solutions</a>.</p>
+
+<p>When you are ready to scale up to more machines and higher availability, a <a href="#hosted-solutions">hosted solution</a> is the easiest to create and maintain.</p>
+
+<p><a href="#turnkey-cloud-solutions">Turnkey cloud solutions</a> require only a few commands to create
+and cover a wide range of cloud providers. <a href="#on-premises-turnkey-cloud-solutions">On-Premises turnkey cloud solutions</a> have the simplicity of the turnkey cloud solution combined with the security of your own private network.</p>
+
+<p>If you already have a way to configure hosting resources, use <a href="https://v1-13.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">kubeadm</a> to easily bring up a cluster with a single command per machine.</p>
+
+<p><a href="#custom-solutions">Custom solutions</a> vary from step-by-step instructions to general advice for setting up
+a Kubernetes cluster from scratch.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#local-machine-solutions">Local-machine Solutions</a></li>
+
+
+
+
+<li><a href="#hosted-solutions">Hosted Solutions</a></li>
+
+
+
+
+<li><a href="#turnkey-cloud-solutions">Turnkey Cloud Solutions</a></li>
+
+
+
+
+<li><a href="#on-premises-turnkey-cloud-solutions">On-Premises turnkey cloud solutions</a></li>
+
+
+
+
+<li><a href="#custom-solutions">Custom Solutions</a></li>
+
+
+
+
+<li><a href="#table-of-solutions">Table of Solutions</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="local-machine-solutions">Local-machine Solutions<a class="anchorjs-link " href="#local-machine-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<h3 id="community-supported-tools">Community Supported Tools<a class="anchorjs-link " href="#community-supported-tools" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+<li><p><a href="https://v1-13.docs.kubernetes.io/docs/setup/minikube/">Minikube</a>
+ is a method for creating a local, single-node Kubernetes cluster for 
+development and testing. Setup is completely automated and doesn’t 
+require a cloud provider account.</p></li>
+
+<li><p><a href="https://github.com/kubernetes-sigs/kubeadm-dind-cluster" target="_blank">Kubeadm-dind</a>
+ is a multi-node (while minikube is single-node) Kubernetes cluster 
+which only requires a docker daemon. It uses docker-in-docker technique 
+to spawn the Kubernetes cluster.</p></li>
+
+<li><p><a href="https://github.com/kubernetes-sigs/kind" target="_blank">Kubernetes IN Docker</a>
+ is a tool for running local Kubernetes clusters using Docker container 
+“nodes”. It is primarily designed for testing Kubernetes 1.11+. You can 
+use it to create multi-node or multi-control-plane Kubernetes clusters.</p></li>
+</ul>
+
+<h3 id="ecosystem-tools">Ecosystem Tools<a class="anchorjs-link " href="#ecosystem-tools" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+<li><p><a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a> is an
+easy-to-install application for your Mac or Windows environment that enables you to
+start coding and deploying in containers in minutes on a single-node Kubernetes
+cluster.</p></li>
+
+<li><p><a href="https://docs.okd.io/latest/minishift/" target="_blank">Minishift</a>
+ installs the community version of the Kubernetes enterprise platform 
+OpenShift for local development &amp; testing.  It offers an all-in-one 
+VM (<code>minishift start</code>) for Windows, macOS, and Linux. The container start is based on <code>oc cluster up</code> (Linux only). You can also install <a href="https://github.com/minishift/minishift-addons/tree/master/add-ons" target="_blank">the included add-ons</a>.</p></li>
+
+<li><p><a href="https://microk8s.io/" target="_blank">MicroK8s</a> 
+provides a single command installation of the latest Kubernetes release 
+on a local machine for development and testing. Setup is quick, fast 
+(~30 sec) and supports many plugins including Istio with a single 
+command.</p></li>
+
+<li><p><a href="https://github.com/IBM/deploy-ibm-cloud-private" target="_blank">IBM Cloud Private-CE (Community Edition)</a>
+ can use VirtualBox on your machine to deploy Kubernetes to one or more 
+VMs for development and test scenarios. Scales to full multi-node 
+cluster.</p></li>
+
+<li><p><a href="https://github.com/HSBawa/icp-ce-on-linux-containers" target="_blank">IBM Cloud Private-CE (Community Edition) on Linux Containers</a>
+ is a Terraform/Packer/BASH based Infrastructure as Code (IaC) scripts 
+to create a seven node (1 Boot, 1 Master, 1 Management, 1 Proxy and 3 
+Workers) LXD cluster on  Linux Host.</p></li>
+
+<li><p><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/local/">Ubuntu on LXD</a> supports a nine-instance deployment on localhost.</p></li>
+</ul>
+
+<h2 id="hosted-solutions">Hosted Solutions<a class="anchorjs-link " href="#hosted-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<ul>
+<li><p><a href="https://appscode.com/products/cloud-deployment/" target="_blank">AppsCode.com</a> provides managed Kubernetes clusters for various public clouds, including AWS and Google Cloud Platform.</p></li>
+
+<li><p><a href="https://appuio.ch/" target="_blank">APPUiO</a> runs an 
+OpenShift public cloud platform, supporting any Kubernetes workload. 
+Additionally APPUiO offers Private Managed OpenShift Clusters, running 
+on any public or private cloud.</p></li>
+
+<li><p><a href="https://aws.amazon.com/eks/" target="_blank">Amazon Elastic Container Service for Kubernetes</a> offers managed Kubernetes service.</p></li>
+
+<li><p><a href="https://azure.microsoft.com/services/container-service/" target="_blank">Azure Kubernetes Service</a> offers managed Kubernetes clusters.</p></li>
+
+<li><p><a href="https://containership.io/containership-platform" target="_blank">Containership Kubernetes Engine (CKE)</a>
+ intuitive Kubernetes cluster provisioning and management on GCP, Azure,
+ AWS, Packet, and DigitalOcean. Seamless version upgrades, autoscaling, 
+metrics, workload creation, and more.</p></li>
+
+<li><p><a href="https://www.digitalocean.com/products/kubernetes/" target="_blank">DigitalOcean Kubernetes</a> offers managed Kubernetes service.</p></li>
+
+<li><p><a href="https://giantswarm.io/product/" target="_blank">Giant Swarm</a> offers managed Kubernetes clusters in their own datacenter, on-premises, or on public clouds.</p></li>
+
+<li><p><a href="https://cloud.google.com/kubernetes-engine/" target="_blank">Google Kubernetes Engine</a> offers managed Kubernetes clusters.</p></li>
+
+<li><p><a href="https://cloud.ibm.com/docs/containers?topic=containers-container_index#container_index" target="_blank">IBM Cloud Kubernetes Service</a>
+ offers managed Kubernetes clusters with isolation choice, operational 
+tools, integrated security insight into images and containers, and 
+integration with Watson, IoT, and data.</p></li>
+
+<li><p><a href="https://www.loodse.com/" target="_blank">Kubermatic</a> 
+provides managed Kubernetes clusters for various public clouds, 
+including AWS and Digital Ocean, as well as on-premises with OpenStack 
+integration.</p></li>
+
+<li><p><a href="https://kublr.com/" target="_blank">Kublr</a> offers 
+enterprise-grade secure, scalable, highly reliable Kubernetes clusters 
+on AWS, Azure, GCP, and on-premise. It includes out-of-the-box backup 
+and disaster recovery, multi-cluster centralized logging and monitoring,
+ and built-in alerting.</p></li>
+
+<li><p><a href="https://kubesail.com/" target="_blank">KubeSail</a> is an easy, free way to try Kubernetes.</p></li>
+
+<li><p><a href="https://madcore.ai/" target="_blank">Madcore.Ai</a> is 
+devops-focused CLI tool for deploying Kubernetes infrastructure in AWS. 
+Master, auto-scaling group nodes with spot-instances, ingress-ssl-lego, 
+Heapster, and Grafana.</p></li>
+
+<li><p><a href="https://www.nutanix.com/products/karbon/" target="_blank">Nutanix Karbon</a>
+ is a multi-cluster, highly available Kubernetes management and 
+operational platform that simplifies the provisioning, operations, and 
+lifecycle management of Kubernetes.</p></li>
+
+<li><p><a href="https://www.openshift.com/dedicated/" target="_blank">OpenShift Dedicated</a> offers managed Kubernetes clusters powered by OpenShift.</p></li>
+
+<li><p><a href="https://www.openshift.com/features/" target="_blank">OpenShift Online</a> provides free hosted access for Kubernetes applications.</p></li>
+
+<li><p><a href="https://docs.us-phoenix-1.oraclecloud.com/Content/ContEng/Concepts/contengoverview.htm" target="_blank">Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)</a>
+ is a fully-managed, scalable, and highly available service that you can
+ use to deploy your containerized applications to the cloud.</p></li>
+
+<li><p><a href="https://platform9.com/products/kubernetes/" target="_blank">Platform9</a>
+ offers managed Kubernetes on-premises or on any public cloud, and 
+provides 24/7 health monitoring and alerting. (Kube2go, a web-UI driven 
+Kubernetes cluster deployment service Platform9 released, has been 
+integrated to Platform9 Sandbox.)</p></li>
+
+<li><p><a href="https://stackpoint.io/" target="_blank">Stackpoint.io</a> provides Kubernetes infrastructure automation and management for multiple public clouds.</p></li>
+
+<li><p><a href="https://www.syseleven.io/products-services/managed-kubernetes/" target="_blank">SysEleven MetaKube</a>
+ offers managed Kubernetes as a service powered on our OpenStack public 
+cloud. It includes lifecycle management, administration dashboards, 
+monitoring, autoscaling and much more.</p></li>
+
+<li><p><a href="https://vexxhost.com/public-cloud/container-services/kubernetes/" target="_blank">VEXXHOST</a>
+ VEXXHOST proudly offers Certified Kubernetes on our public cloud, which
+ also happens to be the largest OpenStack public cloud in Canada.</p></li>
+
+<li><p><a href="https://cloud.vmware.com/vmware-cloud-pks" target="_blank">VMware Cloud PKS</a>
+ is an enterprise Kubernetes-as-a-Service offering in the VMware Cloud 
+Services portfolio that provides easy to use, secure by default, cost 
+effective, SaaS-based Kubernetes clusters.</p></li>
+</ul>
+
+<h2 id="turnkey-cloud-solutions">Turnkey Cloud Solutions<a class="anchorjs-link " href="#turnkey-cloud-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>These solutions allow you to create Kubernetes clusters on a range of Cloud IaaS providers with only a
+few commands. These solutions are actively developed and have active community support.</p>
+
+<ul>
+<li><a href="https://www.agilestacks.com/products/kubernetes" target="_blank">Agile Stacks</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/alibaba-cloud/">Alibaba Cloud</a></li>
+<li><a href="https://appuio.ch/" target="_blank">APPUiO</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/aws/">AWS</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/azure/">Azure</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/clc/">CenturyLink Cloud</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">Conjure-up Kubernetes with Ubuntu on AWS, Azure, Google Cloud, Oracle Cloud</a></li>
+<li><a href="https://containership.io/containership-platform" target="_blank">Containership</a></li>
+<li><a href="https://www.docker.com/products/docker-enterprise" target="_blank">Docker Enterprise</a></li>
+<li><a href="https://gardener.cloud/" target="_blank">Gardener</a></li>
+<li><a href="https://giantswarm.io/" target="_blank">Giant Swarm</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/gce/">Google Compute Engine (GCE)</a></li>
+<li><a href="https://github.com/patrocinio/kubernetes-softlayer" target="_blank">IBM Cloud</a></li>
+<li><a href="https://kontena.io/pharos/" target="_blank">Kontena Pharos</a></li>
+<li><a href="https://cloud.kubermatic.io/" target="_blank">Kubermatic</a></li>
+<li><a href="https://kublr.com/" target="_blank">Kublr</a></li>
+<li><a href="https://madcore.ai/" target="_blank">Madcore.Ai</a></li>
+<li><a href="https://nirmata.com/" target="_blank">Nirmata</a></li>
+<li><a href="https://www.nutanix.com/products/karbon/" target="_blank">Nutanix Karbon</a></li>
+<li><a href="https://docs.us-phoenix-1.oraclecloud.com/Content/ContEng/Concepts/contengprerequisites.htm" target="_blank">Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)</a></li>
+<li><a href="https://pivotal.io/platform/pivotal-container-service" target="_blank">Pivotal Container Service</a></li>
+<li><a href="https://rancher.com/docs/rancher/v2.x/en/" target="_blank">Rancher 2.0</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/stackpoint/">Stackpoint.io</a></li>
+<li><a href="https://supergiant.io/" target="_blank">Supergiant.io</a></li>
+<li><a href="https://vexxhost.com/private-cloud/" target="_blank">VEXXHOST</a></li>
+<li><a href="https://cloud.vmware.com/vmware-cloud-pks" target="_blank">VMware Cloud PKS</a></li>
+<li><a href="https://cloud.vmware.com/vmware-enterprise-pks" target="_blank">VMware Enterprise PKS</a></li>
+</ul>
+
+<h2 id="on-premises-turnkey-cloud-solutions">On-Premises turnkey cloud solutions<a class="anchorjs-link " href="#on-premises-turnkey-cloud-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>These solutions allow you to create Kubernetes clusters on your internal, secure, cloud network with only a
+few commands.</p>
+
+<ul>
+<li><a href="https://www.agilestacks.com/products/kubernetes" target="_blank">Agile Stacks</a></li>
+<li><a href="https://appuio.ch/" target="_blank">APPUiO</a></li>
+<li><a href="https://www.docker.com/products/docker-enterprise" target="_blank">Docker Enterprise</a></li>
+<li><a href="https://giantswarm.io/" target="_blank">Giant Swarm</a></li>
+<li><a href="https://cloud.google.com/gke-on-prem/" target="_blank">GKE On-Prem | Google Cloud</a></li>
+<li><a href="https://www.ibm.com/cloud-computing/products/ibm-cloud-private/" target="_blank">IBM Cloud Private</a></li>
+<li><a href="https://kontena.io/pharos/" target="_blank">Kontena Pharos</a></li>
+<li><a href="https://www.loodse.com/" target="_blank">Kubermatic</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/pick-right-solution/www.kublr.com/kubernetes.io/setup-hosted-solution" target="_blank">Kublr</a></li>
+<li><a href="https://www.mirantis.com/software/kubernetes/" target="_blank">Mirantis Cloud Platform</a></li>
+<li><a href="https://nirmata.com/" target="_blank">Nirmata</a></li>
+<li><a href="https://www.openshift.com/products/container-platform/" target="_blank">OpenShift Container Platform</a> (OCP) by <a href="https://www.redhat.com/" target="_blank">Red Hat</a></li>
+<li><a href="https://pivotal.io/platform/pivotal-container-service" target="_blank">Pivotal Container Service</a></li>
+<li><a href="https://rancher.com/docs/rancher/v2.x/en/" target="_blank">Rancher 2.0</a></li>
+<li><a href="https://www.suse.com/products/caas-platform" target="_blank">SUSE CaaS Platform</a></li>
+<li><a href="https://www.suse.com/products/cloud-application-platform/" target="_blank">SUSE Cloud Application Platform</a></li>
+<li><a href="https://cloud.vmware.com/vmware-enterprise-pks" target="_blank">VMware Enterprise PKS</a></li>
+</ul>
+
+<h2 id="custom-solutions">Custom Solutions<a class="anchorjs-link " href="#custom-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Kubernetes can run on a wide range of Cloud providers and bare-metal environments, and with many
+base operating systems.</p>
+
+<p>If you can find a guide below that matches your needs, use it.</p>
+
+<h3 id="universal">Universal<a class="anchorjs-link " href="#universal" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>If you already have a way to configure hosting resources, use
+<a href="https://v1-13.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">kubeadm</a> to bring up a cluster
+with a single command per machine.</p>
+
+<h3 id="cloud">Cloud<a class="anchorjs-link " href="#cloud" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>These solutions are combinations of cloud providers and operating systems not covered by the above solutions.</p>
+
+<ul>
+<li><a href="https://docs-cfcr.cfapps.io/" target="_blank">Cloud Foundry Container Runtime (CFCR)</a></li>
+<li><a href="https://gardener.cloud/" target="_blank">Gardener</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/pick-right-solution/www.kublr.com/kubernetes.io/setup-hosted-solution" target="_blank">Kublr</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">Kubernetes on Ubuntu</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/custom-cloud/kubespray/">Kubespray</a></li>
+<li><a href="https://github.com/rancher/rke" target="_blank">Rancher Kubernetes Engine (RKE)</a></li>
+<li><a href="https://cloud.vmware.com/vmware-essential-PKS" target="_blank">VMware Essential PKS</a></li>
+</ul>
+
+<h3 id="on-premises-vms">On-Premises VMs<a class="anchorjs-link " href="#on-premises-vms" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+<li><a href="https://docs-cfcr.cfapps.io/" target="_blank">Cloud Foundry Container Runtime (CFCR)</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/cloudstack/">CloudStack</a> (uses Ansible)</li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">Fedora (Multi Node)</a> (uses Fedora and flannel)</li>
+<li><a href="https://www.nutanix.com/products/acropolis/virtualization/" target="_blank">Nutanix AHV</a></li>
+<li><a href="https://www.openshift.com/products/container-platform/" target="_blank">OpenShift Container Platform</a> (OCP) Kubernetes platform by <a href="https://www.redhat.com/" target="_blank">Red Hat</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/ovirt/">oVirt</a></li>
+<li><a href="https://cloud.vmware.com/vmware-essential-PKS" target="_blank">VMware Essential PKS</a></li>
+<li><a href="https://github.com/kubernetes/cloud-provider-vsphere" target="_blank">VMware vSphere</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">VMware vSphere, OpenStack, or Bare Metal</a> (uses Juju, Ubuntu and flannel)</li>
+</ul>
+
+<h3 id="bare-metal">Bare Metal<a class="anchorjs-link " href="#bare-metal" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-metal/krib/">Digital Rebar</a></li>
+<li><a href="https://www.docker.com/products/docker-enterprise" target="_blank">Docker Enterprise</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/fedora_manual_config/">Fedora (Single Node)</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">Fedora (Multi Node)</a></li>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">Kubernetes on Ubuntu</a></li>
+<li><a href="https://www.openshift.com/products/container-platform/" target="_blank">OpenShift Container Platform</a> (OCP) Kubernetes platform by <a href="https://www.redhat.com/" target="_blank">Red Hat</a></li>
+<li><a href="https://cloud.vmware.com/vmware-essential-PKS" target="_blank">VMware Essential PKS</a></li>
+</ul>
+
+<h3 id="integrations">Integrations<a class="anchorjs-link " href="#integrations" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>These solutions provide integration with third-party schedulers, resource managers, and/or lower level platforms.</p>
+
+<ul>
+<li><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/dcos/">DCOS</a>
+
+<ul>
+<li>Community Edition DCOS uses AWS</li>
+<li>Enterprise Edition DCOS supports cloud hosting, on-premises VMs, and bare metal</li>
+</ul></li>
+</ul>
+
+<h2 id="table-of-solutions">Table of Solutions<a class="anchorjs-link " href="#table-of-solutions" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Below is a table of all of the solutions listed above.</p>
+
+<table>
+<thead>
+<tr>
+<th>IaaS Provider</th>
+<th>Config. Mgmt.</th>
+<th>OS</th>
+<th>Networking</th>
+<th>Docs</th>
+<th>Support Level</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Agile Stacks</td>
+<td>Terraform</td>
+<td>CoreOS</td>
+<td>multi-support</td>
+<td><a href="https://www.agilestacks.com/products/kubernetes" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Alibaba Cloud Container Service For Kubernetes</td>
+<td>ROS</td>
+<td>CentOS</td>
+<td>flannel/Terway</td>
+<td><a href="https://www.aliyun.com/product/containerservice" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>any</td>
+<td>any</td>
+<td>multi-support</td>
+<td>any CNI</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">docs</a></td>
+<td>Project (<a href="https://git.k8s.io/community/sig-cluster-lifecycle" target="_blank">SIG-cluster-lifecycle</a>)</td>
+</tr>
+
+<tr>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/scratch/">docs</a></td>
+<td>Community (<a href="https://github.com/erictune" target="_blank">@erictune</a>)</td>
+</tr>
+
+<tr>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td><a href="http://docs.projectcalico.org/v2.2/getting-started/kubernetes/installation/" target="_blank">docs</a></td>
+<td>Commercial and Community</td>
+</tr>
+
+<tr>
+<td>any</td>
+<td>RKE</td>
+<td>multi-support</td>
+<td>flannel or canal</td>
+<td><a href="https://rancher.com/docs/rancher/v2.x/en/quick-start-guide/" target="_blank">docs</a></td>
+<td><a href="https://rancher.com/what-is-rancher/overview/" target="_blank">Commercial</a> and <a href="https://github.com/rancher/rancher" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>any</td>
+<td><a href="https://kubernetes.io/blog/2018/05/17/gardener/" target="_blank">Gardener Cluster-Operator</a></td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://gardener.cloud/" target="_blank">docs</a></td>
+<td><a href="https://github.com/gardener" target="_blank">Project/Community</a> and <a href="https://cloudplatform.sap.com/" target="_blank">Commercial</a></td>
+</tr>
+
+<tr>
+<td>AppsCode.com</td>
+<td>Saltstack</td>
+<td>Debian</td>
+<td>multi-support</td>
+<td><a href="https://appscode.com/products/cloud-deployment/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>AWS</td>
+<td>CoreOS</td>
+<td>CoreOS</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/aws/">docs</a></td>
+<td>Community</td>
+</tr>
+
+<tr>
+<td>AWS</td>
+<td>Saltstack</td>
+<td>Debian</td>
+<td>AWS</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/aws/">docs</a></td>
+<td>Community (<a href="https://github.com/justinsb" target="_blank">@justinsb</a>)</td>
+</tr>
+
+<tr>
+<td>AWS</td>
+<td>kops</td>
+<td>Debian</td>
+<td>AWS</td>
+<td><a href="https://github.com/kubernetes/kops/" target="_blank">docs</a></td>
+<td>Community (<a href="https://github.com/justinsb" target="_blank">@justinsb</a>)</td>
+</tr>
+
+<tr>
+<td>AWS</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Azure</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Azure (IaaS)</td>
+<td></td>
+<td>Ubuntu</td>
+<td>Azure</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/azure/">docs</a></td>
+<td><a href="https://github.com/Azure/acs-engine" target="_blank">Community (Microsoft)</a></td>
+</tr>
+
+<tr>
+<td>Azure Kubernetes Service</td>
+<td></td>
+<td>Ubuntu</td>
+<td>Azure</td>
+<td><a href="https://docs.microsoft.com/en-us/azure/aks/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Bare-metal</td>
+<td>custom</td>
+<td>CentOS</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/centos/centos_manual_config/">docs</a></td>
+<td>Community (<a href="https://github.com/coolsvap" target="_blank">@coolsvap</a>)</td>
+</tr>
+
+<tr>
+<td>Bare-metal</td>
+<td>custom</td>
+<td>Fedora</td>
+<td><em>none</em></td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/fedora_manual_config/">docs</a></td>
+<td>Project</td>
+</tr>
+
+<tr>
+<td>Bare-metal</td>
+<td>custom</td>
+<td>Fedora</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">docs</a></td>
+<td>Community (<a href="https://github.com/aveshagarwal" target="_blank">@aveshagarwal</a>)</td>
+</tr>
+
+<tr>
+<td>Bare Metal</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Bare-metal</td>
+<td>custom</td>
+<td>Ubuntu</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td>Community (<a href="https://github.com/resouer" target="_blank">@resouer</a>, <a href="https://github.com/WIZARD-CXY" target="_blank">@WIZARD-CXY</a>)</td>
+</tr>
+
+<tr>
+<td>CloudStack</td>
+<td>Ansible</td>
+<td>CoreOS</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/cloudstack/">docs</a></td>
+<td>Community (<a href="https://github.com/sebgoa" target="_blank">@sebgoa</a>)</td>
+</tr>
+
+<tr>
+<td>DCOS</td>
+<td>Marathon</td>
+<td>CoreOS/Alpine</td>
+<td>custom</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/dcos/">docs</a></td>
+<td>Community (<a href="https://github.com/mesosphere/kubernetes-mesos/blob/master/AUTHORS.md" target="_blank">Kubernetes-Mesos Authors</a>)</td>
+</tr>
+
+<tr>
+<td>Digital Rebar</td>
+<td>kubeadm</td>
+<td>any</td>
+<td>metal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-metal/krib/">docs</a></td>
+<td>Community (<a href="https://github.com/digitalrebar" target="_blank">@digitalrebar</a>)</td>
+</tr>
+
+<tr>
+<td>Docker Enterprise</td>
+<td>custom</td>
+<td><a href="https://success.docker.com/article/compatibility-matrix" target="_blank">multi-support</a></td>
+<td><a href="https://docs.docker.com/ee/ucp/kubernetes/install-cni-plugin/" target="_blank">multi-support</a></td>
+<td><a href="https://docs.docker.com/ee/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Giant Swarm</td>
+<td></td>
+<td>CoreOS</td>
+<td>flannel and/or Calico</td>
+<td><a href="https://docs.giantswarm.io/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>GCE</td>
+<td>CoreOS</td>
+<td>CoreOS</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/coreos/">docs</a></td>
+<td>Community (<a href="https://github.com/pires" target="_blank">@pires</a>)</td>
+</tr>
+
+<tr>
+<td>GCE</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>GCE</td>
+<td>Saltstack</td>
+<td>Debian</td>
+<td>GCE</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/turnkey/gce/">docs</a></td>
+<td>Project</td>
+</tr>
+
+<tr>
+<td>Google Kubernetes Engine</td>
+<td></td>
+<td></td>
+<td>GCE</td>
+<td><a href="https://cloud.google.com/kubernetes-engine/docs/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>IBM Cloud Kubernetes Service</td>
+<td></td>
+<td>Ubuntu</td>
+<td>IBM Cloud Networking + Calico</td>
+<td><a href="https://cloud.ibm.com/docs/containers?topic=containers-container_index#container_index" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>IBM Cloud Kubernetes Service</td>
+<td></td>
+<td>Ubuntu</td>
+<td>calico</td>
+<td><a href="https://cloud.ibm.com/docs/containers?topic=containers-container_index#container_index" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>IBM Cloud Private</td>
+<td>Ansible</td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://www.ibm.com/support/knowledgecenter/SSBS6K/product_welcome_cloud_private.html" target="_blank">docs</a></td>
+<td><a href="https://www.ibm.com/mysupport/s/topic/0TO500000001o0fGAA/ibm-cloud-private?language=en_US&amp;productId=01t50000004X1PWAA0" target="_blank">Commercial</a> and <a href="https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.2/troubleshoot/support_types.html" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Kublr</td>
+<td>custom</td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="http://docs.kublr.com/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Kubermatic</td>
+<td></td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="http://docs.kubermatic.io/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>KVM</td>
+<td>custom</td>
+<td>Fedora</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">docs</a></td>
+<td>Community (<a href="https://github.com/aveshagarwal" target="_blank">@aveshagarwal</a>)</td>
+</tr>
+
+<tr>
+<td>libvirt</td>
+<td>custom</td>
+<td>Fedora</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">docs</a></td>
+<td>Community (<a href="https://github.com/aveshagarwal" target="_blank">@aveshagarwal</a>)</td>
+</tr>
+
+<tr>
+<td>lxd</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/local/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Madcore.Ai</td>
+<td>Jenkins DSL</td>
+<td>Ubuntu</td>
+<td>flannel</td>
+<td><a href="https://madcore.ai/" target="_blank">docs</a></td>
+<td>Community (<a href="https://github.com/madcore-ai" target="_blank">@madcore-ai</a>)</td>
+</tr>
+
+<tr>
+<td>Mirantis Cloud Platform</td>
+<td>Salt</td>
+<td>Ubuntu</td>
+<td>multi-support</td>
+<td><a href="https://docs.mirantis.com/mcp/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Oracle Cloud Infrastructure</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)</td>
+<td></td>
+<td></td>
+<td>multi-support</td>
+<td><a href="https://docs.cloud.oracle.com/iaas/Content/ContEng/Concepts/contengoverview.htm" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>oVirt</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/setup/on-premises-vm/ovirt/">docs</a></td>
+<td>Community (<a href="https://github.com/simon3z" target="_blank">@simon3z</a>)</td>
+</tr>
+
+<tr>
+<td>Platform9</td>
+<td></td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://platform9.com/managed-kubernetes/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Rackspace</td>
+<td>custom</td>
+<td>CoreOS</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://developer.rackspace.com/docs/rkaas/latest/" target="_blank">docs</a></td>
+<td><a href="https://www.rackspace.com/managed-kubernetes" target="_blank">Commercial</a></td>
+</tr>
+
+<tr>
+<td>Red Hat OpenShift</td>
+<td>Ansible &amp; CoreOS</td>
+<td>RHEL &amp; CoreOS</td>
+<td><a href="https://docs.openshift.com/container-platform/3.11/architecture/networking/network_plugins.html" target="_blank">multi-support</a></td>
+<td><a href="https://docs.openshift.com/container-platform/3.11/welcome/index.html" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Stackpoint.io</td>
+<td></td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://stackpoint.io/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>Vagrant</td>
+<td>CoreOS</td>
+<td>CoreOS</td>
+<td>flannel</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/coreos/">docs</a></td>
+<td>Community (<a href="https://github.com/pires" target="_blank">@pires</a>, <a href="https://github.com/AntonioMeireles" target="_blank">@AntonioMeireles</a>)</td>
+</tr>
+
+<tr>
+<td>VMware vSphere</td>
+<td>any</td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://github.com/kubernetes/cloud-provider-vsphere/tree/master/docs" target="_blank">docs</a></td>
+<td><a href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/contactus.html" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>VMware vSphere</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel/calico/canal</td>
+<td><a href="https://v1-13.docs.kubernetes.io/docs/getting-started-guides/ubuntu/">docs</a></td>
+<td><a href="https://www.ubuntu.com/kubernetes" target="_blank">Commercial</a> and <a href="https://jujucharms.com/kubernetes" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>VMware Cloud PKS</td>
+<td></td>
+<td>Photon OS</td>
+<td>Canal</td>
+<td><a href="https://docs.vmware.com/en/VMware-Kubernetes-Engine/index.html" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>VMware Enterprise PKS</td>
+<td>BOSH</td>
+<td>Ubuntu</td>
+<td>VMware NSX-T/flannel</td>
+<td><a href="https://docs.vmware.com/en/VMware-Enterprise-PKS/" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+
+<tr>
+<td>VMware Essential PKS</td>
+<td>any</td>
+<td>multi-support</td>
+<td>multi-support</td>
+<td><a href="https://cloud.vmware.com/vmware-essential-PKS" target="_blank">docs</a></td>
+<td>Commercial</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="definition-of-columns">Definition of columns<a class="anchorjs-link " href="#definition-of-columns" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<ul>
+<li><strong>IaaS Provider</strong> is the product or organization which provides the virtual or physical machines (nodes) that Kubernetes runs on.</li>
+<li><strong>OS</strong> is the base operating system of the nodes.</li>
+<li><strong>Config. Mgmt.</strong> is the configuration management system that helps install and maintain Kubernetes on the
+nodes.</li>
+<li><strong>Networking</strong> is what implements the <a href="https://v1-13.docs.kubernetes.io/docs/concepts/cluster-administration/networking/">networking model</a>. Those with networking type
+<em>none</em> may not support more than a single node, or may support multiple VM nodes in a single physical node.</li>
+<li><strong>Support Levels</strong>
+
+<ul>
+<li><strong>Project</strong>: Kubernetes committers regularly use this configuration, so it usually works with the latest release
+of Kubernetes.</li>
+<li><strong>Commercial</strong>: A commercial offering with its own support arrangements.</li>
+<li><strong>Community</strong>: Actively supported by community contributions. May not work with recent releases of Kubernetes.</li>
+<li><strong>Inactive</strong>: Not actively maintained. Not recommended for first-time Kubernetes users, and may be removed.</li>
+</ul></li>
+<li><strong>Notes</strong> has other relevant information, such as the version of Kubernetes used.</li>
+</ul>
+
+<!-- reference style links below here -->
+
+<!-- GCE conformance test result -->
+
+<!-- Vagrant conformance test result -->
+
+<!-- Google Kubernetes Engine conformance test result -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+  <h2 id="feedback">Feedback<a class="anchorjs-link " href="#feedback" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+  <p class="feedback--prompt">Was this page helpful? </p>
+  <button class="button feedback--yes">Yes</button>
+  <button class="button feedback--no">No</button>
+  <p class="feedback--response feedback--response__hidden">
+    Thanks for the feedback. If you have a specific, answerable question about how to use Kubernetes,
+    ask it on <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a>. Open
+    an issue in the GitHub repo if you want to <a class="feedback--link" target="_blank" rel="noopener" href="https://github.com/kubernetes/website/issues/new?title=Issue%20with%20k8s.io/docs/setup/pick-right-solution/">report a problem</a> or
+    <a class="feedback--link" target="_blank" rel="noopener" href="https://github.com/kubernetes/website/issues/new?title=Improvement%20for%20k8s.io/docs/setup/pick-right-solution/">suggest an improvement</a>.
+  </p>
+  <script>
+    const yes = document.querySelector('.feedback--yes');
+    const no = document.querySelector('.feedback--no');
+    document.querySelectorAll('.feedback--link').forEach(link => {
+      link.href = link.href + window.location.pathname;
+    });
+    const sendFeedback = (value) => {
+      if (!gtag) { console.log('!gtag'); }
+      gtag('event', 'click', {
+        'event_category': 'Helpful',
+        'event_label': window.location.pathname,
+        value
+      });
+    };
+    const disableButtons = () => {
+      yes.disabled = true;
+      yes.classList.add('feedback--button__disabled');
+      no.disabled = true;
+      no.classList.add('feedback--button__disabled');
+    };
+    yes.addEventListener('click', () => {
+      sendFeedback(1);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+    no.addEventListener('click', () => {
+      sendFeedback(0);
+      disableButtons();
+      document.querySelector('.feedback--response').classList.remove('feedback--response__hidden');
+    });
+  </script>
+
+
+
+        <div id="pre-footer"> 
+  <hr>
+
+  <div class="issue-button-container">
+    <p><a href=""><img src="Aut19h_files/pick-right-solution.gif" alt="Analytics"></a></p>
+    
+    
+    <script type="text/javascript">
+    PDRTJS_settings_8345992 = {
+    "id" : "8345992",
+    "unique_id" : "\/docs\/setup\/pick-right-solution\/",
+    "title" : "Picking the Right Solution",
+    "permalink" : "https:\/\/kubernetes.io\/docs\/setup\/pick-right-solution\/"
+    };
+    (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+    </script>
+    <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+    'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+    
+    
+    
+    <a href="https://github.com/kubernetes/website/edit/master/content/en/docs/setup/pick-right-solution.md" class="button issue">Edit This Page</a>
+    
+  </div>
+  
+
+  <div id="lastedit" class="lastedit issue-button-container">
+    Page last modified on March 20, 2019 at 8:43 PM PST by
+    <a href="https://github.com/kubernetes/website/commit/83d740c062a9008d156e0822a79c77d2b9a47553/">Update table (#13317)</a> (<a href="https://github.com/kubernetes/website/commits/master/content/en/docs/setup/pick-right-solution.md">Page History</a>)
+  </div>
+  
+</div>
+
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="https://v1-13.docs.kubernetes.io/docs/home/">Home</a>
+            
+            <a href="https://v1-13.docs.kubernetes.io/blog/">Blog</a>
+            
+            <a href="https://v1-13.docs.kubernetes.io/partners/">Partners</a>
+            
+            <a href="https://v1-13.docs.kubernetes.io/community/">Community</a>
+            
+            <a href="https://v1-13.docs.kubernetes.io/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>GitHub</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io/" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            © 2019 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright © 2019 The Linux Foundation ®. All rights 
+reserved. The Linux Foundation has registered trademarks and uses 
+trademarks. For a list of trademarks of The Linux Foundation, please see
+ our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+        <div id="miceType" class="center">
+            ICP license: 京ICP备17074266号-3
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+    <script language="application/javascript">
+      
+      (function addHeadingLinks(){
+        var article = document.getElementById('docsContent');
+        var headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(function(heading){
+          if(heading.id){
+            var a = document.createElement('a');
+            a.innerHTML = heading.innerHTML;
+            a.href = '#'+heading.id;
+            a.classList.add('inpage_heading');
+            heading.innerHTML = '';
+            heading.appendChild(a);
+          }
+        });
+      })();
+    </script>
+	
+
+<div class="pi-pushmenu" id="primary"><div class="overlay"><div class="sled" style="right: 0px;"><div class="content"><ul><li><a href="https://v1-13.docs.kubernetes.io/docs/" class="active" id="">Documentation</a></li><li><a href="https://v1-13.docs.kubernetes.io/blog/" id="">Blog</a></li><li><a href="https://v1-13.docs.kubernetes.io/partners/" id="">Partners</a></li><li><a href="https://v1-13.docs.kubernetes.io/community/" id="">Community</a></li><li><a href="https://v1-13.docs.kubernetes.io/case-studies/" id="">Case Studies</a></li><li><a href="#" id="">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a></li><li><a href="https://v1-13.docs.kubernetes.io/ko/docs/setup/pick-right-solution/" id="">한국어 Korean</a></li><li><a href="https://v1-13.docs.kubernetes.io/ja/docs/setup/pick-right-solution/" id="">日本語 Japanese</a></li><li><a href="https://v1-13.docs.kubernetes.io/fr/docs/setup/pick-right-solution/" id="">Français</a></li><li><a href="#" id="">
+                    v1.13 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a></li><li><a href="https://kubernetes.io/" id="">v1.15</a></li><li><a href="https://v1-14.docs.kubernetes.io/" id="">v1.14</a></li><li><a href="https://v1-13.docs.kubernetes.io/" id="">v1.13</a></li><li><a href="https://v1-12.docs.kubernetes.io/" id="">v1.12</a></li><li><a href="https://v1-11.docs.kubernetes.io/" id="">v1.11</a></li><li><a href="https://v1-13.docs.kubernetes.io/docs/tutorials/hello-minikube/" id="">Get Started</a></li><li><a href="https://v1-13.docs.kubernetes.io/docs/home/" id="">Documentation</a></li><li><a href="https://v1-13.docs.kubernetes.io/blog/" id="">Blog</a></li><li><a href="https://twitter.com/kubernetesio" class="twitter" id=""><span>Twitter</span></a></li><li><a href="https://github.com/kubernetes/kubernetes" class="github" id=""><span>GitHub</span></a></li><li><a href="http://slack.k8s.io/" class="slack" id=""><span>Slack Slack</span></a></li><li><a href="https://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow" id=""><span>Stack Overflow</span></a></li><li><a href="https://discuss.kubernetes.io/" class="mailing-list" id=""><span>Forum</span></a></li><li><a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar" id=""><span>Events Calendar</span></a></li></ul></div><button class="push-menu-close-button"></button></div></div></div></body></html>

@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="ie8"> <![endif]-->
+<!--[if IE 9]> <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Using the CRI-O Container Engine | CRI-O Runtime | OpenShift Container Platform 3.11</title>
+  <link href="Inc19j_files/subdomain.css" rel="stylesheet" type="text/css">
+  <link href="Inc19j_files/docs.css" rel="stylesheet">
+  <link href="Inc19j_files/search.css" rel="stylesheet">
+  <link href="https://assets.openshift.net/content/subdomain/touch-icon-precomposed.png" rel="apple-touch-icon-precomposed" type="image/png">
+  <link href="https://assets.openshift.net/content/subdomain/favicon32x32.png" rel="shortcut icon" type="text/css">
+  <link href="Inc19j_files/osh-nav-footer.css" rel="stylesheet" type="text/css" media="screen, print">
+  <!--[if IE]><link rel="shortcut icon" href="https://assets.openshift.net/content/subdomain/favicon.ico"><![endif]-->
+  <!-- or, set /favicon.ico for IE10 win -->
+  <meta content="OpenShift" name="application-name">
+  <meta content="#000000" name="msapplication-TileColor">
+  <meta content="https://assets.openshift.net/content/subdomain/touch-icon-precomposed.png" name="msapplication-TileImage">
+  <!-- Google Tag Manager -->
+<script type="text/javascript" id="www-widgetapi-script" src="Inc19j_files/www-widgetapi.js" async=""></script><script async="" src="Inc19j_files/gtm.js"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PMDVKG');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Adobe DTM -->
+<script src="Inc19j_files/dtm.js" type="text/javascript"></script><script src="Inc19j_files/mbox-contents-dc4a102c462e55a78aec3590996bae13ca839e07.js"></script><script src="Inc19j_files/satellite-5915f24a64746d33e7004c66.js"></script>
+<!-- End Adobe DTM -->
+<script src="Inc19j_files/s-code-contents-f4a9b6c9b26c8800983ba8666ad806f707c6e823.js"></script><script src="Inc19j_files/satellite-57b31fc964746d78b5000e89.js"></script><script src="Inc19j_files/satellite-5ad4b51064746d0355005da6.js"></script><script src="Inc19j_files/satellite-57b31fbb64746d4d3b001131.js"></script><script type="text/javascript" src="Inc19j_files/X4PVAXm1.js"></script><script src="Inc19j_files/elqCfg.js"></script><script type="text/javascript" src="Inc19j_files/iframe_api"></script></head>
+<body onload="selectVersion('3.11');">
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PMDVKG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav id="main">
+  <div class="container">
+    <div class="row">
+      <div class="navbar navbar-default navbar-openshift" role="navigation">
+        <div class="navbar-header">
+            <a href="#nav-main" class="dropdown-toggle navbar-menu-toggle hidden visible-xs" data-toggle="collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+          <a class="navbar-brand" href="https://docs.openshift.com/"></a>
+        </div>
+        <div id="nav-main" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="products" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                Products <span class="fa fa-angle-down"></span>
+              </a>
+              <div class="dropdown-menu">
+                <div class="row flex-column flex-md-row">
+                  <div class="col-xs-12 col-sm-3">
+                    <h3>Overview</h3>
+                    <ul class="nav flex-column">
+                      <li><a target="_blank" href="https://www.openshift.com/products/features/">Features</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/products/pricing/">Pricing</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-xs-12 col-sm-9">
+                    <h3>Featured Products</h3>
+                    <ul class="nav">
+                      <li>
+                        <a target="_blank" href="https://www.openshift.com/products/container-platform/">Red Hat OpenShift Container&nbsp;Platform</a>
+                        <p class="d-none d-md-block">Build, deploy and manage your applications across cloud- and on-premise infrastructure</p>
+                      </li>
+                      <li>
+                        <a target="_blank" href="https://www.openshift.com/products/dedicated/">Red Hat OpenShift Dedicated</a>
+                        <p class="d-none d-md-block">Single-tenant, high-availability Kubernetes clusters in the public cloud</p>
+                      </li>
+
+                      <li>
+                        <a target="_blank" href="https://www.openshift.com/products/online/">Red Hat OpenShift Online</a>
+                        <p class="d-none d-md-block">The fastest way for developers to build, host and scale applications in the public cloud</p>
+                      </li>
+
+                      <li class="nav-item">
+                        <a target="_blank" href="https://www.openshift.com/products/">All products <span class="fa fa-angle-right"></span></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li id="learn" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Learn <span class="fa fa-angle-down"></span>
+              </a>
+              <div class="dropdown-menu">
+                <div class="row flex-md-nowrap">
+                  <div class="col-xs-12 col-sm-6">
+                    <h3>Learn</h3>
+                    <ul class="nav">
+                      <li><a target="_blank" href="https://www.openshift.com/learn/what-is-openshift/">What is OpenShift</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/get-started/">Get started</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/partners/">Partners</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/success-stories/">Customer success stories</a></li>
+                      <li><a target="_blank" href="https://blog.openshift.com/">Blog</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/resources/">Resources</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-xs-12 col-sm-6">
+                    <h3>Technology Topics</h3>
+                    <ul class="nav">
+                      <li><a target="_blank" href="https://www.openshift.com/learn/topics/knative/">Knative</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/topics/security/">Security</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/topics/kubernetes/">Kubernetes</a></li>
+                      <li><a target="_blank" href="https://www.openshift.com/learn/topics/service-brokers/">Service Brokers</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Community <span class="fa fa-angle-down"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a target="_blank" href="https://commons.openshift.org/">OpenShift Commons</a></li>
+                <li><a target="_blank" href="https://www.okd.io/">Open Source (OKD)</a></li>
+                <li><a target="_blank" href="https://www.openshift.com/community/programs/startups/">Startups</a></li>
+                <li><a target="_blank" href="https://www.openshift.com/community/programs/grants/">Grants</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Support <span class="fa fa-angle-down"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a target="_blank" href="https://help.openshift.com/">Help Center</a></li>
+                <li><a href="https://docs.openshift.com/">OpenShift Docs</a></li>
+              </ul>
+            </li>
+
+            <li><a target="_blank" class="nav-sign-up" href="https://www.openshift.com/trial/">Free Trial</a></li>
+
+            <li><a target="_blank" href="https://manage.openshift.com/" class="nav-sign-in">Log In <span class="fa fa-angle-right"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <div class="container">
+    <p class="toggle-nav visible-xs pull-left">
+      <button class="btn btn-default btn-sm" type="button" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <ol class="breadcrumb">
+      <li class="sitename">
+        <a href="https://docs.openshift.com/index.html">Documentation</a>
+      </li>
+      <li class="hidden-xs active">
+        
+          
+            <a href="https://docs.openshift.com/container-platform/3.11/welcome/index.html">
+              OpenShift Container Platform
+            </a>
+          
+          <select id="version-selector" onchange="versionSelector(this);">
+              <option value="4.1">4.1</option>
+              <option value="3.11" selected="selected">3.11</option>
+              <option value="3.10">3.10</option>
+              <option value="3.9">3.9</option>
+              <option value="3.7">3.7</option>
+              <option value="3.6">3.6</option>
+              <option value="3.5">3.5</option>
+              <option value="3.4">3.4</option>
+              <option value="3.3">3.3</option>
+              <option value="3.2">3.2</option>
+              <option value="3.1">3.1</option>
+              <option value="3.0">3.0</option>
+          </select>
+        
+      </li>
+      <li class="hidden-xs active">
+        <a href="https://docs.openshift.com/container-platform/3.11/crio/crio_runtime.html">CRI-O Runtime</a>
+      </li>
+      
+      <li class="hidden-xs active">
+        Using the CRI-O Container Engine
+      </li>
+      
+      <span text-align="right" style="float: right !important">
+        <a href="https://github.com/openshift/openshift-docs/commits/enterprise-3.11/crio/crio_runtime.adoc">
+          Page history
+        </a>
+        /
+        <a href="https://github.com/openshift/openshift-docs/issues/new?title=[enterprise-3.11]%20Edit%20suggested%20in%20file%20crio/crio_runtime.adoc">
+          Suggest an edit
+        </a>
+      </span>
+      
+    </ol>
+    <div class="row row-offcanvas row-offcanvas-left">
+      <div class="col-xs-8 col-sm-3 col-md-3 sidebar sidebar-offcanvas">
+        <div class="row-fluid">
+          <div id="hc-search">
+            <input id="hc-search-input" type="text">
+            <button id="hc-search-btn">Search</button>
+          </div>
+
+          <div id="hc-search-modal">
+            <div id="hc-modal-content">
+              <span id="hc-modal-close">×</span>
+              <div id="hc-search-results"></div>
+            </div>
+          </div>
+        </div>
+        <ul class="nav nav-sidebar">
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup0">
+        <span id="tgSpan0" class="fa fa-angle-right"></span>About
+      </a>
+      <ul id="topicGroup0" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/welcome/index.html">Welcome</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/welcome/oce_about.html">About OpenShift Container Engine</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/welcome/legal_notice.html">Legal Notice</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup1">
+        <span id="tgSpan1" class="fa fa-angle-right"></span>Release Notes
+      </a>
+      <ul id="topicGroup1" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/release_notes/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html">OpenShift Container Platform 3.11 Release Notes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/release_notes/xpaas_release_notes.html">xPaaS Release Notes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/release_notes/v2_vs_v3.html">Comparing with OpenShift Enterprise 2</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup2">
+        <span id="tgSpan2" class="fa fa-angle-right"></span>Getting Started
+      </a>
+      <ul id="topicGroup2" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/getting_started/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/getting_started/install_openshift.html">Install OpenShift</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/getting_started/configure_openshift.html">Configure OpenShift</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/getting_started/developers_console.html">Web Console Walkthrough</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/getting_started/developers_cli.html">Command-Line Walkthrough</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup3">
+        <span id="tgSpan3" class="fa fa-angle-right"></span>Architecture
+      </a>
+      <ul id="topicGroup3" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/index.html">Overview</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-3-1">
+                <span id="sgSpan-3-1" class="fa fa-caret-right"></span>&nbsp;Infrastructure Components
+              </a>
+              <ul id="topicSubGroup-3-1" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/infrastructure_components/kubernetes_infrastructure.html">Kubernetes Infrastructure</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/infrastructure_components/image_registry.html">Container Registry</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/infrastructure_components/web_console.html">Web Console</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-3-2">
+                <span id="sgSpan-3-2" class="fa fa-caret-right"></span>&nbsp;Core Concepts
+              </a>
+              <ul id="topicSubGroup-3-2" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/containers_and_images.html">Containers and Images</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/pods_and_services.html">Pods and Services</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/projects_and_users.html">Projects and Users</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/builds_and_image_streams.html">Builds and Image Streams</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html">Deployments</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-3-3">
+                <span id="sgSpan-3-3" class="fa fa-caret-right"></span>&nbsp;Additional Concepts
+              </a>
+              <ul id="topicSubGroup-3-3" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/authentication.html">Authentication</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/authorization.html">Authorization</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/storage.html">Persistent Storage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/ephemeral-storage.html">Ephemeral Storage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/scm.html">Source Control Management</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/admission_controllers.html">Admission Controllers</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/dynamic_admission_controllers.html">Custom Admission Controllers</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/other_api_objects.html">Other API Objects</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-3-4">
+                <span id="sgSpan-3-4" class="fa fa-caret-right"></span>&nbsp;Networking
+              </a>
+              <ul id="topicSubGroup-3-4" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/networking.html">Networking</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/sdn.html">OpenShift SDN</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/network_plugins.html">Available SDN plug-ins</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/assembly_available_router_plugins.html">Available router plug-ins</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/port_forwarding.html">Port Forwarding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/remote_commands.html">Remote Commands</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html">Routes</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-3-5">
+                <span id="sgSpan-3-5" class="fa fa-caret-right"></span>&nbsp;Service Catalog Components
+              </a>
+              <ul id="topicSubGroup-3-5" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/service_catalog/index.html">Service Catalog</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/service_catalog/service_catalog_cli.html">Service Catalog CLI</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/service_catalog/template_service_broker.html">Template Service Broker</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/service_catalog/ansible_service_broker.html">OpenShift Ansible Broker</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/architecture/service_catalog/aws_broker.html">AWS Service Broker</a></li>
+              </ul>
+            </li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup4">
+        <span id="tgSpan4" class="fa fa-angle-right"></span>Container Security Guide
+      </a>
+      <ul id="topicGroup4" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/index.html">Introduction</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/hosts_multitenancy.html">Container Hosts and Multi-tenancy</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/container_content.html">Container Content</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/registries.html">Registries</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/build_process.html">Build Process</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/deployment.html">Deployment</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/securing_container_platform.html">Securing the Container Platform</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/network_security.html">Network Security</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/storage.html">Attached Storage</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/security/monitoring.html">Monitoring Events and Logs</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup5">
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Installing Clusters
+      </a>
+      <ul id="topicGroup5" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/index.html">Planning your installation</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/prerequisites.html">System and environment requirements</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/host_preparation.html">Preparing your hosts</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/configuring_inventory_file.html">Configuring Your Inventory File</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/example_inventories.html">Example Inventory Files</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/running_install.html">Installing OpenShift</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/disconnected_install.html">Disconnected installation</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/stand_alone_registry.html">Installing a stand-alone deployment of OpenShift container image registry</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install/uninstalling_cluster.html">Uninstalling OpenShift</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup6">
+        <span id="tgSpan6" class="fa fa-angle-right"></span>Upgrading Clusters
+      </a>
+      <ul id="topicGroup6" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/upgrading/index.html">Upgrade methods and strategies</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/upgrading/automated_upgrades.html">In-place upgrades</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/upgrading/blue_green_deployments.html">Blue-green upgrades</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/upgrading/os_upgrades.html">Updating operating systems</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/upgrading/downgrade.html">Downgrading</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup7">
+        <span id="tgSpan7" class="fa fa-angle-right"></span>Configuring Clusters
+      </a>
+      <ul id="topicGroup7" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/index.html">Overview</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-7-1">
+                <span id="sgSpan-7-1" class="fa fa-caret-right"></span>&nbsp;Setting up the Registry
+              </a>
+              <ul id="topicSubGroup-7-1" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/index.html">Internal Registry Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/deploy_registry_existing_clusters.html">Deploying a Registry on Existing Clusters</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/accessing_registry.html">Accessing the Registry</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/securing_and_exposing_registry.html">Securing and Exposing the Registry</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/extended_registry_configuration.html">Extended Registry Configuration</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/registry/registry_known_issues.html">Known Issues</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-7-2">
+                <span id="sgSpan-7-2" class="fa fa-caret-right"></span>&nbsp;Setting up a Router
+              </a>
+              <ul id="topicSubGroup-7-2" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/router/index.html">Router Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/router/default_haproxy_router.html">Using the Default HAProxy Router</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/router/customized_haproxy_router.html">Deploying a Customized HAProxy Router</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/router/proxy_protocol.html">Configuring the HAProxy Router to Use the PROXY Protocol</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/router/f5_router.html">Using the F5 Router Plug-in</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-7-3">
+                <span id="sgSpan-7-3" class="fa fa-caret-right"></span>&nbsp;Deploying Red Hat CloudForms
+              </a>
+              <ul id="topicSubGroup-7-3" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/index.html">Introduction</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/requirements.html">Requirements</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/role_variables.html">Configuring Role Variables</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/installing.html">Running the Installer</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/container_provider.html">Enabling Container Provider Integration</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cfme/uninstalling.html">Uninstalling</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/prometheus_cluster_monitoring.html">Prometheus Cluster Monitoring</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_red_hat_registry.html">Accessing and Configuring the Red Hat Registry</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/master_node_configuration.html">Master and Node Configuration</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/oab_broker_configuration.html">OpenShift Ansible Broker Configuration</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/adding_hosts_to_existing_cluster.html">Adding Hosts to an Existing Cluster</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/imagestreams_templates.html">Loading the Default Image Streams and Templates</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/certificate_customization.html">Configuring Custom Certificates</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/redeploying_certificates.html">Redeploying Certificates</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html">Configuring Authentication and User Agent</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/syncing_groups_with_ldap.html">Syncing groups with LDAP</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/sssd_for_ldap_failover.html">Configuring LDAP failover</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_sdn.html">Configuring the SDN</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_nuagesdn.html">Configuring Nuage SDN</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_nsxtsdn.html">Configuring NSX-T SDN</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_kuryrsdn.html">Configuring Kuryr SDN</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_aws.html">Configuring for AWS</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_rhv.html">Configuring for Red Hat Virtualization</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_openstack.html">Configuring for OpenStack</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_gce.html">Configuring for Google Compute Engine</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_azure.html">Configuring for Azure</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_vsphere.html">Configuring for VMware vSphere</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_local.html">Configuring Local Volumes</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-7-26">
+                <span id="sgSpan-7-26" class="fa fa-caret-right"></span>&nbsp;Configuring Persistent Storage
+              </a>
+              <ul id="topicSubGroup-7-26" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_nfs.html">Using NFS</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_glusterfs.html">Using GlusterFS</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_cinder.html">Using OpenStack Cinder</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_ceph_rbd.html">Using Ceph RBD</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_aws.html">Using AWS Elastic Block Store</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_gce.html">Using GCE Persistent Disk</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_iscsi.html">Using iSCSI</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_fibre_channel.html">Using Fibre Channel</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_azure.html">Using Azure Disk</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_azure_file.html">Using Azure File</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_flex_volume.html">Using FlexVolume</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_vsphere.html">Using VMware vSphere volumes for persistent storage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_local.html">Using Local Volume</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_csi.html">Using Container Storage Interface (CSI)</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_storage_manila.html">Using OpenStack Manila shares</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/dynamically_provisioning_pvs.html">Dynamic Provisioning and Creating Storage Classes</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/pod_security_context.html">Volume Security</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/selector_label_binding.html">Selector-Label Volume Binding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/enabling_controller_attach_detach.html">Enabling Controller-managed Attachment and Detachment</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/persistent_volume_snapshots.html">Persistent Volume Snapshots</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-7-27">
+                <span id="sgSpan-7-27" class="fa fa-caret-right"></span>&nbsp;Persistent Storage Examples
+              </a>
+              <ul id="topicSubGroup-7-27" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/shared_storage.html">Sharing an NFS PV Across Two Pods</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/ceph_example.html">Using Ceph RBD for Persistent Storage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/ceph_rbd_dynamic_example.html">Using Ceph RBD for dynamic provisioning</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/gluster_example.html">Complete Example Using GlusterFS</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/gluster_dynamic_example.html">Complete Example Using GlusterFS for Dynamic Provisioning</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/privileged_pod_storage.html">Mounting Volumes To Privileged Pods</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/gluster_backed_registry.html">Switching an Integrated OpenShift Container Registry to GlusterFS</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/binding_pv_by_label.html">Binding Persistent Volumes by Label</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/storage_classes_dynamic_provisioning.html">Using StorageClasses for Dynamic Provisioning</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/storage_classes_legacy.html">Using StorageClasses for Existing Legacy Storage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/storage_examples/azure_blob_docker_registry_example.html">Configuring Azure Blob Storage for Integrated Container Image Registry</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_ephemeral.html">Configuring Ephemeral Storage</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/http_proxies.html">Working with HTTP Proxies</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/build_defaults_overrides.html">Configuring Global Build Defaults and Overrides</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_pipeline_execution.html">Configuring Pipeline Execution</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_routing.html">Configuring Route Timeouts</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_native_container_routing.html">Configuring Native Container Routing</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/routing_from_edge_lb.html">Routing from Edge Load Balancers</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html">Aggregating Container Logs</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging_sizing.html">Aggregate Logging Sizing Guidelines</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/cluster_metrics.html">Enabling Cluster Metrics</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/web_console_customization.html">Customizing the Web Console</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/provisioners.html">Deploying External Persistent Volume Provisioners</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/install_config/installing-operator-framework.html">Installing the Operator Framework (Technology Preview)</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup8">
+        <span id="tgSpan8" class="fa fa-angle-right"></span>Day Two Operations Guide
+      </a>
+      <ul id="topicGroup8" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/run_once_tasks.html">Run-once tasks</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/environment_health_checks.html">Environment health checks</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/environment_backup.html">Creating an environment-wide backup</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/host_level_tasks.html">Host-level tasks</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/project_level_tasks.html">Project-level tasks</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/docker_tasks.html">Docker tasks</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/day_two_guide/certificate_management.html">Managing Certificates</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup9">
+        <span id="tgSpan9" class="fa fa-angle-right"></span>Cluster Administration
+      </a>
+      <ul id="topicGroup9" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_nodes.html">Managing Nodes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/assembly_restoring-cluster.html">Restoring your cluster</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/assembly_replace-master-host.html">Replacing a master host</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_users.html">Managing Users</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html">Managing Projects</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/managing_pods.html">Managing Pods</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/managing_networking.html">Managing Networking</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/service_accounts.html">Configuring Service Accounts</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_rbac.html">Managing Role-based Access Control</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/image_policy.html">Image Policy</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/image_signatures.html">Image Signatures</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scoped_tokens.html">Scoped Tokens</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/monitoring_images.html">Monitoring Images</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html">Managing Security Context Constraints</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-9-15">
+                <span id="sgSpan-9-15" class="fa fa-caret-right"></span>&nbsp;Scheduling
+              </a>
+              <ul id="topicSubGroup-9-15" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/scheduler.html">Default Scheduling</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/descheduler.html">Descheduling</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/custom_scheduler.html">Custom Scheduling</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/pod_placement.html">Controlling Pod Placement</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/priority_preemption.html">Pod Priority and Preemption</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/scheduler-advanced.html">Advanced Scheduling</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/node_affinity.html">Advanced Scheduling and Node Affinity</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/pod_affinity.html">Advanced Scheduling and Pod Affinity/Anti-affinity</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/node_selector.html">Advanced Scheduling and Node Selectors</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/scheduling/taints_tolerations.html">Advanced Scheduling and Taints and Tolerations</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/quota.html">Setting Quotas</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/multiproject_quota.html">Setting Multi-Project Quotas</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/limits.html">Setting Limit Ranges</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/pruning_resources.html">Pruning objects</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/custom_resource_definitions.html">Extending the Kubernetes API with Custom Resources</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/garbage_collection.html">Garbage Collection</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/allocating_node_resources.html">Allocating Node Resources</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/opaque_integer_resources.html">Opaque Integer Resources</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/node_problem_detector.html">Node Problem Detector</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/overcommit.html">Overcommitting</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/tcp_ingress_external_ports.html">Assigning Unique External IPs for Ingress Traffic</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/out_of_resource_handling.html">Out of Resource Handling</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/router.html">Monitoring and Debugging Routers</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/high_availability.html">High Availability</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/iptables.html">IPtables</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/securing_builds.html">Securing Builds by Strategy</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/seccomp.html">Restricting Application Capabilities Using Seccomp</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/sysctls.html">Sysctls</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/encrypting_data.html">Encrypting Data at Datastore Layer</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/ipsec.html">Encrypting traffic between nodes with IPsec</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/building_dependency_trees.html">Building Dependency Trees</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/assembly_replace-etcd-member.html">Replacing a failed etcd member</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/assembly_restore-etcd-quorum.html">Restoring etcd quorum</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/sdn_troubleshooting.html">Troubleshooting Networking</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/diagnostics_tool.html">Diagnostics Tool</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/idling_applications.html">Idling Applications</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/cluster_capacity.html">Analyzing Cluster Capacity</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/cluster-autoscaler.html">Configuring the cluster auto-scaler in AWS</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/disabling_features.html">Disabling Features using Feature Gates</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/admin_guide/kuryr.html">Kuryr SDN Administration</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup10">
+        <span id="tgSpan10" class="fa fa-angle-right"></span>Scaling and Performance Guide
+      </a>
+      <ul id="topicGroup10" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/install_practices.html">Recommended Installation Practices</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/host_practices.html">Recommended Host Practices</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/optimizing_compute_resources.html">Optimizing Compute Resources</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/optimizing_storage.html">Optimizing Persistent Storage</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/optimizing_ephemeral_storage.html">Optimizing Ephemeral Storage</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/network_optimization.html">Network Optimization</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/routing_optimization.html">Routing Optimization</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/scaling_cluster_metrics.html">Scaling Cluster Metrics</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/scaling_cluster_monitoring.html">Scaling Cluster Monitoring</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/cluster_limits.html">Cluster Limits</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/using_cluster_loader.html">Using Cluster Loader</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/using_cpu_manager.html">Using CPU Manager</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/managing_hugepages.html">Managing Huge Pages</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/scaling_performance/optimizing_on_glusterfs_storage.html">Optimizing On GlusterFS Storage</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup11">
+        <span id="tgSpan11" class="fa fa-angle-right"></span>Developer Guide
+      </a>
+      <ul id="topicGroup11" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/index.html">Overview</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-1">
+                <span id="sgSpan-11-1" class="fa fa-caret-right"></span>&nbsp;Application Life Cycle Management
+              </a>
+              <ul id="topicSubGroup-11-1" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/development_process.html">Planning Your Development Process</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html">Creating New Applications</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/promoting_applications.html">Promoting Applications Across Environments</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/authentication.html">Authentication</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/authorization.html">Authorization</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/projects.html">Projects</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-5">
+                <span id="sgSpan-11-5" class="fa fa-caret-right"></span>&nbsp;Migrating Applications
+              </a>
+              <ul id="topicSubGroup-11-5" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/database_applications.html">Database Applications</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/web_framework_applications.html">Web Framework Applications</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/quickstart_examples.html">QuickStart Examples</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/continuous_integration_and_deployment.html">Continuous Integration and Deployment</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/web_hooks_action_hooks.html">Webhooks and Action Hooks</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/S2I_tool.html">S2I Tool</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/migrating_applications/support_guide.html">Support Guide</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-6">
+                <span id="sgSpan-11-6" class="fa fa-caret-right"></span>&nbsp;Tutorials
+              </a>
+              <ul id="topicSubGroup-11-6" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/quickstarts.html">Quickstart Templates</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/ruby_on_rails.html">Ruby on Rails</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/maven_tutorial.html">Setting Up a Nexus Mirror</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/openshift_pipeline.html">OpenShift Pipeline Builds</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/binary_builds.html">Binary Builds</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-7">
+                <span id="sgSpan-11-7" class="fa fa-caret-right"></span>&nbsp;Builds
+              </a>
+              <ul id="topicSubGroup-11-7" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/index.html">How Builds Work</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/basic_build_operations.html">Basic Build Operations</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_inputs.html">Build Inputs</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_output.html">Build Output</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_strategies.html">Build Strategy Options</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_environment.html">Build Environment</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/triggering_builds.html">Triggering Builds</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_hooks.html">Build Hooks</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_run_policy.html">Build Run Policy</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/advanced_build_operations.html">Advanced Build Operations</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_troubleshooting.html">Troubleshooting</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-8">
+                <span id="sgSpan-11-8" class="fa fa-caret-right"></span>&nbsp;Deployments
+              </a>
+              <ul id="topicSubGroup-11-8" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/how_deployments_work.html">How Deployments Work</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/basic_deployment_operations.html">Basic Deployment Operations</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/deployment_strategies.html">Deployment Strategies</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/advanced_deployment_strategies.html">Advanced Deployment Strategies</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/kubernetes_deployments.html">Kubernetes Deployments Support</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html">Templates</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/ssh_environment.html">Opening a Remote Shell to Containers</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/service_accounts.html">Service Accounts</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html">Managing Images</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/compute_resources.html">Quotas and Limit Ranges</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-11-14">
+                <span id="sgSpan-11-14" class="fa fa-caret-right"></span>&nbsp;Getting Traffic into a Cluster
+              </a>
+              <ul id="topicSubGroup-11-14" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_router.html">Using a Router</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_load_balancer.html">Using a Load Balancer</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_service.html">Using a Service ExternalIP</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expose_service/expose_internal_ip_nodeport.html">Using a NodePort</a></li>
+              </ul>
+            </li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/routes.html">Routes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/integrating_external_services.html">Integrating External Services</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/device_manager.html">Using Device Manager</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/device_plugins.html">Using Device Plug-ins</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/secrets.html">Secrets</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/configmaps.html">ConfigMaps</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/downward_api.html">Downward API</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/projected_volumes.html">Projected Volumes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/daemonsets.html">Using Daemonsets</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/pod_autoscaling.html">Pod Autoscaling</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/volumes.html">Managing Volumes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/persistent_volumes.html">Using Persistent Volumes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/expanding_persistent_volumes.html">Expanding Persistent Volumes</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/executing_remote_commands.html">Executing Remote Commands</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/copy_files_to_container.html">Copying Files</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/port_forwarding.html">Port Forwarding</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/shared_memory.html">Shared Memory</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_health.html">Application Health</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/events.html">Events</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/environment_variables.html">Managing Environment Variables</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/jobs.html">Jobs</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/openshift_pipeline.html">OpenShift Pipeline</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/cron_jobs.html">Cron Jobs</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/create_from_url.html">Create from URL</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/creating_crd_objects.html">Creating an object from a custom resource definition</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_memory_sizing.html">Application memory sizing</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/dev_guide/application_ephemeral_storage_sizing.html">Application ephemeral storage sizing</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup12">
+        <span id="tgSpan12" class="fa fa-angle-right"></span>Creating Images
+      </a>
+      <ul id="topicGroup12" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/guidelines.html">Guidelines</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/metadata.html">Image Metadata</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/s2i.html">S2I Requirements</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/s2i_testing.html">Testing S2I Images</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/creating_images/custom.html">Custom Builder</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup13">
+        <span id="tgSpan13" class="fa fa-angle-right"></span>Using Images
+      </a>
+      <ul id="topicGroup13" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/index.html">Overview</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-13-1">
+                <span id="sgSpan-13-1" class="fa fa-caret-right"></span>&nbsp;Source-to-Image (S2I)
+              </a>
+              <ul id="topicSubGroup-13-1" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/dot_net_core.html">.NET Core</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/nodejs.html">Node.js</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/perl.html">Perl</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/php.html">PHP</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/python.html">Python</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/ruby.html">Ruby</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/s2i_images/customizing_s2i_images.html">Customizing S2I Images</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-13-2">
+                <span id="sgSpan-13-2" class="fa fa-caret-right"></span>&nbsp;Database Images
+              </a>
+              <ul id="topicSubGroup-13-2" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/db_images/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/db_images/mysql.html">MySQL</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/db_images/postgresql.html">PostgreSQL</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/db_images/mongodb.html">MongoDB</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/db_images/mariadb.html">MariaDB</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-13-3">
+                <span id="sgSpan-13-3" class="fa fa-caret-right"></span>&nbsp;Other Images
+              </a>
+              <ul id="topicSubGroup-13-3" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/other_images/index.html">Overview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/other_images/jenkins.html">Jenkins</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/other_images/jenkins_slaves.html">Jenkins Slaves</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/using_images/other_images/other_container_images.html">Other Container Images</a></li>
+              </ul>
+            </li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup14">
+        <span id="tgSpan14" class="fa fa-angle-right"></span>CLI Reference
+      </a>
+      <ul id="topicGroup14" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html">Get Started with the CLI</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/manage_cli_profiles.html">Managing CLI Profiles</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/basic_cli_operations.html">Developer CLI Operations</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/admin_cli_operations.html">Administrator CLI Operations</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/differences_oc_kubectl.html">Differences Between oc and kubectl</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cli_reference/extend_cli.html">Extending the CLI</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup15">
+        <span id="tgSpan15" class="fa fa-angle-right"></span>Ansible Playbook Bundle Development Guide
+      </a>
+      <ul id="topicGroup15" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/apb_devel/index.html">Introduction</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/apb_devel/cli_tooling.html">CLI Tooling</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-15-2">
+                <span id="sgSpan-15-2" class="fa fa-caret-right"></span>&nbsp;Writing APBs
+              </a>
+              <ul id="topicSubGroup-15-2" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/apb_devel/writing/getting_started.html">Getting Started</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/apb_devel/writing/reference.html">Reference</a></li>
+              </ul>
+            </li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup16">
+        <span id="tgSpan16" class="fa fa-angle-right"></span>REST API Reference
+      </a>
+      <ul id="topicGroup16" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/index.html">Overview</a></li>
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/examples.html">Examples</a></li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-2">
+                <span id="sgSpan-16-2" class="fa fa-caret-right"></span>&nbsp;/api/v1
+              </a>
+              <ul id="topicSubGroup-16-2" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.APIResourceList.html">v1.APIResourceList</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.APIVersions.html">v1.APIVersions</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Binding.html">v1.Binding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.ComponentStatus.html">v1.ComponentStatus</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.ConfigMap.html">v1.ConfigMap</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Endpoints.html">v1.Endpoints</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Event.html">v1.Event</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.LimitRange.html">v1.LimitRange</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Namespace.html">v1.Namespace</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Node.html">v1.Node</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.PersistentVolume.html">v1.PersistentVolume</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.PersistentVolumeClaim.html">v1.PersistentVolumeClaim</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Pod.html">v1.Pod</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.PodTemplate.html">v1.PodTemplate</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.ReplicationController.html">v1.ReplicationController</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.ResourceQuota.html">v1.ResourceQuota</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Secret.html">v1.Secret</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.SecurityContextConstraints.html">v1.SecurityContextConstraints</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.Service.html">v1.Service</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/api/v1.ServiceAccount.html">v1.ServiceAccount</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-3">
+                <span id="sgSpan-16-3" class="fa fa-caret-right"></span>&nbsp;/apis/v1
+              </a>
+              <ul id="topicSubGroup-16-3" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis/v1.APIGroup.html">v1.APIGroup</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis/v1.APIGroupList.html">v1.APIGroupList</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-4">
+                <span id="sgSpan-16-4" class="fa fa-caret-right"></span>&nbsp;/apis/apps/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-4" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-apps/v1beta1.ControllerRevision.html">v1beta1.ControllerRevision</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-apps/v1beta1.Deployment.html">v1beta1.Deployment</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-apps/v1beta1.StatefulSet.html">v1beta1.StatefulSet</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-5">
+                <span id="sgSpan-16-5" class="fa fa-caret-right"></span>&nbsp;/apis/autoscaling/v1
+              </a>
+              <ul id="topicSubGroup-16-5" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-autoscaling/v1.HorizontalPodAutoscaler.html">v1.HorizontalPodAutoscaler</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-6">
+                <span id="sgSpan-16-6" class="fa fa-caret-right"></span>&nbsp;/apis/batch/v1
+              </a>
+              <ul id="topicSubGroup-16-6" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-batch/v1.Job.html">v1.Job</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-7">
+                <span id="sgSpan-16-7" class="fa fa-caret-right"></span>&nbsp;/apis/batch/v2alpha1
+              </a>
+              <ul id="topicSubGroup-16-7" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-batch/v2alpha1.CronJob.html">v2alpha1.CronJob</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-batch/v2alpha1.ScheduledJob.html">v2alpha1.ScheduledJob</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-8">
+                <span id="sgSpan-16-8" class="fa fa-caret-right"></span>&nbsp;/apis/extensions/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-8" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.DaemonSet.html">v1beta1.DaemonSet</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.Deployment.html">v1beta1.Deployment</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.Ingress.html">v1beta1.Ingress</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.NetworkPolicy.html">v1beta1.NetworkPolicy</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.PodSecurityPolicy.html">v1beta1.PodSecurityPolicy</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.ReplicaSet.html">v1beta1.ReplicaSet</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-extensions/v1beta1.ThirdPartyResource.html">v1beta1.ThirdPartyResource</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-9">
+                <span id="sgSpan-16-9" class="fa fa-caret-right"></span>&nbsp;/apis/policy/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-9" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-policy/v1beta1.PodDisruptionBudget.html">v1beta1.PodDisruptionBudget</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-10">
+                <span id="sgSpan-16-10" class="fa fa-caret-right"></span>&nbsp;/apis/authentication.k8s.io/v1
+              </a>
+              <ul id="topicSubGroup-16-10" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authentication.k8s.io/v1.TokenReview.html">v1.TokenReview</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-11">
+                <span id="sgSpan-16-11" class="fa fa-caret-right"></span>&nbsp;/apis/authentication.k8s.io/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-11" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authentication.k8s.io/v1beta1.TokenReview.html">v1beta1.TokenReview</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-12">
+                <span id="sgSpan-16-12" class="fa fa-caret-right"></span>&nbsp;/apis/authorization.k8s.io/v1
+              </a>
+              <ul id="topicSubGroup-16-12" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1.LocalSubjectAccessReview.html">v1.LocalSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1.SelfSubjectAccessReview.html">v1.SelfSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1.SubjectAccessReview.html">v1.SubjectAccessReview</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-13">
+                <span id="sgSpan-16-13" class="fa fa-caret-right"></span>&nbsp;/apis/authorization.k8s.io/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-13" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1beta1.LocalSubjectAccessReview.html">v1beta1.LocalSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1beta1.SelfSubjectAccessReview.html">v1beta1.SelfSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.k8s.io/v1beta1.SubjectAccessReview.html">v1beta1.SubjectAccessReview</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-14">
+                <span id="sgSpan-16-14" class="fa fa-caret-right"></span>&nbsp;/apis/rbac.authorization.k8s.io/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-14" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-rbac.authorization.k8s.io/v1beta1.ClusterRole.html">v1beta1.ClusterRole</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-rbac.authorization.k8s.io/v1beta1.ClusterRoleBinding.html">v1beta1.ClusterRoleBinding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-rbac.authorization.k8s.io/v1beta1.Role.html">v1beta1.Role</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-rbac.authorization.k8s.io/v1beta1.RoleBinding.html">v1beta1.RoleBinding</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-15">
+                <span id="sgSpan-16-15" class="fa fa-caret-right"></span>&nbsp;/apis/certificates.k8s.io/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-15" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-certificates.k8s.io/v1beta1.CertificateSigningRequest.html">v1beta1.CertificateSigningRequest</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-16">
+                <span id="sgSpan-16-16" class="fa fa-caret-right"></span>&nbsp;/apis/networking.k8s.io/v1
+              </a>
+              <ul id="topicSubGroup-16-16" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-networking.k8s.io/v1.NetworkPolicy.html">v1.NetworkPolicy</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-17">
+                <span id="sgSpan-16-17" class="fa fa-caret-right"></span>&nbsp;/apis/storage.k8s.io/v1
+              </a>
+              <ul id="topicSubGroup-16-17" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-storage.k8s.io/v1.StorageClass.html">v1.StorageClass</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-18">
+                <span id="sgSpan-16-18" class="fa fa-caret-right"></span>&nbsp;/apis/storage.k8s.io/v1beta1
+              </a>
+              <ul id="topicSubGroup-16-18" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-storage.k8s.io/v1beta1.StorageClass.html">v1beta1.StorageClass</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-19">
+                <span id="sgSpan-16-19" class="fa fa-caret-right"></span>&nbsp;/apis/apps.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-19" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-apps.openshift.io/v1.DeploymentConfig.html">v1.DeploymentConfig</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-20">
+                <span id="sgSpan-16-20" class="fa fa-caret-right"></span>&nbsp;/apis/authorization.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-20" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.ClusterRole.html">v1.ClusterRole</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.ClusterRoleBinding.html">v1.ClusterRoleBinding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.LocalResourceAccessReview.html">v1.LocalResourceAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.LocalSubjectAccessReview.html">v1.LocalSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.ResourceAccessReview.html">v1.ResourceAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.Role.html">v1.Role</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.RoleBinding.html">v1.RoleBinding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.RoleBindingRestriction.html">v1.RoleBindingRestriction</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.SelfSubjectRulesReview.html">v1.SelfSubjectRulesReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.SubjectAccessReview.html">v1.SubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-authorization.openshift.io/v1.SubjectRulesReview.html">v1.SubjectRulesReview</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-21">
+                <span id="sgSpan-16-21" class="fa fa-caret-right"></span>&nbsp;/apis/build.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-21" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-build.openshift.io/v1.Build.html">v1.Build</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-build.openshift.io/v1.BuildConfig.html">v1.BuildConfig</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-22">
+                <span id="sgSpan-16-22" class="fa fa-caret-right"></span>&nbsp;/apis/image.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-22" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.Image.html">v1.Image</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageSignature.html">v1.ImageSignature</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageStream.html">v1.ImageStream</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageStreamImage.html">v1.ImageStreamImage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageStreamImport.html">v1.ImageStreamImport</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageStreamMapping.html">v1.ImageStreamMapping</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-image.openshift.io/v1.ImageStreamTag.html">v1.ImageStreamTag</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-23">
+                <span id="sgSpan-16-23" class="fa fa-caret-right"></span>&nbsp;/apis/network.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-23" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.ClusterNetwork.html">v1.ClusterNetwork</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.EgressNetworkPolicy.html">v1.EgressNetworkPolicy</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.HostSubnet.html">v1.HostSubnet</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.NetNamespace.html">v1.NetNamespace</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-24">
+                <span id="sgSpan-16-24" class="fa fa-caret-right"></span>&nbsp;/apis/oauth.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-24" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-oauth.openshift.io/v1.OAuthAccessToken.html">v1.OAuthAccessToken</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-oauth.openshift.io/v1.OAuthAuthorizeToken.html">v1.OAuthAuthorizeToken</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-oauth.openshift.io/v1.OAuthClient.html">v1.OAuthClient</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-oauth.openshift.io/v1.OAuthClientAuthorization.html">v1.OAuthClientAuthorization</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-25">
+                <span id="sgSpan-16-25" class="fa fa-caret-right"></span>&nbsp;/apis/project.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-25" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-project.openshift.io/v1.Project.html">v1.Project</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-project.openshift.io/v1.ProjectRequest.html">v1.ProjectRequest</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-26">
+                <span id="sgSpan-16-26" class="fa fa-caret-right"></span>&nbsp;/apis/quota.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-26" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-quota.openshift.io/v1.AppliedClusterResourceQuota.html">v1.AppliedClusterResourceQuota</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-quota.openshift.io/v1.ClusterResourceQuota.html">v1.ClusterResourceQuota</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-27">
+                <span id="sgSpan-16-27" class="fa fa-caret-right"></span>&nbsp;/apis/route.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-27" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-route.openshift.io/v1.Route.html">v1.Route</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-28">
+                <span id="sgSpan-16-28" class="fa fa-caret-right"></span>&nbsp;/apis/security.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-28" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-security.openshift.io/v1.PodSecurityPolicyReview.html">v1.PodSecurityPolicyReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-security.openshift.io/v1.PodSecurityPolicySelfSubjectReview.html">v1.PodSecurityPolicySelfSubjectReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-security.openshift.io/v1.PodSecurityPolicySubjectReview.html">v1.PodSecurityPolicySubjectReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-security.openshift.io/v1.SecurityContextConstraints.html">v1.SecurityContextConstraints</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-29">
+                <span id="sgSpan-16-29" class="fa fa-caret-right"></span>&nbsp;/apis/template.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-29" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-template.openshift.io/v1.BrokerTemplateInstance.html">v1.BrokerTemplateInstance</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-template.openshift.io/v1.Template.html">v1.Template</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-template.openshift.io/v1.TemplateInstance.html">v1.TemplateInstance</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-30">
+                <span id="sgSpan-16-30" class="fa fa-caret-right"></span>&nbsp;/apis/user.openshift.io/v1
+              </a>
+              <ul id="topicSubGroup-16-30" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-user.openshift.io/v1.Group.html">v1.Group</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-user.openshift.io/v1.Identity.html">v1.Identity</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-user.openshift.io/v1.User.html">v1.User</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/apis-user.openshift.io/v1.UserIdentityMapping.html">v1.UserIdentityMapping</a></li>
+              </ul>
+            </li>
+            <li class="nav-header">
+              <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicSubGroup-16-31">
+                <span id="sgSpan-16-31" class="fa fa-caret-right"></span>&nbsp;/oapi/v1
+              </a>
+              <ul id="topicSubGroup-16-31" class="nav-tertiary list-unstyled collapse">
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.AppliedClusterResourceQuota.html">v1.AppliedClusterResourceQuota</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Build.html">v1.Build</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.BuildConfig.html">v1.BuildConfig</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ClusterNetwork.html">v1.ClusterNetwork</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ClusterResourceQuota.html">v1.ClusterResourceQuota</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ClusterRole.html">v1.ClusterRole</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ClusterRoleBinding.html">v1.ClusterRoleBinding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.DeploymentConfig.html">v1.DeploymentConfig</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.DeploymentConfigRollback.html">v1.DeploymentConfigRollback</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.EgressNetworkPolicy.html">v1.EgressNetworkPolicy</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Group.html">v1.Group</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.HostSubnet.html">v1.HostSubnet</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Identity.html">v1.Identity</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Image.html">v1.Image</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageSignature.html">v1.ImageSignature</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageStream.html">v1.ImageStream</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageStreamImage.html">v1.ImageStreamImage</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageStreamImport.html">v1.ImageStreamImport</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageStreamMapping.html">v1.ImageStreamMapping</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ImageStreamTag.html">v1.ImageStreamTag</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.LocalResourceAccessReview.html">v1.LocalResourceAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.LocalSubjectAccessReview.html">v1.LocalSubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.NetNamespace.html">v1.NetNamespace</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.OAuthAccessToken.html">v1.OAuthAccessToken</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.OAuthAuthorizeToken.html">v1.OAuthAuthorizeToken</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.OAuthClient.html">v1.OAuthClient</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.OAuthClientAuthorization.html">v1.OAuthClientAuthorization</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.PodSecurityPolicyReview.html">v1.PodSecurityPolicyReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.PodSecurityPolicySelfSubjectReview.html">v1.PodSecurityPolicySelfSubjectReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.PodSecurityPolicySubjectReview.html">v1.PodSecurityPolicySubjectReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ProcessedTemplate.html">v1.ProcessedTemplate</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Project.html">v1.Project</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ProjectRequest.html">v1.ProjectRequest</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.ResourceAccessReview.html">v1.ResourceAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Role.html">v1.Role</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.RoleBinding.html">v1.RoleBinding</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.RoleBindingRestriction.html">v1.RoleBindingRestriction</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Route.html">v1.Route</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.SelfSubjectRulesReview.html">v1.SelfSubjectRulesReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.SubjectAccessReview.html">v1.SubjectAccessReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.SubjectRulesReview.html">v1.SubjectRulesReview</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.Template.html">v1.Template</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.User.html">v1.User</a></li>
+
+                  <li><a class="" href="https://docs.openshift.com/container-platform/3.11/rest_api/oapi/v1.UserIdentityMapping.html">v1.UserIdentityMapping</a></li>
+              </ul>
+            </li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup17">
+        <span id="tgSpan17" class="fa fa-angle-down"></span>CRI-O Runtime
+      </a>
+      <ul id="topicGroup17" class="collapse in list-unstyled">
+            <li><a class=" active" href="https://docs.openshift.com/container-platform/3.11/crio/crio_runtime.html">Using the CRI-O Container Engine</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup18">
+        <span id="tgSpan18" class="fa fa-angle-right"></span>Service Mesh Install
+      </a>
+      <ul id="topicGroup18" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/servicemesh-install/servicemesh-install.html">Service Mesh Installation</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup19">
+        <span id="tgSpan19" class="fa fa-angle-right"></span>Service Mesh Release Notes
+      </a>
+      <ul id="topicGroup19" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/servicemesh-release-notes/servicemesh-release-notes.html">Release Notes</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup20">
+        <span id="tgSpan20" class="fa fa-angle-right"></span>Container-native Virtualization Install
+      </a>
+      <ul id="topicGroup20" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cnv_install/cnv_install.html">Container-native Virtualization Installation</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup21">
+        <span id="tgSpan21" class="fa fa-angle-right"></span>Container-native Virtualization User's Guide
+      </a>
+      <ul id="topicGroup21" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cnv_users_guide/cnv_users_guide.html">Container-native Virtualization User's Guide</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="javascript:void(0);" data-toggle="collapse" data-target="#topicGroup22">
+        <span id="tgSpan22" class="fa fa-angle-right"></span>Container-native Virtualization Release Notes
+      </a>
+      <ul id="topicGroup22" class="collapse  list-unstyled">
+            <li><a class="" href="https://docs.openshift.com/container-platform/3.11/cnv_release_notes/cnv_release_notes.html">Container-native Virtualization Release Notes</a></li>
+      </ul>
+    </li>
+</ul>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 main">
+        <div class="page-header">
+          <h1>Using the CRI-O Container Engine</h1>
+        </div>
+        <div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title"></div>
+<ul class="sectlevel1">
+<li><a href="#understand-crio-use-crio-engine">Understanding CRI-O</a></li>
+<li><a href="#get-crio-use-crio-engine">Getting CRI-O</a>
+<ul class="sectlevel2">
+<li><a href="#installing-cri-o-with-a-new-openshift-container-platform-cluster">Installing CRI-O with a new OpenShift Container Platform cluster</a></li>
+<li><a href="#add-crio-use-crio-engine">Adding CRI-O nodes to an OpenShift Container Platform cluster</a></li>
+</ul>
+</li>
+<li><a href="#configure-crio-use-crio-engine">Configuring CRI-O</a>
+<ul class="sectlevel2">
+<li><a href="#configuring-cri-o-storage">Configuring CRI-O storage</a></li>
+<li><a href="#configuring-cri-o-networking">Configuring CRI-O networking</a></li>
+</ul>
+</li>
+<li><a href="#troubleshoot-crio-use-crio-engine">Troubleshooting CRI-O</a>
+<ul class="sectlevel2">
+<li><a href="#checking-cri-os-general-health">Checking CRI-O’s general health</a></li>
+<li><a href="#inspecting-cri-o-logs">Inspecting CRI-O logs</a></li>
+<li><a href="#troubleshooting-cri-o-pods-and-containers">Troubleshooting CRI-O pods, and containers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>CRI-O is an open source, community-driven container engine.
+Its primary goal is to replace the Docker service as the
+container engine for Kubernetes implementations, such as OpenShift Container Platform.</p>
+</div>
+<div class="paragraph">
+<p>If you want to start using CRI-O, this guide describes how to install
+CRI-O during OpenShift Container Platform installation as well as how to add
+a CRI-O node to an existing
+OpenShift Container Platform cluster. The guide also provides
+information on how to configure and troubleshoot your CRI-O engine.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="understand-crio-use-crio-engine"><a class="anchor" href="#understand-crio-use-crio-engine"></a>Understanding CRI-O</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="http://cri-o.io/">CRI-O</a> container engine provides a stable, more secure, and performant
+platform for running <a href="https://www.opencontainers.org/">Open Container Initiative</a> (OCI)
+compatible runtimes.
+You can use the CRI-O container engine to launch containers and pods
+by engaging OCI-compliant runtimes like runc, the default OCI runtime, or
+<a href="https://katacontainers.io/">Kata Containers</a>.
+CRI-O’s purpose is to be the container engine that implements
+the Kubernetes Container Runtime Interface (CRI) for OpenShift Container Platform and Kubernetes,
+replacing the Docker service.</p>
+</div>
+<div class="paragraph">
+<p>CRI-O offers a streamlined container engine, while other container features
+are implemented as a separate set of innovative, independent commands. This
+approach allows container management features to develop at their own pace,
+without impeding CRI-O’s primary goal of being
+a container engine for Kubernetes-based installations.</p>
+</div>
+<div class="paragraph">
+<p>CRI-O’s stability comes from the facts that it is developed,
+tested, and released in tandem with Kubernetes major and minor releases and that it follows
+OCI standards.  For
+example, CRI-O 1.11 aligns with Kubernetes 1.11. The scope of CRI-O is tied to
+the <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/container-runtime-interface.md">Container Runtime Interface</a> (CRI).
+CRI extracted and standardized exactly what a Kubernetes service (kubelet) needed
+from its container engine. The CRI team did this to help stabilize Kubernetes container
+engine
+requirements as multiple container engines began to be developed.</p>
+</div>
+<div class="paragraph">
+<p>There is little need for direct command-line contact with CRI-O.
+However, to provide full access to CRI-O for testing and monitoring, and
+to provide features you expect with Docker that CRI-O does not offer,
+a set of container-related command-line tools are available. These tools replace and
+extend what is available with the <code>docker</code> command and service. Tools
+include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>crictl</code> - For troubleshooting and working directly with CRI-O container
+engines</p>
+</li>
+<li>
+<p><code>runc</code> - For running container images</p>
+</li>
+<li>
+<p><code>podman</code> - For managing pods and container images (run, stop, start, ps,
+attach, exec, etc.) outside of the container engine</p>
+</li>
+<li>
+<p><code>buildah</code> - For building, pushing and signing container images</p>
+</li>
+<li>
+<p><code>skopeo</code> - For copying, inspecting, deleting, and signing images</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Some Docker features are included in other tools instead of in CRI-O.
+For example, <code>podman</code> offers
+exact command-line compatibility with many <code>docker</code> command features and
+extends those features to managing pods as well. No container engine is
+needed to run containers or pods with <code>podman</code>.</p>
+</div>
+<div class="paragraph">
+<p>Features for building, pushing, and signing container images, which are also
+not required in a container engine, are available in the <code>buildah</code> command.
+For more information about these command alternatives to <code>docker</code>, see <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/finding_running_and_building_containers_without_docker#finding_running_and_building_containers_without_docker">Finding, Running and Building Containers without Docker</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="get-crio-use-crio-engine"><a class="anchor" href="#get-crio-use-crio-engine"></a>Getting CRI-O</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>CRI-O is not supported as a stand-alone container engine.
+You must use CRI-O as a container engine for a Kubernetes
+installation, such as OpenShift Container Platform. To run containers without Kubernetes
+or OpenShift Container Platform, use <a href="https://github.com/containers/libpod/tree/master/cmd/podman">podman</a>.</p>
+</div>
+<div class="paragraph">
+<p>To set up a CRI-O
+container engine to use with an OpenShift Container Platform cluster, you can:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Install CRI-O along with a new OpenShift Container Platform cluster or</p>
+</li>
+<li>
+<p>Add a node to an existing cluster and identify CRI-O as the container engine for
+that node. Both CRI-O and Docker nodes can exist on the same cluster.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following section describes how to install CRI-O with a new OpenShift Container Platform cluster</p>
+</div>
+<div class="sect2">
+<h3 id="installing-cri-o-with-a-new-openshift-container-platform-cluster"><a class="anchor" href="#installing-cri-o-with-a-new-openshift-container-platform-cluster"></a>Installing CRI-O with a new OpenShift Container Platform cluster</h3>
+<div class="paragraph">
+<p>You can choose CRI-O as the container engine for your OpenShift Container Platform nodes on
+a per-node basis at install time. Here are a few things you should
+know about enabling the CRI-O container engine when you install OpenShift Container Platform:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Previously, using CRI-O on your nodes required that the Docker 
+container engine be
+available as well. As of
+OpenShift Container Platform 3.10 and later, the Docker container engine
+ is no longer required in all cases. Now you can now have
+CRI-O-only nodes in your OpenShift Container Platform cluster. However, 
+nodes that do build and push operations still
+need to have the Docker container engine installed along with CRI-O.</p>
+</li>
+<li>
+<p>Enabling CRI-O using a CRI-O container is no longer supported. An
+rpm-based installation of CRI-O is required.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following procedure assumes you are installing OpenShift Container Platform using Ansible
+inventory files, such as those described in
+<a href="https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/html-single/installing_clusters/#install-config-configuring-inventory-file">Configuring Your Inventory File</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Do not set <code>/var/lib/docker</code> as a separate mount point for an OpenShift Container Platform node
+using CRI-O as its container engine. When deploying a CRI-O node, the installer tries
+to make <code>/var/lib/docker</code> a symbolic link to <code>/var/lib/containers</code>. That action
+will fail because it won’t be able to remove the existing <code>/var/lib/docker</code> to
+create the symbolic link.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>With the OpenShift Container Platform Ansible playbooks installed, edit the appropriate
+inventory file to enable CRI-O.</p>
+</li>
+<li>
+<p>Locate CRI-O setting in your selected inventory file. To have the CRI-O
+container engine installed on your nodes during OpenShift Container Platform installation, locate the
+[OSEv3:vars] section of an Ansible inventory file.
+A section of CRI-O settings might include the following:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[OSEv3:vars]
+...
+# Install and run cri-o.
+#openshift_use_crio=False
+#openshift_use_crio_only=False
+# The following two variables are used when openshift_use_crio is True
+# and cleans up after builds that pass through docker. When openshift_use_crio is True
+# these variables are set to the defaults shown. You may override them here.
+# NOTE: You will still need to tag crio nodes with your given label(s)!
+# Enable docker garbage collection when using cri-o
+#openshift_crio_enable_docker_gc=True
+# Node Selectors to run the garbage collection
+#openshift_crio_docker_gc_node_selector={'runtime': 'cri-o'}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Enable CRI-O settings. You can decide to either enable CRI-O alone or CRI-O
+alongside Docker. The following settings allow CRI-O and Docker as your node
+container engines and enables Docker garbage collection on nodes with overlay2 storage:</p>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To be able to build containers on CRI-O nodes, you must have the Docker
+container engine installed. If you want to have CRI-O-only nodes, you can do
+that and simply designate other nodes to do container builds.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[OSEv3:vars]
+...
+openshift_use_crio=True
+openshift_use_crio_only=False
+openshift_crio_enable_docker_gc=True</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set the openshift_node_group_name for each node to a configmap that configures
+the kubelet for the CRI-O runtime. There’s a corresponding CRI-O configmap for
+all the default node groups. <a href="https://docs.openshift.com/container-platform/3.11/install/configuring_inventory_file.html#configuring-inventory-defining-node-group-and-host-mappings">Defining Node Groups and Host Mappings</a>
+covers node groups and mappings in detail.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[nodes]
+ocp-crio01 openshift_node_group_name='node-config-all-in-one-crio'
+ocp-docker01 openshift_node_group_name='node-config-all-in-one'</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The resulting OpenShift Container Platform configuration will be running the CRI-O container engine on
+the nodes of your OpenShift Container Platform installation.
+Use the <code>oc</code> command to check the status of the nodes and identify the nodes running CRI-O:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ oc get nodes -o wide
+NAME         STATUS  ROLES                  AGE  ...   CONTAINER-RUNTIME
+ocp-crio01   Ready   compute,infra,master   16d  ...   cri-o://1.11.5
+ocp-docker01 Ready   compute,infra,master   16d  ...   docker://1.13.1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="add-crio-use-crio-engine"><a class="anchor" href="#add-crio-use-crio-engine"></a>Adding CRI-O nodes to an OpenShift Container Platform cluster</h3>
+<div class="paragraph">
+<p>OpenShift Container Platform does not support the direct upgrading of nodes from using the docker
+container engine to using CRI-O. To upgrade an existing OpenShift Container Platform cluster to use
+CRI-O, do the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Scale up a node that is configured to use the CRI-O container engine</p>
+</li>
+<li>
+<p>Check that the CRI-O node performs as expected</p>
+</li>
+<li>
+<p>Add more CRI-O nodes as needed</p>
+</li>
+<li>
+<p>Scale down Docker nodes as the cluster stabilizes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To see what actions are taken when you create a node with the CRI-O container engine, refer to <a href="https://github.com/openshift/openshift-ansible/blob/0435f8b3611572b5379374b1b1055f33e78e86ad/roles/container_runtime/tasks/package_crio.yml">Upgrading to CRI-O with Ansible</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you are upgrading your entire OpenShift Container Platform cluster to OpenShift Container Platform 3.10 or later,
+and a containerized version of CRI-O is running on a node, the CRI-O container
+will be removed from that node and the CRI-O rpm will be installed. The CRI-O
+service will be run as a systemd service from then on. See
+<a href="https://bugzilla.redhat.com/show_bug.cgi?id=1618425">BZ#1618425</a> for
+details.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configure-crio-use-crio-engine"><a class="anchor" href="#configure-crio-use-crio-engine"></a>Configuring CRI-O</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Because CRI-O is intended to be deployed, upgraded and managed by OpenShift Container Platform,
+you should only change CRI-O configuration files through OpenShift Container Platform or for the
+purposes of testing or troubleshooting CRI-O. On a running OpenShift Container Platform node, most
+CRI-O configuration settings are kept in the <code>/etc/crio/crio.conf</code> file.</p>
+</div>
+<div class="paragraph">
+<p>Settings in a <code>crio.conf</code> file define how storage, the listening socket,
+runtime features, and networking are configured for CRI-O.
+Here’s an example of the default <code>crio.conf</code> file (look in the file itself
+to see comments describing these settings):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[crio]
+root = "/var/lib/containers/storage"
+runroot = "/var/run/containers/storage"
+storage_driver = "overlay"
+storage_option = [
+        "overlay.override_kernel_check=1",
+   ]
+
+[crio.api]
+listen = "/var/run/crio/crio.sock"
+stream_address = ""
+stream_port = "10010"
+file_locking = true
+
+[crio.runtime]
+runtime = "/usr/bin/runc"
+runtime_untrusted_workload = ""
+default_workload_trust = "trusted"
+no_pivot = false
+conmon = "/usr/libexec/crio/conmon"
+conmon_env = [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+   ]
+selinux = true
+seccomp_profile = "/etc/crio/seccomp.json"
+apparmor_profile = "crio-default"
+cgroup_manager = "systemd"
+hooks_dir_path = "/usr/share/containers/oci/hooks.d"
+default_mounts = [
+        "/usr/share/rhel/secrets:/run/secrets",
+   ]
+pids_limit = 1024
+enable_shared_pid_namespace = false
+log_size_max = 52428800
+
+[crio.image]
+default_transport = "docker://"
+pause_image = "docker.io/openshift/origin-pod:v3.11"
+pause_command = "/usr/bin/pod"
+signature_policy = ""
+image_volumes = "mkdir"
+insecure_registries = [
+""
+]
+registries = [
+"docker.io"
+]
+
+[crio.network]
+network_dir = "/etc/cni/net.d/"
+plugin_dir = "/opt/cni/bin"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following sections describe how different CRI-O
+configurations might be used in the <code>crio.conf</code> file.</p>
+</div>
+<div class="sect2">
+<h3 id="configuring-cri-o-storage"><a class="anchor" href="#configuring-cri-o-storage"></a>Configuring CRI-O storage</h3>
+<div class="paragraph">
+<p>OverlayFS2 is the recommended (and default) storage driver for OpenShift Container Platform,
+whether you use CRI-O or Docker as your container engine. See <a href="https://docs.openshift.com/container-platform/3.10/scaling_performance/optimizing_storage.html#choosing-a-graph-driver">Choosing a graph driver</a>
+for details on available storage devices.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Although devicemapper is a supported storage facility for CRI-O, the CRI-O
+garbage collection feature does not yet
+work with devicemapper and so is not recommended for production use. Also,
+see <a href="https://bugzilla.redhat.com/show_bug.cgi?id=1625394">BZ1625394</a> and
+<a href="https://bugzilla.redhat.com/show_bug.cgi?id=1623944">BZ1623944</a> for other
+devicemapper issues that apply to how both CRI-O and <code>podman</code> use
+container storage.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Things you should know about CRI-O storage include the facts that CRI-O storage:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Holds images by storing the root filesystem of
+each container, along with any layers that go with it.</p>
+</li>
+<li>
+<p>Incorporates the same storage layer that is used with the Docker service.</p>
+</li>
+<li>
+<p>Uses <code>container-storage-setup</code> to manage the container storage area.</p>
+</li>
+<li>
+<p>Uses configuration information from the <code>/etc/containers/storage.conf</code> and <code>/etc/crio/crio.conf</code> files.</p>
+</li>
+<li>
+<p>Stores data in <code>/var/lib/containers</code> by default. That directory is used by
+both CRI-O and tools for running containers (such as <code>podman</code>).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Although they use the same storage directory, the container engine and the container tools manage
+their containers separately.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Can store both Docker version 1 and version 2 schemas.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For information on using <code>container-storage-setup</code> to configure storage for
+CRI-O, see <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/#using_container_storage_setup">Using container-storage-setup</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-cri-o-networking"><a class="anchor" href="#configuring-cri-o-networking"></a>Configuring CRI-O networking</h3>
+<div class="paragraph">
+<p>CRI-O supports networking facilities that are compatible with the
+<a href="https://github.com/containernetworking">Container Network Interface</a> (CNI).
+Supported networking features include
+loopback, flannel, and openshift-sdn, which are implemented as network plugins.</p>
+</div>
+<div class="paragraph">
+<p>By default, OpenShift Container Platform uses openshift-sdn networking. The following settings in the
+<code>crio.conf</code> file define where CNI network configuration files are stored (<code>/etc/cni/net.d/</code>) and
+where CNI plugin binaries are stored (<code>/opt/cni/bin/</code>)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[crio.network]
+network_dir = "/etc/cni/net.d/"
+plugin_dir = "/opt/cni/bin/"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To understand the networking features needed by CRI-O in OpenShift Container Platform, refer to both
+<a href="https://github.com/kubernetes/kubernetes/blob/release-1.3/docs/design/networking.md">Kubernetes</a>
+and
+<a href="https://github.com/openshift/origin/blob/master/docs/openshift_networking_requirements.md">OpenShift Container Platform</a>
+networking requirements.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="troubleshoot-crio-use-crio-engine"><a class="anchor" href="#troubleshoot-crio-use-crio-engine"></a>Troubleshooting CRI-O</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To check the health of your CRI-O container engine and troubleshoot problems, you can use
+the <code>crictl</code> command, along with some well-known Linux and OpenShift Container Platform commands.
+As with any OpenShift Container Platform container engine, you can use commands such as <code>oc</code> and <code>kubectl</code> to
+investigate the pods in CRI-O as well.</p>
+</div>
+<div class="paragraph">
+<p>For example, to list pods, run the
+following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo oc get pods -o wide
+NAME                     READY STATUS  RESTARTS AGE IP              NODE    NOMINATED NODE
+docker-registry-1-fb2g8  1/1   Running 1        5d  10.128.0.4      hostA   &lt;none&gt;
+registry-console-1-vktl6 1/1   Running 0        5d  10.128.0.6      hostA   &lt;none&gt;
+router-1-hjfm7           1/1   Running 0        5d  192.168.122.188 hostA   &lt;none&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To ensure that a pod is running in CRI-O, use the <code>describe</code> option and
+<code>grep</code> for <code>cri-o</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo oc describe pods registry-console-1-vktl6 | grep cri-o
+  Container ID:   cri-o://9a9209dc0608ce80f62bb4d7f7df61bcf8dd2abd77ef53075dee0542548238b7</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To query and debug a CRI-O container runtime, run the <code>crictl</code> command
+to communicate directly with CRI-O. The CRI-O instance that <code>crictl</code> uses
+is identified in the <code>crictl.yaml</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># cat /etc/crictl.yaml
+runtime-endpoint: /var/run/crio/crio.sock</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, the <code>crictl.yaml</code> file causes crictl to point to the CRI-O socket
+on the local system. To see options available with <code>crictl</code>, run <code>crictl</code>
+with no arguments. To get help with a particular option, add <code>--help</code>. For
+example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl ps --help
+NAME:
+   crictl ps - List containers
+
+USAGE:
+   crictl ps [command options] [arguments...]
+
+OPTIONS:
+   --all, -a                     Show all containers
+   --id value                    Filter by container id
+   --label value                 Filter by key=value label
+...</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="checking-cri-os-general-health"><a class="anchor" href="#checking-cri-os-general-health"></a>Checking CRI-O’s general health</h3>
+<div class="paragraph">
+<p>Log into a node in your OpenShift Container Platform cluster that is running CRI-O and
+run the following commands to check the general health of the CRI-O container engine:</p>
+</div>
+<div class="paragraph">
+<p>Check that the CRI-O related packages are installed. That includes the
+crio (CRI-O daemon and config files) and
+cri-tools (crictl command) packages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># rpm -qa | grep ^cri-
+cri-o-1.11.6-1.rhaos3.11.git2d0f8c7.el7.x86_64
+cri-tools-1.11.1-1.rhaos3.11.gitedabfb5.el7_5.x86_64</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check that the crio service is running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># systemctl status -l crio
+● crio.service - Open Container Initiative Daemon
+   Loaded: loaded (/usr/lib/systemd/system/crio.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2018-10-16 15:15:49 UTC; 3h 30min ago
+     Docs: https://github.com/kubernetes-sigs/cri-o
+ Main PID: 889 (crio)
+    Tasks: 14
+   Memory: 2.3G
+   CGroup: /system.slice/crio.service
+           └─889 /usr/bin/crio
+Oct 16 15:15:48 hostA systemd[1]: Starting Open Container Initiative Daemon...
+Oct 16 15:15:49 hostA  systemd[1]: Started Open Container Initiative Daemon.
+Oct 16 18:30:55 hostA  crio[889]: time="2018-10-16 18:30:55.128074704Z" level=error</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="inspecting-cri-o-logs"><a class="anchor" href="#inspecting-cri-o-logs"></a>Inspecting CRI-O logs</h3>
+<div class="paragraph">
+<p>Because the CRI-O container engine is implemented as a systemd service, you can use the
+standard <code>journalctl</code> command to inspect log messages for CRI-O.</p>
+</div>
+<div class="sect3">
+<h4 id="checking-crio-and-origin-node-logs"><a class="anchor" href="#checking-crio-and-origin-node-logs"></a>Checking crio and origin-node logs</h4>
+<div class="paragraph">
+<p>To check the journal for information from the crio service, use the <code>-u</code> option. In this
+example, you can see that the service is running, but a pod failed to start:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo journalctl -u crio
+-- Logs begin at Tue 2018-10-16 15:01:31 UTC, end at Tue 2018-10-16 19:10:52 UTC. --
+Oct 16 15:05:42 hostA systemd[1]: Starting Open Container Initiative Daemon...
+Oct 16 15:05:42 hostA systemd[1]: Started Open Container Initiative Daemon.
+Oct 16 15:06:35 hostA systemd[1]: Stopping Open Container Initiative Daemon...
+Oct 16 15:06:35 hostA crio[4863]: time="2018-10-16 15:06:35.018523314Z" level=error msg="Failed to start streaming server: http: Server closed"
+Oct 16 15:06:35 hostA systemd[1]: Starting Open Container Initiative Daemon...
+Oct 16 15:06:35 hostA systemd[1]: Started Open Container Initiative Daemon.
+Oct 16 15:10:27 hostA crio[6874]: time="2018-10-16 15:10:26.900411457Z" level=error msg="Failed to start streaming server: http: Server closed"
+Oct 16 15:10:26 hostA systemd[1]: Stopping Open Container Initiative Daemon...
+Oct 16 15:10:27 hostA systemd[1]: Stopped Open Container Initiative Daemon.
+-- Reboot --
+Oct 16 15:15:48 hostA systemd[1]: Starting Open Container Initiative Daemon...
+Oct 16 15:15:49 hostA systemd[1]: Started Open Container Initiative Daemon.
+Oct 16 18:30:55 hostA crio[889]: time="2018-10-16 18:30:55.128074704Z" level=error msg="Error adding network: CNI request failed with status 400: 'pods "</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also check the origin-node service for CRI-O related messages. For
+example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo journalctl -u origin-node | grep -i cri-o
+
+Oct 16 15:26:30 hostA origin-node[10624]: I1016 15:26:30.120889   10624
+   kuberuntime_manager.go:186] Container runtime cri-o initialized,
+   version: 1.11.6, apiVersion: v1alpha1
+Oct 16 15:26:30 hostA origin-node[10624]: I1016 15:26:30.177213   10624
+   factory.go:157] Registering CRI-O factory
+Oct 16 15:27:27 hostA origin-node[11107]: I1016 15:27:27.449197   11107
+   kuberuntime_manager.go:186] Container runtime cri-o initialized,
+   version: 1.11.6, apiVersion: v1alpha1
+Oct 16 15:27:27 hostA origin-node[11107]: I1016 15:27:27.507030   11107
+   factory.go:157] Registering CRI-O factory
+Oct 16 19:27:56 hostA origin-node[8326]: I1016 19:27:56.224770    8326
+   kuberuntime_manager.go:186] Container runtime cri-o initialized,
+   version: 1.11.6, apiVersion: v1alpha1
+Oct 16 19:27:56 hostA origin-node[8326]: I1016 19:27:56.282138    8326
+   factory.go:157] Registering CRI-O factory
+Oct 16 19:27:57 hostA origin-node[8326]: I1016 19:27:57.783304    8326
+   status_manager.go:375] Status Manager: adding pod:
+   "db1f45e3-d157-11e8-8645-42010a8e0002", with status: ('\x01', {Running ...
+   docker.io/openshift/origin-node:v3.11 docker.io/openshift/origin-node@sha256:6f9b0fbdd...
+     cri-o://c94cc6
+     2c27d021d61e8b7c1a82703d51db5847e74f5e57c667432f90c07013e4}] Burstable}) to
+     podStatusChannel</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you wanted to further investigate what was happening with one of the pods listed,
+(such as the last one shown as cri-o//c94cc6), you can use the <code>crictl logs</code>
+command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl logs c94cc6
+/etc/openvswitch/conf.db does not exist ... (warning).
+Creating empty database /etc/openvswitch/conf.db [  OK  ]
+Starting ovsdb-server [  OK  ]
+Configuring Open vSwitch system IDs [  OK  ]
+Inserting openvswitch module [  OK  ]
+Starting ovs-vswitchd [  OK  ]
+Enabling remote OVSDB managers [  OK  ]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="turning-on-debugging-for-cri-o"><a class="anchor" href="#turning-on-debugging-for-cri-o"></a>Turning on debugging for CRI-O</h4>
+<div class="paragraph">
+<p>To get more details from the logging facility for CRI-O, you can temporarily set the
+loglevel to debug as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Edit the <code>/usr/lib/systemd/system/crio.service</code> file and add --loglevel=debug
+to the ExecStart= line so it appears as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>ExecStart=/usr/bin/crio --log-level=debug \
+          $CRIO_STORAGE_OPTIONS \
+          $CRIO_NETWORK_OPTIONS</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Reload the configuration file and restart the service as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># systemctl daemon-reload
+# systemctl restart crio</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the <code>journalctl</code> command again. You should begin to see lots of debug
+messages, representing the processing going on with your CRI-O service:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># journalctl -u crio
+Oct 18 08:41:31 mynode01-crio crio[21998]:
+   time="2018-10-18 08:41:31.839702058-04:00" level=debug
+   msg="ListContainersRequest &amp;ListContainersRequest{Filter:&amp;ContainerFilter{Id:,State:nil,PodSandboxId:
+   ,LabelSelector:map[string]string{},},}"
+Oct 18 08:41:31 mynode01-crio crio[21998]: time="2018-10-18
+   08:41:31.839928476-04:00" level=debug msg="no filters were applied,
+   returning full container list"
+Oct 18 08:41:31 mynode01-crio crio[21998]: time="2018-10-18 08:41:31.841814536-04:00"
+   level=debug msg="ListContainersResponse: &amp;ListContainersResponse{Containers:
+   [&amp;Container{Id:e1934cc46696ff821bc35154f281764e80ac1122563ffd95aa92d01477225603,
+   PodSandboxId:d904d45e6e46110a044758f20047805d8832b6859e10dc903c104cf757894e8d,
+   Metadata:&amp;ContainerMetadata{Name:c,Attempt:0,},Image:&amp;ImageSpec{
+   Image:e72de76ca8d5410497ae3171b6b059e7c7d11e4d1f3225df8d05812f29e205b7,},
+   ImageRef:docker.io/openshift/origin-template-service-broker@sha256:fd539 ...</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Remove the <code>--loglevel=debug</code> option when you are done investigating,
+to reduce the amount of messages generated. Then rerun the two <code>systemctl</code> commands:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code># systemctl daemon-reload
+# systemctl restart crio</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="troubleshooting-cri-o-pods-and-containers"><a class="anchor" href="#troubleshooting-cri-o-pods-and-containers"></a>Troubleshooting CRI-O pods, and containers</h3>
+<div class="paragraph">
+<p>With the <code>crictl</code> command, you interface directly with the CRI-O container engine
+to check on and manipulate the containers, images, and pods associated with
+that container engine. The <code>runc</code> container runtime is another way to interact with CRI-O.
+If you want to run containers outside of the CRI-O container engine, for
+example to run support-tools on a node, you can use the <code>podman</code> command.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="https://blog.openshift.com/crictl-vs-podman/">Crictl vs. Podman</a> for
+descriptions of those two commands and how they differ.</p>
+</div>
+<div class="paragraph">
+<p>To begin, you can check the general status of the CRI-O service using the
+<code>crictl info</code> and <code>crictl version</code> commands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl info
+               {
+                 "status": {
+                   "conditions": [
+                     {
+                       "type": "RuntimeReady",
+                       "status": true,
+                       "reason": "",
+                       "message": ""
+                     },
+                     {
+                       "type": "NetworkReady",
+                       "status": true,
+                       "reason": "",
+                       "message": ""
+                     }
+                   ]
+                 }
+               }
+$ sudo crictl version
+Version:  0.1.0
+RuntimeName:  cri-o
+RuntimeVersion:  1.11.6
+RuntimeApiVersion:  v1alpha1</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="listing-images-pods-and-containers"><a class="anchor" href="#listing-images-pods-and-containers"></a>Listing images, pods, and containers</h4>
+<div class="paragraph">
+<p>The <code>crictl</code> command provides options for investigating the
+components in your CRI-O
+environment. Here are examples of some of the uses of <code>crictl</code> for
+listing information about images, pods, and containers.</p>
+</div>
+<div class="paragraph">
+<p>To see the images that have been pulled to the local CRI-O node,
+run the <code>crictl images</code> command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>  $ sudo crictl images
+  IMAGE                                          TAG     IMAGE ID      SIZE
+  docker.io/openshift/oauth-proxy                v1.1.0  90c45954eb03e 242MB
+  docker.io/openshift/origin-haproxy-router      v3.11   13f40ad4d2e21 410MB
+  docker.io/openshift/origin-node                v3.11   93d2aeddcd6db 1.17GB
+  docker.io/openshift/origin-pod                 v3.11   89ceff8fb1907 263MB
+  docker.io/openshift/prometheus-alertmanager    v0.15.2 68bbd00063784 242MB
+  docker.io/openshift/prometheus-node-exporter   v0.16.0 f9f775bf6d0ef 225MB
+  quay.io/coreos/cluster-monitoring-operator     v0.1.1  4488a207a5bca 531MB
+  quay.io/coreos/configmap-reload                v0.0.1  3129a2ca29d75 4.79MB
+  quay.io/coreos/kube-rbac-proxy                 v0.3.1  992ac1a5e7c79 40.4MB
+  quay.io/coreos/kube-state-metrics              v1.3.1  a9c8f313b7aad 22.2MB</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see the pods that are currently active in the CRI-O environment, run
+<code>crictl pods</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl pods
+
+POD ID        CREATED     STATE  NAME                   NAMESPACE              ATTEMPT
+09997515d7729 5 hours ago Ready  kube-state-metrics-... openshift-monitoring   0
+958b0789e0552 5 hours ago Ready  node-exporter-rkbzp    openshift-monitoring   0
+4ec0498dacec8 5 hours ago Ready  alertmanager-main-0    openshift-monitoring   0
+2873b697df1d2 5 hours ago Ready  cluster-monitoring-... openshift-monitoring   0
+b9e221481fb7e 5 hours ago Ready  router-1-968t4         default                0
+f02ce4a4b4186 5 hours ago Ready  sdn-c45cm              openshift-sdn          0
+bdf5b1dcc0a08 5 hours ago Ready  ovs-kdvzs              openshift-sdn          0
+49dbc57455c8f 5 hours ago Ready  sync-hgfvb             openshift-node         0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see containers that are currently running, run the <code>crictl ps</code> command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl ps
+CONTAINER ID  IMAGE                                CREATED     STATE   NAME                 ATTEMPT
+376eb13e3cb37 quay.io/coreos/kube-state-metrics... 4 hours ago Running kube-state-metrics   0
+72d61c3d393b5 992ac1a5e7c79d627321dc7877f741a00... 4 hours ago Running kube-rbac-proxy-self 0
+5fa8c93484055 992ac1a5e7c79d627321dc7877f741a00... 4 hours ago Running kube-rbac-proxy-main 0
+a2d35508fc0ee quay.io/coreos/kube-rbac-proxy...    4 hours ago Running kube-rbac-proxy      0
+9adda43f3595f docker.io/openshift/prometheus-no... 4 hours ago Running node-exporter        0
+7f4ce5b25cfdb docker.io/openshift/oauth-proxy...   4 hours ago Running alertmanager-proxy   0
+85418badbf6ae quay.io/coreos/configmap-reload...   4 hours ago Running config-reloader      0
+756f20138381c docker.io/openshift/prometheus-al... 4 hours ago Running alertmanager         0
+5e6d8ff4852ba quay.io/coreos/cluster-monitoring... 4 hours ago Running cluster-monitoring-  0
+1c96cfcfa10a7 docker.io/openshift/origin-haprox... 5 hours ago Running route                0
+8f90bb4cded60 docker.io/openshift/origin-node...   5 hours ago Running sdn                  0
+59e5fb8514262 docker.io/openshift/origin-node...   5 hours ago Running openvswitch          0
+73323a2c26abe docker.io/openshift/origin-node...   5 hours ago Running sync                 0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see both running containers as well as containers that are stopped or
+exited, run <code>crictl ps -a</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl ps -a</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If your CRI-O service is stopped or malfunctioning, you can list the
+containers that were run in CRI-O using the <code>runc</code> command. This example
+searches for the existence of a container with CRI-O running and
+not running. It then shows that you can investigate that container with
+<code>runc</code>, even when CRI-O is stopped:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ crictl ps | grep d36a99a9a40ec
+d36a99a9a40ec       062cd20609d3895658e54e5f367b9d70f42db4f86ca14bae7309512c7e0777fd
+    11 hours ago        CONTAINER_RUNNING   sync                 2
+$ sudo systemctl stop crio
+$ sudo crictl ps | grep d36a99a9a40ec
+2018/10/25 11:22:16 grpc: addrConn.resetTransport failed to create client transport:
+   connection error: desc = "transport: dial unix /var/run/crio/crio.sock: connect:
+   no such file or directory"; Reconnecting to {/var/run/crio/crio.sock &lt;nil&gt;}
+   FATA[0000] listing containers failed: rpc error: code = Unavailable desc = grpc:
+   the connection is unavailable
+$ sudo runc list | grep d36a99a9a40ec
+d36a99a9a40ecc4c830f10ed2d5bb3ce1c6deadcb1a4879ff342e315051a71ed   19477       running
+  /run/containers/storage/overlay-containers/d36a99a9a40ecc4c830f10ed2d5bb3ce1c6deadcb1a4879ff342e315051a71ed/userdata
+  2018-10-25T04:44:29.47950187Z    root
+$ ls /run/containers/storage/overlay-containers/d36*/userdata/
+attach  config.json  ctl  pidfile  run
+$ less /run/containers/storage/overlay-containers/d36*/userdata/config.json
+{
+	"ociVersion": "1.0.0",
+	"process": {
+		"user": {
+			"uid": 0,
+			"gid": 0
+		},
+		"args": [
+			"/bin/bash",
+			"-c",
+			"#!/bin/bash\nset -euo pipefail\n\n# set by the node
+                        image\nunset KUBECONFIG\n\ntrap 'kill $(jobs -p);
+                        exit 0' TERM\n\n# track the current state of the ...
+$ sudo systemctl start crio</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, even with the CRI-O service off, <code>runc</code> shows the existence of the
+container and its location in the file system, in case you want to look into it further.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="investigating-images-pods-and-containers"><a class="anchor" href="#investigating-images-pods-and-containers"></a>Investigating images, pods, and containers</h4>
+<div class="paragraph">
+<p>To find out details about what is happening inside of images, pods or containers
+for your CRI-O environment, there are several <code>crictl</code> options you can
+use.</p>
+</div>
+<div class="paragraph">
+<p>With a container ID in hand (from the output of <code>crictl ps</code>), you can exec a
+command inside that container. For example, to see the name and release of the
+operating system inside of a container, run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ crictl exec 756f20138381c cat /etc/redhat-release
+CentOS Linux release 7.5.1804 (Core)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see a list of processes running inside of a container, run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ crictl exec -t e47b3a837aa30 ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+1000130+     1     0  0 Oct17 ?        00:38:14 /usr/bin/origin-web-console --au
+1000130+ 15894     0  0 15:38 pts/0    00:00:00 ps -ef
+1000130+ 17518     1  0 Oct23 ?        00:00:00 [curl] &lt;defunct&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As an alternative, you can "exec" into a container using the <code>runc</code> command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo runc exec -t e47b3a837aa3023c748c4c31a090266f014afba641a8ab9cfca31b065b4f2ddd ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+1000130+     1     0  0 Oct17 ?        00:38:16 /usr/bin/origin-web-console --audit-log-path=- -v=0 --config=/var/webconsole-config/webc
+1000130+ 16541     0  0 15:48 pts/0    00:00:00 ps -ef
+1000130+ 17518     1  0 Oct23 ?        00:00:00 [curl] &lt;defunct&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If there is no <code>ps</code> command inside the container, <code>runc</code> has the <code>ps</code> option,
+which has the same effect of showing the processes running in the container:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo runc ps e47b3a837aa3023c748c4c31a090266f014afba641a8ab9cfca31b065b4f2ddd</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>runc</code> requires the full container ID, while <code>crictl</code> only needs a few
+unique characters from the beginning.</p>
+</div>
+<div class="paragraph">
+<p>With a pod sandbox ID in hand (output from <code>crictl pods</code>), run <code>crictl inspectp</code>
+to display information about that pod sandbox:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl pods | grep 5a60ac777aaa0
+5a60ac777aaa0  8 days ago  SANDBOX_READY registry-console-1-vktl6  default  0
+$ sudo crictl inspectp 5a60ac777aaa0
+{
+  "status": {
+    "id": "5a60ac777aaa055f14b998a9f2ced3e146b3cddbe270154abb75decd583bf879",
+    "metadata": {
+      "attempt": 0,
+      "name": "registry-console-1-vktl6",
+      "namespace": "default",
+      "uid": "6af860cc-d20b-11e8-b094-525400535ba1"
+    },
+    "state": "SANDBOX_READY",
+    "createdAt": "2018-10-17T08:53:22.828511516-04:00",
+    "network": {
+      "ip": "10.128.0.6"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see status information about an image that is available to CRI-O
+on the local system, run <code>crictl inspecti</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ sudo crictl inspecti ff5dd2137a4ff
+{
+  "status": {
+    "id": "ff5dd2137a4ffd5ccb9837d5a0aa0a5d10729f9c186df02e54e58748a32d08b0",
+    "repoTags": [
+      "quay.io/coreos/etcd:v3.2.22"
+    ],
+    "repoDigests": [
+      "quay.io/coreos/etcd@sha256:43fbc8a457aa0cb887da63d74a48659e13947cb74b96a53ba8f47abb6172a948"
+    ],
+    "size": "37547599",
+    "username": ""
+  }
+}</code></pre>
+</div>
+</div>
+<h2 id="additional-resources" class="discrete">Additional resources</h2>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/kubernetes-sigs/cri-o">CRI-O - OCI-based
+implementation of Kubernetes Container Runtime Interface</a></p>
+</li>
+<li>
+<p><a href="http://cri-o.io/">CRI-O Lightweight Container Runtime for Kubernetes</a></p>
+</li>
+<li>
+<p><a href="https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md">CRI-O Command Line Interface: crictl</a></p>
+</li>
+<li>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/finding_running_and_building_containers_without_docker#finding_running_and_building_containers_without_docker">Finding, Running, and Building Containers without Docker</a></p>
+</li>
+<li>
+<p><a href="https://github.com/mairin/coloringbook-container-commandos/blob/master/Web.pdf">Container Commandos Coloring Book</a></p>
+</li>
+<li>
+<p><a href="https://www.redhat.com/en/blog/cri-o-now-running-production-workloads-openshift-online">CRI-O now running production workloads in OpenShift Online</a></p>
+</li>
+<li>
+<p><a href="https://www.opencontainers.org/blog/2018/06/20/cri-o-how-standards-power-a-container-runtime">CRI-O How Standards Power a Container Runtime</a></p>
+</li>
+<li>
+<p><a href="https://www.redhat.com/en/blog/cri-o-now-running-production-workloads-openshift-online">A Practical Introduction to Container Terminology</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Inc19j_files/modernizr.js" type="text/javascript"></script>
+  <script src="Inc19j_files/subdomain.js" type="text/javascript"></script>
+  <script src="Inc19j_files/nav-tertiary.js" type="text/javascript"></script>
+  <script src="Inc19j_files/bootstrap-offcanvas.js" type="text/javascript"></script>
+  <script src="Inc19j_files/reformat-html.js" type="text/javascript"></script>
+  <script src="Inc19j_files/hc-search.js" type="text/javascript"></script>
+  <script src="Inc19j_files/page-loader.js" type="text/javascript"></script>
+
+  <script>
+  var dk = 'openshift-enterprise';
+  var version = '3.11';
+
+  var distros = {
+    'openshift-origin': ['docs_origin', version],
+    'openshift-dedicated': ['docs_dedicated'],
+    'openshift-online': ['docs_online'],
+    'openshift-enterprise': ['docs_cp', version]
+  };
+
+  distros[dk] ? hcSearchCategory.apply(null, distros[dk]) : hcSearchCategory("docs");
+  </script>
+
+  <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $("[id^='topicGroup']").on('show.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicGroup']").on('hide.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicSubGroup']").on('show.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+      $("[id^='topicSubGroup']").on('hide.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+    });
+    /*]]>*/
+  </script>
+  <footer id="rh">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="Inc19j_files/Logo-RedHat-A-Reverse-RGB.svg" class="img-fluid" alt="Red Hat" style="height: 30px;">
+            </div>
+
+            <div class="col-sm-3">
+                <p class="text-nowrap">Copyright © 2019 Red Hat, Inc.</p>
+            </div>
+
+            <div class="col">
+                <nav class="nav">
+                    <a target="_blank" href="https://www.redhat.com/en/about/privacy-policy" class="nav-link">Privacy statement</a>
+                    <a target="_blank" href="https://www.openshift.com/legal/terms/" class="nav-link">Terms of use</a>
+                    <a target="_blank" href="https://www.redhat.com/en/about/all-policies-guidelines" class="nav-link">All policies and guidelines</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Adobe DTM -->
+<script type="text/javascript">
+if (("undefined" !== typeof _satellite) && ("function" === typeof _satellite.pageBottom)) {
+   _satellite.pageBottom();
+}
+</script>
+<!-- End Adobe DTM -->
+
+</body></html>

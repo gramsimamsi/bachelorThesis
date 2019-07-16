@@ -1,0 +1,7 @@
+/**
+ * Removed for compatibility with Nimbus theme 8/29/2014.
+ *
+ * This file is automatically included for all legacy apps and is causing conflicts with the box-model of the chroming service if included seperately.
+ * Note: see legacy SASS for Bootstrap3 overrides file. 
+ *
+** ========================= */

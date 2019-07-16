@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class=" js js flexbox"><!--<![endif]--><head><script type="text/javascript" async="" src="Har19_files/tag"></script><script type="text/javascript" async="" src="Har19_files/insight.js"></script><script async="" src="Har19_files/elqCfg.js"></script><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+    <!--[if IE]><![endif]-->
+
+<script async="" src="Har19_files/uwt.js"></script><script async="" src="Har19_files/fbevents.js"></script><script type="text/javascript" async="" src="Har19_files/pkebsuhdupai.js"></script><script async="" id="demandbase_js_lib" src="Har19_files/X4PVAXm1_002.js"></script><script id="ddo" type="text/javascript">
+<!--//--><![CDATA[//><!--
+    var digitalData = {"cart":[],"event":[],"listing":{"browseFilter":"","query":"","queryMethod":"","refinementType":"","refinementValue":"","resultCount":"","searchType":""},"page":{"attributes":{"queryParameters":"","referringSearchEngine":"","analyticsTitle":"blog | openshift and kubernetes whats difference","taxonomyAuthors":["34271"],"taxonomyBlogPostCategory":["24261"],"taxonomyProduct":["6921"],"taxonomyProductLine":["861"],"taxonomyRegion":["4521"],"taxonomySolution":["5141"],"taxonomyTopic":["27561","27061"],"taxonomyMetaHreflang":["29051"]},"category":{"contentType":"","keyPage":"false","keyPageType":"","pageType":"blog_post","primaryCategory":"blog","subCategories":["openshift-and-kubernetes-whats-difference"]},"pageInfo":{"cms":"RH CMS 2019.06","contentFindingMethod":"","contentID":"332281","contentPortal":"","destinationURL":"https:\/\/www.redhat.com\/en\/blog\/openshift-and-kubernetes-whats-difference","errorMessage":"","errorType":"","language":"en","pageName":"","referringDomain":"","referringURL":"","sysEnv":"","template":"","title":"OpenShift and Kubernetes: What's the difference?"}},"product":[],"user":[{"profile":[{"profileInfo":{"daysSinceLastPurchase":"","demandbaseSID":"","eloquaGUID":"","lastLoginDate":"","lastPurchaseDate":"","loggedIn":"false","profileID":"","subscriptionFrequency":"","subscriptionLevel":""}}]}]};
+    !function(a,b,c){"use strict";function d(a){var c="; "+b.cookie,d=c.split("; "+a+"=");if(2===d.length)return d.pop().split(";").shift()}if(b.referrer){var e=b.createElement("a");e.href=b.referrer,c.page.pageInfo.referringDomain=e.hostname,c.page.pageInfo.referringURL=e.href}c.page.pageInfo.sysEnv=a.innerWidth<=768?"tablet":"desktop";var f=c.user[0].profile[0].profileInfo,g=d("rh_elqCustomerGUID");g&&(f.eloquaGUID=g);var h=d("rh_user");if(h){var i=h.split("\\|");i[0]&&(f.loggedIn="true")}var j=d("s_dmdbase");j&&(f.demandbaseSID=j)}(window,document,digitalData);
+//--><!]]>
+</script>
+<script id="dpal" type="text/javascript" src="Har19_files/dtm.js"></script><script src="Har19_files/AppMeasurement.js" async=""></script><script src="Har19_files/rh.js"></script><script type="text/javascript" src="Har19_files/ud"></script><script src="Har19_files/X4PVAXm1.js"></script><style id="at-makers-style" class="at-flicker-control">
+.mboxDefault {visibility: hidden;}
+</style>
+<script src="Har19_files/ip.json"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="taxonomy-product-line-tid" content="861">
+<meta name="taxonomy-region" content="Global">
+<meta name="taxonomy-region-tid" content="4521">
+<meta name="taxonomy-solution" content="Platform-as-a-Service">
+<meta name="taxonomy-product-line" content="Cloud computing">
+<meta name="taxonomy-product-tid" content="6921">
+<meta name="taxonomy-blog-post-category-tid" content="24261">
+<meta name="taxonomy-product" content="Red Hat OpenShift">
+<meta name="taxonomy-solution-tid" content="5141">
+<meta name="taxonomy-blog-post-category" content="Containers;url=https://www.redhat.com/en/blog/tag/containers">
+<meta name="taxonomy-topic" content="Linux">
+<meta name="post_image_stream" content="">
+<meta name="hide_post_from_listing" content="no">
+<link rel="shortcut icon" href="https://www.redhat.com/profiles/rh/themes/redhatdotcom/favicon.ico" type="image/x-icon">
+<meta property="og:description" content="Having worked with OpenShift for about six years now, I've received a lot of questions about what OpenShift is. With the 3.x shift to Kubernetes from the previous architecture this evolved from what is it, to what the differences between it and Kubernetes are. Today, we're going to dive into that a bit.">
+<meta name="taxonomy-meta-hreflang-tid" content="29051">
+<meta name="taxonomy-meta-hreflang" content="en">
+<meta name="taxonomy-authors-tid" content="34271">
+<meta name="taxonomy-topic-tid" content="27561">
+<meta name="taxonomy-topic-tid" content="27061">
+<meta name="taxonomy-topic" content="Kubernetes">
+<meta name="rhdc_key" content="ce88d6f17fce60c104cf7ae999e3de52">
+<meta name="post_date" content="2019-02-05T00:00:00-05:00">
+<link href="https://www.redhat.com/en/blog/openshift-and-kubernetes-whats-difference" rel="alternate" hreflang="en">
+<meta name="taxonomy-authors" content="Brian 'redbeard' Harrington;url=https://www.redhat.com/en/blog/authors/brian-redbeard-harrington">
+<meta http-equiv="content-language" content="en">
+<meta name="resources_filter" content="Blogs">
+<meta name="node-type" content="blog_post">
+<meta name="source" content="rhdc_drupal">
+<meta name="last-publish-date" content="Tue, 11 Jun 2019 18:29:07 GMT">
+<meta name="description" content="Having worked with OpenShift for about six years now, I've received a lot of questions about what OpenShift is. With the 3.x shift to Kubernetes from the previous architecture this evolved from what is it, to what the differences between it and Kubernetes are. Today, we're going to dive into that a bit.">
+<meta name="generator" content="Drupal 7 (http://drupal.org)">
+<link rel="image_src" href="https://www.redhat.com/profiles/rh/themes/redhatdotcom/img/red-hat-social-share.jpg">
+<link rel="canonical" href="https://www.redhat.com/en/blog/openshift-and-kubernetes-whats-difference">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.redhat.com/en/blog/openshift-and-kubernetes-whats-difference">
+<meta property="og:title" content="OpenShift and Kubernetes: What's the difference?">
+<meta property="og:image" content="https://www.redhat.com/profiles/rh/themes/redhatdotcom/img/red-hat-social-share.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenShift and Kubernetes: What's the difference?">
+<meta name="twitter:image" content="https://www.redhat.com/profiles/rh/themes/redhatdotcom/img/red-hat-social-share.jpg">
+    <title>OpenShift and Kubernetes: What's the difference?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="dns-prefetch" href="https://static.redhat.com/">
+    <link type="text/css" rel="stylesheet" href="Har19_files/css__9c8eRARbIjAdPXTx3Endaawck2Ce-eFZI1L8XqqEG-U__EQiqYpBB86.css" media="all">
+<link type="text/css" rel="stylesheet" href="Har19_files/advanced-theme.css" media="all">
+<style type="text/css" media="all">
+/* <![CDATA[ */
+.page .header-background-image{background-image:none;background-color:#252527;}@media (max-width:767px){.page .header-background-image{background-image:none;}.node-type-blog_post.mobile-nav-open .rh-standard-band--layout:first-child{background:#252527;padding-top:3.33333em;}}
+
+/* ]]> */
+</style>
+<link type="text/css" rel="stylesheet" href="Har19_files/css__OYfDm6pTIXi91QSLY-NNU4xqb_NChyc-jhZiZAzTITo__k_Ub6lu95g.css" media="all">
+<link type="text/css" rel="stylesheet" href="Har19_files/css__wpajrf8pWA19ifT2xQXPB3J1TByoCXqZVtt6kXfl4Ow__ERqTVIZj5_.css" media="print">
+<link type="text/css" rel="stylesheet" href="Har19_files/css__njxMpwSi51b6jbLBApwtKotmRwKEqYnOXZO7s3tQb4o__cmkBuY9LH6.css" media="all">
+    <!--[if lt IE 9]>
+      <script src="/profiles/rh/themes/redhatdotcom/js/selectivizr-min.js" type="text/javascript"></script>
+      <script src="/profiles/rh/themes/redhatdotcom/js/nwmatcher-min.js" type="text/javascript"></script>
+      <script src="/profiles/rh/themes/redhatdotcom/js/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script type="text/javascript" src="Har19_files/js__ZbfrkTCZ49Fbf-zsseU9FSgBXu7VGtpDPHZ1ttRxZpA__Fjuj5XwfGmv1.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+document.createElement( "picture" );
+//--><!]]>
+</script>
+<script type="text/javascript" src="Har19_files/js__YgbYrgrUm5d064M9sZPAXK3j8T5h8zp2I_G1EtHpInI__SMKFw80bdwES.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"en\/","ajaxPageState":{"theme":"redhatdotcom","theme_token":"OyvyLSCiVW0vfr18RGCYDHFAteZTxHZlL6oj-SCaruY","css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"sites\/all\/modules\/date\/date_api\/date.css":1,"sites\/all\/modules\/date\/date_popup\/themes\/datepicker.1.7.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/picture\/picture_wysiwyg.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/node_embed\/plugins\/node_embed\/node_embed.css":1,"https:\/\/static.redhat.com\/libs\/redhat\/redhat-theme\/2\/advanced-theme.css":1,"0":1,"sites\/all\/libraries\/rh_iconfont\/dist\/files\/rh-iconfont.css":1,"sites\/all\/libraries\/rh_iconfont\/dist\/files\/rh-web-iconfont.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/bootstrap.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/redhat-font.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/chrome.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/overpass.css":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.selectBoxIt\/jquery.selectBoxIt.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/print.css":1,"sites\/all\/libraries\/webrh\/dist\/css\/webrh.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/style.css":1,"profiles\/rh\/themes\/redhatdotcom\/css\/editorial.css":1},"js":{"sites\/all\/modules\/picture\/picturefill2\/picturefill.min.js":1,"sites\/all\/modules\/picture\/picture.min.js":1,"sites\/all\/modules\/jquery_update\/replace\/jquery\/1.10\/jquery.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"profiles\/rh\/modules\/redhat_www_ddo\/dist\/post-jquery.min.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.core.min.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.widget.min.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.effect.min.js":1,"sites\/all\/libraries\/webrh\/dist\/js\/webrh.vendor.js":1,"sites\/all\/libraries\/webrh\/dist\/js\/webrh.webcomponents.js":1,"sites\/all\/libraries\/webrh\/dist\/js\/webrh.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.effect-slide.min.js":1,"profiles\/rh\/modules\/redhat_www_menu\/js\/rh_nav.js":1,"profiles\/rh\/modules\/redhat_www_share\/js\/rh_share.js":1,"profiles\/rh\/modules\/redhat_www_solr\/js\/rh_solr.js":1,"profiles\/rh\/modules\/redhat_www_solr\/js\/redhat_www_solr_suggestions.js":1,"profiles\/rh\/modules\/redhat_www_utility\/js\/redhat_www_utility.js":1,"sites\/all\/libraries\/jquery-cookie\/jquery.cookie-1.4.1.min.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/modernizr.min.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.pushmenu.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery-scrolltofixed.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/waypoints.min.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/rh-chrome.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.fitvids.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.switchIt.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.selectBoxIt\/jquery.selectBoxIt.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/jquery.viewport\/jquery.viewport.min.js":1,"profiles\/rh\/themes\/redhatdotcom\/js\/sass-bootstrap.min.js":1}},"redhat_www_menu":{"path":"node\/332281"},"rh_analytics_enabled":false,"urlIsAjaxTrusted":{"\/en\/search\/node":true}});
+//--><!]]>
+</script>
+  <script type="text/javascript" src="Har19_files/oct.js"></script><script src="Har19_files/RC5bdd2b8291dc4bb3a350cdda8043aae1-source.js" async=""></script><script src="Har19_files/RCb662e7ea86b84abc9c185fe6e2f0dc57-source.js" async=""></script><script src="Har19_files/RC660d87bf4a94468da94e47008e283841-source.js" async=""></script><div style="display: none;" id="pfe-icon-head"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"><symbol viewBox="0 0 32 32" id="pfe-icon-server" xmlns="http://www.w3.org/2000/svg"><path d="M25.11 14.11a.288.288 0 0 0-.16-.35l-2.82-1.38a.308.308 0 0 0-.13-.03H10.43c-.04 0-.08.01-.12.02l-3.24 1.38c-.14.06-.21.22-.17.36-.01.03-.02.05-.02.08v5.15c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31v-5.15c-.01-.03-.02-.05-.02-.08zm-14.62-1.15h11.44l1.89.92H8.32l2.17-.92zm14.02 6.08H7.49v-4.46h17.02v4.46zM8.62 16.79c0 .24.19.43.42.43s.42-.19.42-.42v-.01c0-.23-.19-.42-.42-.42s-.42.18-.42.42zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.42v.01zm13.57 1.2c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.16h.61v-2.15h-.61v2.15zm-.92.16c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.16h.61v-2.15h-.61v2.15z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-alt1" xmlns="http://www.w3.org/2000/svg"><path d="M26.92 13.81c0-.02 0-.03-.01-.05s-.02-.03-.03-.05c-.01-.01-.01-.03-.03-.04-.01-.02-.03-.03-.05-.04-.01-.01-.02-.02-.03-.02l-3.62-1.82a.266.266 0 0 0-.12-.03H8.95c-.04 0-.08.01-.12.03l-3.62 1.82c-.01.01-.02.02-.03.02-.02.01-.03.02-.05.04-.01.01-.02.03-.03.04-.01.01-.02.03-.02.04-.01.02-.01.04-.01.06 0 .01-.01.02-.01.03v6.11c0 .15.12.26.26.26h21.35c.15 0 .26-.12.26-.26v-6.11s0-.01-.01-.03zm-.51 3.75H24.1c-.35 0-.65-.29-.65-.65s.29-.65.65-.65h2.31v1.3zm-17.4-5.27h13.98l2.58 1.3H6.43l2.58-1.3zM5.59 19.7v-5.59h20.82V16H24.1c-.5 0-.91.41-.91.91s.41.91.91.91h2.31v1.89L5.59 19.7zm1.03-3.04c-.07.07-.11.16-.11.25s.04.19.11.25c.07.07.16.11.26.11.09 0 .19-.04.25-.11.07-.07.11-.16.11-.25a.34.34 0 0 0-.11-.25.362.362 0 0 0-.51 0zm6.27-.11c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm4.52 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-6.02 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm-1.51 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm4.52 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm1.5 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm-7.52 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm12.04 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-1.51 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm2.76.11c-.07.07-.1.16-.1.25a.358.358 0 0 0 .35.36.4.4 0 0 0 .26-.1c.07-.07.1-.16.1-.26 0-.09-.04-.19-.1-.25a.362.362 0 0 0-.51 0zM6.62 15.2a.34.34 0 0 0 0 .5c.07.07.16.11.26.11.09 0 .18-.04.25-.11a.34.34 0 0 0 0-.5.362.362 0 0 0-.51 0zm3.26-.11c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm1.51 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm1.5 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-4.51 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm9.03 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm3.01 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-6.02 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36s.36-.16.36-.36-.16-.36-.36-.36zm4.51 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36s.36-.16.36-.36-.16-.36-.36-.36zm-3.01 0c-.2 0-.36.16-.36.36 0 .2.16.36.36.36s.36-.16.36-.36-.16-.36-.36-.36zm5.77.11c-.07.07-.1.16-.1.25s.04.19.1.25c.07.07.16.11.25.11.1 0 .19-.04.26-.11.07-.06.1-.16.1-.25s-.04-.19-.1-.25a.362.362 0 0 0-.51 0zM6.62 18.11c-.07.07-.11.16-.11.26 0 .09.04.19.11.25.07.07.16.1.26.1.09 0 .18-.04.25-.1.07-.07.11-.16.11-.25 0-.1-.04-.19-.11-.26-.14-.13-.38-.13-.51 0zm1.76-.1c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm9.03 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-1.51 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm3.01 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm1.51 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-6.02 0c-.2 0-.36.16-.36.36s.16.36.36.36.36-.16.36-.36-.16-.36-.36-.36zm-3.01 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.17-.36-.36-.36zm1.5 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm-3.01 0c-.2 0-.36.16-.36.36s.16.36.36.36c.2 0 .36-.16.36-.36s-.16-.36-.36-.36zm11.79.1c-.07.07-.1.16-.1.26 0 .09.04.19.1.25.07.07.16.1.25.1a.4.4 0 0 0 .26-.1c.07-.07.1-.16.1-.25 0-.1-.04-.19-.1-.25-.14-.14-.38-.14-.51-.01z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-alt2" xmlns="http://www.w3.org/2000/svg"><path d="M25.11 14.11a.288.288 0 0 0-.16-.35l-2.82-1.38a.308.308 0 0 0-.13-.03H10.43c-.04 0-.08.01-.12.02l-3.24 1.38c-.14.06-.21.22-.17.36-.01.03-.02.05-.02.08v5.15c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31v-5.15c-.01-.03-.02-.05-.02-.08zm-14.62-1.15h11.44l1.89.92H8.32c0 .01 2.17-.92 2.17-.92zm14.02 6.08H7.49v-4.46h17.02v4.46zM8.6 16.14c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 1.5c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm14.73-1.71H10.46c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.07.15-.15.15zm0 1.84H10.46c-.08 0-.15-.07-.15-.15 0-.08.07-.15.15-.15h12.87c.08 0 .15.07.15.15 0 .09-.07.15-.15.15zm0-.92H10.46c-.08 0-.15-.07-.15-.15 0-.08.07-.15.15-.15h12.87c.08 0 .15.07.15.15 0 .09-.07.15-.15.15z"></path></symbol><symbol id="pfe-icon-server-deploy" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><style>.st0{fill:#010101}</style><path class="st0" d="M15.77 17.45c.06.07.14.11.23.11s.17-.04.23-.11l5-6.01c.16-.19.19-.46.06-.69a.599.599 0 0 0-.62-.3l-2.05.3V3.88a.3.3 0 0 0-.3-.3h-4.67a.3.3 0 0 0-.3.3v6.88l-2.05-.3a.606.606 0 0 0-.62.3c-.12.22-.1.49.06.69l5.03 6zm-2.15-6.06a.3.3 0 0 0 .24-.07c.06-.06.1-.14.1-.22V4.17h4.07v6.92c0 .09.04.17.1.22a.3.3 0 0 0 .24.07l2.4-.33L16 16.79l-4.76-5.76 2.38.36zM25.69 20.22l-3.04-1.53c-.03-.02-.07-.02-.1-.02H9.96c-.03 0-.06.01-.09.02l-3.55 1.53c-.08.03-.13.11-.13.2v5.78c0 .12.1.22.22.22h19.18c.12 0 .22-.1.22-.22v-5.78a.24.24 0 0 0-.12-.2zM10 19.12h12.5l2.49 1.25H7.1l2.9-1.25zm15.37 6.86H6.63v-5.16h18.73c.01-.01.01 5.16.01 5.16z"></path><path class="st0" d="M21.15 24.74h1.02c.08 0 .15-.07.15-.15v-2.64c0-.08-.07-.15-.15-.15h-1.02c-.08 0-.15.07-.15.15v2.64c0 .09.07.15.15.15zm.15-2.64h.72v2.35h-.72V22.1zM23.15 24.74h1.02c.08 0 .15-.07.15-.15v-2.64c0-.08-.07-.15-.15-.15h-1.02c-.08 0-.15.07-.15.15v2.64c0 .09.07.15.15.15zm.15-2.64h.72v2.35h-.72V22.1z"></path><circle class="st0" cx="8.43" cy="23.37" r=".48"></circle><circle class="st0" cx="10.05" cy="23.37" r=".48"></circle></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-stack" xmlns="http://www.w3.org/2000/svg"><path d="M25.11 6.52a.288.288 0 0 0-.16-.35l-2.82-1.38a.201.201 0 0 0-.13-.04H10.43c-.04 0-.08.01-.12.02L7.06 6.16a.3.3 0 0 0-.17.36c0 .02-.01.05-.01.08v20.34c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31V16.78v-.02V6.6c-.01-.03-.02-.06-.02-.08zM10.49 5.37h11.44l1.89.92H8.32l2.17-.92zm14.02 21.26H7.49v-4.46h17.02v4.46zm0-5.07H7.49V17.1h17.02v4.46zm0-5.12H7.49v-4.46h17.02v4.46zm0-7.65v.91-.91zm0 2.58H7.49V6.9h17.02v4.47zM8.62 9.06c0 .24.19.43.42.43s.42-.19.42-.42v-.01c0-.23-.19-.42-.42-.42s-.42.18-.42.42zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.42v.01zm-1.49 5.21c0 .24.19.43.42.43s.42-.19.42-.42v-.01c0-.23-.19-.42-.42-.42s-.42.18-.42.42zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.42v.01zm-1.49 4.91c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41c0-.01 0-.01 0 0zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.42v.01zm-1.49 5.21c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41c0-.01 0 0 0 0zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.42v.01zm13.57-14c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15V7.94c0-.09.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61V8.09h-.61v2.15zm-.91.15c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15V7.94c0-.09.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61V8.09h-.61v2.15zm2.75 5.36c0 .09-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61V13.3h-.61v2.15zm-.91.15c0 .09-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61V13.3h-.61v2.15zm2.75 5.06c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61v-2.15h-.61v2.15zm-.91.15c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61v-2.15h-.61v2.15zm2.75 5.36c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61v-2.15h-.61v2.15zm-.91.15c0 .08-.07.15-.15.15h-.92c-.08 0-.15-.07-.15-.15v-2.45c0-.08.07-.15.15-.15h.92c.08 0 .15.07.15.15v2.45zm-.92-.15h.61v-2.15h-.61v2.15z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-stack-alt1" xmlns="http://www.w3.org/2000/svg"><path d="M11.66 9.86c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm1.49 5.12c0 .23.19.42.42.42s.43-.19.43-.42-.19-.42-.42-.42-.43.18-.43.42zm-1.49 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43c0-.01 0-.01 0 0zm0-1.53c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm1.49 0c0 .23.19.42.42.42s.43-.19.43-.42-.19-.42-.42-.42-.43.19-.43.42zm7.56-5.12v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zM8.62 13.45c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm1.49 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm-1.49 1.53c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43c0-.01 0-.01 0 0zm1.49 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43c0-.01 0-.01 0 0zm4.58 0c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.42zm3.04-1.53c0 .23.19.42.42.42s.42-.19.42-.42-.19-.42-.42-.42c-.24 0-.42.19-.42.42zm1.49 1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-4.53 0c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm6.02 1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-2.98 0c0 .23.19.42.42.42s.42-.19.42-.42-.19-.42-.42-.42c-.24-.01-.42.18-.42.42zm-1.55 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-1.49-5.12c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm6.02 15.33v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zM11.66 8.33s0 .01 0 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm-1.55 1.53c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm3.04 0c0 .23.19.42.42.42s.43-.19.43-.42-.19-.42-.42-.42-.43.19-.43.42zm11.96-3.34a.288.288 0 0 0-.16-.35l-2.82-1.38a.284.284 0 0 0-.13-.04H10.43c-.04 0-.08.01-.12.02L7.06 6.16a.3.3 0 0 0-.17.36c0 .02-.01.05-.01.08v20.35c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31V16.79v-.02V6.6c-.01-.03-.02-.06-.02-.08zM10.49 5.37h11.44l1.89.92H8.32l2.17-.92zm14.02 19.49h-1.54c-.25 0-.46-.2-.46-.46s.2-.46.46-.46h1.54v.92zm0-1.22h-1.54a.76.76 0 1 0 0 1.52h1.54v1.47H7.49v-4.46h17.02v1.47zm0-3.74h-1.54c-.25 0-.46-.2-.46-.46s.2-.46.46-.46h1.54v.92zm0-1.22h-1.54a.76.76 0 1 0 0 1.52h1.54v1.36H7.49V17.1h17.02v1.58zm0-4.01h-1.54c-.25 0-.46-.2-.46-.46s.2-.46.46-.46h1.54v.92zm0-1.22h-1.54a.76.76 0 1 0 0 1.52h1.54v1.47H7.49v-4.46h17.02v1.47zm0-3.74h-1.54c-.25 0-.46-.2-.46-.46s.2-.46.46-.46h1.54v.92zm0-1.22h-1.54a.76.76 0 1 0 0 1.52h1.54v1.36H7.49V6.9h17.02v1.59zM8.62 8.33s0 .01 0 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm4.53 0a.425.425 0 1 0 .85 0c0-.24-.19-.42-.42-.42s-.43.19-.43.42zM8.62 9.86c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm7.56-1.53v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm1.55 0c0 .23.19.42.42.42s.42-.19.42-.42-.19-.42-.42-.42c-.24 0-.42.19-.42.42zm0 1.53c0 .23.19.42.42.42s.42-.19.42-.42-.19-.42-.42-.42c-.24 0-.42.19-.42.42zm1.49 0v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-4.53 1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm6.02 3.59v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-4.53-3.59v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm4.53 0v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-10.6-1.53s0 .01 0 0c0 .24.19.43.42.43s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42s-.42.19-.42.43zm4.58 16.86c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm-3.03 0c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm-3.04 0c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm4.53-1.53a.425.425 0 1 0 .85 0c0-.23-.19-.42-.42-.42s-.43.19-.43.42zm-1.49 0c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm-3.04 0c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm1.49 0c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm0 1.53c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm3.04 0c0 .23.19.42.42.42s.43-.19.43-.42c0-.23-.19-.42-.42-.42s-.43.19-.43.42zm6.07 0v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm1.49 1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-2.98-1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42-.24 0-.42.19-.42.42zm0 1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42-.24 0-.42.19-.42.42zm-1.55 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-1.49-1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm1.49 0v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-3.03-5.1a.425.425 0 1 0 .85 0c0-.23-.19-.42-.42-.42s-.43.19-.43.42zm1.54 1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm-1.54 0c0 .23.19.42.42.42s.43-.19.43-.42c0-.23-.19-.42-.42-.42s-.43.19-.43.42zm-4.53 0c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm3.04 0c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm0-1.53c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm-3.04 0c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm1.49 1.53c0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.17-.42.41zm0-1.53c0 .01 0 .01 0 0 0 .24.19.43.42.43s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.18-.42.41zm7.62 1.53c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42-.24 0-.42.19-.42.42zm1.49 0v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-1.49 0c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42-.24 0-.42.19-.42.42zm-3.04 0c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm6.02 1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42.23 0 .42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm-4.53 1.53v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01zm0-1.53v.01c0 .23.19.42.42.42s.42-.19.42-.42v-.01-.01c0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42v.01z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-stack-alt2" xmlns="http://www.w3.org/2000/svg"><path d="M25.11 6.52a.288.288 0 0 0-.16-.35l-2.82-1.38a.201.201 0 0 0-.13-.04H10.43c-.04 0-.08.01-.12.02L7.06 6.16a.3.3 0 0 0-.17.36c0 .02-.01.05-.01.08v20.34c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31V16.78v-.02V6.6c-.01-.03-.02-.06-.02-.08zM10.49 5.36h11.44l1.89.92H8.32c0 .01 2.17-.92 2.17-.92zm14.02 21.27H7.49v-4.46h17.02v4.46zm0-5.07H7.49V17.1h17.02v4.46zm0-5.12H7.49v-4.46h17.02v4.46zm0-7.65v.91-.91zm0 2.57H7.49V6.9h17.02v4.46zM8.6 8.41c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 1.5c0 .23.19.42.42.42s.42-.19.42-.42-.18-.42-.42-.42-.42.19-.42.42zm14.73-1.57H10.45c-.08 0-.15-.07-.15-.15 0-.08.07-.15.15-.15h12.87c.08 0 .15.07.15.15.01.08-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15.01.08-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 3.37H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 3.06H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 3.37H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zm0 .92H10.45c-.08 0-.15-.07-.15-.15s.07-.15.15-.15h12.87c.08 0 .15.07.15.15s-.06.15-.14.15zM8.6 13.62c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 1.5c0 .23.19.42.42.42s.42-.19.42-.42-.18-.42-.42-.42-.42.19-.42.42zm0 3.41c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 1.49c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 3.72c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42zm0 1.49c0 .23.19.42.42.42s.42-.19.42-.42c0-.23-.19-.42-.42-.42s-.42.19-.42.42z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-vintage" xmlns="http://www.w3.org/2000/svg"><path d="M24.8 5.94a.285.285 0 0 0-.15-.34l-2.72-1.33a.308.308 0 0 0-.13-.03H10.62c-.04 0-.08.01-.12.02L7.36 5.59c-.13.06-.2.21-.16.35-.01.02-.02.05-.02.07v21.46c0 .16.13.3.3.3h17.04a.3.3 0 0 0 .3-.3v-9.81-.02V6.01c0-.03-.01-.05-.02-.07zM10.68 4.82h11.05l1.82.89H8.58l2.1-.89zm-2.9 7.6V6.31h16.45v9.3H7.78v-3.19zm16.45 14.76H7.78V15.91h16.45v11.27zm-9.05-3.57H9.21c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.56H9.21c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56H9.21c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56H9.21c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm-5.97-6.52h6.04c.17 0 .3-.13.3-.3a.3.3 0 0 0-.3-.3H9.21a.3.3 0 0 0-.3.3c0 .17.13.3.3.3zm0-3.51h6.04c.17 0 .3-.13.3-.3a.3.3 0 0 0-.3-.3H9.21a.3.3 0 0 0-.3.3c0 .16.13.3.3.3zm5.97 9.25H9.21c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm7.4 5.46h-5.97c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.56h-5.97c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56h-5.97c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56h-5.97c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-.78h-5.97c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm-7.4 6.25H9.21c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.57H9.21c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56H9.21c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.56H9.21c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-2.34H9.21c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm7.4 7.03h-5.97c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.57h-5.97c-.08 0-.15.07-.15.15 0 .08.07.15.15.15h5.97c.08 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15zm0-1.56h-5.97c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-1.56h-5.97c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm0-2.34h-5.97c-.08 0-.15.07-.15.15s.07.15.15.15h5.97c.08 0 .15-.07.15-.15s-.07-.15-.15-.15zm-13.37-3.2h6.04c.17 0 .3-.13.3-.3a.3.3 0 0 0-.3-.3H9.21a.3.3 0 0 0-.3.3c0 .16.13.3.3.3zm0-3.52h6.04c.17 0 .3-.13.3-.3a.3.3 0 0 0-.3-.3H9.21c-.16 0-.3.13-.3.3s.13.3.3.3zm7.34-2.03c0 .23.18.41.41.41s.41-.18.41-.41c0-.23-.18-.41-.41-.41a.4.4 0 0 0-.41.41c0-.01 0-.01 0 0zm1.16 0c0 .23.18.41.41.41s.41-.18.41-.41c0-.23-.18-.41-.41-.41a.4.4 0 0 0-.41.41c0-.01 0-.01 0 0zm1.15 0c0 .23.18.41.41.41.23 0 .41-.18.41-.41s-.18-.41-.41-.41c-.23 0-.41.18-.41.41zm-2.31 1.15v4.43c0 .08.07.15.15.15h5.82c.08 0 .15-.07.15-.15V9.77c0-.08-.07-.15-.15-.15H16.7c-.08.01-.15.07-.15.15zm5.82 2.42h-5.52v-.48h5.52v.48zm-5.52.3h5.52v.48h-5.52v-.48zm5.52-1.08h-5.52v-.48h5.52v.48zm-5.52 2.64v-.78h5.52v.78h-5.52zm5.52-4.13v.7h-5.52v-.7h5.52z"></path></symbol><symbol viewBox="0 0 32 32" id="pfe-icon-server-vintage-alt1" xmlns="http://www.w3.org/2000/svg"><path d="M25.11 6.52a.288.288 0 0 0-.16-.35l-2.82-1.38a.22.22 0 0 0-.13-.04H10.43c-.04 0-.08.01-.12.03L7.06 6.16a.3.3 0 0 0-.17.36c0 .02-.01.05-.01.08v20.34c0 .17.14.31.31.31h17.63c.17 0 .31-.14.31-.31V16.79v-.02V6.6c-.01-.03-.02-.06-.02-.08zM10.49 5.37h11.44l1.89.92H8.32l2.17-.92zm14.02 3.11v18.15H7.49V6.9h17.02v1.58zm-7.85 16.37h7c.08 0 .15-.07.15-.15V7.96c0-.09-.07-.15-.15-.15h-7c-.08 0-.15.07-.15.15V24.7c0 .08.07.15.15.15zm6.85-9.33h-6.69v-3.6h6.69v3.6zm-6.69 9.02v-8.72h6.69v8.72h-6.69zm6.69-16.43v3.5h-6.69v-3.5h6.69zm-5.88 1.41h5.11c.17 0 .31-.14.31-.31 0-.17-.14-.31-.31-.31h-5.11c-.17 0-.31.14-.31.31 0 .17.14.31.31.31zm0 1.35h5.11c.17 0 .31-.14.31-.31s-.14-.31-.31-.31h-5.11c-.17 0-.31.14-.31.31 0 .17.14.31.31.31zM8.98 9.41h5.76c.09 0 .15-.07.15-.15 0-.09-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .76h5.76c.09 0 .15-.07.15-.15 0-.09-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .75h5.76c.09 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 1.45h5.76c.09 0 .15-.07.15-.15 0-.09-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .75h5.76c.09 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .76h5.76c.09 0 .15-.07.15-.15 0-.08-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 1.44h5.76c.09 0 .15-.07.15-.15 0-.09-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .76h5.76c.09 0 .15-.07.15-.15 0-.09-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .08.07.15.15.15zm0 .75h5.76c.09 0 .15-.07.15-.15s-.07-.15-.15-.15H8.98c-.09 0-.15.07-.15.15 0 .09.07.15.15.15zm8.65-3.4h5.11c.17 0 .31-.14.31-.31 0-.17-.14-.31-.31-.31h-5.11c-.17 0-.31.14-.31.31 0 .17.14.31.31.31zm5.11.73h-5.11c-.17 0-.31.14-.31.31 0 .17.14.31.31.31h5.11c.17 0 .31-.14.31-.31s-.13-.31-.31-.31zm-5.35 2.8c0 .24.19.43.42.43.23 0 .42-.19.42-.42 0-.23-.19-.42-.42-.42-.23-.02-.42.17-.42.41zm1.19 0c0 .23.19.42.42.42.23 0 .42-.19.42-.42 0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42zm1.2 0c0 .23.19.42.42.42.23 0 .42-.19.42-.42 0-.23-.19-.42-.42-.42-.23 0-.42.19-.42.42z"></path></symbol></svg></div><script src="Har19_files/RC72e0c47d07234419ab0742d4921ad12f-source.js" async=""></script><script src="Har19_files/RCa53a76c5572d41d19e62842d6ac71211-source.js" async=""></script><script src="Har19_files/RCeb810054a5714a3bb4b65d319ad003b9-source.js" async=""></script><script src="Har19_files/RC3b87f2a6bedb49f38fff1109352cb5f1-source.js" async=""></script></head>
+  <body class="bands-index html not-front not-logged-in no-sidebars page-node page-node- page-node-332281 node-type-blog-post i18n-en redhat_www_menu-processed redhat_www_solr_suggestions-processed">
+    <div class="page">
+      <div class="menu-overlay"></div>
+            <!-- Legacy migrated page support with body.migrated-page-hero -->
+<div class="header-background-image">
+</div>
+
+  <div id="main-content">
+    <a id="main-content"></a>
+                      <div class="region region-content">
+    <div id="block-system-main" class="block block-system">
+
+      
+    <!-- Pattern | article -->
+
+                                  
+                
+        
+
+    
+<div class="rh-push-pull-group--layout">
+            <div class="rh-push-pull-group-pull-content">
+                            
+        
+
+
+
+
+
+
+<div class="rh-pull-content--layout" data-rh-background="rich-black">
+                        
+<div class="rh-raw">
+        
+
+
+<div class="header-background-image">
+</div>
+
+
+
+<header class="main-header">
+
+  <div id="main-nav-wrap" style="z-index: 1000;">
+    <div id="main-menu" class="clearfix">
+      <div class="container">
+        <div class="logo-mobile-wrap">
+          <div id="logo">
+            <a href="https://www.redhat.com/en"><img src="Har19_files/logo.svg" class="screen" title="Red Hat"></a>
+            <a href="https://www.redhat.com/en"><img src="Har19_files/logo-reverse.svg" class="print" title=""></a>
+          </div>
+          <div id="mobile-nav">
+            <ul>
+              <li class="mobile-search">
+                <a class="expand-mobile-search" href="#">Search</a>
+              </li>
+              <li class="mobile-drop">
+                <a class="expand-mobile-nav" href=""></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="mobile-utility-nav">
+          <ul class="main">
+            <li class="trigger mobile-utility-account"><a href="#account-tray" class="account"><i class="web-icon web-icon-user"></i>Log in</a>
+            </li>
+            <li class="trigger mobile-utility-globe"><a href="#global-tray" class="global"><i class="web-icon web-icon-globe"></i>Global preferences</a></li>
+            <li class="trigger mobile-utility-site-switcher"><i class="web-icon web-icon-grid-3x3"></i><ul class="menu"><li class="first last leaf"><a href="https://www.redhat.com/en/websites-and-apps" id="355871">Websites &amp; apps</a></li>
+</ul></li>
+          </ul>
+          <ul class="tray account-tray" id="account-tray">
+                          <li class="first rh-user-loggedout"><a href="https://sso.redhat.com/auth/realms/redhat-external/protocol/saml/clients/legacy-idp-servlets" id="redhat-account-login-link" class="account-login-link utility-user-login-link">Log in</a></li>
+                                      <li class="last rh-user-loggedout"><a href="https://www.redhat.com/wapps/ugc/register.html" class="account-register-link">Register</a></li>
+                                      
+                                      
+                      </ul>
+          <div class="tray global-tray" id="global-tray"></div>
+        </div>
+        <nav id="main-nav">
+          <ul>
+            <li class="first expanded nav-links top-level-wrapper"><a href="https://www.redhat.com/en/technologies">Products</a></li>
+<li class="expanded nav-links top-level-wrapper"><a href="https://www.redhat.com/en/solutions">Solutions</a></li>
+<li class="expanded nav-links top-level-wrapper"><a href="https://www.redhat.com/en/services">Services &amp; support</a></li>
+<li class="expanded nav-links top-level-wrapper"><a href="https://www.redhat.com/en/resources">Resources</a></li>
+<li class="last expanded nav-links top-level-wrapper"><a href="https://www.redhat.com/en/about" class="active">Red Hat &amp; open source</a></li>
+          </ul>
+        </nav>
+        <div id="to-top">
+          <a class="btn_slideto" href="">
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="main-subnav">
+      <div class="container">
+      </div>
+    </div>
+  </div><div></div>
+  <div id="second-menu">
+    <div class="container">
+      <nav id="secondary-nav">
+        <div id="utility-switcher">
+          <ul class="menu"><li class="first last leaf"><a href="https://www.redhat.com/en/websites-and-apps" id="355871">Websites &amp; apps</a></li>
+</ul>        </div>
+      </nav>
+      <nav id="utility-nav">
+        <div class="item-list"><ul><li id="utility-search" class="switch first" title="Search"><a href="https://www.redhat.com/en/search" class="expand" onclick="return false;">Search</a></li>
+<li id="utility-account" class="switch" title="Accounts"><a href="https://sso.redhat.com/auth/realms/redhat-external/protocol/saml/clients/legacy-idp-servlets" class="expand" onclick="return false;">Log in</a></li>
+<li id="utility-globe" class="switch last" title="Global Preferences"><a href="https://www.redhat.com/en/about/around-the-world" class="expand" onclick="return false;">English</a></li>
+</ul></div>      </nav>
+    </div>
+  </div>
+
+  <div id="sliding-utility-panel">
+    <div id="search-panel" class="utility-panel">
+      <div class="utility-content">
+        <form class="search-form" autocomplete="off" action="/en/search/node" method="post" id="redhat-www-solr-search-box" accept-charset="UTF-8"><div><div class="container-inline form-wrapper" id="edit-basic"><div class="form-item form-type-textfield form-item-keys">
+  <label class="element-invisible" for="edit-keys">Enter your keywords </label>
+ <input maxlength="128" size="15" placeholder="Enter your search term" type="text" id="edit-keys" name="keys" class="form-text">
+</div>
+<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Search" class="form-submit"></div><div class="search-autocomplete__container"></div></div><input type="hidden" name="form_build_id" value="form-chDfw6xYxMFavJ5uhtAAag3nJl6iZCp2oY96bGGIQUo">
+<input type="hidden" name="form_id" value="redhat_www_solr_search_box">
+</div></form>      <div class="search-autocomplete__overlay"></div></div>
+    </div>
+    <div id="account-panel" class="utility-panel">
+        <div class="utility-content">
+                      <section class="account-tray">
+  <header>
+    <div class="container">
+              
+                    <p class="rh-login-heading rh-user-loggedout">Log in to your Red Hat account</p>
+          </div>
+  </header>
+  <div class="content">
+    <div class="container">
+      <section class="account-login rh-user-loggedout">
+        <div class="account-login-wrapper">
+                      <a href="https://sso.redhat.com/auth/realms/redhat-external/protocol/saml/clients/legacy-idp-servlets" id="redhat-account-login-link" class="account-login-link utility-user-login-link">Log in</a>                                <p>Your
+ Red Hat account gives you access to your member profile and 
+preferences, and the following services based on your customer status:</p>
+                                <div class="utility-user-additional-links"><div class="item-list"><ul><li class="first">Customer Portal</li>
+<li class="last">Red Hat Connect for Business Partners</li>
+</ul></div><div class="item-list"><ul><li class="first">User management</li>
+<li class="last">Certification Central</li>
+</ul></div></div>                  </div>
+        <div class="account-register-wrapper">
+                      <a href="https://www.redhat.com/wapps/ugc/register.html" class="account-register-link">Register</a>                                <h2>Not registered yet? Here are a few reasons why you should be:</h2><div class="item-list"><ul><li class="first">Browse Knowledgebase articles, manage support cases and subscriptions, download updates, and more from one place.</li>
+<li>View users in your organization, and edit their account information, preferences, and permissions.</li>
+<li class="last">Manage your Red Hat certifications, view exam history, and download certification-related logos and documents.</li>
+</ul></div>                  </div>
+      </section>
+      
+    </div>
+  </div>
+</section>
+                  </div>
+    </div>
+    <div id="globe-panel" class="utility-panel">
+        <div class="utility-content"></div>
+    </div>
+    <div id="site-switcher" class="utility-panel">
+        <div class="utility-content"></div>
+    </div>
+  </div>
+
+</header>
+
+    </div>                <div class="rh-pull-content-container" data-rh-layout="pull-aside">
+        <section class="rh-pull-content-main" data-rh-theme="dark">
+                            <!-- Pattern | article_hero -->
+
+                
+
+
+    
+    
+<div class="rh-band--layout" data-rh-band-collapse="both" data-rh-background="transparent"><div class="rh-band-container" data-rh-layout="stacked"><section class="rh-band-main" data-rh-layout="stacked"><header class="rh-band-header" data-rh-theme="dark subtle"><section class="rh-divider--layout"><div class="rh-divider-container"><div class="rh-divider-main" data-rh-layout="stacked" data-eq-pts="xs-divider: 0, lg-divider: 600" data-eq-state="xs-divider lg-divider"><header class="rh-divider-header" data-rh-show-rule="sm md lg "><div class="rh-group--layout" data-rh-misc="hero-header" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group md-group"><div class="rh-group-body" data-rh-layout="flex-edges-desktop"><div class="rh-band-header--component"><p class="rh-band-header-title">Red Hat blog</p></div><!-- Subpattern | subnavigation --><div class="rh-accordion-card--layout" data-rh-no-accordion-at="sm md lg " data-eq-pts="xs-accordion-card: 0, sm-accordion-card: 220, md-accordion-card: 420, lg-accordion-card: 520, xl-accordion-card: 620" data-eq-state="xs-accordion-card sm-accordion-card md-accordion-card lg-accordion-card xl-accordion-card"><div class="rh-accordion-card-header" data-rh-toggle-open="click" data-rh-state="open" data-rh-background="rich-black" data-rh-theme="dark" data-rh-hidden="sm md lg " data-rh-spacing="none" data-rh-border="full-mobile" aria-expanded="true"><header class="rh-standard-header--component" data-rh-align="left" data-rh-indicator-align="right" data-rh-hover-style="xxs xs "><div class="rh-standard-header-container"><h2 class="rh-standard-header-title-small">
+                    Blog menu
+                                                                            </h2></div><span class="rh-standard-header-indicator" data-rh-indicator-symbol="arrow-right" data-rh-hidden-at="sm md lg "></span></header></div><div class="rh-accordion-card-body" data-rh-toggle-target="xxs xs " data-rh-state="open" data-rh-spacing="none" data-rh-border="full-mobile" data-rh-indicator-alignment="right" data-rh-toggle="reveal" aria-expanded="true"><div class="rh-group--layout" data-rh-misc="subnav" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group md-group"><div class="rh-group-body" data-rh-layout="flex-end-end"><nav class="rh-dropdown--component"><a class="rh-dropdown-parent" href="https://www.redhat.com/en/blog">Latest posts</a></nav><nav class="rh-dropdown--component"><a class="rh-dropdown-parent" id="xbx7s-parent" aria-haspopup="true" aria-owns="xbx7s" aria-controls="xbx7s" href="#" data-rh-toggle-open="click single" data-rh-toggle-id="xbx7s" data-rh-state="closed" aria-expanded="false">By product</a><ul class="rh-dropdown-children" id="xbx7s" data-rh-background="black" data-rh-theme="dark" data-rh-toggle-target="" role="group" aria-labelledby="xbx7s-parent" data-rh-toggle="hide" data-rh-state="closed" aria-expanded="false"><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-enterprise-linux" title="Red Hat Enterprise Linux">Red Hat Enterprise Linux</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-openshift" title="Red Hat OpenShift">Red Hat OpenShift</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-storage" title="Red Hat Storage">Red Hat Storage</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-openstack-platform" title="Red Hat OpenStack Platform">Red Hat OpenStack Platform</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-virtualization" title="Red Hat Virtualization">Red Hat Virtualization</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/products" title="All products" data-rh-link-type="featured">All products</a></li></ul></nav><nav class="rh-dropdown--component"><a class="rh-dropdown-parent" id="2xpyj-parent" aria-haspopup="true" aria-owns="2xpyj" aria-controls="2xpyj" href="#" data-rh-toggle-open="click single" data-rh-toggle-id="2xpyj" data-rh-state="closed" aria-expanded="false">By channel</a><ul class="rh-dropdown-children" id="2xpyj" data-rh-background="black" data-rh-theme="dark" data-rh-toggle-target="" role="group" aria-labelledby="2xpyj-parent" data-rh-toggle="hide" data-rh-state="closed" aria-expanded="false"><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-news" title="Red Hat News">Red Hat News</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/red-hat-summit" title="Red Hat Summit">Red Hat Summit</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/cloud-native-computing" title="Cloud native computing">Cloud native computing</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/security" title="Security">Security</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channel/hybrid-cloud-infrastructure" title="Hybrid cloud infrastructure">Hybrid cloud infrastructure</a></li><li class="rh-dropdown-child"><a class="rh-dropdown-child-link" href="https://www.redhat.com/en/blog/channels" title="All channels" data-rh-link-type="featured">All channels</a></li></ul></nav></div></div></div></div></div></div><hr class="rh-divider-header-rule"></header></div></div></section></header><div class="rh-band-content" data-rh-theme="dark subtle"><div class="rh-article-teaser--component"><h1 class="rh-article-teaser-hero-headline">OpenShift and Kubernetes: What's the difference?        </h1><div class="rh-article-teaser-meta"><span class="rh-article-teaser-hero-date">February 5, 2019<span class="rh-article-teaser-pipe"></span></span><span class="rh-article-teaser-hero-author"><a href="https://www.redhat.com/en/blog/authors/brian-redbeard-harrington" title="See more by Brian 'redbeard' Harrington">Brian 'redbeard' Harrington</a></span></div></div></div></section></div></div>                    </section>
+                <aside class="rh-pull-content-aside" data-rh-theme="dark" data-eq-pts="xxs-box: 0, sm-aside: 290" data-eq-state="xxs-box sm-aside">
+                            <!-- Pattern | raw_html -->
+
+<div class="rh-group--layout" data-eq-pts="small: 0, medium: 220, large: 320" data-eq-state="small medium"><div class="rh-group-body" data-rh-layout="flex-left-end fixed-at-2">
+    <div class="rh-social-icon--component" data-rh-icon-background="white" data-rh-align="left" data-rh-position="below" data-rh-icon-size="xsmall">
+
+        <span class="rh-social-icon-label">Share</span>
+        <a class="rh-social-icon-link" href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fwww.redhat.com%2Fen%2Fblog%2Fopenshift-and-kubernetes-whats-difference" target="_blank" onclick="return !window.open(this.href, 'Facebook', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=600,width=600')">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M18.087 10.225h4.587l-.538 5.07h-4.05V30h-6.088V15.294h-3.03v-5.07h3.03v-3.05c0-2.162.512-3.805 1.537-4.918s2.706-1.67 5.05-1.67h4.05v5.07h-2.538c-.462 0-.837.037-1.113.12-.28.074-.48.218-.606.418-.125.2-.206.406-.244.612-.038.206-.056.5-.056.88l.006 2.54z"></path></svg></span>
+                    </a>
+    </div>
+
+    <div class="rh-social-icon--component" data-rh-icon-background="white" data-rh-align="left" data-rh-position="below" data-rh-icon-size="xsmall">
+
+        
+        <a class="rh-social-icon-link" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=OpenShift+and+Kubernetes%3A+What%27s+the+difference%3F&amp;summary=Having+worked+with+OpenShift+for+about+six+years+now%2C+I%27ve+received+a+lot+of+questions+about+what+OpenShift+is.+With+the+3.x+shift+to+Kubernetes+from+the+previous+architecture+this+evolved+from+what+is+it%2C+to+what+the+differences+between+it+and+Kubernetes+are.+Today%2C+we%27re+going+to+dive+into+that+a+bit.&amp;url=https%3A%2F%2Fwww.redhat.com%2Fen%2Fblog%2Fopenshift-and-kubernetes-whats-difference" target="_blank" onclick="return !window.open(this.href, 'LinkedIn', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=600,width=600')">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M6.63 25.238h4.126v-12.38H6.63v12.38zm4.39-16.2c-.013-.62-.226-1.132-.645-1.538-.42-.406-.97-.606-1.662-.606-.688 0-1.25.2-1.688.606-.438.406-.65.92-.65 1.537 0 .606.213 1.12.63 1.525s.976.613 1.65.613h.02c.7 0 1.27-.206 1.694-.613s.65-.92.65-1.525zm10.442 16.2h4.125v-7.1c0-1.83-.438-3.22-1.306-4.156s-2.018-1.412-3.443-1.412c-1.62 0-2.863.694-3.73 2.088h.037v-1.8H13.02c.036.787.036 4.913 0 12.387h4.124v-6.93c0-.45.044-.79.125-1 .18-.42.443-.77.805-1.064.356-.293.8-.437 1.32-.437 1.38 0 2.068.93 2.068 2.8v6.625zm8.35-17.807v17.132c0 1.42-.5 2.625-1.505 3.63s-2.22 1.507-3.63 1.507H7.538c-1.42 0-2.626-.5-3.632-1.507-1-1.006-1.506-2.212-1.506-3.63V7.43c0-1.418.5-2.624 1.506-3.63s2.22-1.512 3.63-1.512H24.67c1.42 0 2.625.5 3.63 1.506 1.013 1.012 1.513 2.22 1.513 3.637z"></path></svg></span>
+                    </a>
+    </div>
+
+    <div class="rh-social-icon--component" data-rh-icon-background="white" data-rh-align="left" data-rh-position="below" data-rh-icon-size="xsmall">
+
+        
+        <a class="rh-social-icon-link" href="https://twitter.com/share?text=OpenShift+and+Kubernetes%3A+What%27s+the+difference%3F&amp;url=https%3A%2F%2Fwww.redhat.com%2Fen%2Fblog%2Fopenshift-and-kubernetes-whats-difference" target="_blank" onclick="return !window.open(this.href, 'Twitter', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=600,width=600')">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M30.23 6.713c-.793 1.17-1.76 2.156-2.893 2.98.012.17.02.42.02.75 0 1.545-.226 3.09-.682 4.632-.45 1.544-1.137 3.02-2.063 4.43-.925 1.414-2.02 2.67-3.294 3.757-1.275 1.087-2.806 1.956-4.606 2.606-1.794.65-3.72.97-5.762.975-3.225 0-6.175-.863-8.85-2.587.42.05.88.07 1.394.07 2.675 0 5.062-.82 7.156-2.463-1.25-.025-2.37-.406-3.356-1.15s-1.67-1.694-2.038-2.844c.394.055.756.086 1.088.086.513 0 1.02-.063 1.52-.194-1.332-.275-2.44-.938-3.314-1.988s-1.313-2.275-1.313-3.67v-.068c.806.45 1.675.694 2.606.73-.787-.524-1.412-1.205-1.875-2.05-.462-.843-.694-1.76-.694-2.75 0-1.043.263-2.018.788-2.905C5.5 6.837 7.256 8.256 9.318 9.318s4.275 1.656 6.63 1.775c-.093-.45-.143-.894-.143-1.32 0-1.593.562-2.955 1.687-4.074 1.125-1.125 2.48-1.688 4.075-1.688 1.67 0 3.07.606 4.213 1.82 1.294-.25 2.52-.714 3.656-1.395-.438 1.37-1.288 2.425-2.538 3.175 1.113-.125 2.22-.425 3.33-.9z"></path></svg></span>
+                    </a>
+    </div>
+
+    <div class="rh-social-icon--component" data-rh-icon-background="white" data-rh-align="left" data-rh-position="below" data-rh-icon-size="xsmall">
+
+        
+        <a class="rh-social-icon-link" href="mailto:?subject=Check out this redhat.com page: OpenShift and Kubernetes: What&amp;#039;s%20the%20difference?&amp;body=I%20saw%20this%20on%20redhat.com%20and%20thought%20you%20might%20be%20interested.%20%20Click%20the%20following%20link%20to%20read:%20https://www.redhat.com/en/blog/openshift-and-kubernetes-whats-difference" target="_blank" aria-current="page">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M29.714 26.857V13.143q-.57.643-1.232 1.18-4.786 3.678-7.607 6.035-.91.768-1.482 1.196t-1.545.866-1.83.438h-.036q-.857 0-1.83-.438t-1.545-.866-1.482-1.196Q8.305 18 3.518 14.322q-.66-.536-1.232-1.18v13.715q0 .232.17.402t.402.17h26.286q.232 0 .402-.17t.17-.403zm0-18.768v-.44l-.01-.23-.053-.224-.097-.16-.16-.135-.25-.044H2.855q-.232 0-.402.17t-.17.402q0 3 2.625 5.07 3.445 2.715 7.16 5.662.107.09.625.527t.82.67.796.563.903.49.768.162h.037q.357 0 .768-.16t.902-.492.795-.563.82-.67.626-.527q3.714-2.946 7.16-5.66.965-.77 1.796-2.064t.83-2.348zM32 7.43v19.428q0 1.18-.84 2.018t-2.017.84H2.857q-1.18 0-2.018-.84T0 26.858V7.428Q0 6.25.84 5.412t2.017-.838h26.286q1.18 0 2.018.84T32 7.428z"></path></svg></span>
+                    </a>
+    </div>
+
+    <div class="rh-social-icon--component" data-rh-icon-background="white" data-rh-align="left" data-rh-position="below" data-rh-icon-size="xsmall">
+
+        
+        <a class="rh-social-icon-link" href="javascript:window.print()" target="_blank">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M8.02 30.02h16v-6.045h-16v6.044zm0-14h16V8.77h-3.076c-.512 0-.95-.182-1.306-.538-.356-.356-.538-.794-.538-1.306V3.982H8.02V16.02zm21.518 1.655c0-.33-.12-.62-.363-.87-.244-.243-.53-.368-.87-.362-.33 0-.624.125-.868.363-.244.244-.363.53-.363.87 0 .336.12.624.363.868.244.244.53.363.87.363.33 0 .624-.12.868-.363.244-.25.363-.538.363-.87zm2.462 0v7.713c0 .17-.063.313-.18.43-.126.126-.27.182-.432.182h-5.363v4.156c0 .512-.18.95-.538 1.306-.356.356-.794.538-1.306.538H7.826c-.513 0-.95-.18-1.306-.538-.357-.356-.538-.794-.538-1.306V26H.62c-.17 0-.313-.063-.43-.18S0 25.55 0 25.38v-7.71c0-1.013.363-1.882 1.088-2.607s1.594-1.088 2.606-1.088h2.33V3.87c0-.514.182-.95.538-1.307s.794-.538 1.306-.538h11.23c1.632 0 2.795.95 3.157 1.306l2.462 2.926c.356.356 1.306 1.438 1.306 3.156v4.575h2.288c1.013 0 1.882.363 2.607 1.088s1.08 1.58 1.08 2.6z"></path></svg></span>
+                    </a>
+    </div>
+</div></div>                    </aside>
+            </div>
+</div>
+                    </div>
+                <div class="rh-push-pull-group-push-content">
+                            
+
+
+
+
+<div class="rh-push-content--layout" data-rh-background="gray">
+    <div class="rh-push-content-container" data-rh-layout="push-aside">
+        <section class="rh-push-content-main" data-rh-background="white" data-rh-layout="min-stacked">
+                            <!-- Subpattern | results_nav -->
+
+    
+    
+    
+    
+
+    
+
+
+
+
+
+
+    <section class="rh-divider--layout">
+        <div class="rh-divider-container">
+            <div class="rh-divider-main" data-rh-layout="stacked" data-eq-pts="xs-divider: 0, lg-divider: 600" data-eq-state="xs-divider lg-divider">
+                                    <header class="rh-divider-header" data-rh-show-rule="xxs xs sm md lg ">
+                                                    
+
+
+
+
+    <div class="rh-group--layout" data-rh-layout="min-stacked" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group md-group">
+                            <div class="rh-group-body" data-rh-layout="flex-between-base">
+                                        
+    <ul class="rh-navigation-link--component" data-rh-nav-type="back">
+            
+                    <li class="rh-navigation-link-container">
+                              <a class="rh-navigation-link-item" href="https://www.redhat.com/en/blog">
+                    Back to all posts                </a>
+                            </li>
+                    </ul>
+                                    <p class="rh-tags--component"><span class="rh-tags-label">Tags:</span><a class="rh-tags-link" href="https://www.redhat.com/en/blog?f%5B0%5D=post_tags%3AContainers">Containers</a></p>                            </div>
+                    </div>
+                            <hr class="rh-divider-header-rule">
+                                            </header>
+                                            </div>
+        </div>
+    </section>
+                                <div class="rh-generic--component">
+        <p dir="ltr"><span id="docs-internal-guid-05b231ea-7fff-1168-4c9a-ab759c478411">Having worked with OpenShift for about six years now, I've received a lot of questions about what OpenShift </span>is. With the 3.x shift to <a href="https://www.redhat.com/en/topics/containers/what-is-kubernetes">Kubernetes</a>
+ from the previous architecture this evolved from what is it, to what 
+the differences between it and Kubernetes are. Today, we're going to 
+dive into that a bit.</p>
+
+<h3 dir="ltr"><span>Kubernetes is the “kernel”</span></h3>
+
+<p dir="ltr"><span>At CoreOS we considered Kubernetes to be the "kernel"
+ of distributed systems. We recognized that a well designed job 
+scheduler, operating across multiple machines, capable of reconciling 
+the state of managed workloads would naturally foster collaboration much
+ in the same way that the Linux kernel did for the scheduling workloads 
+on a single host. Following this logic, we knew that </span>products would differentiate themselves based on the concerns important to their users.</p>
+
+<p><span>It’s the same </span><a href="https://www.redhat.com/en/topics/linux">Linux</a>
+ kernel running in many phones, laptops, servers, and even the Raspberry
+ Pi, &nbsp;albeit with varying degrees of patches to support the 
+hardware the kernel sits directly on.</p>
+
+<p><span>It's within this same model that it's the same Kubernetes in 
+the various Kubernetes distributions, albeit with varying degrees of 
+patches to support the layer Kubernetes sits directly atop. The Linux 
+distributions that each flavor of Kubernetes is running its workloads 
+on.</span></p>
+
+<h3 dir="ltr"><span>OpenShift is the distribution</span></h3>
+
+<p dir="ltr"><span>This is a powerful distinction. The team behind 
+OpenShift has been proud to produce a distribution of Kubernetes focused
+ on the experience of developers who have the need to develop the next 
+generation of cloud native applications. The team behind Tectonic (the 
+CoreOS distribution of Kubernetes) focused on the experience of 
+administrators and operations teams who needed to quickly remediate 
+issues with the operating system and Kubernetes itself. With the 
+forthcoming release of OpenShift 4.0, we're providing interfaces for 
+both audiences so that we have a platform catering to these specialized 
+needs.</span></p>
+
+<p><span>While anyone could build </span><a href="http://www.linuxfromscratch.org/">Linux from Scratch</a>
+ by choosing each piece and assembling them in the bespoke manner each 
+user chooses, most do not. &nbsp;The level of abstraction that most 
+users choose means that they don’t derive a lot of value from managing 
+(or even knowing about) the differences between Util-Linux version 2.31 
+and 2.33. &nbsp;To take this a step further, user care about a minimum 
+level of functionality (e.g. they know which commands/APIs will be 
+available as long as they surpass a minimum version number) and then a 
+list of features provided.</p>
+
+<p><span>This is much the same as OpenShift. &nbsp;We package Kubernetes
+ and include additional tooling as features that we find important and 
+our users demand. &nbsp;Much as CoreOS and CentOS contain different sets
+ of tooling, catering to different users, so it is the same with 
+Kubernetes distributions. &nbsp;At Red Hat we have focused on making 
+available the tools that help make developers and operations teams 
+successful. This is why, for example, we are including Istio as a 
+technology preview in OpenShift now. &nbsp;We feel it is a tool many 
+users may come to depend on, and thus should be included as table stakes
+ in the base distribution.</span></p>
+
+<h3 dir="ltr"><span>OKD vs Red Hat OpenShift</span></h3>
+
+<p dir="ltr"><span>Let's rewind though.</span></p>
+
+<p><span>Is OpenShift open source software? Absolutely! All of the 
+components within OpenShift are developed within the open source 
+community and can be viewed on </span><a href="https://github.com/openshift/">GitHub</a>. You'll find a large number of repositories there spanning many of the concerns of keeping a Kubernetes cluster up and running.</p>
+
+<p><span>We package the software components needed to run Kubernetes into a project. This project is a distribution of Kubernetes called </span><a href="https://www.okd.io/">OKD</a>, previously called "Origin". In this way, Kubernetes and OKD are similar in that they are both <a href="https://enterprisersproject.com/article/2018/11/getting-started-kubernetes-5-misunderstandings-explained">open source projects</a>,
+ with Kubernetes being one of a number of upstream projects to OKD, 
+similar to the Linux kernel, GNU Bash, GCC, and the Apache httpd server 
+being upstreams of the <a href="https://getfedora.org/">Fedora</a> Linux
+ distribution. When we want to improve or add features to OpenShift, we 
+do that work upstream if it should land in Kubernetes and we work from 
+Kubernetes releases when creating OpenShift.</p>
+
+<p><span>Red Hat then packages the </span>project OKD, along with a number of other projects like <a href="https://github.com/Maistra/istio">Maistra</a>, various <a href="https://coreos.com/operators/">operators</a>,
+ and other resources into Red Hat OpenShift Container Platform the 
+product. After the work of cutting a release of Kubernetes ends, the 
+work of packaging OKD and then later OpenShift begins.</p>
+
+<p><span>Red Hat OpenShift builds on all of this, undergoing extensive 
+internal testing to verify that all components are well integrated and 
+teams are prepared to support the needs of our customers running the 
+software in production. This is part of the reason why there is a gap 
+between the release of the upstream and the subsequent enterprise ready 
+release of OpenShift: internal enablement. Our customers want to stand 
+on the shoulders of our expertise, knowing that we can provide end to 
+end support for the components we ship within OpenShift.</span></p>
+
+<p><span>In the same way you can build Linux from Scratch one can optimize to install </span><a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes the hard way</a>,
+ but this exercise is best left to the individuals with the time, 
+patience, and level of risk that does not necessitate enterprise 
+support. For those focused on their own applications who want to stand 
+on the shoulders of Red Hat, we recommend you chose <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">OpenShift Container Platform</a>.</p>
+
+    </div>
+                    </section>
+                    <aside class="rh-push-content-aside" data-rh-layout="stacked" data-eq-pts="xxs-box: 0, sm-aside: 290" data-eq-state="xxs-box sm-aside">
+                                    
+
+
+
+
+    <div class="rh-group--layout" data-rh-push="left" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group">
+                            <div class="rh-group-body" data-rh-layout="stacked">
+                                    <!-- Pattern | raw_html -->
+
+<form><div class="rh-search--component">
+    <label class="rh-search-label" for="search">Search all Red Hat blogs</label>
+    <input class="rh-search-field" maxlength="128" size="15" placeholder="Search all Red Hat blogs" type="text" id="search" name="search">
+    <button class="rh-search-link" data-rh-cta-type="button" type="submit" formaction="/en/blog/search-proxy" title="">
+        Search    </button>
+</div>
+</form>                                    <!-- Subpattern | subscribe -->
+
+    <div class="rh-social-icon--component" data-rh-icon-background="orange" data-rh-align="left" data-rh-icon-size="xsmall" data-rh-nobreak="">
+
+        <span class="rh-social-icon-label">Subscribe via RSS</span>
+        <a class="rh-social-icon-link" href="https://www.redhat.com/en/rss/blog/" target="_blank" title="Subscribe via RSS">
+            <span class="rh-social-icon-logo"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M9.63 26.194c0 2.11-1.71 3.82-3.818 3.82-2.11 0-3.82-1.71-3.82-3.82s1.71-3.82 3.82-3.82 3.82 1.71 3.82 3.82zM2 12.144c9.863 0 17.856 7.994 17.856 17.856H14.65c0-6.98-5.662-12.644-12.644-12.644v-5.213z"></path><path d="M2 2.02c15.45 0 27.98 12.524 27.98 27.98h-5.374C24.606 17.52 14.486 7.394 2 7.394V2.02z"></path></svg></span>
+                    </a>
+    </div>
+                            </div>
+                    </div>
+                            </aside>
+            </div>
+</div>
+                    </div>
+    </div>
+  <div class="blog-posts-pager"><!-- Pattern | article_pager -->
+
+
+<div class="rh-band--layout" data-rh-background="blue"><div class="rh-band-container" data-rh-layout="stacked"><section class="rh-band-main" data-rh-layout="stacked"><div class="rh-band-content" data-rh-layout="flex-edges-desktop" data-rh-theme="dark desaturated"><div class="rh-pager-teaser--component" data-rh-align="left"><h6 class="rh-pager-teaser-title">
+                Previous older post            </h6><a class="rh-pager-teaser-link" href="https://www.redhat.com/en/blog/blog-friday-five-february-1-2019" data-rh-cta-type="tertiary-left">Friday Five — February 1, 2019</a></div><div class="rh-pager-teaser--component" data-rh-align="right"><h6 class="rh-pager-teaser-title">
+                Next newer post            </h6><a class="rh-pager-teaser-link" href="https://www.redhat.com/en/blog/red-hat-shares-%E2%80%95-agile-integration-cloud-native-architectures" data-rh-cta-type="tertiary-right">Red Hat Shares ― Agile integration in cloud-native architectures</a></div></div></section></div></div></div>  <!-- Pattern | action_band -->
+<div class="rh-band--layout" data-rh-background="teal"><div class="rh-band-container" data-rh-layout="tall-stacked"><section class="rh-band-main" data-rh-layout="tall-stacked"><header class="rh-band-header" data-rh-theme="dark desaturated"><div class="rh-band-header--component"><h1 class="rh-band-header-title">Of interest</h1><h2 class="rh-band-header-headline">News to note—just for you</h2></div></header><div class="rh-band-content" data-rh-theme="dark desaturated"><section class="rh-divider--layout"><div class="rh-divider-container"><div class="rh-divider-main" data-rh-layout="min-stacked" data-eq-pts="xs-divider: 0, lg-divider: 600" data-eq-state="xs-divider lg-divider"><div class="rh-divider-content" data-rh-layout="4 4 4 columns flex"><!-- Pattern | raw_html --><!-- Subpattern | teaser_list --><div class="rh-group--layout" data-rh-layout="stacked" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group"><div class="rh-group-header"><header class="rh-standard-header--component" data-rh-align="left"><div class="rh-standard-header-container"><h2 class="rh-standard-header-title-large">
+                    Upcoming event
+                                                                            </h2></div></header></div><div class="rh-group-body"><ul class="rh-list--layout" data-eq-pts="xs-list: 0, sm-list: 220, md-list: 320" data-rh-list-style="flush" data-eq-state="xs-list sm-list md-list"><li class="rh-list-item"><div class="rh-mini-article-teaser--component"><h5 class="rh-mini-article-teaser-headline" data-rh-style="medium"><a href="https://www.redhat.com/en/events/cfme-ansible-workshop-scranton-july16" title="">                CloudForms + Ansible Workshop            </a></h5><p class="rh-mini-article-teaser-date">
+                            July 16, 2019                    </p></div></li></ul></div></div><!-- Pattern | raw_html --><!-- Subpattern | teaser_list --><div class="rh-group--layout" data-rh-layout="stacked" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group"><div class="rh-group-header"><header class="rh-standard-header--component" data-rh-align="left"><div class="rh-standard-header-container"><h2 class="rh-standard-header-title-large">
+                    Related webinar
+                                                                            </h2></div></header></div><div class="rh-group-body"><ul class="rh-list--layout" data-eq-pts="xs-list: 0, sm-list: 220, md-list: 320" data-rh-list-style="flush" data-eq-state="xs-list sm-list md-list"><li class="rh-list-item"><div class="rh-mini-article-teaser--component"><h5 class="rh-mini-article-teaser-headline" data-rh-style="medium"><a href="https://www.redhat.com/en/events/webinar/open-demo-ansible-tower-july-15-2019" title="">                Open Demo: Ansible Tower            </a></h5><p class="rh-mini-article-teaser-date">
+                            July 15, 2019                    </p></div></li></ul></div></div><!-- Pattern | raw_html --><!-- Subpattern | teaser_list --><div class="rh-group--layout" data-rh-layout="stacked" data-eq-pts="xxs-group: 0, xs-group: 220, sm-group: 320, md-group: 420" data-eq-state="xxs-group xs-group sm-group"><div class="rh-group-header"><header class="rh-standard-header--component" data-rh-align="left"><div class="rh-standard-header-container"><h2 class="rh-standard-header-title-large">
+                    Customer story
+                                                                            </h2></div></header></div><div class="rh-group-body"><ul class="rh-list--layout" data-eq-pts="xs-list: 0, sm-list: 220, md-list: 320" data-rh-list-style="flush" data-eq-state="xs-list sm-list md-list"><li class="rh-list-item"><div class="rh-mini-article-teaser--component"><h5 class="rh-mini-article-teaser-headline" data-rh-style="medium"><a href="https://www.redhat.com/en/success-stories/cathay-pacific" title="">                Cathay Pacific adopts hybrid cloud infrastructure            </a></h5></div></li></ul></div></div></div></div></div></section></div></section></div></div>
+</div>
+  </div>
+        
+  </div>
+
+  <footer>
+      <section class="rc-footer-menu" data-rc-toggle-id="footer-extended">
+      <div class="container rc-footer-menu-container">
+        <nav class="row rc-footer-menu-about-items"><div class="rc-footer-menu-about-col foot-about foot-about"><div class="rc-footer-menu-list-header"><h3 class="rc-footer-menu-list-header-title">About</h3></div><p class="rc-footer-menu-about-description">We’re
+ the world’s leading provider of enterprise open source solutions, using
+ a community-powered approach to deliver high-performing Linux, cloud, 
+container, and Kubernetes technologies. We help you standardize across 
+environments, develop cloud-native applications, and integrate, 
+automate, secure, and manage complex environments with award-winning 
+support, training, and consulting services.</p><ul class="rc-footer-menu-about-list"><li><a href="https://www.redhat.com/en/about/company">Company information</a></li>
+<li><a href="https://investors.redhat.com/">Investor relations</a></li>
+<li><a href="https://www.redhat.com/en/about/office-locations">Locations</a></li>
+<li><a href="https://www.redhat.com/en/blog">Blog</a></li>
+<li><a href="https://www.redhat.com/en/about/newsroom">Newsroom</a></li>
+<li><a href="https://www.redhat.com/en/about/development-model">Development model</a></li>
+<li><a href="https://www.redhat.com/en/events">Events</a></li>
+<li><a href="https://www.redhat.com/en/jobs">Jobs</a></li>
+</ul><div class="rc-footer-menu-social-links"><nav id="foot-social"><ul><li class="first leaf"><a href="http://www.linkedin.com/company/red-hat" class="icon-linkedin-sign"></a></li>
+<li class="leaf"><a href="http://www.youtube.com/user/RedHatVideos" class="icon-youtube"></a></li>
+<li class="leaf"><a href="https://www.facebook.com/redhatinc" class="icon-facebook"></a></li>
+<li class="last leaf"><a href="https://twitter.com/RedHat" class="icon-twitter"></a></li>
+</ul></nav></div></div>
+</nav>        <nav class="row rc-footer-menu-items"><div class="rc-footer-menu-col foot-featured"><div class="rc-footer-menu-list-header" data-rc-state="open" data-rc-toggle-visuals="xxs xs sm " aria-expanded="true" tabindex="0"><span class="rc-footer-menu-list-header-indicator" data-rc-indicator-symbol="plus" data-rc-hidden-at="lg "></span><h3 class="rc-footer-menu-list-header-title">Featured</h3></div><ul class="rc-footer-menu-list" data-rc-toggle-target="xxs xs sm" data-rc-state="open" data-rc-toggle="hide" aria-expanded="true"><li><a href="https://www.redhat.com/en/technologies/linux-platforms/old-enterprise-linux">Red Hat Enterprise Linux</a></li>
+<li><a href="https://www.redhat.com/en/technologies/storage/old-gluster">Red Hat Gluster Storage</a></li>
+<li><a href="https://www.redhat.com/en/technologies/management/old-satellite">Red Hat Satellite</a></li>
+<li><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">Red Hat OpenShift Container Platform</a></li>
+<li><a href="https://www.redhat.com/en/technologies/linux-platforms/openstack-platform">Red Hat  OpenStack Platform</a></li>
+</ul></div>
+<div class="rc-footer-menu-col foot-tools"><div class="rc-footer-menu-list-header" data-rc-state="open" data-rc-toggle-visuals="xxs xs sm " aria-expanded="true" tabindex="0"><span class="rc-footer-menu-list-header-indicator" data-rc-indicator-symbol="plus" data-rc-hidden-at="lg "></span><h3 class="rc-footer-menu-list-header-title">Tools</h3></div><ul class="rc-footer-menu-list" data-rc-toggle-target="xxs xs sm" data-rc-state="open" data-rc-toggle="hide" aria-expanded="true"><li><a href="https://www.redhat.com/wapps/sso/login.html">My account</a></li>
+<li><a href="https://access.redhat.com/">For customers</a></li>
+<li><a href="https://www.redhat.com/en/partners">For partners</a></li>
+<li><a href="http://developers.redhat.com/">For developers</a></li>
+<li><a href="https://access.redhat.com/certification">Hardware catalog</a></li>
+<li><a href="https://www.redhat.com/en/resources">Resource library</a></li>
+</ul></div>
+<div class="rc-footer-menu-col foot-purchase"><div class="rc-footer-menu-list-header" data-rc-state="open" data-rc-toggle-visuals="xxs xs sm " aria-expanded="true" tabindex="0"><span class="rc-footer-menu-list-header-indicator" data-rc-indicator-symbol="plus" data-rc-hidden-at="lg "></span><h3 class="rc-footer-menu-list-header-title">Purchase</h3></div><ul class="rc-footer-menu-list" data-rc-toggle-target="xxs xs sm" data-rc-state="open" data-rc-toggle="hide" aria-expanded="true"><li><a href="https://www.redhat.com/en/store">Red Hat Store</a></li>
+<li><a href="https://www.redhat.com/en/about/japan-buy">Buy online (Japan)</a></li>
+<li><a href="https://redhat.corpmerchandise.com/">Red Hat merchandise</a></li>
+<li><a href="https://www.redhat.com/en/contact">Contact sales</a></li>
+<li><a href="https://www.redhat.com/en/services/training/contact">Contact training</a></li>
+<li><a href="https://www.redhat.com/en/services/consulting#contact-form">Contact consulting</a></li>
+<li><a href="http://redhat.force.com/finder/">Find a partner</a></li>
+</ul></div>
+<div class="rc-footer-menu-col foot-communicate"><div class="rc-footer-menu-list-header" data-rc-state="open" data-rc-toggle-visuals="xxs xs sm " aria-expanded="true" tabindex="0"><span class="rc-footer-menu-list-header-indicator" data-rc-indicator-symbol="plus" data-rc-hidden-at="lg "></span><h3 class="rc-footer-menu-list-header-title">Communicate</h3></div><ul class="rc-footer-menu-list" data-rc-toggle-target="xxs xs sm" data-rc-state="open" data-rc-toggle="hide" aria-expanded="true"><li><a href="https://www.redhat.com/en/contact">Contact us</a></li>
+<li><a href="https://www.redhat.com/en/about/feedback">Feedback</a></li>
+<li><a href="https://www.redhat.com/en/about/social">Social</a></li>
+<li><a href="https://engage.redhat.com/red-hat-shares?intcmp=7016000000154xCAAQ">Red Hat newsletter</a></li>
+</ul></div>
+<div class="rc-footer-menu-col foot-about"><div class="rc-footer-menu-list-header" data-rc-state="open" data-rc-toggle-visuals="xxs xs sm " aria-expanded="true" tabindex="0"><span class="rc-footer-menu-list-header-indicator" data-rc-indicator-symbol="plus" data-rc-hidden-at="lg "></span><h3 class="rc-footer-menu-list-header-title">About</h3></div><ul class="rc-footer-menu-list" data-rc-toggle-target="xxs xs sm" data-rc-state="open" data-rc-toggle="hide" aria-expanded="true"><li><a href="https://www.redhat.com/en/about/newsroom">Newsroom</a></li>
+<li><a href="https://www.redhat.com/en/events">Events</a></li>
+<li><a href="https://www.redhat.com/en/all-blogs">Blogs</a></li>
+<li><a href="https://www.redhat.com/en/about/videos">Videos</a></li>
+<li><a href="https://www.redhat.com/en/about/around-the-world">Around the world</a></li>
+<li><a href="https://www.redhat.com/en/topics">Topics</a></li>
+<li><a href="https://investors.redhat.com/">Investor Relations</a></li>
+<li><a href="https://www.redhat.com/en/jobs">Jobs @ Red Hat</a></li>
+<li><a href="http://www.redhat.corpmerchandise.com/">Cool Stuff Store</a></li>
+</ul></div>
+</nav>      </div>
+    </section>
+        <section class="rc-footer-traditional">
+      <div class="container rc-footer-traditional-container">
+        <section class="rc-footer-traditional-section">
+          <div class="rc-footer-traditional-logo">
+            <div class="row">
+              <a href="https://www.redhat.com/en">
+                <img src="Har19_files/logo.svg" class="screen" title="Red Hat">
+                </a>
+            </div>
+          </div>
+          <div id="legal" class="rc-footer-traditional-legal">
+            <div class="row">
+              <div class="copyright">Copyright ©2019 Red Hat, Inc.</div>
+              <div>
+                <ul class="menu"><li class="first leaf"><a href="https://www.redhat.com/en/about/privacy-policy">Privacy statement</a></li>
+<li class="leaf"><a href="https://www.redhat.com/en/about/terms-use">Terms of use</a></li>
+<li class="last leaf"><a href="https://www.redhat.com/en/about/all-policies-guidelines">All policies and guidelines</a></li>
+</ul>              </div>
+            </div>
+                      </div>
+          <div class="rc-footer-traditional-event-logo">
+            <div id="block-block-5" class="block block-block block-footer-promote">
+
+      
+  <a href="http://www.redhat.com/summit/"><img src="Har19_files/logo-summit.png" alt="Red Hat Summit" style="float: right;"></a>
+
+</div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </footer>
+        <script type="text/javascript" src="Har19_files/js__Dx87WVqe4v5JxdO5NQXWuqi4N2DXrrivAJ5F7KUcBCY__qAl84FcCv2jy.js" async="async"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+  if (("undefined" !== typeof _satellite) && ("function" === typeof _satellite.pageBottom)) {
+      _satellite.pageBottom();
+  }
+//--><!]]>
+</script><script>_satellite["__runScript1"](function(event, target) {
+(function(d,b,a,s,e){ var t = b.createElement(a), 
+     fs = b.getElementsByTagName(a)[0]; t.async=1; t.id=e; t.src=s; 
+     fs.parentNode.insertBefore(t, fs); }) 
+ (window,document,'script','https://scripts.demandbase.com/X4PVAXm1.min.js','demandbase_js_lib');
+});</script>
+    </div>
+  
+
+<script type="text/javascript" id="clicktale_2075a8d88ac5" src="Har19_files/f6653f2c-58d5-487e-a59c-2075a8d88ac5.js"></script><img id="doubleclick_990030321" style="display: none !important;" src="Har19_files/a" hidden=""><img id="f8558dd0fe" style="display: none;" src="Har19_files/mintigo-pixel.png"><div id="drift-widget-container" style="position: absolute; z-index: 2147483647;"><iframe id="drift-widget" src="Har19_files/index.html" style="border: medium none; display: block; height: 0px !important; width: 0px !important; position: fixed; inset: auto 0px 0px auto; visibility: hidden; z-index: 2147483647; max-height: 100vh; max-width: 100vw; transition: none 0s ease 0s; background: transparent none repeat scroll 0% 0%; opacity: 1;" title="Drift Messenger" role="complementary" class="drift-widget-hidden"></iframe></div></body></html>

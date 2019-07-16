@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="mdl-js" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Container Runtimes Part 2: Anatomy of a Low-Level Container Runtime - Ian Lewis</title>
+    
+    <link rel="stylesheet" href="Lew19a_files/64f3050b9156.css" type="text/css"><link rel="stylesheet" href="Lew19a_files/c6a4289876bd.css" type="text/css" media="screen">
+    
+
+    
+
+
+    <meta name="keywords" content="containers container-runtime-series"> 
+    <meta name="description" content="This is the second in a four-part series on container runtimes. In part 1, I gave an overview of container runtimes and discussed the differences betw...">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    
+<meta http-equiv="content-language" content="en">
+
+<link rel="canonical" href="http://www.ianlewis.org/en/container-runtimes-part-2-anatomy-low-level-contai">
+
+    
+
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="http://feeds.feedburner.com/IanLewisBlog">
+
+
+    
+<script src="Lew19a_files/cbgapi.loaded_0" async=""></script><script type="text/javascript" async="" src="Lew19a_files/ga.js"></script><script type="text/javascript" async="" src="Lew19a_files/plusone.js" gapi_processed="true"></script><script type="text/javascript">var SHARETHIS = {addEntry: function() {}};</script>
+
+    
+    
+  <script type="text/javascript" async="" src="Lew19a_files/embed.js"></script><script charset="utf-8" src="Lew19a_files/button.js"></script><link rel="prefetch" as="style" href="Lew19a_files/a_data/lounge.css"><link rel="prefetch" as="script" href="Lew19a_files/a_data/common.js"><link rel="prefetch" as="script" href="Lew19a_files/a_data/lounge.js"><link rel="prefetch" as="script" href="Lew19a_files/a_data/config.js"></head>
+  <body>
+    <div class="mdl-layout__container"><div class="base-layout mdl-layout mdl-js-layout mdl-layout--fixed-header has-drawer is-upgraded" data-upgraded=",MaterialLayout">
+      <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-800 is-casting-shadow"><div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button mdl-layout--small-screen-only"><i class="material-icons"></i></div>
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title"><a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/">Ian Lewis</a></span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation. We hide it in small screens. -->
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/en">English Blog</a>
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/jp">日本語ブログ</a>
+            
+            <a class="mdl-navigation__link mdl-color-text--grey-800" href="https://www.ianlewis.org/en/about/">About</a>
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer mdl-layout--small-screen-only" aria-hidden="true">
+        <span class="mdl-layout-title">Ian Lewis</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/">Home</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/en">English Blog</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/jp">日本語ブログ</a>
+          <a class="mdl-navigation__link" href="https://www.ianlewis.org/en/about/">About</a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <div class="bg-ribbon"></div>
+          <div class="content">
+            
+<div class="mdl-grid">
+  <div class="post-detail mdl-color--white mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+    <h1 class="title" itemprop="title">Container Runtimes Part 2: Anatomy of a Low-Level Container Runtime</h1>
+    <div><em>Feb. 26, 2018</em></div>
+    <div style="float:right; ">
+      <iframe id="twitter-widget-0" scrolling="no" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 61px; height: 20px;" title="Twitter Tweet Button" src="Lew19a_files/tweet_button.html" frameborder="0"></iframe>
+    </div>
+    <p>
+      
+      <a href="https://www.ianlewis.org/en/tag/containers" class="mdl-chip">
+        <span class="mdl-chip__text">containers</span></a>
+      
+      
+      <a href="https://www.ianlewis.org/en/tag/container-runtime-series" class="mdl-chip">
+        <span class="mdl-chip__text">container-runtime-series</span></a>
+      
+      
+    </p>
+
+
+    <div class="post-content">
+      <p>This is the second in a four-part series on container runtimes. In <a href="https://www.ianlewis.org/en/container-runtimes-part-1-introduction-container-r">part 1</a>,
+ I gave an overview of container runtimes and discussed the differences 
+between low-level and high-level runtimes. In this post I will go into 
+detail on low-level container runtimes.</p>
+<p>Low-level runtimes have a limited feature set and typically perform 
+the low-level tasks for running a container. Most developers shouldn't 
+use them for their day-to-day work. Low-level runtimes are usually 
+implemented as simple tools or libraries that developers of higher level
+ runtimes and tools can use for the low-level features. While most 
+developers won't use low-level runtimes directly, it's good to know how 
+they work for troubleshooting and debugging purposes.</p>
+<p>As I explained in part 1, containers are implemented using <a href="https://en.wikipedia.org/wiki/Linux_namespaces">Linux namespaces</a> and <a href="https://en.wikipedia.org/wiki/Cgroups">cgroups</a>.
+ Namespaces let you virtualize system resources, like the file system or
+ networking for each container. On the other hand, cgroups provide a way
+ to limit the amount of resources, such as CPU and memory, that each 
+container can use. At their core, low-level container runtimes are 
+responsible for setting up these namespaces and cgroups for containers, 
+and then running commands inside those namespaces and cgroups. Most 
+container runtimes implement more features, but those are the essential 
+bits.</p>
+<p>Be sure to check out the amazing talk <a href="https://www.youtube.com/watch?v=Utf-A4rODH8">"Building a container from scratch in Go"</a>
+ by Liz Rice. Her talk is a great introduction to how low-level 
+container runtimes are implemented. Liz goes through many of these 
+steps, but the most trivial runtime you can imagine that you could still
+ call a "container runtime" might do something like the following:</p>
+<ul>
+<li>Create cgroup</li>
+<li>Run command(s) in cgroup</li>
+<li><a href="http://man7.org/linux/man-pages/man2/unshare.2.html">Unshare</a> to move to its own namespaces</li>
+<li>Clean up cgroup after command completes (namespaces are deleted automatically when not referenced by a running process)</li>
+</ul>
+<p>A robust low-level container runtime, however, would do a lot more, 
+like allow for setting resource limits on the cgroup, setting up a root 
+filesystem, and chrooting the container's process to the root file 
+system.</p>
+<h1>Building a Sample Runtime</h1>
+<p>Let's walk through running a simple ad hoc runtime to set up a container. We can perform the steps using the standard Linux <a href="https://linux.die.net/man/1/cgcreate">cgcreate</a>, <a href="https://linux.die.net/man/1/cgset">cgset</a>, <a href="https://linux.die.net/man/1/cgexec">cgexec</a>, <a href="http://man7.org/linux/man-pages/man2/chroot.2.html">chroot</a> and <a href="http://man7.org/linux/man-pages/man1/unshare.1.html">unshare</a> commands. You'll need to run most of the commands below as root.</p>
+<p>First let's set up a root filesystem for our container. We'll use the
+ busybox Docker container as our base. Here we create a temporary 
+directory and extract busybox into it.</p>
+<div class="highlight"><pre><span></span># CID=$(docker create busybox)
+# ROOTFS=$(mktemp -d)
+# docker export $CID | tar -xf - -C $ROOTFS
+</pre></div>
+
+
+<p>Now let's create our cgroup and set restrictions on the memory and 
+CPU. Memory limits are set in bytes. Here we are setting the limit to 
+100MB.</p>
+<div class="highlight"><pre><span></span># UUID=$(uuidgen)
+# cgcreate -g cpu,memory:$UUID
+# cgset -r memory.limit_in_bytes=100000000 $UUID
+# cgset -r cpu.shares=512 $UUID
+</pre></div>
+
+
+<p>CPU usage can be restricted in one of two ways. Here we set our CPU 
+limit using CPU "shares". Shares are an amount of CPU time relative to 
+other processes running at the same time. Containers running by 
+themselves can use the whole CPU, but if other containers are running, 
+they can use a proportional amount of CPU to their CPU shares.</p>
+<p>CPU limits based on CPU cores are a bit more complicated. They let 
+you set hard limits on the amount of CPU cores that a container can use.
+ Limiting CPU cores requires you set two options on the cgroup, <code>cfs_period_us</code> and <code>cfs_quota_us</code>. <code>cfs_period_us</code> specifies how often CPU usage is checked and <code>cfs_quota_us</code> specifies the amount of time that a task can run on one core in one period. Both are specified in microseconds.</p>
+<p>For instance, if we wanted to limit our container to two cores we 
+could specify a period of one second and a quota of two seconds (one 
+second is 1,000,000 microseconds) and this would effectively allow our 
+process to use two cores during a one-second period. <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/resource_management_guide/sec-cpu">This article</a> explains this concept in depth.</p>
+<div class="highlight"><pre><span></span># cgset -r cpu.cfs_period_us=1000000 $UUID
+# cgset -r cpu.cfs_quota_us=2000000 $UUID
+</pre></div>
+
+
+<p>Next we can execute a command in the container. This will execute the
+ command within the cgroup we created, unshare the specified namespaces,
+ set the hostname, and chroot to our filesystem.</p>
+<div class="highlight"><pre><span></span># cgexec -g cpu,memory:$UUID \
+&gt;     unshare -uinpUrf --mount-proc \
+&gt;     sh -c "/bin/hostname $UUID &amp;&amp; chroot $ROOTFS /bin/sh"
+/ # echo "Hello from in a container"
+Hello from in a container
+/ # exit
+</pre></div>
+
+
+<p>Finally, after our command has completed, we can clean up by deleting the cgroup and temporary directory that we created.</p>
+<div class="highlight"><pre><span></span># cgdelete -r -g cpu,memory:$UUID
+# rm -r $ROOTFS
+</pre></div>
+
+
+<p>To further demonstrate how this works, I wrote a simple runtime in bash called <a href="https://github.com/ianlewis/execc">execc</a>.
+ It supports mount, user, pid, ipc, uts, and network namespaces; setting
+ memory limits; setting CPU limits by number of cores; mounting the proc
+ file system; and running the container in its own root file system.</p>
+<h2>Examples of Low-Level Container Runtimes</h2>
+<p>In order to better understand low-level container runtimes it's 
+useful to look at some examples. These runtimes implement different 
+features and emphasize different aspects of containerization.</p>
+<h3>lmctfy</h3>
+<p>Though not in wide use, one container runtime of note is <a href="https://github.com/google/lmctfy">lmctfy</a>. lmctfy is a project by Google, based on the internal container runtime that <a href="https://research.google.com/pubs/pub43438.html">Borg</a>
+ uses. One of its most interesting features is that it supports 
+container hierarchies that use cgroup hierarchies via the container 
+names. For example, a root container called "busybox" could create 
+sub-containers under the name "busybox/sub1" or "busybox/sub2" where the
+ names form a kind of path structure. As a result each sub-container can
+ have its own cgroups that are then limited by the parent container's 
+cgroup. This is inspired by Borg and gives containers in lmctfy the 
+ability to run sub-task containers under a pre-allocated set of 
+resources on a server, and thus achieve more stringent SLOs than could 
+be provided by the runtime itself.</p>
+<p>While lmctfy provides some interesting features and ideas, other 
+runtimes were more usable so Google decided it would be better for the 
+community to focus worked on Docker's libcontainer instead of lmctfy.</p>
+<h3>runc</h3>
+<p>runc is currently the most widely used container runtime. It was 
+originally developed as part of Docker and was later extracted out as a 
+separate tool and library.</p>
+<p>Internally, runc runs containers similarly to how I described it 
+above, but runc implements the OCI runtime spec. That means that it runs
+ containers from a specific "OCI bundle" format. The format of the 
+bundle has a config.json file for some configuration and a root file 
+system for the container. You can find out more by reading the <a href="https://github.com/opencontainers/runtime-spec">OCI runtime spec</a> on GitHub. You can learn how to install runc from the <a href="https://github.com/opencontainers/runc">runc GitHub project</a>.</p>
+<p>First create the root filesystem. Here we'll use busybox again.</p>
+<div class="highlight"><pre><span></span>$ mkdir rootfs
+$ docker <span class="nb">export</span> <span class="k">$(</span>docker create busybox<span class="k">)</span> <span class="p">|</span> tar -xf - -C rootfs
+</pre></div>
+
+
+<p>Next create a config.json file. </p>
+<div class="highlight"><pre><span></span>$ runc spec
+</pre></div>
+
+
+<p>This command creates a template config.json for our container. It should look something like this:</p>
+<div class="highlight"><pre><span></span>$ cat config.json
+<span class="o">{</span>
+        <span class="s2">"ociVersion"</span>: <span class="s2">"1.0.0"</span>,
+        <span class="s2">"process"</span>: <span class="o">{</span>
+                <span class="s2">"terminal"</span>: true,
+                <span class="s2">"user"</span>: <span class="o">{</span>
+                        <span class="s2">"uid"</span>: <span class="m">0</span>,
+                        <span class="s2">"gid"</span>: <span class="m">0</span>
+                <span class="o">}</span>,
+                <span class="s2">"args"</span>: <span class="o">[</span>
+                        <span class="s2">"sh"</span>
+                <span class="o">]</span>,
+                <span class="s2">"env"</span>: <span class="o">[</span>
+                        <span class="s2">"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"</span>,
+                        <span class="s2">"TERM=xterm"</span>
+                <span class="o">]</span>,
+                <span class="s2">"cwd"</span>: <span class="s2">"/"</span>,
+                <span class="s2">"capabilities"</span>: <span class="o">{</span>
+...
+</pre></div>
+
+
+<p>By default it runs the sh command in a container with a root 
+filesystem at ./rootfs. Since that's exactly the setup we want we can 
+just go ahead and run the container.</p>
+<div class="highlight"><pre><span></span>$ sudo runc run mycontainerid
+/ <span class="c1"># echo "Hello from in a container"</span>
+Hello from in a container
+</pre></div>
+
+
+<h2>rkt</h2>
+<p>rkt is a popular alternative to Docker/runc that was developed by 
+CoreOS. rkt is a bit hard to categorize because it provides all the 
+features that other low-level runtimes like runc provide, but also 
+provides features typical of high-level runtimes. Here I'll describe the
+ low-level features of rkt and leave the high-level features for the 
+next post.</p>
+<p>rkt originally used the <a href="https://coreos.com/rkt/docs/latest/app-container.html">Application Container</a>
+ (appc) standard, which was developed as an open alternative standard to
+ alternative to Docker's container format. Appc never achieved 
+widespread adoption as a container format and appc is no longer being 
+actively developed bit achieved its goals to ensure open standards are 
+available to the community. Instead of appc, rkt will use OCI container 
+formats in the future.</p>
+<p>Application Container Image (ACI) is the image format for Appc. 
+Images are a tar.gz containing a manifest directory and a rootfs 
+directory for the root filesystem. You can read more about ACI <a href="https://github.com/appc/spec/blob/master/spec/aci.md">here</a>.</p>
+<p>You can build a container image using the <code>acbuild</code> tool. You can use acbuild in shell scripts that can be executed much like Dockerfiles are run.</p>
+<div class="highlight"><pre><span></span>acbuild begin
+acbuild set-name example.com/hello
+acbuild dep add quay.io/coreos/alpine-sh
+acbuild copy hello /bin/hello
+acbuild set-exec /bin/hello
+acbuild port add www tcp 5000
+acbuild label add version 0.0.1
+acbuild label add arch amd64
+acbuild label add os linux
+acbuild annotation add authors "Carly Container &lt;carly@example.com&gt;"
+acbuild write hello-0.0.1-linux-amd64.aci
+acbuild end
+</pre></div>
+
+
+<h2>Adiós!</h2>
+<p>I hope this helped you get an idea of what low-level container 
+runtimes are. While most users of containers will use higher-level 
+runtimes, it's good to know how containers are working underneath the 
+covers for troubleshooting issues and debugging.</p>
+<p>In the next post I'll move up the stack and talk about high-level 
+container runtimes. I'll talk about what high-level runtimes provide and
+ how they are much better for app developers who want to use containers.
+ I'll also talk about popular runtimes like Docker and rkt's high-level 
+features. Be sure to add my RSS feed or <a href="https://twitter.com/IanMLewis">follow me on Twitter</a> to get notified when the next blog post comes out.</p>
+<blockquote>
+<p>Update: Please continue on and check out <a href="https://www.ianlewis.org/en/container-runtimes-part-3-high-level-runtimes">Container Runtimes Part 3: High-Level Runtimes</a></p>
+</blockquote>
+<p>Until then, you can get more involved with the Kubernetes community via these channels:</p>
+<ul>
+<li>Post and answer questions on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a></li>
+<li>Follow <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> on Twitter</li>
+<li>Join the Kubernetes<a href="http://slack.k8s.io/"> Slack</a> and chat with us. (I'm ianlewis so say Hi!)</li>
+<li>Contribute to the Kubernetes project on<a href="https://github.com/kubernetes/kubernetes"> GitHub</a></li>
+</ul>
+<p><em>&gt; Thanks to <a href="https://twitter.com/craigbox">Craig Box</a>, Jack Wilbur, Philip Mallory, <a href="https://twitter.com/dgageot">David Gageot</a>, Jonathan MacMillan, and <a href="https://twitter.com/MayaKaczorowski">Maya Kaczorowski</a> for reviewing drafts of this post.</em></p>
+    </div>
+
+    <hr>
+
+    
+    <div id="disqus_thread"><iframe id="dsq-app4701" name="dsq-app4701" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 489px !important;" src="Lew19a_files/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+      var disqus_shortname = 'ianlewisblog';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    /* ]]> */
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+    
+  </div>
+</div>
+</div>
+          </div>
+        <footer class="mdl-mini-footer">
+          <div class="mdl-mini-footer__left-section">
+            <div class="mdl-logo">© 2012 Ian Lewis</div>
+            <ul class="mdl-mini-footer__link-list">
+
+              <li><a href="https://www.ianlewis.org/">Home</a></li>
+              <li><a href="https://www.ianlewis.org/en/about/">About</a></li>
+              <li><a href="https://plus.google.com/103970721692220852299/?rel=author">Google+</a></li>
+            </ul>
+          </div>
+        </footer>
+      </main>
+    <div class="mdl-layout__obfuscator"></div></div></div>
+    <script defer="defer" src="Lew19a_files/material.js"></script>
+    <script type="text/javascript" src="Lew19a_files/jquery-3.js"></script>
+    <script type="text/javascript">
+      STATIC_URL='/static/';
+      $('a[href="#"]').click(function(){return false;});
+    </script>
+    
+
+<script type="text/javascript" src="Lew19a_files/widgets.js"></script>
+<script type="text/javascript">
+twttr.events.bind('tweet', function(event) {
+  if (event) {
+    _gaq.push(['_trackSocial', 'twitter', 'tweet', undefined]);
+  }
+});
+</script>
+
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-2149299-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+    
+  
+
+<iframe scrolling="no" allowtransparency="true" src="Lew19a_files/widget_iframe.html" title="Twitter settings iframe" style="display: none;" frameborder="0"></iframe><iframe style="display: none;"></iframe></body></html>

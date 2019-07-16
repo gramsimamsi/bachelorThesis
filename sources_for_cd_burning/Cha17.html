@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" class="" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="google-site-verification" content="83jPrS1FBNJWtyJuXXp8gLKu9g09QusPUlKiFnoX_Qg">
+  <meta name="msvalidate.01" content="41DBAB266363549F743A1F3E3C14C4FA">
+  <!--[if IE]><link rel="shortcut icon" href="/favicon.ico"><![endif]-->
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.mirantis.com/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="https://www.mirantis.com/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://www.mirantis.com/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://www.mirantis.com/manifest.json">
+  <link rel="mask-icon" href="https://www.mirantis.com/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="apple-mobile-web-app-title" content="Mirantis">
+  <meta name="application-name" content="Mirantis">
+  <meta name="theme-color" content="#ffffff">
+    <script type="text/javascript" async="" src="Cha17_files/recaptcha__en.js"></script><script type="text/javascript" async="" src="Cha17_files/_Incapsula_Resource"></script><script async="" type="text/javascript" src="Cha17_files/rtp.js"></script><script async="" src="Cha17_files/gtm.js"></script><script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K2J65K');
+    </script>
+    <style>.async-hide { opacity: 0 !important} </style>
+    <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+            h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+            (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+        })(window,document.documentElement,'async-hide','dataLayer',4000,
+            {'GTM-WC5H5D7':true});</script>
+  <title>OK, I give up. Is Docker now Moby? And what is LinuxKit?</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v7.6 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="This week at DockerCon, Docker made several announcements, but one in particular caused massive confusion as users thought that Docker was becoming &quot;Moby.&quot;">
+<link rel="canonical" href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OK, I give up. Is Docker now Moby? And what is LinuxKit?">
+<meta property="og:description" content="This week at DockerCon, Docker made several announcements, but one in particular caused massive confusion as users thought that Docker was becoming &quot;Moby.&quot;">
+<meta property="og:url" content="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/">
+<meta property="og:site_name" content="Mirantis | Pure Play Open Cloud">
+<meta property="article:publisher" content="https://www.facebook.com/MirantisUS">
+<meta property="article:section" content="Blog">
+<meta property="article:published_time" content="2017-04-23T20:07:56-07:00">
+<meta property="article:modified_time" content="2018-10-23T10:03:53-07:00">
+<meta property="og:updated_time" content="2018-10-23T10:03:53-07:00">
+<meta property="og:image" content="https://www.mirantis.com/wp-content/uploads/2017/04/dockerassemblies.png">
+<meta property="og:image:secure_url" content="https://www.mirantis.com/wp-content/uploads/2017/04/dockerassemblies.png">
+<meta property="og:image:width" content="975">
+<meta property="og:image:height" content="548">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="This week at DockerCon, Docker made several announcements, but one in particular caused massive confusion as users thought that Docker was becoming &quot;Moby.&quot;">
+<meta name="twitter:title" content="OK, I give up. Is Docker now Moby? And what is LinuxKit?">
+<meta name="twitter:site" content="@MirantisIT">
+<meta name="twitter:image" content="https://www.mirantis.com/wp-content/uploads/2017/04/dockerassemblies.png">
+<meta name="twitter:creator" content="@MirantisIT">
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Organization","url":"https:\/\/www.mirantis.com\/","sameAs":["https:\/\/www.facebook.com\/MirantisUS","https:\/\/www.linkedin.com\/company\/mirantis","https:\/\/www.youtube.com\/user\/mirantisus","https:\/\/twitter.com\/MirantisIT"],"@id":"https:\/\/www.mirantis.com\/#organization","name":"Mirantis","logo":"https:\/\/cdn.mirantis.com\/wp-content\/uploads\/2017\/04\/mirantis-logo-277x180.png"}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://www.mirantis.com/">
+<link rel="dns-prefetch" href="https://cdn.mirantis.com/">
+<link rel="preconnect" href="https://cdn.mirantis.com/">
+<link rel="stylesheet" href="Cha17_files/pagenavi-css.css">
+<link rel="stylesheet" href="Cha17_files/main_d5f0e1d687b5e5e2c0dd.css">
+<script src="Cha17_files/library.js"></script>
+
+<!-- Dynamic Widgets by QURL loaded - http://www.dynamic-widgets.com //-->
+
+    <style type="text/css">
+    html {margin-top: 0 !important;}
+    body.admin-bar {
+    /* margin-top: -32px; */
+    padding-bottom: 32px;
+    }
+    body.admin-bar #wphead {
+       padding-top: 0;
+    }
+    body.admin-bar #footer {
+       padding-bottom: 32px;
+    }
+    #wpadminbar {
+        top: auto !important;
+        bottom: 0;
+    }
+    #wpadminbar .quicklinks .menupop ul {
+        bottom: 160px;
+    }
+    .admin-bar #nb-popoutmenu {
+    	margin-top: 0 !important;
+    }
+    @media screen and (max-width: 600px) {
+        #wpadminbar {
+            position: fixed;
+        }
+    }
+    @media screen and (max-width: 782px) {
+        html {
+            margin-top: 0 !important;
+        }
+    }
+    </style>  <script type="text/javascript">
+    (function(c,h,a,f,i,e){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      c[a].a=i;c[a].e=e;var g=h.createElement("script");g.async=true;g.type="text/javascript";
+      g.src=f+'?aid='+i;var b=h.getElementsByTagName("script")[0];b.parentNode.insertBefore(g,b);
+    })(window,document,"rtp","//sjrtp7-cdn.marketo.com/rtp-api/v1/rtp.js","mirantis");
+
+    rtp('send','view');
+    rtp('get', 'campaign',true);
+    rtp('get','rcmd', 'richmedia');
+  </script>
+  <script type="text/javascript" src="Cha17_files/cookies.js"></script>
+<script charset="utf-8" src="Cha17_files/momenttimelinetweet.js"></script><script charset="utf-8" src="Cha17_files/tweet.js"></script></head>
+  <body class="post-template-default single single-post postid-661492 single-format-standard blog ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit sidebar-primary" data-aos-easing="ease" data-aos-duration="400" data-aos-delay="0" style="overflow-x: hidden;"><div class="tw-slide-panel dark nb-menu-level tw-right" id="nb-popoutmenu" style="width: 260px; display: none;">
+	<div class="above-nav">
+		<div id="search-2" class="widget widget_search">
+			<!--Searchbox-->
+			<div class="search-form search">
+				<form method="get" name="SearchForm" action="/">
+					<fieldset>
+						<input type="search" class="search-field" placeholder="Search..." name="s" id="s">
+					</fieldset>
+				</form>
+				<i class="fa fa-search searchbutton"></i>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<nav id="">
+			<ul id="menu-primary" class="nb-menu-items-container"><li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-products nb-with-ul"><span class="nb-menu-item-container"><a href="#">Products</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Products</span>
+	<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-cloud-platform nb-with-ul"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/mcp/">Cloud Platform</a><span class="arrow"></span></span>
+	<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Cloud Platform</span>
+		<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-management-components nb-with-ul"><span class="nb-menu-item-container"><a href="#">Management Components</a><span class="arrow"></span></span>
+		<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Management Components</span>
+			<li class="nav-item nav-item menu-item nav-item menu-drivetrain"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/mcp/drivetrain/">DriveTrain</a></span></li>
+			<li class="nav-item nav-item menu-item nav-item menu-stacklight"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/mcp/stacklight/">StackLight</a></span></li>
+		</ul></div>
+</li>
+		<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-infrastructure-components nb-with-ul"><span class="nb-menu-item-container"><a href="#">Infrastructure Components</a><span class="arrow"></span></span>
+		<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Infrastructure Components</span>
+			<li class="nav-item nav-item menu-item nav-item menu-kubernetes"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/kubernetes/">Kubernetes</a></span></li>
+			<li class="nav-item nav-item menu-item nav-item menu-openstack"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/openstack/">OpenStack</a></span></li>
+			<li class="nav-item nav-item menu-item nav-item menu-ceph"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/ceph/">Ceph</a></span></li>
+			<li class="nav-item nav-item menu-item nav-item menu-tungsten-fabric"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/mcp/sdn/">Tungsten Fabric</a></span></li>
+		</ul></div>
+</li>
+	</ul></div>
+</li>
+	<li class="nav-item nav-item menu-item nav-item menu-application-platform-beta"><span class="nb-menu-item-container"><a href="https://info.mirantis.com/mirantis-application-platform-beta">Application Platform [beta]</a></span></li>
+</ul></div>
+</li>
+<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-use-cases nb-with-ul"><span class="nb-menu-item-container"><a href="#">Use Cases</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Use Cases</span>
+	<li class="nav-item nav-item menu-item nav-item menu-mcp-edge"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/software/mcp-edge/">MCP Edge</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-agile-it"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/solutions/agile-enterprise/">Agile IT</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-nfv"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/solutions/network-functions-virtualization-nfv/">NFV</a></span></li>
+</ul></div>
+</li>
+<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-delivery-approach nb-with-ul"><span class="nb-menu-item-container"><a href="#">Delivery Approach</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Delivery Approach</span>
+	<li class="nav-item nav-item menu-item nav-item menu-build"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/services/build/">Build</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-operate"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/services/operate/">Operate</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-transfer"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/services/transfer/">Transfer</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-mcp-support"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/support/enterprise-support-services/">MCP Support</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-k8s-support"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/mirantis-enterprise-support-for-kubernetes/">K8s Support</a></span></li>
+</ul></div>
+</li>
+<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-training nb-with-ul"><span class="nb-menu-item-container"><a href="#">Training</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Training</span>
+	<li class="nav-item nav-item menu-item nav-item menu-overview"><span class="nb-menu-item-container"><a href="https://training.mirantis.com/">Overview</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-instructor-led-training"><span class="nb-menu-item-container"><a href="https://training.mirantis.com/course-catalog/">Instructor-Led Training</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-ondemand-training"><span class="nb-menu-item-container"><a href="https://training.mirantis.com/ondemand-training/">Ondemand Training</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-certification"><span class="nb-menu-item-container"><a href="https://training.mirantis.com/certification/">Certification</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-private-training"><span class="nb-menu-item-container"><a href="https://training.mirantis.com/onsite-training/">Private Training</a></span></li>
+</ul></div>
+</li>
+<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-resources nb-with-ul"><span class="nb-menu-item-container"><a href="#">Resources</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">Resources</span>
+	<li class="nav-item nav-item menu-item nav-item menu-customers"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/cloud-case-studies/">Customers</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-blog"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/blog/">Blog</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-webinars"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/cloud-webinars/">Webinars</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-events"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/cloud-events/">Events</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-brochures"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/cloud-brochures/">Brochures</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-videos"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/cloud-videos/">Videos</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-documentation"><span class="nb-menu-item-container"><a href="https://docs.mirantis.com/">Documentation</a></span></li>
+</ul></div>
+</li>
+<li class="nav-item nav-item menu-item nav-item menu-partners"><a href="https://www.mirantis.com/partners/">Partners</a></li>
+<li class="nav-item dropdown nav-item dropdown menu-item nav-item menu-item-has-children dropdown menu-about nb-with-ul"><span class="nb-menu-item-container"><a href="#">About</a><span class="arrow"></span></span>
+<div class="nb-menu-level" style="display: none;"><ul class="sub-menu"><span class="nb-back">About</span>
+	<li class="nav-item nav-item menu-item nav-item menu-contact"><span class="nb-menu-item-container"><a href="https://info.mirantis.com/contact-us">Contact</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-company"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/about/">Company</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-locations"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/locations/">Locations</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-careers"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/careers/">Careers</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-leadership"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/leadership/">Leadership</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-board-of-directors"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/leadership/board-of-directors/">Board of Directors</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-investors"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/investors/">Investors</a></span></li>
+	<li class="nav-item nav-item menu-item nav-item menu-press-center"><span class="nb-menu-item-container"><a href="https://www.mirantis.com/company/press-center/info/">Press Center</a></span></li>
+</ul></div>
+</li>
+</ul>	</nav>
+	<div class="below-nav">
+		
+                <a href="https://info.mirantis.com/live-demo-istio-virtlet" class="mobile-nav-callout-link">
+            <div class="mobile-nav-callout">
+                <div class="callout-header">LIVE DEMO</div>
+                <div class="callout-content">
+                    <div class="callout-title">How to Use Service Mesh with VMs and Containers</div>
+                    <div class="callout-date"> </div>
+                    <div class="callout-button btn btn-primary">REGISTER</div>
+                </div>
+            </div>
+        </a>
+
+    	</div>
+</div>
+  <!-- Google Tag Manager -->
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-K2J65K"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager -->
+    <!--[if IE]>
+      <div class="alert alert-warning">
+        You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.      </div>
+    <![endif]-->
+    <header class="page-head top-nav nb-fixed">
+  <div class="banner navbar navbar-default navbar-static-top" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="https://www.mirantis.com/">Mirantis | Pure Play Open Cloud</a>
+          <div class="pull-right" id="mira-menu-int">
+                        <style>
+              #map-cta {
+                border-left: 1px solid #846479;
+              }
+              .menu-cta:hover {
+                background: #ee2169;
+                border-color: #ee2169;
+              }
+              .navbar .navbar-header #mira-menu-int a.sub-sub-menu-item:hover {
+                background: #ee2169;
+              }
+              ul#menu-top-menu.sf-menu #map-cta p {
+                margin: .5rem 0 1rem;
+                line-height: 1.5rem;
+              }
+              ul#menu-top-menu.sf-menu .sub-sub-menu-header {
+                opacity: .4;
+                font-style: italic;
+                display: inline-block;
+                margin-bottom:5px;
+              }
+              @media (min-width: 544px) {
+                .navbar .navbar-header #mira-menu-int a.sub-sub-menu-item {
+                  display: block;
+                  padding: 6px 0;
+                }
+                .navbar .navbar-header #mira-menu-int a#map-cta {
+                  padding: 20px 16px 35px 16px;
+                }
+              }
+
+              .menu-cta {
+                border: 1px solid #fff;
+                margin: 5px 0 !important;
+                padding: 10px 5px !important;
+                text-align:center;
+              }
+              a.products-primary-link:hover {
+                background: #ef2369;
+              }
+              .navbar .navbar-header #mira-menu-int #mcp-edge-link a {
+                padding: 5px 30px 10px;
+              }
+              div#mcp-edge-link:hover {
+                background: #f21b67;
+              }
+
+              .navbar .navbar-header #mira-menu-int li.menu-contact a.redactionol {
+                padding: 5px 15px;
+                text-transform: none;
+                margin-top: 13px;
+                color: #ef2369;
+                font-weight: normal;
+                letter-spacing: inherit;
+                font-size: inherit;
+                margin-left: 10px;
+              }
+              .navbar .navbar-header #mira-menu-int li.menu-contact a.redactionol:hover {
+                color: #fff;
+              }
+            </style>
+            <ul id="menu-top-menu" class="list-inline sf-menu hidden-md-down sf-js-enabled sf-arrows">
+              <li class="menu-item nav-item menu-item-has-children dropdown menu-products">
+                <a role="button" tabindex="1">Products</a>
+                <div class="sub-menu">
+                  <div class="row">
+                    <div class="col-lg">
+                      <div style="color: #fff; border-right: 1px solid #0f8384;">
+                        <a href="https://www.mirantis.com/software/mcp/" class="products-primary-link" style="padding: 15px 0;">
+                          <strong style="font-size: 18px;margin-left: 16px;">Cloud Platform</strong>
+                        </a>
+                        <div class="cloud-platform">
+                          <div class="kubernetes">
+                            <a href="https://www.mirantis.com/software/kubernetes/">Kubernetes</a>
+                            <div class="drivetrain">
+                              <a href="https://www.mirantis.com/software/mcp/drivetrain/">DriveTrain</a>
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <a href="https://www.mirantis.com/software/ceph/">Ceph</a>
+                                </div>
+                                <div class="col-lg-6">
+                                  <a href="https://www.mirantis.com/software/openstack/">OpenStack</a>
+                                </div>
+                                <div class="col-lg-6">
+                                  <a href="https://www.mirantis.com/software/mcp/sdn/">Calico</a>
+                                </div>
+                                <div class="col-lg-6">
+                                  <a href="https://www.mirantis.com/software/kubernetes-ingress/">CoreDNS</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg">
+                        <a href="https://www.mirantis.com/software/application-platform/" class="products-primary-link" style="padding: 15px 0;">
+                          <strong style="font-size: 18px;margin-left: 16px;">Application Platform</strong>
+                        </a>
+                        <div class="application-platform">
+                          <p>Adopt continuous delivery to realize cloud ROI at enterprise scale.</p>
+                          <a href="https://info.mirantis.com/mirantis-application-platform-beta" class="menu-cta">REQUEST BETA PARTICIPATION</a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="menu-item nav-item menu-item-has-children dropdown menu-use-cases">
+                <a role="button" tabindex="2">Use Cases</a>
+                <ul class="sub-menu">
+                  <li class="menu-item nav-item menu-edge"><a href="https://www.mirantis.com/software/mcp-edge/">Edge Computing</a></li>
+                  <li class="menu-item nav-item menu-nfv"><a href="https://www.mirantis.com/solutions/network-functions-virtualization-nfv/">NFV Infrastructure</a></li>
+                  <li class="menu-item nav-item menu-agile"><a href="https://www.mirantis.com/solutions/agile-enterprise//">Agile IT</a></li>
+                </ul>
+              </li>
+
+              <li class="menu-item nav-item menu-item-has-children dropdown menu-delivery-approach">
+                <a role="button" tabindex="2">Delivery Approach</a>
+                <ul class="sub-menu">
+                  <li class="menu-item nav-item menu-overview"><a href="https://www.mirantis.com/services/">Overview</a></li>
+                  <li class="menu-item nav-item menu-build"><a href="https://www.mirantis.com/services/build/">Build</a></li>
+                  <li class="menu-item nav-item menu-operate"><a href="https://www.mirantis.com/services/operate/">Operate</a></li>
+                  <li class="menu-item nav-item menu-transfer"><a href="https://www.mirantis.com/services/transfer/">Transfer</a></li>
+                  <li class="menu-item nav-item menu-support"><a href="https://www.mirantis.com/support/enterprise-support-services/">MCP Support</a></li>
+                  <li class="menu-item nav-item menu-support"><a href="https://www.mirantis.com/mirantis-enterprise-support-for-kubernetes/">K8s Support</a></li>
+                </ul>
+              </li>
+              <li class="menu-item nav-item menu-item-has-children dropdown menu-training">
+                <a role="button" tabindex="3">Training</a>
+                <ul class="sub-menu">
+                  <li class="menu-item nav-item menu-overview"><a href="https://training.mirantis.com/">Overview</a></li>
+                  <li class="menu-item nav-item menu-instructor-led-training"><a href="https://training.mirantis.com/course-catalog/">Instructor-led Training</a></li>
+                  <li class="menu-item nav-item menu-ondemand-training"><a href="https://training.mirantis.com/ondemand-training/">Ondemand Training</a></li>
+                  <li class="menu-item nav-item menu-certification"><a href="https://training.mirantis.com/certification/">Certification</a></li>
+                  <li class="menu-item nav-item menu-private-training"><a href="https://training.mirantis.com/onsite-training/">Private Training</a></li>
+                </ul>
+              </li>
+              <li class="menu-item nav-item menu-item-has-children dropdown menu-resources">
+                <a role="button" tabindex="3">Resources</a>
+                <ul class="sub-menu">
+                  <li class="menu-item nav-item menu-customers"><a href="https://www.mirantis.com/cloud-case-studies/">Customers</a></li>
+                  <li class="menu-item nav-item menu-blog"><a href="https://www.mirantis.com/blog/">Blog</a></li>
+                  <li class="menu-item nav-item menu-webinars"><a href="https://www.mirantis.com/cloud-webinars/">Webinars</a></li>
+                  <li class="menu-item nav-item menu-events"><a href="https://www.mirantis.com/cloud-events/">Events</a></li>
+                </ul>
+              </li>
+              <li class="menu-item nav-item menu-contact">
+                <a href="https://info.mirantis.com/contact-us" class="redactionol" onclick="dataLayer.push({'event': 'contactButton'});">Contact Us</a>
+              </li>
+            </ul>
+            <!-- Side Panel Link -->
+            <button class="tw-menu-icon nb-menu-link hidden-lg-up" id="nb-menu-link">
+              <span>Menu</span>
+            </button>
+            <!-- END Side Panel Link -->
+          </div>
+      </div>
+    </div>
+  </div>
+    <div class="status"></div>
+</header>
+    <div class="wrap" role="document" id="nb-menu-page">
+      <div class="content">
+        <main class="main">
+              <div class="page-header">
+	<div class="masthead">
+		<div class="container">
+			<div id="osunlocked_logo">
+				<h1>The Mirantis Blog</h1>
+        <p>Your guide through the wilderness of Open Cloud</p>
+        <img src="Cha17_files/blog-bear.png" class="bear">
+			</div>
+		</div>
+	</div>
+			<div class="blog-nav enhancedtextwidget-22 widget_text enhanced-text-widget"><div class="container"><div class="row"><div class="col-md-12"><div class="textwidget widget-text"><span style="font-size: 17px; margin-right: 20px; font-weight: bold;">Popular Tags:</span> <a href="https://www.mirantis.com/tag/kubernetes/">Kubernetes</a> | <a href="https://www.mirantis.com/tag/openstack/">OpenStack</a> | <a href="https://www.mirantis.com/tag/containers/">Containers</a> | <a href="https://www.mirantis.com/tag/pods/">Pods</a> | <a href="https://www.mirantis.com/tag/docker/">Docker</a> | <a href="https://www.mirantis.com/tag/helm/">Helm</a> | <a href="https://www.mirantis.com/tag/mcp/">MCP</a> | <a href="https://www.mirantis.com/tag/edge/">
+Edge</a> | <a href="https://www.mirantis.com/tag/virtlet/">Virtlet</a> |  <a href="https://www.mirantis.com/tag/spinnaker/">Spinnaker</a> | <a href="https://www.mirantis.com/tag/nfv/">NFV</a>
+</div></div></div></div></div>	</div>
+
+<div class="container">
+    <div class="row">
+                    <div class="col-lg-9">
+                                    <div id="share_box"><a href="https://twitter.com/intent/tweet?text=https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/" target="_blank"><span class="icon-twitter"></span></a><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/&amp;title=OK,%20I%20give%20up.%20Is%20Docker%20now%20Moby?%20And%20what%20is%20LinuxKit?" target="_blank"><span class="icon-linkedin"></span></a><a href="http://www.facebook.com/sharer.php?u=https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/" target="_new"><span class="icon-facebook"></span></a><a target="_blank" class="pngfix" title="PlusOne" href="https://plus.google.com/share?url=https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/"><span class="icon-google-plus"></span></a><a href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false" target="_blank"><span class="icon-reddit"></span></a><a href="https://www.mirantis.com/blog/feed/"><span class="icon-feed3"></span></a></div>                                                    <article class="post-661492 post type-post status-publish format-standard has-post-thumbnail hentry category-blog">
+  <header>
+    <h1 class="entry-title">OK, I give up. Is Docker now Moby? And what is LinuxKit?</h1>
+    			<span class="author fn" itemprop="author" style="color:#3D4447;">Nick Chase</span>		<span itemprop="datePublished" datetime="" class="mnews_date date updated published">- April 23, 2017 - </span>
+  </header>
+  <div class="entry-content">
+          <img class="featured-image pull-left hidden-md-down" style="margin-top: 10px; margin-bottom: 5px; margin-right: 25px; max-width: 50%; max-height: 250px;" src="Cha17_files/dockerassemblies-768x432.png">
+        <p><span style="font-weight: 400;">This week at DockerCon, 
+Docker made several announcements, but one in particular caused massive 
+confusion as users thought that “Docker” was becoming “Moby.” 
+&nbsp;Well… OK, but </span><b>which</b><span style="font-weight: 400;"> Docker? The Register probably put it best, when they </span><a href="https://www.theregister.co.uk/2017/04/21/docker_renames_open_source_code_moby/"><span style="font-weight: 400;">said</span></a><span style="font-weight: 400;">, “</span><span style="font-weight: 400;">Docker
+ (the company) decided to differentiate Docker (the commercial software 
+products Docker CE and Docker EE) from Docker (the open source 
+project).” &nbsp;Tack on a second project about building core operating 
+systems, and there’s a lot to unpack.</span></p>
+<p><span style="font-weight: 400;">Let’s start with Moby. &nbsp;</span></p>
+<h2><span style="font-weight: 400;">What is Moby?</span></h2>
+<p><span style="font-weight: 400;">Docker, being the foundation of many 
+peoples’ understanding of containers, unsurprisingly isn’t a single 
+monolithic application. &nbsp;Instead, it’s made up of components such 
+as runc, containerd, InfraKit, and so on. The community works on those 
+components (along with Docker, of course) and when it’s time for a 
+release, Docker packages them all up and out they go. With all of those 
+pieces, as you might imagine, it’s not a simple task.</span></p>
+<p><span style="font-weight: 400;">And what happens if you want your own
+ custom version of Docker? &nbsp;After all, Docker is built on the 
+philosophy of “batteries included but swappable”. &nbsp;How easy is it 
+to swap something out?</span></p>
+<p><span style="font-weight: 400;">In his </span><a href="https://blog.docker.com/2017/04/introducing-the-moby-project/"><span style="font-weight: 400;">blog post</span></a><span style="font-weight: 400;">
+ introducing the Moby Project, Solomon Hykes explained that the idea is 
+to simplify the process of combining components into something usable. “</span><span style="font-weight: 400;">We needed our teams to collaborate not only on components, but also on assemblies of components, borrowing </span><a href="https://en.wikipedia.org/wiki/List_of_Volkswagen_Group_platforms"><span style="font-weight: 400;">an idea from the car industry</span></a><span style="font-weight: 400;"> where assemblies of components are reused to build completely different cars.” </span></p>
+<p>Hykes explained that from now on, Docker releases would be built 
+using Moby and its components. &nbsp;At the moment there are 80+ 
+components that can be combined into assemblies. &nbsp;He further 
+explained that:</p>
+<p><span style="font-weight: 400;">“Moby is comprised of:</span></p>
+<ol>
+<li style="font-weight: 400;"><span style="font-weight: 400;">A </span><b>library</b><span style="font-weight: 400;">
+ of containerized backend components (e.g., a low-level builder, logging
+ facility, volume management, networking, image management, containerd, 
+SwarmKit, …)</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">A </span><b>framework</b><span style="font-weight: 400;">
+ for assembling the components into a standalone container platform, and
+ tooling to build, test and deploy artifacts for these assemblies.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">A reference assembly, called </span><b>Moby Origin</b><span style="font-weight: 400;">,
+ which is the open base for the Docker container platform, as well as 
+examples of container systems using various components from the Moby 
+library or from other projects.”</span></li>
+</ol>
+<h2><span style="font-weight: 400;">Who needs to know about Moby?</span></h2>
+<p><span style="font-weight: 400;">The first group that needs to know 
+about Moby is Docker developers, as in the people building the actual 
+Docker software, and not people building applications using Docker 
+containers, or even people building Docker containers. &nbsp;(Here’s 
+hoping that eventually this nomenclature gets cleared up.) &nbsp;Docker 
+developers should just continue on as usual, and Docker pull requests 
+will be reouted to the Moby project.</span></p>
+<p><span style="font-weight: 400;">So everyone else is off the hook, right?</span></p>
+<p><span style="font-weight: 400;">Well, um, no.</span></p>
+<p><span style="font-weight: 400;">If all you do is pull together 
+containers from pre-existing components and software you write yourself,
+ then you’re good; you don’t need to worry about Moby. Unless, that is, 
+you aren’t happy with your available Linux distributions.</span></p>
+<p><span style="font-weight: 400;">Enter LinuxKit.</span></p>
+<h2><span style="font-weight: 400;">What is LinuxKit?</span></h2>
+<p><span style="font-weight: 400;">While many think that Docker invented
+ the container, in actuality linux containers had been around for some 
+time, and Docker containers are based on them. &nbsp;Which is really 
+convenient — if you’re using Linux. &nbsp;If, on the other hand, you are
+ using a system that doesn’t include Linux, such as a Mac, a Windows PC,
+ or that Raspberry Pi you want to turn into an automatic goat feeder, 
+you’ve got a problem.</span></p>
+<p><span style="font-weight: 400;">Docker requires linuxcontainers. &nbsp;Which is a problem if you have no linux.</span></p>
+<p><span style="font-weight: 400;">Enter LinuxKit. &nbsp;</span></p>
+<p><span style="font-weight: 400;">The idea behind LinuxKit is that you 
+start with a minimal Linux kernal — the base distro is only 35MB — and 
+add literally only what you need. Once you have that, you can build your
+ application on it, and run it wherever you need to. &nbsp;Stephen 
+Foskitt tweeted a picture of an example from the announcement:</span></p>
+<twitter-widget class="twitter-tweet twitter-tweet-rendered" id="twitter-widget-0" style="position: static; visibility: visible; display: block; transform: rotate(0deg); max-width: 100%; width: 500px; min-width: 220px; margin-top: 10px; margin-bottom: 10px;" data-tweet-id="854359314106134529"></twitter-widget>
+<p><script async="" src="Cha17_files/widgets.js" charset="utf-8"></script></p>
+<p><span style="font-weight: 400;">The end result is that you can build containers that run on desktops, mainframes, bare metal, IoT, and VMs. </span></p>
+<p><span style="font-weight: 400;">The project will be managed by the Linux Foundation, which is only fitting.</span></p>
+<p><span style="font-weight: 400;">So what about Alpine, the minimal 
+Linux that’s at the heart of Docker? &nbsp;Docker’s security director, 
+Nathan McCauley said that “LinuxKit’s roots are in Alpine.” &nbsp;The 
+company will continue to use it for Docker.</span></p>
+<twitter-widget class="twitter-tweet twitter-tweet-rendered" id="twitter-widget-1" style="position: static; visibility: visible; display: block; transform: rotate(0deg); max-width: 100%; width: 500px; min-width: 220px; margin-top: 10px; margin-bottom: 10px;" data-tweet-id="854351006846595072"></twitter-widget>
+<p><script async="" src="Cha17_files/widgets.js" charset="utf-8"></script></p>
+<p>So what does this have to do with Moby?</p>
+<h2><span style="font-weight: 400;">Where LinuxKit has to do with Moby</span></h2>
+<p><span style="font-weight: 400;">If you’re salivating at the idea of 
+building your own Linux distribution, take a deep breath. LinuxKit is an
+ assembly within Moby. &nbsp;</span></p>
+<p><span style="font-weight: 400;">So if you want to use LinuxKit, you need to download and install Moby, then use it to build your LinuxKit pieces.</span></p>
+<p><span style="font-weight: 400;">So there you have it. You now have 
+the ability to build your own Linux system, and your own 
+containerization system. But it’s definitely not for the faint of heart.</span></p>
+<h2>Resources</h2>
+<ul>
+<li style="font-weight: 400;"><a href="https://www.theregister.co.uk/2017/04/21/docker_renames_open_source_code_moby/"><span style="font-weight: 400;">Wait – we can explain, says Moby, er, Docker amid rebrand meltdown • The Register</span></a></li>
+<li style="font-weight: 400;"><a href="http://www.linuxinsider.com/story/84474.html"><span style="font-weight: 400;">Moby, LinuxKit Kick Off New Docker Collaboration Phase | Software | LinuxInsider</span></a></li>
+<li style="font-weight: 400;"><a href="http://www.cio.com/article/3191344/linux/why-docker-created-the-moby-project.html"><span style="font-weight: 400;">Why Docker created the Moby Project | CIO</span></a></li>
+<li style="font-weight: 400;"><a href="https://github.com/linuxkit/linuxkit"><span style="font-weight: 400;">GitHub – linuxkit/linuxkit: A toolkit for building secure, portable and lean operating systems for containers</span></a></li>
+<li style="font-weight: 400;"><a href="http://www.zdnet.com/article/docker-linuxkit-secure-linux-containers-for-windows-macos-and-clouds/"><span style="font-weight: 400;">Docker LinuxKit: Secure Linux containers for Windows, macOS, and clouds | ZDNet</span></a></li>
+<li style="font-weight: 400;"><a href="https://blog.docker.com/2017/04/introducing-linuxkit-container-os-toolkit/"><span style="font-weight: 400;">Announcing LinuxKit: A Toolkit for building Secure, Lean and Portable Linux Subsystems – Docker Blog</span></a></li>
+<li style="font-weight: 400;"><a href="https://twitter.com/SFoskett/status/854359314106134529"><span style="font-weight: 400;">Stephen Foskett on Twitter: “More about #LinuxKit #DockerCon https://t.co/TfRJ47yBdB”</span></a></li>
+<li style="font-weight: 400;"><a href="https://blog.docker.com/2017/04/introducing-the-moby-project/"><span style="font-weight: 400;">Introducing Moby Project: a new open-source project to advance the software containerization movement – Docker Blog</span></a></li>
+<li style="font-weight: 400;"><a href="https://blog.docker.com/2017/04/dockercon-2017-mobys-cool-hack-sessions/"><span style="font-weight: 400;">DockerCon 2017: Moby’s Cool Hack sessions – Docker Blog</span></a></li>
+</ul>  </div>
+  <div class="post-nav">
+      </div>
+</article>
+                            </div>
+            <div class="col-lg-3 hidden-md-down">
+                                    <div class="blog-sidebar">
+                        
+                <a href="https://info.mirantis.com/live-demo-harbor" class="mobile-nav-callout-link">
+            <div class="mobile-nav-callout">
+                <div class="callout-header">LIVE DEMO</div>
+                <div class="callout-content">
+                    <div class="callout-title">Make Container Images Safer &amp; More Reliable with Harbor, the Cloud Native Registry</div>
+                    <div class="callout-date">Wed., July 24, 2019 </div>
+                    <div class="callout-button btn btn-primary">REGISTER NOW</div>
+                </div>
+            </div>
+        </a>
+
+    
+        <style>
+                .blog-technical-training {
+                    color: #fff;
+                    background: #5e0835; /* Old browsers */
+                    background: -moz-linear-gradient(top, #5e0835 0%, #9c237b 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #5e0835 0%,#9c237b 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #5e0835 0%,#9c237b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5e0835', endColorstr='#9c237b',GradientType=0 ); /* IE6-9 */
+                    margin: 0 5px;
+                    padding: 15px 15px 25px;
+                    margin-bottom: 40px;
+                }
+                .blog-technical-training .training-heading {
+                    font-size: 24px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    line-height: 30px;
+                    margin-bottom: 10px;
+                }
+
+                .blog-technical-training .class-label {
+                    color: #43bfae;
+                }
+
+                .blog-technical-training .class-content {
+                    font-size: 30px;
+                    line-height: 33px;
+                }
+                .blog-technical-training .smaller-class-content {
+                    font-size: 19px;
+                    line-height: 20px;
+                    margin-top: 10px;
+                }
+
+                .blog-technical-training .smaller-class-content span {
+                    color: #43bfae;
+                }
+                .blog-technical-training .training-class-cta a.btn.btn-primary{
+                    display: block;
+                    margin-top: 20px;
+                    background: transparent;
+                    border: 1px solid #fff;
+                    border-radius: 0;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                }
+                .blog-technical-training .training-class-cta a.btn.btn-primary:hover {
+                    background: #fff;
+                    color: #ef177b;
+                }
+                div.btn.btn-primary {
+                    display: block;
+                    margin-top: 20px;
+                    background: transparent;
+                    border: 1px solid #fff;
+                    border-radius: 0;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                }
+
+                .blog-technical-training-link:hover {
+                    text-decoration: none;
+                }
+
+                .blog-technical-training-link:hover div.btn.btn-primary {
+                    background: #fff;
+                    color: #ef177b;
+                    text-decoration: none;
+                }
+
+            </style>
+            <a href="https://training.mirantis.com/course-catalog/30-kd250-accelerated-kubernetes-and-docker-bootcamp/" class="blog-technical-training-link">
+                <div class="blog-technical-training">
+                    <div class="training-heading">
+                        TECHNICAL TRAINING
+                    </div>
+                    <div class="class-label">KD250</div>
+                    <div class="class-content">
+                        Accelerated Kubernetes &amp; Docker Bootcamp                    </div>
+                    <div class="training-class-cta">
+                        <div class="btn btn-primary">LEARN MORE</div>
+                    </div>
+                </div>
+            </a>
+
+                        </div>
+                            </div>
+                            <div class="col-lg-12 hidden-md-down">
+                                <div id="featured-posts"><h3 style="font-weight: bold;">Featured Posts</h3><div class="row"><div class="col-md"><div class="featured-blog-post-item"><div class="featured-blog-post-url"><a href="https://www.mirantis.com/blog/cmon-openstack-aint-that-tough/"><div style="border: 1px solid #ccc; padding: 5px;"><div style="background-image: url(https://www.mirantis.com/wp-content/uploads/2016/11/training-200x200.png); background-size: contain; background-position: center;height: 150px;width:100%;margin: 15px auto;background-repeat: no-repeat;"></div></div><h6 style="margin-top: 5px;">C’mon! OpenStack ain’t that tough</h6></a></div></div></div><div class="col-md"><div class="featured-blog-post-item"><div class="featured-blog-post-url"><a href="https://www.mirantis.com/blog/toward-a-pure-devops-world-why-infrastructure-must-be-treated-as-software/"><div style="border: 1px solid #ccc; padding: 5px;"><div style="background-image: url(https://www.mirantis.com/wp-content/uploads/2017/11/blog-default-1000x667.jpg); background-size: contain; background-position: center;height: 150px;width:100%;margin: 15px auto;background-repeat: no-repeat;"></div></div><h6 style="margin-top: 5px;">Toward a pure devops world: why infrastructure must be treated as software</h6></a></div></div></div><div class="col-md"><div class="featured-blog-post-item"><div class="featured-blog-post-url"><a href="https://www.mirantis.com/blog/intro-to-nosql-database-apps-part-1-everything-you-ever-wanted-to-know-but-were-afraid-to-ask/"><div style="border: 1px solid #ccc; padding: 5px;"><div style="background-image: url(https://www.mirantis.com/wp-content/uploads/2019/05/Cassandra-300x201.png); background-size: contain; background-position: center;height: 150px;width:100%;margin: 15px auto;background-repeat: no-repeat;"></div></div><h6 style="margin-top: 5px;">Intro to NoSQL database apps, Part 1: Everything you ever wanted to know but were afraid to ask</h6></a></div></div></div></div></div>            </div>
+            <div class="col-lg-9">
+                <div class="blog-footer">
+                    
+<section id="comments" class="comments">
+      <h3>4 responses to “<span>OK, I give up. Is Docker now Moby? And what is LinuxKit?</span>”</h3>
+
+    <ol class="comment-list">
+      		<li id="comment-272332" class="comment even thread-even depth-1 parent">
+			<article id="div-comment-272332" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Cha17_files/c1e4117cac81b38d95bc9063a2dd01fb.png" srcset="https://secure.gravatar.com/avatar/c1e4117cac81b38d95bc9063a2dd01fb?s=64&amp;d=retro&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">						<b class="fn">octavian</b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/#comment-272332">
+							<time datetime="2018-08-18T05:46:46+00:00">
+								August 18, 2018 at 05:46							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>A minor typo. Use “The idea behind LinuxKit is that you start 
+with a minimal Linux KERNEL” instead of “The idea behind LinuxKit is 
+that you start with a minimal Linux kernal”.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="#comment-272332" onclick='return addComment.moveForm( "div-comment-272332", "272332", "respond", "661492" )' aria-label="Reply to octavian">Reply</a></div>			</article><!-- .comment-body -->
+<ol class="children">
+		<li id="comment-272334" class="comment byuser comment-author-nick-chase bypostauthor odd alt depth-2">
+			<article id="div-comment-272334" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Cha17_files/643c0fcc5ff1264ca55009d41b976c74.png" srcset="https://secure.gravatar.com/avatar/643c0fcc5ff1264ca55009d41b976c74?s=64&amp;d=retro&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">						<b class="fn"><a href="https://www.google.com/profiles/108710876923613390302" rel="external nofollow" class="url">Nick Chase</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/#comment-272334">
+							<time datetime="2018-08-19T09:41:30+00:00">
+								August 19, 2018 at 09:41							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>DOH!  Thanks!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="#comment-272334" onclick='return addComment.moveForm( "div-comment-272334", "272334", "respond", "661492" )' aria-label="Reply to Nick Chase">Reply</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-272395" class="comment even thread-odd thread-alt depth-1 parent">
+			<article id="div-comment-272395" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Cha17_files/ced9ce4527b45e7624cf9b902a5165c2.png" srcset="https://secure.gravatar.com/avatar/ced9ce4527b45e7624cf9b902a5165c2?s=64&amp;d=retro&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">						<b class="fn">Florin Linux</b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/#comment-272395">
+							<time datetime="2018-10-16T10:20:05+00:00">
+								October 16, 2018 at 10:20							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>“kernal” from KERnel interNAL. 🙂</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="#comment-272395" onclick='return addComment.moveForm( "div-comment-272395", "272395", "respond", "661492" )' aria-label="Reply to Florin Linux">Reply</a></div>			</article><!-- .comment-body -->
+<ol class="children">
+		<li id="comment-272399" class="comment byuser comment-author-nick-chase bypostauthor odd alt depth-2">
+			<article id="div-comment-272399" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Cha17_files/643c0fcc5ff1264ca55009d41b976c74.png" srcset="https://secure.gravatar.com/avatar/643c0fcc5ff1264ca55009d41b976c74?s=64&amp;d=retro&amp;r=g 2x" class="avatar avatar-32 photo" width="32" height="32">						<b class="fn"><a href="https://www.google.com/profiles/108710876923613390302" rel="external nofollow" class="url">Nick Chase</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/#comment-272399">
+							<time datetime="2018-10-23T10:04:11+00:00">
+								October 23, 2018 at 10:04							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>got it, thanks!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="#comment-272399" onclick='return addComment.moveForm( "div-comment-272399", "272399", "respond", "661492" )' aria-label="Reply to Nick Chase">Reply</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+    </ol>
+
+      
+  
+  	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://www.mirantis.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<div class="anr_captcha_field"><div id="anr_captcha_field_1"><div style="width: 304px; height: 78px;"><div><iframe src="Cha17_files/anchor.html" role="presentation" name="a-nl9lu5lvf1ht" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" width="304" height="78" frameborder="0"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div></div><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="661492" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>			</form>
+			</div><!-- #respond -->
+	</section>
+                </div>
+            </div>
+            </div>
+</div>                      <!-- <aside class="sidebar"> -->
+                          <!-- </aside> -->
+                    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-follow-us">
+          <div class="footer-social">
+            <span class="follow-us"><img src="Cha17_files/mirantis-logo-white.svg" class="img-responsive"></span>
+            <a href="https://www.linkedin.com/company/mirantis" target="_blank" id="top-linkedin">
+              <div>
+                <i class="fa fa-linkedin"></i>
+              </div>
+            </a>
+            <a href="https://www.facebook.com/MirantisUS" target="_blank" id="top-facebook">
+              <div>
+                <i class="fa fa-facebook"></i>
+              </div>
+            </a>
+            <a href="https://www.youtube.com/user/mirantisus" target="_blank" id="top-facebook">
+              <div>
+                <i class="fa fa-youtube"></i>
+              </div>
+            </a>
+            <a href="https://twitter.com/MirantisIT" target="_blank" id="top-twitter">
+              <div>
+                <i class="fa fa-twitter"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>Cloud Platform</h6>
+        <ul id="menu-footer-one" class="menu"><li class="menu-item nav-item menu-drivetrain"><a href="https://www.mirantis.com/software/mcp/drivetrain/">DriveTrain</a></li>
+<li class="menu-item nav-item menu-stacklight"><a href="https://www.mirantis.com/software/mcp/stacklight/">StackLight</a></li>
+<li class="menu-item nav-item menu-kubernetes"><a href="https://www.mirantis.com/software/kubernetes/">Kubernetes</a></li>
+<li class="menu-item nav-item menu-openstack"><a href="https://www.mirantis.com/software/openstack/">OpenStack</a></li>
+<li class="menu-item nav-item menu-ceph"><a href="https://www.mirantis.com/software/ceph/">Ceph</a></li>
+<li class="menu-item nav-item menu-tungsten-fabric"><a href="https://www.mirantis.com/software/mcp/sdn/">Tungsten Fabric</a></li>
+</ul>      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>Use Cases</h6>
+        <ul id="menu-footer-five" class="menu"><li class="nav-item menu-item nav-item menu-edge-computing"><a href="https://www.mirantis.com/software/mcp-edge/">Edge Computing</a></li>
+<li class="nav-item menu-item nav-item menu-nfv-infrastructure"><a href="https://www.mirantis.com/solutions/network-functions-virtualization-nfv/">NFV Infrastructure</a></li>
+<li class="nav-item menu-item nav-item menu-agile-it"><a href="https://www.mirantis.com/solutions/agile-enterprise/">Agile IT</a></li>
+</ul>      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>Delivery Approach</h6>
+        <ul id="menu-footer-two" class="menu"><li class="nav-item nav-item menu-item nav-item menu-build"><a href="https://www.mirantis.com/services/build/">Build</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-operate"><a href="https://www.mirantis.com/services/operate/">Operate</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-transfer"><a href="https://www.mirantis.com/services/transfer/">Transfer</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-mcp-support"><a href="https://www.mirantis.com/support/enterprise-support-services/">MCP Support</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-k8s-support"><a href="https://www.mirantis.com/mirantis-enterprise-support-for-kubernetes/">K8s Support</a></li>
+</ul>      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>Training</h6>
+        <ul id="menu-footer-six" class="menu"><li class="nav-item nav-item menu-item nav-item menu-overview"><a href="https://training.mirantis.com/">Overview</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-instructor-led"><a href="https://training.mirantis.com/course-catalog/">Instructor-led</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-ondemand"><a href="https://training.mirantis.com/ondemand-training/">Ondemand</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-certification"><a href="https://training.mirantis.com/openstack-kubernetes-certification/">Certification</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-private"><a href="https://training.mirantis.com/onsite-training/">Private</a></li>
+</ul>      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>Resources</h6>
+        <ul id="menu-footer-four" class="menu"><li class="nav-item nav-item menu-item nav-item menu-customers"><a href="https://www.mirantis.com/cloud-case-studies/">Customers</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-blog"><a href="https://www.mirantis.com/blog/">Blog</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-webinars"><a href="https://www.mirantis.com/cloud-webinars/">Webinars</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-events"><a href="https://www.mirantis.com/cloud-events/">Events</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-brochures"><a href="https://www.mirantis.com/cloud-brochures/">Brochures</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-videos"><a href="https://www.mirantis.com/cloud-videos/">Videos</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-partners"><a href="https://www.mirantis.com/partners/">Partners</a></li>
+</ul>      </div>
+      <div class="col-md-2 col-xs-6">
+        <h6>About</h6>
+        <ul id="menu-footer-three" class="menu"><li class="nav-item nav-item menu-item nav-item menu-contact"><a href="https://info.mirantis.com/contact-us">Contact</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-company"><a href="https://www.mirantis.com/company/about/">Company</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-locations"><a href="https://www.mirantis.com/company/locations/">Locations</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-careers"><a href="https://www.mirantis.com/careers/">Careers</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-leadership"><a href="https://www.mirantis.com/company/leadership/">Leadership</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-board-of-directors"><a href="https://www.mirantis.com/company/leadership/board-of-directors/">Board of Directors</a></li>
+<li class="nav-item nav-item menu-item nav-item menu-press-center"><a href="https://www.mirantis.com/company/press-center/info/">Press Center</a></li>
+</ul>      </div>
+      <div class="col-md-12">
+        <div class="footer-address">
+          <strong>Mirantis Inc.</strong> 900 E Hamilton Avenue, Suite 650, Campbell, CA 95008 +1-650-963-9828
+        </div>
+        <div class="footer-copy">
+          © 2005 - 2019 Mirantis, Inc. All rights reserved. "Mirantis" 
+and "FUEL" are registered trademarks of Mirantis, Inc. All other 
+trademarks are the property of their respective owners.
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+        </main>
+      </div>
+    </div>
+    <!-- Slide Out Panel -->
+
+<!-- End slide out panel -->    	<script type="text/javascript">
+      var anr_onloadCallback = function() {
+         var anr_obj = {
+             'sitekey' : '6Ld2O_8SAAAAABmdXkIV9tIZtfu73aYIyD7dghkf',
+             'size' : 'normal',
+         };
+                     anr_obj.theme = 'light';
+                
+	  				var anr_captcha_1;
+                
+                        
+			anr_captcha_1 = grecaptcha.render('anr_captcha_field_1', anr_obj );
+		      };
+    </script>
+	<script src="Cha17_files/api.js" async="" defer="defer">
+    </script>
+
+		<script src="Cha17_files/jquery-1.js"></script>
+<script>(window.jQuery && jQuery.noConflict()) || document.write('<script src="/wp-includes/js/jquery/jquery.js"><\/script>')</script>
+<script src="Cha17_files/main_d5f0e1d687b5e5e2c0dd.js"></script>
+      <script type="text/javascript">
+//<![CDATA[
+(function() {
+var _analytics_scr = document.createElement('script');
+_analytics_scr.type = 'text/javascript'; _analytics_scr.async = true; _analytics_scr.src = '/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=843843329';
+var _analytics_elem = document.getElementsByTagName('script')[0]; _analytics_elem.parentNode.insertBefore(_analytics_scr, _analytics_elem);
+})();
+// ]]>
+</script>
+
+<div id="nb-menu-blocker" class="nb-fixed"></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;" class="g-recaptcha-bubble-arrow"></div><div style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;" class="g-recaptcha-bubble-arrow"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="Cha17_files/bframe.html" style="width: 100%; height: 100%;" name="c-nl9lu5lvf1ht" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" frameborder="0"></iframe></div></div><iframe scrolling="no" allowtransparency="true" src="Cha17_files/widget_iframe.html" title="Twitter settings iframe" style="display: none;" frameborder="0"></iframe><iframe id="rufous-sandbox" scrolling="no" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: medium none;" title="Twitter analytics iframe" frameborder="0"></iframe></body></html>

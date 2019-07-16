@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="https://www.w3.org/1999/xhtml" xmlns:og="https://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" lang="en-US"><!--<![endif]--><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+<link href="Wat17_files/css.css" rel="stylesheet" type="text/css">
+<!-- For everything else -->
+<link rel="shortcut icon" href="https://www.bmc.com/etc/clientlibs/bmc/head/favicon.ico">
+<script type="text/javascript" src="Wat17_files/satelliteLib-cda308493510533dfd0ed9f46f75719a73108a84.js"></script>
+<link rel="stylesheet" href="Wat17_files/modal-video.css">
+<script>
+var bmcMeta = {
+	"page": {"longName": "en-us:blogs:saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose","blogTopic": "multi-cloud blog","productLineCategories": "uncategorized","blogAuthor": "Stephen Watts","blogPublished": "06/15/19","cultureCode":"en",
+			"errorCode":""
+		},
+		"site": {
+			"cultureCode":"en-us"
+		}
+};
+</script><!--[if lt IE 9]>
+	<script src="//blogs.bmc.com/wp-content/themes/voice/js/html5.js"></script>
+<![endif]-->
+<link rel="alternate" type="application/rss+xml" title="BMC Blogs » Feed" href="https://blogs.bmc.com/feed/">
+<title>SaaS vs PaaS vs IaaS: What’s The Difference and How To Choose – BMC Blogs</title>
+<link rel="dns-prefetch" href="https://blogs.bmc.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<meta property="fb:admins" content="bmcsoftware">
+<meta property="og:title" content="SaaS vs PaaS vs IaaS: What’s The Difference and How To Choose">
+<meta property="og:description" content="BMC Software">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@bmcsoftware">
+<meta name="twitter:creator" content="@bmcsoftware">
+<meta property="og:site_name" content="BMC Blogs">
+<meta property="og:image" content="https://blogs.bmc.com/wp-content/uploads/2017/09/SaaS-vs-PaaS-vs-IaaS_Final-300x171.jpg">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blogs.bmc.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=8a7d8f3d26bf3b18320ba374b925c3a3"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Wat17_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="Wat17_files/style.html" type="text/css" media="all">
+<link rel="stylesheet" id="buttons-css" href="Wat17_files/buttons.html" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="Wat17_files/dashicons.html" type="text/css" media="all">
+<link rel="stylesheet" id="mediaelement-css" href="Wat17_files/mediaelementplayer-legacy.html" type="text/css" media="all">
+<link rel="stylesheet" id="wp-mediaelement-css" href="Wat17_files/wp-mediaelement.html" type="text/css" media="all">
+<link rel="stylesheet" id="media-views-css" href="Wat17_files/media-views.html" type="text/css" media="all">
+<link rel="stylesheet" id="imgareaselect-css" href="Wat17_files/imgareaselect.html" type="text/css" media="all">
+<link rel="stylesheet" id="mks_shortcodes_simple_line_icons-css" href="Wat17_files/simple-line-icons.css" type="text/css" media="screen">
+<link rel="stylesheet" id="mks_shortcodes_css-css" href="Wat17_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" id="menu-image-css" href="Wat17_files/menu-image.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp_review-style-css" href="Wat17_files/wp-review.css" type="text/css" media="all">
+<link rel="stylesheet" id="vce_font_0-css" href="Wat17_files/css_002.css" type="text/css" media="screen">
+<link rel="stylesheet" id="vce_style-css" href="Wat17_files/min.css" type="text/css" media="screen, print">
+<style id="vce_style-inline-css" type="text/css">
+body, button, input, select, textarea{font-size: 1.6rem;}.vce-single .entry-headline p{font-size: 2.2rem;}.main-navigation a{font-size: rem;}.sidebar .widget-title{font-size: 1.8rem;}.sidebar .widget{font-size: 1.4rem;}.vce-featured-link-article{font-size: 5.2rem;}.vce-featured-grid-big.vce-featured-grid .vce-featured-link-article{font-size: 3.4rem;}.vce-featured-grid .vce-featured-link-article{font-size: 2.2rem;}h1 { font-size: 4.5rem; }h2 { font-size: 4rem; }h3 { font-size: 3rem; }h4 { font-size: 2.5rem; }h5 { font-size: 2rem; }h6 { font-size: 1.8rem; }.comment-reply-title, .main-box-title{font-size: 2.2rem;}h1.entry-title{font-size: 4.5rem;}.vce-lay-a .entry-title a{font-size: 3.4rem;}.vce-lay-b .entry-title{font-size: 2.4rem;}.vce-lay-c .entry-title, .vce-sid-none .vce-lay-c .entry-title{font-size: 2.2rem;}.vce-lay-d .entry-title{font-size: 1.5rem;}.vce-lay-e .entry-title{font-size: 1.4rem;}.vce-lay-f .entry-title{font-size: 1.4rem;}.vce-lay-g .entry-title a, .vce-lay-g .entry-title a:hover{font-size: 3rem;}.vce-lay-h .entry-title{font-size: 2.4rem;}.entry-meta div,.entry-meta div a,.vce-lay-g .meta-item,.vce-lay-c .meta-item{font-size: 1.4rem;}.vce-lay-d .meta-category a,.vce-lay-d .entry-meta div,.vce-lay-d .entry-meta div a,.vce-lay-e .entry-meta div,.vce-lay-e .entry-meta div a,.vce-lay-e .fn,.vce-lay-e .meta-item{font-size: 1.3rem;}body {background-color:#f0f0f0;}body,.mks_author_widget h3,.site-description,.meta-category a,textarea {font-family: 'Open Sans';font-weight: 400;}h1,h2,h3,h4,h5,h6,blockquote,.vce-post-link,.site-title,.site-title a,.main-box-title,.comment-reply-title,.entry-title a,.vce-single .entry-headline p,.vce-prev-next-link,.author-title,.mks_pullquote,.widget_rss ul li .rsswidget,#bbpress-forums .bbp-forum-title,#bbpress-forums .bbp-topic-permalink {font-family: 'Open Sans';font-weight: 400;}.main-navigation a,.sidr a{font-family: 'Open Sans';font-weight: 400;}.vce-single .entry-content,.vce-single .entry-headline,.vce-single .entry-footer{width: 600px;}.vce-lay-a .lay-a-content{width: 600px;max-width: 600px;}.vce-page .entry-content,.vce-page .entry-title-page {width: 600px;}.vce-sid-none .vce-single .entry-content,.vce-sid-none .vce-single .entry-headline,.vce-sid-none .vce-single .entry-footer {width: 600px;}.vce-sid-none .vce-page .entry-content,.vce-sid-none .vce-page .entry-title-page,.error404 .entry-content {width: 600px;max-width: 600px;}body, button, input, select, textarea{color: #444444;}h1,h2,h3,h4,h5,h6,.entry-title a,.prev-next-nav a,#bbpress-forums .bbp-forum-title, #bbpress-forums .bbp-topic-permalink,.woocommerce ul.products li.product .price .amount{color: #232323;}a,.entry-title a:hover,.vce-prev-next-link:hover,.vce-author-links a:hover,.required,.error404 h4,.prev-next-nav a:hover,#bbpress-forums .bbp-forum-title:hover, #bbpress-forums .bbp-topic-permalink:hover,.woocommerce ul.products li.product h3:hover,.woocommerce ul.products li.product h3:hover mark,.main-box-title a:hover{color: #fe5000;}.vce-square,.vce-main-content .mejs-controls .mejs-time-rail .mejs-time-current,button,input[type="button"],input[type="reset"],input[type="submit"],.vce-button,.pagination-wapper a,#vce-pagination .next.page-numbers,#vce-pagination .prev.page-numbers,#vce-pagination .page-numbers,#vce-pagination .page-numbers.current,.vce-link-pages a,#vce-pagination a,.vce-load-more a,.vce-slider-pagination .owl-nav > div,.vce-mega-menu-posts-wrap .owl-nav > div,.comment-reply-link:hover,.vce-featured-section a,.vce-lay-g .vce-featured-info .meta-category a,.vce-404-menu a,.vce-post.sticky .meta-image:before,#vce-pagination .page-numbers:hover,#bbpress-forums .bbp-pagination .current,#bbpress-forums .bbp-pagination a:hover,.woocommerce #respond input#submit,.woocommerce a.button,.woocommerce button.button,.woocommerce input.button,.woocommerce ul.products li.product .added_to_cart,.woocommerce #respond input#submit:hover,.woocommerce a.button:hover,.woocommerce button.button:hover,.woocommerce input.button:hover,.woocommerce ul.products li.product .added_to_cart:hover,.woocommerce #respond input#submit.alt,.woocommerce a.button.alt,.woocommerce button.button.alt,.woocommerce input.button.alt,.woocommerce #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, .woocommerce input.button.alt:hover,.woocommerce span.onsale,.woocommerce .widget_price_filter .ui-slider .ui-slider-range,.woocommerce .widget_price_filter .ui-slider .ui-slider-handle,.comments-holder .navigation .page-numbers.current,.vce-lay-a .vce-read-more:hover,.vce-lay-c .vce-read-more:hover{background-color: #fe5000;}#vce-pagination .page-numbers,.comments-holder .navigation .page-numbers{background: transparent;color: #fe5000;border: 1px solid #fe5000;}.comments-holder .navigation .page-numbers:hover{background: #fe5000;border: 1px solid #fe5000;}.bbp-pagination-links a{background: transparent;color: #fe5000;border: 1px solid #fe5000 !important;}#vce-pagination .page-numbers.current,.bbp-pagination-links span.current,.comments-holder .navigation .page-numbers.current{border: 1px solid #fe5000;}.widget_categories .cat-item:before,.widget_categories .cat-item .count{background: #fe5000;}.comment-reply-link,.vce-lay-a .vce-read-more,.vce-lay-c .vce-read-more{border: 1px solid #fe5000;}.entry-meta div,.entry-meta-count,.entry-meta div a,.comment-metadata a,.meta-category span,.meta-author-wrapped,.wp-caption .wp-caption-text,.widget_rss .rss-date,.sidebar cite,.site-footer cite,.sidebar .vce-post-list .entry-meta div,.sidebar .vce-post-list .entry-meta div a,.sidebar .vce-post-list .fn,.sidebar .vce-post-list .fn a,.site-footer .vce-post-list .entry-meta div,.site-footer .vce-post-list .entry-meta div a,.site-footer .vce-post-list .fn,.site-footer .vce-post-list .fn a,#bbpress-forums .bbp-topic-started-by,#bbpress-forums .bbp-topic-started-in,#bbpress-forums .bbp-forum-info .bbp-forum-content,#bbpress-forums p.bbp-topic-meta,span.bbp-admin-links a,.bbp-reply-post-date,#bbpress-forums li.bbp-header,#bbpress-forums li.bbp-footer,.woocommerce .woocommerce-result-count,.woocommerce .product_meta{color: #9b9b9b;}.main-box-title, .comment-reply-title, .main-box-head{background: #ffffff;color: #232323;}.main-box-title a{color: #232323;}.sidebar .widget .widget-title a{color: #232323;}.main-box,.comment-respond,.prev-next-nav{background: #f9f9f9;}.vce-post,ul.comment-list > li.comment,.main-box-single,.ie8 .vce-single,#disqus_thread,.vce-author-card,.vce-author-card .vce-content-outside,.mks-bredcrumbs-container,ul.comment-list > li.pingback{background: #ffffff;}.mks_tabs.horizontal .mks_tab_nav_item.active{border-bottom: 1px solid #ffffff;}.mks_tabs.horizontal .mks_tab_item,.mks_tabs.vertical .mks_tab_nav_item.active,.mks_tabs.horizontal .mks_tab_nav_item.active{background: #ffffff;}.mks_tabs.vertical .mks_tab_nav_item.active{border-right: 1px solid #ffffff;}#vce-pagination,.vce-slider-pagination .owl-controls,.vce-content-outside,.comments-holder .navigation{background: #f3f3f3;}.sidebar .widget-title{background: #ffffff;color: #232323;}.sidebar .widget{background: #f9f9f9;}.sidebar .widget,.sidebar .widget li a,.sidebar .mks_author_widget h3 a,.sidebar .mks_author_widget h3,.sidebar .vce-search-form .vce-search-input,.sidebar .vce-search-form .vce-search-input:focus{color: #444444;}.sidebar .widget li a:hover,.sidebar .widget a,.widget_nav_menu li.menu-item-has-children:hover:after,.widget_pages li.page_item_has_children:hover:after{color: #FE5000;}.sidebar .tagcloud a {border: 1px solid #FE5000;}.sidebar .mks_author_link,.sidebar .tagcloud a:hover,.sidebar .mks_themeforest_widget .more,.sidebar button,.sidebar input[type="button"],.sidebar input[type="reset"],.sidebar input[type="submit"],.sidebar .vce-button,.sidebar .bbp_widget_login .button{background-color: #FE5000;}.sidebar .mks_author_widget .mks_autor_link_wrap,.sidebar .mks_themeforest_widget .mks_read_more{background: #f3f3f3;}.sidebar #wp-calendar caption,.sidebar .recentcomments,.sidebar .post-date,.sidebar #wp-calendar tbody{color: rgba(68,68,68,0.7);}.site-footer{background: #414042;}.site-footer .widget-title{color: #ffffff;}.site-footer,.site-footer .widget,.site-footer .widget li a,.site-footer .mks_author_widget h3 a,.site-footer .mks_author_widget h3,.site-footer .vce-search-form .vce-search-input,.site-footer .vce-search-form .vce-search-input:focus{color: #f9f9f9;}.site-footer .widget li a:hover,.site-footer .widget a,.site-info a{color: #fe5000;}.site-footer .tagcloud a {border: 1px solid #fe5000;}.site-footer .mks_author_link,.site-footer .mks_themeforest_widget .more,.site-footer button,.site-footer input[type="button"],.site-footer input[type="reset"],.site-footer input[type="submit"],.site-footer .vce-button,.site-footer .tagcloud a:hover{background-color: #fe5000;}.site-footer #wp-calendar caption,.site-footer .recentcomments,.site-footer .post-date,.site-footer #wp-calendar tbody,.site-footer .site-info{color: rgba(249,249,249,0.7);}.top-header,.top-nav-menu li .sub-menu{background: #ffffff;}.top-header,.top-header a{color: #4a4a4a;}.top-header .vce-search-form .vce-search-input,.top-header .vce-search-input:focus,.top-header .vce-search-submit{color: #4a4a4a;}.top-header .vce-search-form .vce-search-input::-webkit-input-placeholder { color: #4a4a4a;}.top-header .vce-search-form .vce-search-input:-moz-placeholder { color: #4a4a4a;}.top-header .vce-search-form .vce-search-input::-moz-placeholder { color: #4a4a4a;}.top-header .vce-search-form .vce-search-input:-ms-input-placeholder { color: #4a4a4a;}.header-1-wrapper{height: 150px;padding-top: 35px;}.header-2-wrapper,.header-3-wrapper{height: 150px;}.header-2-wrapper .site-branding,.header-3-wrapper .site-branding{top: 35px;left: 0px;}.site-title a, .site-title a:hover{color: #232323;}.site-description{color: #aaaaaa;}.main-header{background-color: #ffffff;}.header-bottom-wrapper{background: #fcfcfc;}.vce-header-ads{margin: 30px 0;}.header-3-wrapper .nav-menu > li > a{padding: 65px 15px;}.header-sticky,.sidr{background: rgba(252,252,252,0.95);}.ie8 .header-sticky{background: #ffffff;}.main-navigation a,.nav-menu .vce-mega-menu > .sub-menu > li > a,.sidr li a,.vce-menu-parent{color: #4a4a4a;}.nav-menu > li:hover > a,.nav-menu > .current_page_item > a,.nav-menu > .current-menu-item > a,.nav-menu > .current-menu-ancestor > a,.main-navigation a.vce-item-selected,.main-navigation ul ul li:hover > a,.nav-menu ul .current-menu-item a,.nav-menu ul .current_page_item a,.vce-menu-parent:hover,.sidr li a:hover,.sidr li.sidr-class-current_page_item > a,.main-navigation li.current-menu-item.fa:before,.vce-responsive-nav{color: #fe5000;}#sidr-id-vce_main_navigation_menu .soc-nav-menu li a:hover {color: #4a4a4a;}.nav-menu > li:hover > a,.nav-menu > .current_page_item > a,.nav-menu > .current-menu-item > a,.nav-menu > .current-menu-ancestor > a,.main-navigation a.vce-item-selected,.main-navigation ul ul,.header-sticky .nav-menu > .current_page_item:hover > a,.header-sticky .nav-menu > .current-menu-item:hover > a,.header-sticky .nav-menu > .current-menu-ancestor:hover > a,.header-sticky .main-navigation a.vce-item-selected:hover{background-color: #ffffff;}.search-header-wrap ul {border-top: 2px solid #fe5000;}.vce-cart-icon a.vce-custom-cart span {background: #fe5000;font-family: 'Open Sans';}.vce-border-top .main-box-title{border-top: 2px solid #fe5000;}.tagcloud a:hover,.sidebar .widget .mks_author_link,.sidebar .widget.mks_themeforest_widget .more,.site-footer .widget .mks_author_link,.site-footer .widget.mks_themeforest_widget .more,.vce-lay-g .entry-meta div,.vce-lay-g .fn,.vce-lay-g .fn a{color: #FFF;}.vce-featured-header .vce-featured-header-background{opacity: 0.5}.vce-featured-grid .vce-featured-header-background,.vce-post-big .vce-post-img:after,.vce-post-slider .vce-post-img:after{opacity: 0.5}.vce-featured-grid .owl-item:hover .vce-grid-text .vce-featured-header-background,.vce-post-big li:hover .vce-post-img:after,.vce-post-slider li:hover .vce-post-img:after {opacity: 0.8}.vce-featured-grid.vce-featured-grid-big .vce-featured-header-background,.vce-post-big .vce-post-img:after,.vce-post-slider .vce-post-img:after{opacity: 0.5}.vce-featured-grid.vce-featured-grid-big .owl-item:hover .vce-grid-text .vce-featured-header-background,.vce-post-big li:hover .vce-post-img:after,.vce-post-slider li:hover .vce-post-img:after {opacity: 0.8}#back-top {background: #323232}.sidr input[type=text]{background: rgba(74,74,74,0.1);color: rgba(74,74,74,0.5);}.meta-image:hover a img,.vce-lay-h .img-wrap:hover .meta-image > img,.img-wrp:hover img,.vce-gallery-big:hover img,.vce-gallery .gallery-item:hover img,.vce_posts_widget .vce-post-big li:hover img,.vce-featured-grid .owl-item:hover img,.vce-post-img:hover img,.mega-menu-img:hover img{-webkit-transform: scale(1.1);-moz-transform: scale(1.1);-o-transform: scale(1.1);-ms-transform: scale(1.1);transform: scale(1.1);}
+</style>
+<link rel="stylesheet" id="style-css" href="Wat17_files/style_003.css" type="text/css" media="">
+<link rel="stylesheet" id="guides_wp-css" href="Wat17_files/guides_wp.css" type="text/css" media="all">
+<link rel="stylesheet" id="meks-ads-widget-css" href="Wat17_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="meks-author-widget-css" href="Wat17_files/style_005.css" type="text/css" media="all">
+<link rel="stylesheet" id="meks-social-widget-css" href="Wat17_files/style_004.css" type="text/css" media="all">
+<link rel="stylesheet" id="meks-themeforest-widget-css" href="Wat17_files/style_006.css" type="text/css" media="all">
+<script type="text/javascript" src="Wat17_files/jquery.js"></script>
+<script type="text/javascript" src="Wat17_files/jquery-migrate.js"></script>
+<script type="text/javascript" src="Wat17_files/kt_pdf_manager.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"0","time":"1563276478","secure":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/utils.js"></script>
+<script type="text/javascript" src="Wat17_files/moxie.js"></script>
+<script type="text/javascript" src="Wat17_files/plupload.js"></script>
+<!--[if lt IE 8]>
+<script type='text/javascript' src='//blogs.bmc.com/wp-includes/js/json2.min.js?ver=2015-05-03'></script>
+<![endif]-->
+<script type="text/javascript">
+var mejsL10n = {"language":"en","strings":{"mejs.install-flash":"You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/","mejs.fullscreen-off":"Turn off Fullscreen","mejs.fullscreen-on":"Go Fullscreen","mejs.download-video":"Download Video","mejs.fullscreen":"Fullscreen","mejs.time-jump-forward":["Jump forward 1 second","Jump forward %1 seconds"],"mejs.loop":"Toggle Loop","mejs.play":"Play","mejs.pause":"Pause","mejs.close":"Close","mejs.time-slider":"Time Slider","mejs.time-help-text":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.","mejs.time-skip-back":["Skip back 1 second","Skip back %1 seconds"],"mejs.captions-subtitles":"Captions\/Subtitles","mejs.captions-chapters":"Chapters","mejs.none":"None","mejs.mute-toggle":"Mute Toggle","mejs.volume-help-text":"Use Up\/Down Arrow keys to increase or decrease volume.","mejs.unmute":"Unmute","mejs.mute":"Mute","mejs.volume-slider":"Volume Slider","mejs.video-player":"Video Player","mejs.audio-player":"Audio Player","mejs.ad-skip":"Skip ad","mejs.ad-skip-info":["Skip in 1 second","Skip in %1 seconds"],"mejs.source-chooser":"Source Chooser","mejs.stop":"Stop","mejs.speed-rate":"Speed Rate","mejs.live-broadcast":"Live Broadcast","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanian","mejs.arabic":"Arabic","mejs.belarusian":"Belarusian","mejs.bulgarian":"Bulgarian","mejs.catalan":"Catalan","mejs.chinese":"Chinese","mejs.chinese-simplified":"Chinese (Simplified)","mejs.chinese-traditional":"Chinese (Traditional)","mejs.croatian":"Croatian","mejs.czech":"Czech","mejs.danish":"Danish","mejs.dutch":"Dutch","mejs.english":"English","mejs.estonian":"Estonian","mejs.filipino":"Filipino","mejs.finnish":"Finnish","mejs.french":"French","mejs.galician":"Galician","mejs.german":"German","mejs.greek":"Greek","mejs.haitian-creole":"Haitian Creole","mejs.hebrew":"Hebrew","mejs.hindi":"Hindi","mejs.hungarian":"Hungarian","mejs.icelandic":"Icelandic","mejs.indonesian":"Indonesian","mejs.irish":"Irish","mejs.italian":"Italian","mejs.japanese":"Japanese","mejs.korean":"Korean","mejs.latvian":"Latvian","mejs.lithuanian":"Lithuanian","mejs.macedonian":"Macedonian","mejs.malay":"Malay","mejs.maltese":"Maltese","mejs.norwegian":"Norwegian","mejs.persian":"Persian","mejs.polish":"Polish","mejs.portuguese":"Portuguese","mejs.romanian":"Romanian","mejs.russian":"Russian","mejs.serbian":"Serbian","mejs.slovak":"Slovak","mejs.slovenian":"Slovenian","mejs.spanish":"Spanish","mejs.swahili":"Swahili","mejs.swedish":"Swedish","mejs.tagalog":"Tagalog","mejs.thai":"Thai","mejs.turkish":"Turkish","mejs.ukrainian":"Ukrainian","mejs.vietnamese":"Vietnamese","mejs.welsh":"Welsh","mejs.yiddish":"Yiddish"}};
+</script>
+<script type="text/javascript" src="Wat17_files/mediaelement-and-player.js"></script>
+<script type="text/javascript" src="Wat17_files/mediaelement-migrate.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/media-lib-uploader.js"></script>
+<script type="text/javascript" src="Wat17_files/main.js"></script>
+<link rel="https://api.w.org/" href="https://www.bmc.com/blogs/blogs/wp-json/">
+<link rel="prev" title="What is CloudOps?" href="https://www.bmc.com/blogs/what-is-cloudops/">
+<link rel="next" title="Modernization Keeps the Venerable Mainframe Humming as a Key Cog of Business" href="https://www.bmc.com/blogs/modernization-keeps-the-venerable-mainframe-humming-as-a-key-cog-of-business/">
+<link rel="alternate" type="application/json+oembed" href="https://www.bmc.com/blogs/blogs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.bmc.com%2Fblogs%2Fsaas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.bmc.com/blogs/blogs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.bmc.com%2Fblogs%2Fsaas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose%2F&amp;format=xml">
+<link rel="canonical" href="https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/">
+<link rel="shortcut icon" href="https://blogs.bmc.com/wp-content/uploads/2017/05/favicon.png">
+<link rel="apple-touch-icon" href="https://blogs.bmc.com/wp-content/uploads/2017/05/favicon.png">
+<!--[if IE 7]>
+<link rel="stylesheet" href="https://blogs.bmc.com/wp-content/plugins/wp-review/assets/css/wp-review-ie7.css">
+<![endif]-->
+<script type="text/javascript">
+           var ajaxurl = "https://www.bmc.com:443/blogs/wp-admin/admin-ajax.php";
+         </script><link rel="icon" href="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300-150x150.png" sizes="32x32">
+<link rel="icon" href="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png">
+<meta name="msapplication-TileImage" content="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png">
+<link rel="shortcut icon" href="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png" type="image/x-icon"><link rel="apple-touch-icon" href="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="https://blogs.bmc.com/wp-content/uploads/2016/04/bmc_favicon-300x300.png"><style type="text/css">aside#sidebar .vce-sticky .widget.ss_widget { box-shadow: 0 0px 0px 0 rgba(0,0,0,.1); } .post_format-post-format-audio .meta-media img { width: 100%; } ul.vce-share-items li { text-indent: 0em !important; } /*New Added CSS 15-04-2019*/ ul.guide-list { height: 300px; overflow-x:hidden; } .bannerContent .layout-inner-wrap .flex-item h1 { /* margin-bottom: 17px; */ margin-bottom: 70px !important; } ul.guide-list li, #main ul li { list-style-type:none; margin-left: 1em; text-indent: -1em; margin-bottom: 0.5rem; } .meta-tags a { margin-left: 0px; display: inline-block; background: #fe5000; color: #fff; padding: 4px 10px; font-size: 14px; } .meta-tags a:hover { text-decoration: none; } .comment-reply-link, .vce-lay-a .vce-read-more, .vce-lay-c .vce-read-more { border: 1px solid #29a5d6; } .vce-square, .vce-main-content .mejs-controls .mejs-time-rail .mejs-time-current, button, input[type="button"], input[type="reset"], input[type="submit"], .vce-button, .pagination-wapper a, #vce-pagination .next.page-numbers, #vce-pagination .prev.page-numbers, #vce-pagination .page-numbers, #vce-pagination .page-numbers.current, .vce-link-pages a, #vce-pagination a, .vce-load-more a, .vce-slider-pagination .owl-nav > div, .vce-mega-menu-posts-wrap .owl-nav > div, .comment-reply-link:hover, .vce-featured-section a, .vce-lay-g .vce-featured-info .meta-category a, .vce-404-menu a, .vce-post.sticky .meta-image:before, #vce-pagination .page-numbers:hover, #bbpress-forums .bbp-pagination .current, #bbpress-forums .bbp-pagination a:hover, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce ul.products li.product .added_to_cart, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover, .woocommerce ul.products li.product .added_to_cart:hover, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, .woocommerce input.button.alt:hover, .woocommerce span.onsale, .woocommerce .widget_price_filter .ui-slider .ui-slider-range, .woocommerce .widget_price_filter .ui-slider .ui-slider-handle, .comments-holder .navigation .page-numbers.current, .vce-lay-a .vce-read-more:hover, .vce-lay-c .vce-read-more:hover { background-color: #fe5000; border: 1px solid #fe5000; } .guide-title { margin: 0px auto 70px 0px; } .vce-single-guide .entry-content { padding: 3.5em; } .guide-list li, .guide-list li>a { color: #75777a; font-size: 18px; } ul.guide-list{ margin: 1rem; } .guide-list li.active>a { color: #29a5d6; } .guide-list li>a:hover { color: #29a5d6; } .guide-updated-date { font-weight: bold; font-size: 15px; margin-bottom: 10px; width: 100%; display: inline-block; } .guide-btn { border-color: #fff; background: transparent; color: #fff; /*padding: .71429em 1em;*/ padding: .71429em 1rem; border: 3px solid; border-radius: 5px; text-transform: capitalize; text-decoration: none !important; } .ss_widget .small li, .ss_widget ul.custom li, .ss_widget_ul.small li, .ss_widget_ul.custom li { display: inline-block; margin-right: 3px; margin-bottom: 0; } .ss_widget ul li a { padding: 0; margin: 0; } .ss_widget_ul li img { width: auto; height: 100%; object-fit: cover; -o-object-fit: cover; font-family: 'object-fit: cover;'; } .bottom_CTA_box_left { float: left; width: 50%; padding: 10px; height: auto; background-color: #fff !important; } @media only screen and (max-width: 500px) { .bottom_CTA_box_left { float: none; width: 100%; } } /*SS CSS for Subtitle Field Start*/ h5.entry-sub-title { color: #9b9b9b; font-style: italic; /* font-weight: bold; */ font-size: 16px; } .single h5.entry-sub-title{ margin: 0 auto 15px; padding:10px; } .home .vce-loop-wrap h5.entry-sub-title,.archive.category h5.entry-sub-title { text-align: center; padding: 0 20px; margin-bottom: 4px; line-height: 1.3; font-size: 14px; } .category .vce-featured .vce-featured-info h5.entry-sub-title, .home .vce-featured .vce-featured-info h5.entry-sub-title { font-size: 24px; color: #fe5000; } /*SS CSS for Subtitle Field End*/ /*SS for Layout 3 CSS Start*/ .vce-featured.layout3_content .vce-featured-header { z-index: 99; /* color: #fff; */ } .vce-featured.layout3_content h1.entry-title,.vce-featured.layout3_content span.meta-category a { color: #fff; } .vce-featured.layout3_content span.meta-category { background-color: #fe5000; padding: 2px 15px; /* color: #fff; */ } .vce-featured.layout3_content { min-height: auto; } .post-template-template-layout3.single .vce-single .meta-author { z-index: 99; } /*@media only screen and (min-width: 1024px) { .post-template-template-layout3.single .vce-single .meta-author { top: -20px; } .post-template-template-layout3.single .vce-single .entry-content { margin: 10px auto; } }*/ /*SS for Layout 3 CSS End*/ .custome_button_bmc { /* background: blue; */ background-color: #29a5d6; border-color: #29a5d6; color: #ffffff !important; font-size: 14px; font-size: 14px; -webkit-transition: all .25s 0s ease-out; border-radius: 5px; border-style: solid; border-width: 3px; cursor: pointer; display: inline-block; margin: .71429em .71429em .71429em 0; padding: .71429em 1em; text-align: center; border-radius: 0px !important; } #sidebar .right_ral_sidebar_cta .widget.ss_widget ul.ss_widget_ul.custom li img,aside#sidebar .vce-sticky ul.ss_widget_ul.custom li a img { box-shadow: 0 1px 3px 0 rgba(0,0,0,.1); } .meta-author .meta-author-img { background: #fff; } /*SS Logo CSS Start*/ header#header span.site-title a img, header#header .site-branding h1.site-title a img { width: 385px !important; } .category .entry-meta > div::before { margin: 0 1px !important; } .category .meta-item.date { padding-right: 3px !important; } @media only screen and (max-width: 1023px){ .site-branding img { max-width: 140px; max-height: 35px; }} .header-sticky .site-title img { max-height: 35px; } @media screen and (max-width: 1200px) and (min-width: 1024px){ .header-sticky.header-is-sticky .site-title img { width: 119px !important; height: auto; }} @media screen and (min-width: 1200px){ .header-sticky .site-title img { max-height: 37px; width: 150px !important; }} /*SS Logo CSS End*/ ul.ul_cta_lst_left { width: 55%; float: left; } li#menu-item-12880 a img { width: 42px; } div#sticky_header li#menu-item-12880, li#sidr-id-menu-item-12880 a span { display: none; } @media screen and (max-width: 1023px){ li#sidr-id-menu-item-12880 a img { width: 70px; margin-left: 18px; }}</style><script async="" type="text/javascript" src="Wat17_files/count.js"></script><style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></head>
+
+<body class="post-template-default single single-post postid-11148 single-format-standard unknown vce-sid-right">
+
+<div id="vce-main">
+
+<header id="header" class="main-header">
+<div class="container header-1-wrapper header-main-area">	
+		<div class="vce-res-nav">
+	<a class="vce-responsive-nav" href="#sidr-main"><i class="fa fa-bars"></i></a>
+</div>
+<div class="site-branding">
+		
+	
+	<span class="site-title">
+		<a href="https://www.bmc.com/blogs/" title="BMC Blogs" class="has-logo"><img src="Wat17_files/BMCblogs_Logo.svg" alt="BMC Blogs"></a>
+	</span>
+
+	
+
+</div></div>
+
+<div class="header-bottom-wrapper">
+	<div class="container">
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+	<ul id="vce_main_navigation_menu" class="nav-menu"><li id="menu-item-12482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12482 vce-cat-674"><a href="https://www.bmc.com/blogs/categories/aiops/" class="menu-image-title-after"><span class="menu-image-title">AIOps</span></a></li><li id="menu-item-12483" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12483 vce-cat-694"><a href="https://www.bmc.com/blogs/categories/machine-learning-big-data/" class="menu-image-title-after"><span class="menu-image-title">Big Data</span></a></li><li id="menu-item-12484" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12484 vce-cat-6"><a href="https://www.bmc.com/blogs/categories/devops/" class="menu-image-title-after"><span class="menu-image-title">DevOps</span></a></li><li id="menu-item-12488" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12488 vce-cat-9"><a href="https://www.bmc.com/blogs/categories/itsm/" class="menu-image-title-after"><span class="menu-image-title">ITSM</span></a></li><li id="menu-item-12485" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12485 vce-cat-4"><a href="https://www.bmc.com/blogs/categories/mainframe/" class="menu-image-title-after"><span class="menu-image-title">Mainframe</span></a></li><li id="menu-item-12486" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-12486 vce-cat-8"><a href="https://www.bmc.com/blogs/categories/cloud/" class="menu-image-title-after"><span class="menu-image-title">Multi-Cloud</span></a></li><li id="menu-item-12487" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12487 vce-cat-200"><a href="https://www.bmc.com/blogs/categories/secops-security-compliance/" class="menu-image-title-after"><span class="menu-image-title">Security</span></a></li><li id="menu-item-12481" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12481 vce-cat-5"><a href="https://www.bmc.com/blogs/categories/workload-automation/" class="menu-image-title-after"><span class="menu-image-title">Workload Automation</span></a></li><li id="menu-item-12447" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12447"><a href="#" class="menu-image-title-after"><span class="menu-image-title">More</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-12489" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12489 vce-cat-13"><a href="https://www.bmc.com/blogs/categories/bmc-beat/" class="menu-image-title-after"><span class="menu-image-title">The BMC Beat</span></a>	</li><li id="menu-item-12490" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12490 vce-cat-50"><a href="https://www.bmc.com/blogs/categories/business-of-it/" class="menu-image-title-after"><span class="menu-image-title">The Business of IT</span></a>	</li><li id="menu-item-12492" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12492 vce-cat-661"><a href="https://www.bmc.com/blogs/categories/gdpr/" class="menu-image-title-after"><span class="menu-image-title">GDPR</span></a>	</li><li id="menu-item-12493" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12493 vce-cat-11"><a href="https://www.bmc.com/blogs/categories/it-operations/" class="menu-image-title-after"><span class="menu-image-title">IT Operations</span></a>	</li><li id="menu-item-14095" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14095"><a href="https://www.bmc.com/blogs/bmc-bloggers-list/" class="menu-image-title-after"><span class="menu-image-title">BMC Bloggers List</span></a>	</li><li id="menu-item-14350" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14350"><a href="https://www.bmc.com/blogs/guides/" class="menu-image-title-after"><span class="menu-image-title">Guides Index</span></a></li></ul>
+</li><li id="menu-item-12880" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12880"><a target="_blank" href="https://www.bmc.com/" class="menu-image-title-hide menu-image-not-hovered"><span class="menu-image-title">BMC</span><img src="Wat17_files/bmc_logo_header.svg" class="menu-image menu-image-title-hide" alt="" width="1" height="1"></a></li><li class="search-header-wrap"><a class="search_header" href="javascript:void(0)"><i class="fa fa-search"></i></a><ul class="search-header-form-ul"><li><form class="search-header-form" action="//www.bmc.com/blogs/" method="get">
+							<input name="s" class="search-input" size="20" type="text" value="Type here to search..." onfocus="(this.value == 'Type here to search...') &amp;&amp; (this.value = '')" onblur="(this.value == '') &amp;&amp; (this.value = 'Type here to search...')" placeholder="Type here to search..."></form></li></ul></li></ul></nav>	</div>
+</div></header>
+
+<div id="main-wrapper">
+
+
+
+
+
+<div id="content" class="container site-content vce-sid-right">
+	
+			
+	<div id="primary" class="vce-main-content">
+
+		<main id="main" class="main-box main-box-single">
+
+		
+			<article id="post-11148" class="vce-single post-11148 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud">
+
+			<header class="entry-header">
+
+							<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+			
+			<h1 class="entry-title">SaaS vs PaaS vs IaaS: What’s The Difference and How To Choose</h1>
+			
+						
+			<div class="entry-meta"></div>
+			<!-- SS Top CTA Start-->
+							<!-- SS Top CTA End-->
+		</header>
+	
+	
+	
+					
+			 	
+			 	<div class="meta-image">
+					<img src="Wat17_files/SaaS-vs-PaaS-vs-IaaS_Final.jpg" class="attachment-vce-lay-a size-vce-lay-a wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2017/09/SaaS-vs-PaaS-vs-IaaS_Final.jpg 700w, //blogs.bmc.com/wp-content/uploads/2017/09/SaaS-vs-PaaS-vs-IaaS_Final-300x171.jpg 300w" sizes="(max-width: 700px) 100vw, 700px" width="700" height="400">
+									</div>
+
+									<div class="meta-author">
+					
+																												<div class="meta-author-img">
+								<img alt="Stephen Watts" src="Wat17_files/Stephen-Watts_avatar_1519669222.jpg" class="avatar avatar-100 photo" width="100" height="100">								</div>
+								 								
+															<div class="meta-author-img">
+								<img alt="Muhammad Raza" src="Wat17_files/Raza.jpeg" class="avatar avatar-100 photo" width="100" height="100">								</div>
+								 								
+														<div class="meta-author-wrapped">
+								<span class="single-post-entry-date">June 15, 2019 · </span>by								<span class="vcard author">
+											<span class="fn">
+												<a href="https://www.bmc.com/blogs/author/wattssw/">Stephen Watts</a>, 
+											</span>
+										</span><span class="vcard author">
+											<span class="fn">
+												<a href="https://www.bmc.com/blogs/author/muhammad_raza/">Muhammad Raza</a>
+											</span>
+										</span>								<div class="read-time">9 minute read</div>
+							</div>
+
+						
+				    </div>
+				
+					
+	    
+		
+	<div class="entry-content">
+		<p>While the cloud is an extremely hot topic from small businesses all
+ the way to global enterprises, it is still a pretty broad concept that 
+covers a lot of online territory. As you begin to consider switching 
+your business to the cloud, whether it be for application or 
+infrastructure deployment, it is more important than ever to understand 
+the differences and advantages of the various cloud services.</p>
+<p>There are usually three models of cloud service to compare: Software 
+as a Service (SaaS), Platform as a Service (PaaS), and Infrastructure as
+ a Service (IaaS). Each of these has its own benefits, as well as 
+variances, and it is necessary to understand the differences among SaaS,
+ PaaS, and IaaS to know how to best choose one for your organization.</p>
+<p><!-- videostart --></p>
+<h3>BMC Helix: Next Generation ITSM</h3>
+<p><div class="fluid-width-video-wrapper" style="padding-top: 56.25%;"><iframe src="Wat17_files/1lEQFUehd2Q.html" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" id="fitvid979859" frameborder="0"></iframe></div><!-- videoend --></p>
+<h2>Summary of Key Differences</h2>
+<p><img class="aligncenter size-large wp-image-14018" src="Wat17_files/saas-vs-paas-vs-iaas-1024x953.png" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-1024x953.png 1024w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-300x279.png 300w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-768x715.png 768w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-810x754.png 810w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-1140x1061.png 1140w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-24x22.png 24w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-36x34.png 36w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas-48x45.png 48w, //blogs.bmc.com/wp-content/uploads/2017/09/saas-vs-paas-vs-iaas.png 1201w" sizes="(max-width: 810px) 100vw, 810px" width="810" height="754"></p>
+<h2>Common Examples of SaaS, PaaS, &amp; IaaS</h2>
+<table width="1085">
+<tbody>
+<tr>
+<td style="text-align: center; background-color: #018ec4; border: 1px solid #f5f5dc; color: #fff;"><b>Platform Type</b></td>
+<td style="text-align: center; background-color: #018ec4; border: 1px solid #f5f5dc; color: #fff;"><b>Common Examples</b></td>
+</tr>
+<tr>
+<td width="128"><b>SaaS</b></td>
+<td width="957">Google Apps, Dropbox, Salesforce, Cisco WebEx, Concur, GoToMeeting</td>
+</tr>
+<tr>
+<td width="128"><b>PaaS</b></td>
+<td width="957">AWS Elastic Beanstalk, Windows Azure, Heroku, Force.com, Google App Engine, Apache Stratos, OpenShift</td>
+</tr>
+<tr>
+<td width="128"><b>IaaS</b></td>
+<td width="957">DigitalOcean, Linode, Rackspace, Amazon Web Services (AWS), Cisco Metapod, Microsoft Azure, Google Compute Engine (GCE)</td>
+</tr>
+</tbody>
+</table>
+<h2>SaaS: Software as a Service</h2>
+<p>Software as a Service, also known as cloud application services, 
+represents the most commonly utilized option for businesses in the cloud
+ market. SaaS utilizes the internet to deliver applications, which are 
+managed by a third-party vendor, to it’s users. A majority of SaaS 
+applications are run directly through the web browser, and do not 
+require any downloads or installations on the client side.</p>
+<h3>SaaS Delivery</h3>
+<p>Due to its web delivery model, SaaS eliminates the need to have IT 
+staff download and install applications on each individual computer. 
+With SaaS, vendors manage all of the potential technical issues, such as
+ data, middleware, servers, and storage, allowing businesses to 
+streamline their maintenance and support.</p>
+<h3>SaaS Advantages</h3>
+<p>SaaS provides numerous advantages to employees and companies by 
+greatly reducing the time and money spent on tedious tasks such as 
+installing, managing, and upgrading software. This frees up plenty of 
+time for technical staff to spend on more pressing matters and issues 
+within the organization.</p>
+<h3>SaaS Characteristics</h3>
+<p>There are a few ways to help you determine when SaaS is being utilized:</p>
+<ul>
+<li>Managed from a central location</li>
+<li>Hosted on a remote server</li>
+<li>Accessible over the internet</li>
+<li>Users not responsible for hardware or software updates</li>
+</ul>
+<h3>When to Use SaaS</h3>
+<p>There are many different situations in which SaaS may be the most beneficial option, including:</p>
+<ul>
+<li>If you are a startup or small company that needs to launch ecommerce quickly and don’t have time for server issues or software</li>
+<li>For short-term projects that require collaboration</li>
+<li>If you use applications that aren’t in-demand very often, such as tax software</li>
+<li>For applications that need both web and mobile access</li>
+</ul>
+<h3>SaaS Limitations and Concerns</h3>
+<ul>
+<li><strong>Interoperability: </strong>Integration with existing apps 
+and services can be a major concern if the SaaS app is not designed to 
+follow open standards for integration. In this case, organizations may 
+need to design their own integration systems or reduce dependencies with
+ SaaS services, which may not always be possible.</li>
+<li><strong>Vendor Lock-In: </strong>Vendors may make it easy to join a 
+service and difficult to get out of it. For instance, the data may not 
+be portable – technically or cost-effectively – across SaaS apps from 
+other vendors without incurring significant cost or inhouse engineering 
+rework. Not every vendor follows standard APIs, protocols and tools, yet
+ the features could be necessary for certain business tasks.</li>
+<li><strong>Lack of Integration Support: </strong>Many organizations 
+require deep integrations with on-premise apps, data and services. The 
+SaaS vendor may offer limited support in this regard, forcing 
+organizations to invest internal resources in designing and managing 
+integrations. The complexity of integrations can further limit how the 
+SaaS app or other dependent services can be used.</li>
+<li><strong>Data Security: </strong>Large volumes of data may have to be
+ exchanged to the backend data centers of SaaS apps in order to perform 
+the necessary software functionality. Transferring sensitive business 
+information to public-cloud based SaaS service may compromise security 
+and compliance, as well as incur significant cost in migrating large 
+data workloads.</li>
+<li><strong>Customization: </strong>SaaS apps offer minimal 
+customization capabilities. Since a one-size-fits-all solution does not 
+exist, users may be limited to specific functionality, performance and 
+integrations as offered by the vendor. In contrast, on-premise solutions
+ that come with several SDKs offer a high degree of customization 
+options.</li>
+<li><strong>Lack of Control: </strong>SaaS solutions effectively 
+involves handing over controls to the third-party service provider. 
+These controls are not limited to the software – in terms of the 
+version, updates or appearance – but also the data and governance. 
+Customers may therefore need to redefine their data security and 
+governance models to fit the features and functionality of the SaaS 
+service.</li>
+<li><strong>Feature Limitations: </strong>Since SaaS apps often come in a
+ standardized form, the choice of features may be a compromising 
+tradeoff against security, cost, performance or other organizational 
+policies. Furthermore, due to the vendor lock-in, cost or security 
+concerns, it may not be viable to switch vendors or services to serve 
+new feature requirements in the future.</li>
+<li><strong>Performance and Downtime: </strong>Since the vendor controls
+ and manages the SaaS service, customers depend on vendors to maintain 
+security and performance of the service. Planned and unplanned 
+maintenance, cyber-attacks or network issues may impact the performance 
+of the SaaS app despite adequate Service Level Agreement (SLA) 
+protections in place.</li>
+</ul>
+<h3>Examples of SaaS</h3>
+<p>Google Apps, Dropbox, Salesforce, Cisco WebEx, Concur, GoToMeeting</p>
+<h2>PaaS: Platform as a Service</h2>
+<p>Cloud platform services, or Platform as a Service (PaaS), provide 
+cloud components to certain software while being used mainly for 
+applications. PaaS delivers a framework for developers that they can 
+build upon and use to create customized applications. All servers, 
+storage, and networking can be managed by the enterprise or a 
+third-party provider while the developers can maintain management of the
+ applications.</p>
+<h3>PaaS Delivery</h3>
+<p>The delivery model of PaaS is similar to SaaS, except instead of 
+delivering the software over the internet, PaaS provides a platform for 
+software creation. This platform is delivered over the web, and gives 
+developers the freedom to concentrate on building the software while 
+still not having to worry about operating systems, software updates, 
+storage, or infrastructure.</p>
+<p>PaaS allows businesses to design and create applications that are 
+built into the PaaS with special software components. These 
+applications, or middleware, are scalable and highly available as they 
+take on certain cloud characteristics.</p>
+<h3>PaaS Advantages</h3>
+<p>No matter what size your company may be, there are numerous advantages for using PaaS:</p>
+<ul>
+<li>Makes the development and deployment of apps simple and cost-effective</li>
+<li>Scalable</li>
+<li>Highly available</li>
+<li>Gives developers the ability to create customized apps without the headache of maintaining the software</li>
+<li>Greatly reduces the amount of coding</li>
+<li>Automates business policy</li>
+<li>Allows easy migration to the hybrid model</li>
+</ul>
+<h3>PaaS Characteristics</h3>
+<p>PaaS has many characteristics that define it as a cloud service, including:</p>
+<ul>
+<li>It is built on virtualization technology, meaning resources can easily be scaled up or down as your business changes</li>
+<li>Provides a variety of services to assist with the development, testing, and deployment of apps</li>
+<li>Numerous users can access the same development application</li>
+<li>Web services and databases are integrated</li>
+</ul>
+<h3>When to Use PaaS</h3>
+<p>There are many situations where utilizing PaaS is beneficial or even 
+necessary. If there are multiple developers working on the same 
+development project, or if other vendors must be included as well, PaaS 
+can provide great speed and flexibility to the entire process. PaaS is 
+also beneficial if you wish to be able to create your own customized 
+applications. This cloud service also can greatly reduce costs and it 
+can simplify some challenges that come up if you are rapidly developing 
+or deploying an app.</p>
+<h3>PaaS Limitations and Concerns</h3>
+<ul>
+<li><strong>Data Security: </strong>Even though organizations can run 
+their own apps and services using PaaS solutions, the data residing in 
+third-party cloud servers controlled by vendors poses security risks and
+ concerns. The security options may also be limited as customers may not
+ be able to deploy services with specific hosting policies.</li>
+<li><strong>Integrations: </strong>The complexity of connecting the data
+ stored within inhouse data center or off-premise cloud is increased and
+ may affect which apps and services can be adopted with the PaaS 
+offering. Especially when not every component of a legacy IT system is 
+built for the cloud, integration with existing services and 
+infrastructure may be a challenge.</li>
+<li><strong>Vendor Lock-In: </strong>Business and technical requirements
+ that drive decision for a specific PaaS solution may not apply in the 
+future. If the vendor has not provisioned convenient migration policies,
+ switching to alternative PaaS options may not be possible without 
+affecting the business.</li>
+<li><strong>Customization of Legacy Systems: </strong>PaaS may not be a 
+plug-and-play solution for existing legacy apps and services. Several 
+customizations and configuration changes may be necessary for legacy 
+systems to work with the PaaS service. The resulting customization may 
+lead to a complex IT system that may limit the value of the PaaS 
+investment altogether.</li>
+<li><strong>Runtime Issues: </strong>In addition to limitations 
+associated with specific apps and services, PaaS solutions may not be 
+optimized for the language and frameworks of your choice. Specific 
+framework versions may not be available or perform optimally with the 
+PaaS service and customers may not be able to develop custom 
+dependencies with the platform.</li>
+<li><strong>Operational Limitation: </strong>Customized cloud operations
+ management automation workflows may not be applicable to PaaS solutions
+ as the platform tends to limit operational capabilities for end-users. 
+Although this is intended to reduce the operational burden on end-users,
+ the loss of operational control may affect how PaaS solutions are 
+managed, provisioned and operated.</li>
+</ul>
+<h3>Examples of PaaS</h3>
+<p>AWS Elastic Beanstalk, Windows Azure, Heroku, Force.com, Google App Engine, Apache Stratos, OpenShift</p>
+<h2>IaaS: Infrastructure as a Service</h2>
+<p>Cloud infrastructure services, known as Infrastructure as a Service 
+(IaaS), are made of highly scalable and automated compute resources. 
+IaaS is fully <a href="https://www.bmc.com/blogs/self-service-thrives-clouds/">self-service</a>
+ for accessing and monitoring things like computers, networking, 
+storage, and other services, and it allows businesses to purchase 
+resources on-demand and as-needed instead of having to buy hardware 
+outright.</p>
+<h3>IaaS Delivery</h3>
+<p>IaaS delivers Cloud Computing infrastructure, including things such 
+as servers, network, operating systems, and storage, through 
+virtualization technology. These cloud servers are typically provided to
+ the organization through a dashboard or an API, and IaaS clients have 
+complete control over the entire infrastructure. IaaS provides the same 
+technologies and capabilities as a traditional data center without 
+having to physically maintain or manage all of it. IaaS clients can 
+still access their servers and storage directly, but it is all 
+outsourced through a “virtual data center” in the cloud.</p>
+<p>As opposed to SaaS or PaaS, IaaS clients are responsible for managing
+ aspects such as applications, runtime, OSes, middleware, and data. 
+However, providers of the IaaS manage the servers, hard drives, 
+networking, virtualization, and storage. Some providers even offer more 
+services outside of the virtualization layer, such as databases or 
+message queuing.</p>
+<h3>IaaS Advantages</h3>
+<p>There are many benefits of choosing IaaS, such as:</p>
+<ul>
+<li>It’s the most flexible cloud computing model</li>
+<li>Easily allows for automated deployment of storage, networking, servers, and processing power</li>
+<li>Hardware can be purchased based on consumption</li>
+<li>Gives clients complete control of their infrastructure</li>
+<li>Resources can be purchased as-needed</li>
+<li>Is highly scalable</li>
+</ul>
+<h3>IaaS Characteristics</h3>
+<p>Some characteristics to look for when considering IaaS are:</p>
+<ul>
+<li>Resources are available as a service</li>
+<li>The cost varies depending on consumption</li>
+<li>Services are highly scalable</li>
+<li>Typically includes multiple users on a single piece of hardware</li>
+<li>Provides complete control of the infrastructure to organizations</li>
+<li>Dynamic and flexible</li>
+</ul>
+<h3>When to Use IaaS</h3>
+<p>Just as with SaaS and PaaS, there are specific situations when it is 
+the most advantageous to use IaaS. If you are a startup or a small 
+company, IaaS is a great option because you don’t have to spend the time
+ or money trying to create hardware and software. IaaS is also 
+beneficial for large organizations that wish to have complete control 
+over their applications and infrastructures, but are looking to only 
+purchase what is actually consumed or needed. For rapidly growing 
+companies, IaaS can be a good option since you don’t have to commit to a
+ specific hardware or software as your needs change and evolve. It also 
+helps if you are unsure what demands a new application will require as 
+there is a lot of flexibility to scale up or down as needed.</p>
+<h3>IaaS Limitations and Concerns</h3>
+<p>Many limitations associated with SaaS and PaaS models – such as data 
+security, cost overruns, vendor lock-in and customization issues – are 
+also applicable to the IaaS model. Some of the additional limitations to
+ IaaS include:</p>
+<ul>
+<li><strong>Security: </strong>While the customer is in control of the 
+apps, data, middleware and the OS platform, security threats can still 
+be sourced from the host or other VMs. Insider threat or system 
+vulnerabilities may expose data communication between the host 
+infrastructure and VMs to unauthorized entities.</li>
+<li><strong>Legacy Systems Operating in the Cloud: </strong>While 
+customers can run legacy apps in the cloud, the infrastructure may not 
+be designed to deliver specific controls to secure the legacy apps. 
+Minor enhancement to legacy apps may be required before migrating them 
+to the cloud, possibly leading to new security issues unless adequately 
+tested for security and performance in the IaaS systems.</li>
+<li><strong>Internal Resources and Training: </strong>Additional 
+resources and training may be required for the workforce to learn how to
+ effectively manage the infrastructure. Customers will be responsible 
+for data security, backup and business continuity. Due to inadequate 
+control into the infrastructure however, monitoring and management of 
+the resources may be difficult without adequate training and resources 
+available inhouse.</li>
+<li><strong>Multitenant Security: </strong>Since the hardware resources 
+are dynamically allocated across users as made available, the vendor is 
+required to ensure that other customers cannot access data deposited to 
+storage assets by previous customers. Similarly, customers must rely on 
+the vendor to ensure that VMs are adequately isolated within the 
+multitenant cloud architecture.</li>
+</ul>
+<h3>Examples of IaaS</h3>
+<p>DigitalOcean, Linode, Rackspace, Amazon Web Services (AWS), Cisco Metapod, Microsoft Azure, Google Compute Engine (GCE)</p>
+<h2>SaaS vs PaaS vs IaaS</h2>
+<p>Overall, each cloud model offers its own specific features and 
+functionalities, and it is crucial for your organization to understand 
+the differences. Whether you are looking for cloud-based software for 
+storage options, a smooth platform that allows you to create customized 
+applications, or are wanting complete control over your entire 
+infrastructure without having to physically maintain it, there is a 
+cloud service for you. No matter which option you choose, <a href="https://www.bmc.com/blogs/new-multi-cloud-world-means/">migrating to the cloud</a> is the future of business and technology as we know it, and it is necessary to be properly informed.</p>
+<p><!-- featurestart --></p>
+<h3>BMC Helix: Next Generation ITSM</h3>
+<p><a href="https://www.bmc.com/it-solutions/helix-itsm.html">BMC Helix ITSM</a>
+ combines the latest in digital and cognitive automation technologies to
+ enable best-practice ITSM principles, helping you to provide 
+intelligent and predictive service management across any environment. <a href="https://www.bmc.com/it-solutions/helix-itsm.html">Learn more about BMC Helix ITSM</a></p>
+<p><a href="https://www.bmc.com/it-solutions/helix-itsm.html"><img src="Wat17_files/helix-itsm-screenshot-service-management.png" style="float:right; width:50%"></a></p>
+<ul>
+<li>Optimized for <a href="https://www.bmc.com/blogs/itil-4/" target="_blank" rel="noopener noreferrer">ITIL<sup>®</sup> 4</a>
+        </li>
+<li>Predictive service management through auto-classification, assignment, and routing of incidents</li>
+<li>Integrations with leading agile DevOps tools such as Jira</li>
+<li>Delivered in containers to enable operational and cloud deployment efficiencies</li>
+</ul>
+<p><!-- featureend --></p>
+<h2>Additional Resources</h2>
+<p><iframe style="border: 1px solid #CCC; border-width: 1px; margin-bottom: 5px; max-width: 100%;" src="Wat17_files/21yDJ2jczUdZ4C.html" marginwidth="0" marginheight="0" scrolling="no" allowfullscreen="allowfullscreen" width="595" height="485" frameborder="0"> </iframe><strong> <a title="Defending the Whole, IaaS, PaaS, and SaaS" href="https://www.slideshare.net/marknca/defending-the-whole-iaas-paas-and-saas" target="_blank" rel="noopener noreferrer" class="external">Defending the Whole, IaaS, PaaS, and SaaS</a> </strong> from <strong><a href="https://www.slideshare.net/marknca" target="_blank" rel="noopener noreferrer" class="external">Mark Nunnikhoven</a></strong></p>
+<p><em>Original reference image:</em></p>
+<p><img class="aligncenter size-large wp-image-11495" src="Wat17_files/iaas-paas-saas-comparison-1024x759.jpg" alt="Differences between SaaS, PaaS, &amp; IaaS" srcset="//blogs.bmc.com/wp-content/uploads/2017/09/iaas-paas-saas-comparison-1024x759.jpg 1024w, //blogs.bmc.com/wp-content/uploads/2017/09/iaas-paas-saas-comparison-300x222.jpg 300w, //blogs.bmc.com/wp-content/uploads/2017/09/iaas-paas-saas-comparison-768x569.jpg 768w, //blogs.bmc.com/wp-content/uploads/2017/09/iaas-paas-saas-comparison.jpg 1320w" sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="759"></p>
+
+		<!-- SS Bottom CTA Start-->
+								<style type="text/css">
+					.btn{background-color: #29a5d6; border-color: #29a5d6; color: #ffffff !important; font-size:14px; font-size: 14px; -webkit-transition: all .25s 0s ease-out; border-radius: 5px; border-style: solid; border-width: 3px; cursor: pointer; display: inline-block; margin: .71429em .71429em .71429em 0; padding: .71429em 1em; text-align: center;}
+					
+					.btn-secondary{background-color:#36ba2f; border-color:#36ba2f; color:#ffffff !important; font-size:14px; font-size: 14px; -webkit-transition: all .25s 0s ease-out; border-radius: 5px; border-style: solid; border-width: 3px; cursor: pointer; display: inline-block; margin: .71429em .71429em .71429em 0; padding: .71429em 1em; text-align: center;}
+					</style>
+					<!-- cta-reusable -->
+					<div class="bottom_cta">
+						<h3 style="text-align: center;">Free Demo: BMC Helix ITSM</h3>						<div class="clearfix">
+						  <div class="bottom_CTA_box_left">
+							<a target="_blank" href="https://www.bmc.com/forms/demo-helix-service-management-bmc.html" onclick='s_objectID="https://www.bmc.com/forms/demo-helix-service-management-bmc.html";return this.s_oc?this.s_oc(e):true'><img src="Wat17_files/image_copy.html" alt="" class="alignleft" width="320" height="170"></a>
+							</div>
+						  <div class="bottom_CTA_box_left">
+						  Take a free personalized demo of BMC Helix, the future of IT Service Management software<!-- </p>
+
+							<p style="text-align: left;"> --><br>
+								<a target="_blank" href="https://www.bmc.com/forms/demo-helix-service-management-bmc.html" class="btn" onclick='s_objectID="https://www.bmc.com/forms/demo-helix-service-management-bmc.html";return this.s_oc?this.s_oc(e):true'>Access Demo ›</a>							
+								<a target="_blank" href="https://www.bmc.com/it-solutions/helix-itsm.html" class="btn-secondary" onclick='s_objectID="https://www.bmc.com/it-solutions/helix-itsm.html";return this.s_oc?this.s_oc(e):true'>Learn More ›</a>							</div>
+						</div>
+					</div>
+				<!-- SS Bottom CTA End-->
+
+		<!-- SS Disclaimer Text Start-->
+						<p class="disclaimer_text_btm" style="font: italic bold 12px/30px 'Open Sans', Helvetica, Arial, sans-serif; clear: both; margin-bottom: 10px;">These postings are my own and do not necessarily represent BMC's position, strategies, or opinion.</p>
+					<!-- SS Disclaimer Text End-->
+		
+		<!-- SL Disclaimer Text Start-->
+						<p class="suggestion_text_btm" style="font: 15px/30px 'Open Sans', Helvetica, Arial, sans-serif; clear: both;">See an error or have a suggestion? Please let us know by emailing <a href="mailto:blogs@bmc.com">blogs@bmc.com</a>.</p>
+					<!-- SL Disclaimer Text End-->
+		
+	</div>
+
+	
+			<footer class="entry-footer">
+			<div class="meta-tags">
+							</div>
+		</footer>
+	
+		  	
+	<div class="vce-share-bar">
+		<ul class="vce-share-items">
+			<li><a class="fa fa-facebook" href="javascript:void(0);" data-url="http://www.facebook.com/sharer/sharer.php?u=https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/&amp;t=SaaS+vs+PaaS+vs+IaaS%3A+What%E2%80%99s+The+Difference+and+How+To+Choose"></a></li><li><a class="fa fa-twitter" href="javascript:void(0);" data-url="http://twitter.com/intent/tweet?url=https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/&amp;text=SaaS+vs+PaaS+vs+IaaS%3A+What%E2%80%99s+The+Difference+and+How+To+Choose"></a></li><li><a class="fa fa-linkedin" href="javascript:void(0);" data-url="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/&amp;title=SaaS+vs+PaaS+vs+IaaS%3A+What%E2%80%99s+The+Difference+and+How+To+Choose"></a></li>		</ul>
+	</div>
+	
+</article>
+
+		
+		
+		</main>
+
+		
+					
+	
+	<div class="main-box vce-related-box">
+
+	<h3 class="main-box-title">You may also like</h3>
+	
+	<div class="main-box-inside">
+
+					<article class="vce-post vce-lay-d post-14580 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/idc-ranks-bmc-software-in-the-top-5-for-cloud-system-and-service-management-software-2018-market-share/" title="IDC Ranks BMC Software in the Top 5 for Cloud System and Service Management Software 2018 Market Share">
+				<img src="Wat17_files/GettyImages-584207196-Blog-Image-1400x7001-145x100.jpg" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-145x100.jpg 145w, //blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-380x260.jpg 380w, //blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-634x433.jpg 634w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/idc-ranks-bmc-software-in-the-top-5-for-cloud-system-and-service-management-software-2018-market-share/" title="IDC Ranks BMC Software in the Top 5 for Cloud System and Service Management Software 2018 Market Share">IDC Ranks BMC Software in the Top 5 for Cloud System...</a></h2>
+			</header>
+
+</article>
+					<article class="vce-post vce-lay-d post-14421 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/multi-cloud-strategy/" title="Getting Started With a Multi-Cloud Strategy">
+				<img src="Wat17_files/multi-cloud-strategy-145x100.png" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/multi-cloud-strategy-145x100.png 145w, //blogs.bmc.com/wp-content/uploads/2019/06/multi-cloud-strategy-380x260.png 380w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/multi-cloud-strategy/" title="Getting Started With a Multi-Cloud Strategy">Getting Started With a Multi-Cloud Strategy</a></h2>
+			</header>
+
+</article>
+					<article class="vce-post vce-lay-d post-14413 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/the-cloud-here-there-and-everywhere/" title="The Cloud: Here, there and everywhere">
+				<img src="Wat17_files/cloud-small-700x400-145x100.jpg" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/cloud-small-700x400-145x100.jpg 145w, //blogs.bmc.com/wp-content/uploads/2019/06/cloud-small-700x400-380x260.jpg 380w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/the-cloud-here-there-and-everywhere/" title="The Cloud: Here, there and everywhere">The Cloud: Here, there and everywhere</a></h2>
+			</header>
+
+</article>
+					<article class="vce-post vce-lay-d post-14322 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/dispelling-common-cloud-myths-with-microsofts-steve-bohlen/" title="Dispelling Common Cloud Myths with Microsoft’s Steve Bohlen">
+				<img src="Wat17_files/dispelling-common-cloud-myths-145x100.jpg" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/dispelling-common-cloud-myths-145x100.jpg 145w, //blogs.bmc.com/wp-content/uploads/2019/06/dispelling-common-cloud-myths-380x260.jpg 380w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/dispelling-common-cloud-myths-with-microsofts-steve-bohlen/" title="Dispelling Common Cloud Myths with Microsoft’s Steve Bohlen">Dispelling Common Cloud Myths with Microsoft’s Steve...</a></h2>
+			</header>
+
+</article>
+					<article class="vce-post vce-lay-d post-14393 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/managing-large-scale-cloud-migrations-in-government-agencies-6-keys-to-success/" title="Managing Large-scale Cloud Migrations in Government Agencies: 6 Keys to Success">
+				<img src="Wat17_files/GettyImages-584207196-Blog-Image-1400x7001-145x100.jpg" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-145x100.jpg 145w, //blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-380x260.jpg 380w, //blogs.bmc.com/wp-content/uploads/2019/06/GettyImages-584207196-Blog-Image-1400x7001-634x433.jpg 634w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/managing-large-scale-cloud-migrations-in-government-agencies-6-keys-to-success/" title="Managing Large-scale Cloud Migrations in Government Agencies: 6 Keys to Success">Managing Large-scale Cloud Migrations in Government...</a></h2>
+			</header>
+
+</article>
+					<article class="vce-post vce-lay-d post-14370 post type-post status-publish format-standard has-post-thumbnail hentry category-cloud" style="height: 100px;">
+	
+ 		 	<div class="meta-image">			
+			<a href="https://www.bmc.com/blogs/what-is-cloudops/" title="What is CloudOps?">
+				<img src="Wat17_files/what-is-cloudops-banner-image-lg-145x100.jpg" class="attachment-vce-lay-d size-vce-lay-d wp-post-image" alt="" srcset="//blogs.bmc.com/wp-content/uploads/2019/06/what-is-cloudops-banner-image-lg-145x100.jpg 145w, //blogs.bmc.com/wp-content/uploads/2019/06/what-is-cloudops-banner-image-lg-380x260.jpg 380w, //blogs.bmc.com/wp-content/uploads/2019/06/what-is-cloudops-banner-image-lg-634x433.jpg 634w" sizes="(max-width: 145px) 100vw, 145px" width="145" height="100">							</a>
+		</div>
+		
+
+	<header class="entry-header">
+					<span class="meta-category"><a href="https://www.bmc.com/blogs/categories/cloud/" class="category-8">Multi-Cloud Blog</a></span>
+				<h2 class="entry-title"><a href="https://www.bmc.com/blogs/what-is-cloudops/" title="What is CloudOps?">What is CloudOps?</a></h2>
+			</header>
+
+</article>
+		
+	</div>
+
+	</div>
+
+
+		
+							
+		<section class="main-box mbt-border-top author-box">
+
+			<h3 class="main-box-title">About the author</h3>
+
+			<div class="main-box-inside">
+
+			<div class="data-image">
+				<img alt="Stephen Watts" src="Wat17_files/Stephen-Watts_avatar_1519669222.jpg" class="avatar avatar-112 photo" width="112" height="112">			</div>
+			
+			<div class="data-content">
+				<h4 class="author-title">Stephen Watts</h4>
+				<div class="data-entry-content">
+					<p>Stephen is based in Birmingham, AL and began working at BMC 
+Software in 2012. Stephen holds a degree in Philosophy from Auburn 
+University and is currently enrolled in the MS in Information Systems - 
+Enterprise Technology Management program at University of Colorado 
+Denver.</p>
+<p>Stephen contributes to a variety of publications including <a href="https://www.cio.com/author/Stephen-Watts/" class="external">CIO.com</a>, <a href="https://www.searchenginejournal.com/author/stephen-watts/" class="external">Search Engine Journal</a>, <a href="https://itsm.tools/author/stephen-watts/" class="external">ITSM.Tools</a>, <a href="https://www.itchronicles.com/author/stephenwatts/" class="external">IT Chronicles</a>, <a href="https://dzone.com/users/3139494/wattssw.html" class="external">DZone</a>, and <a href="https://certification.comptia.org/it-career-news/hub/Stephen-Watts" class="external">CompTIA</a>. <!-- validatedseo.com 42428567 --></p>
+				</div>
+			</div>
+
+			</div>
+
+			<div class="vce-content-outside">
+				<div class="data-links">
+						<a href="https://www.bmc.com/blogs/author/wattssw/" class="vce-author-link vce-button">View all posts</a>
+				</div>
+				<div class="vce-author-links">
+					 <a href="https://www.watts.dev/" target="_blank" class="fa fa-link vce-author-website external"></a>																			
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+																	  								<a href="https://www.linkedin.com/in/wattssw" target="_blank" class="fa fa-linkedin external"></a>
+									
+														
+														
+														
+														
+														
+														
+														
+														
+																	  								<a href="https://twitter.com/s_watts_seo" target="_blank" class="fa fa-twitter external"></a>
+									
+														
+														
+														
+														
+														
+														
+										
+				</div>
+			</div>
+
+		</section>
+
+		
+		<section class="main-box mbt-border-top author-box">
+
+			<h3 class="main-box-title">About the author</h3>
+
+			<div class="main-box-inside">
+
+			<div class="data-image">
+				<img alt="Muhammad Raza" src="Wat17_files/Raza.jpeg" class="avatar avatar-112 photo" width="112" height="112">			</div>
+			
+			<div class="data-content">
+				<h4 class="author-title">Muhammad Raza</h4>
+				<div class="data-entry-content">
+					<p>Muhammad Raza is a Stockholm-based technology consultant working
+ with leading startups and Fortune 500 firms on thought leadership 
+branding projects across DevOps, Cloud, Security and IoT.</p>
+				</div>
+			</div>
+
+			</div>
+
+			<div class="vce-content-outside">
+				<div class="data-links">
+						<a href="https://www.bmc.com/blogs/author/muhammad_raza/" class="vce-author-link vce-button">View all posts</a>
+				</div>
+				<div class="vce-author-links">
+																								
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+																	  								<a href="https://www.linkedin.com/in/muhammad-raza-731867158/" target="_blank" class="fa fa-linkedin external"></a>
+									
+														
+														
+														
+														
+														
+														
+														
+														
+																	  								<a href="https://twitter.com/DevDroid9" target="_blank" class="fa fa-twitter external"></a>
+									
+														
+														
+														
+														
+														
+														
+										
+				</div>
+			</div>
+
+		</section>
+
+	
+		
+		
+	</div>
+
+		<aside id="sidebar" class="sidebar right" style="min-height: 14416px;">
+		<div class="vce-sticky">				<!-- cta-reusable-top-right -->
+				<style>
+				@media only screen and (max-width: 1023px) {
+				.mobile-remove{display:none; visibility:none;}
+				}
+				</style>
+				<!-- <div class="CTA-pad mobile-remove" style="text-align: center; background-color: #ffffff;">
+					<section style="background-color: #f1f1f1; border-radius: 5px; box-shadow: 0 0 5px 0 #827976; margin-bottom: 0.5em; padding: 10px;">
+						<h3 style="margin-bottom: 0em; padding-bottom: 0em; /* vertical-align: top;">Free Demo: BMC Helix ITSM</h3>
+						<a href="//www.bmc.com/forms/demo-helix-service-management-bmc.html" target="_blank"><img src="//www.bmc.com/content/bmc/us/en/forms/helix-itsm-trial/_jcr_content/root/responsivegrid/customcontentcontain/header_form/right/image_copy.img.png" alt="Top Right Blog CTA" style="padding: 10px 0;"/></a>
+						<a class="btn" style="margin-left: 1em; font-weight: 600; color: white; width:80%" title="Access Demo" href="//www.bmc.com/forms/demo-helix-service-management-bmc.html" target="_blank">Access Demo</a>
+					</section>
+				</div>	 -->
+								<div class="CTA-pad mobile-remove right_ral_sidebar_cta" id="FreeDemoBMCHelixITSM" style="text-align: center;">
+										<!-- <section style="background-color: #f1f1f1; border-radius: 5px; box-shadow: 0 0 5px 0 #827976; margin-bottom: 0.5em; padding: 10px;">
+												<a href="//www.bmc.com/forms/demo-helix-service-management-bmc.html" target="_blank"><img src="//www.bmc.com/content/bmc/us/en/forms/helix-itsm-trial/_jcr_content/root/responsivegrid/customcontentcontain/header_form/right/image_copy.img.png" alt="Top Right Blog CTA" style="padding: 10px 0;"/></a>
+											</section> -->
+					<div class="widget ss_widget">			
+						<ul class="ss_widget_ul custom">
+							<li data-showind="0">
+				     											<a href="https://www.bmc.com/forms/demo-helix-service-management-bmc.html" target="_blank"><img src="Wat17_files/helix-itsm-blogs-2.jpg" alt="Top Right Blog CTA" style="padding: 0px 0;"></a>
+												     		</li>
+			     		</ul>
+			     	</div>
+									</div>				
+			<div id="text-48" class="widget widget_text">			<div class="textwidget">
+</div>
+		</div></div>	</aside>
+
+</div>
+
+
+
+
+	<footer id="footer" class="site-footer">
+
+		
+					<div class="container-full site-info">
+				<div class="container">
+											<div class="vce-wrap-left">
+							<p></p><div class="layout-inner-wrap"><div class="footer-logo"><a href="https://www.bmc.com/"></a></div><div class="legal-copyright"><ul class="nav-footer-link-list"><li><a href="https://www.bmc.com/contacts-locations/contact-bmc.html" target="_blank">Contact</a></li><li><a href="https://www.bmc.com/it-solutions/free-product-trials.html" target="_blank">Free Trials</a></li><li><a href="https://www.bmc.com/legal/legal-index.html" target="_blank">Legal</a></li><li><a href="https://www.bmc.com/legal/privacy-policy.html" target="_blank">Privacy Policy</a></li><li><a href="https://www.bmc.com/forms/BMCPreferenceCenter_EN_V2.html" target="_blank">Update my preferences</a></li><li><a href="https://www.bmc.com/corporate/product-security-and-quality.html" target="_blank">Application Security</a></li></ul><div class="copyrhht-text">© Copyright 2005-2019 BMC Software, Inc.</div></div></div><p></p>						</div>
+					
+						
+
+					
+			
+				</div>
+			</div>
+		
+
+	</footer>
+
+
+</div>
+</div>
+
+<a href="javascript:void(0)" id="back-top"><i class="fa fa-angle-up"></i></a>
+<script type="text/javascript">_satellite.pageBottom();</script>
+<script src="Wat17_files/jquery-modal-video.js"></script>
+<script>
+		$('.js-video-button').click(function (e) {
+			e.preventDefault();
+		});
+		
+		$(".js-video-button").modalVideo({
+			youtube:{
+				controls:1,
+				playlist: null,
+				rel: 0,
+				autoplay:1,
+				nocookie: true
+			}
+		});
+</script>
+	<!--[if lte IE 8]>
+	<style>
+		.attachment:focus {
+			outline: #1e8cbe solid;
+		}
+		.selected.attachment {
+			outline: #1e8cbe solid;
+		}
+	</style>
+	<![endif]-->
+	<script type="text/html" id="tmpl-media-frame">
+		<div class="media-frame-menu"></div>
+		<div class="media-frame-title"></div>
+		<div class="media-frame-router"></div>
+		<div class="media-frame-content"></div>
+		<div class="media-frame-toolbar"></div>
+		<div class="media-frame-uploader"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-media-modal">
+		<div tabindex="0" class="media-modal wp-core-ui">
+			<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span></button>
+			<div class="media-modal-content"></div>
+		</div>
+		<div class="media-modal-backdrop"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-uploader-window">
+		<div class="uploader-window-content">
+			<h1>Drop files to upload</h1>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-uploader-editor">
+		<div class="uploader-editor-content">
+			<div class="uploader-editor-title">Drop files to upload</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-uploader-inline">
+		<# var messageClass = data.message ? 'has-upload-message' : 'no-upload-message'; #>
+		<# if ( data.canClose ) { #>
+		<button class="close dashicons dashicons-no"><span class="screen-reader-text">Close uploader</span></button>
+		<# } #>
+		<div class="uploader-inline-content {{ messageClass }}">
+		<# if ( data.message ) { #>
+			<h2 class="upload-message">{{ data.message }}</h2>
+		<# } #>
+					<div class="upload-ui">
+				<h2 class="upload-instructions drop-instructions">Drop files anywhere to upload</h2>
+				<p class="upload-instructions drop-instructions">or</p>
+				<button type="button" class="browser button button-hero">Select Files</button>
+			</div>
+
+			<div class="upload-inline-status"></div>
+
+			<div class="post-upload-ui">
+				
+				<p class="max-upload-size">
+				Maximum upload file size: 350 MB.				</p>
+
+				<# if ( data.suggestedWidth && data.suggestedHeight ) { #>
+					<p class="suggested-dimensions">
+						Suggested image dimensions: {{data.suggestedWidth}} by {{data.suggestedHeight}} pixels.					</p>
+				<# } #>
+
+							</div>
+				</div>
+	</script>
+
+	<script type="text/html" id="tmpl-media-library-view-switcher">
+		<a href="/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/?mode=list" class="view-list">
+			<span class="screen-reader-text">List View</span>
+		</a>
+		<a href="/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/?mode=grid" class="view-grid current">
+			<span class="screen-reader-text">Grid View</span>
+		</a>
+	</script>
+
+	<script type="text/html" id="tmpl-uploader-status">
+		<h2>Uploading</h2>
+		<button type="button" class="button-link upload-dismiss-errors"><span class="screen-reader-text">Dismiss Errors</span></button>
+
+		<div class="media-progress-bar"><div></div></div>
+		<div class="upload-details">
+			<span class="upload-count">
+				<span class="upload-index"></span> / <span class="upload-total"></span>
+			</span>
+			<span class="upload-detail-separator">&ndash;</span>
+			<span class="upload-filename"></span>
+		</div>
+		<div class="upload-errors"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-uploader-status-error">
+		<span class="upload-error-filename">{{{ data.filename }}}</span>
+		<span class="upload-error-message">{{ data.message }}</span>
+	</script>
+
+	<script type="text/html" id="tmpl-edit-attachment-frame">
+		<div class="edit-media-header">
+			<button class="left dashicons <# if ( ! data.hasPrevious ) { #> disabled <# } #>"><span class="screen-reader-text">Edit previous media item</span></button>
+			<button class="right dashicons <# if ( ! data.hasNext ) { #> disabled <# } #>"><span class="screen-reader-text">Edit next media item</span></button>
+		</div>
+		<div class="media-frame-title"></div>
+		<div class="media-frame-content"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-attachment-details-two-column">
+		<div class="attachment-media-view {{ data.orientation }}">
+			<div class="thumbnail thumbnail-{{ data.type }}">
+				<# if ( data.uploading ) { #>
+					<div class="media-progress-bar"><div></div></div>
+				<# } else if ( data.sizes && data.sizes.large ) { #>
+					<img class="details-image" src="{{ data.sizes.large.url }}" draggable="false" alt="" />
+				<# } else if ( data.sizes && data.sizes.full ) { #>
+					<img class="details-image" src="{{ data.sizes.full.url }}" draggable="false" alt="" />
+				<# } else if ( -1 === jQuery.inArray( data.type, [ 'audio', 'video' ] ) ) { #>
+					<img class="details-image icon" src="{{ data.icon }}" draggable="false" alt="" />
+				<# } #>
+
+				<# if ( 'audio' === data.type ) { #>
+				<div class="wp-media-wrapper">
+					<audio style="visibility: hidden" controls class="wp-audio-shortcode" width="100%" preload="none">
+						<source type="{{ data.mime }}" src="{{ data.url }}"/>
+					</audio>
+				</div>
+				<# } else if ( 'video' === data.type ) {
+					var w_rule = '';
+					if ( data.width ) {
+						w_rule = 'width: ' + data.width + 'px;';
+					} else if ( wp.media.view.settings.contentWidth ) {
+						w_rule = 'width: ' + wp.media.view.settings.contentWidth + 'px;';
+					}
+				#>
+				<div style="{{ w_rule }}" class="wp-media-wrapper wp-video">
+					<video controls="controls" class="wp-video-shortcode" preload="metadata"
+						<# if ( data.width ) { #>width="{{ data.width }}"<# } #>
+						<# if ( data.height ) { #>height="{{ data.height }}"<# } #>
+						<# if ( data.image && data.image.src !== data.icon ) { #>poster="{{ data.image.src }}"<# } #>>
+						<source type="{{ data.mime }}" src="{{ data.url }}"/>
+					</video>
+				</div>
+				<# } #>
+
+				<div class="attachment-actions">
+					<# if ( 'image' === data.type && ! data.uploading && data.sizes && data.can.save ) { #>
+					<button type="button" class="button edit-attachment">Edit Image</button>
+					<# } else if ( 'pdf' === data.subtype && data.sizes ) { #>
+					Document Preview					<# } #>
+				</div>
+			</div>
+		</div>
+		<div class="attachment-info">
+			<span class="settings-save-status">
+				<span class="spinner"></span>
+				<span class="saved">Saved.</span>
+			</span>
+			<div class="details">
+				<div class="filename"><strong>File name:</strong> {{ data.filename }}</div>
+				<div class="filename"><strong>File type:</strong> {{ data.mime }}</div>
+				<div class="uploaded"><strong>Uploaded on:</strong> {{ data.dateFormatted }}</div>
+
+				<div class="file-size"><strong>File size:</strong> {{ data.filesizeHumanReadable }}</div>
+				<# if ( 'image' === data.type && ! data.uploading ) { #>
+					<# if ( data.width && data.height ) { #>
+						<div class="dimensions"><strong>Dimensions:</strong>
+							{{ data.width }} by {{ data.height }} pixels						</div>
+					<# } #>
+				<# } #>
+
+				<# if ( data.fileLength && data.fileLengthHumanReadable ) { #>
+					<div class="file-length"><strong>Length:</strong>
+						<span aria-hidden="true">{{ data.fileLength }}</span>
+						<span class="screen-reader-text">{{ data.fileLengthHumanReadable }}</span>
+					</div>
+				<# } #>
+
+				<# if ( 'audio' === data.type && data.meta.bitrate ) { #>
+					<div class="bitrate">
+						<strong>Bitrate:</strong> {{ Math.round( data.meta.bitrate / 1000 ) }}kb/s
+						<# if ( data.meta.bitrate_mode ) { #>
+						{{ ' ' + data.meta.bitrate_mode.toUpperCase() }}
+						<# } #>
+					</div>
+				<# } #>
+
+				<div class="compat-meta">
+					<# if ( data.compat && data.compat.meta ) { #>
+						{{{ data.compat.meta }}}
+					<# } #>
+				</div>
+			</div>
+
+			<div class="settings">
+				<label class="setting" data-setting="url">
+					<span class="name">URL</span>
+					<input type="text" value="{{ data.url }}" readonly />
+				</label>
+				<# var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly'; #>
+								<label class="setting" data-setting="title">
+					<span class="name">Title</span>
+					<input type="text" value="{{ data.title }}" {{ maybeReadOnly }} />
+				</label>
+								<# if ( 'audio' === data.type ) { #>
+								<label class="setting" data-setting="artist">
+					<span class="name">Artist</span>
+					<input type="text" value="{{ data.artist || data.meta.artist || '' }}" />
+				</label>
+								<label class="setting" data-setting="album">
+					<span class="name">Album</span>
+					<input type="text" value="{{ data.album || data.meta.album || '' }}" />
+				</label>
+								<# } #>
+				<label class="setting" data-setting="caption">
+					<span class="name">Caption</span>
+					<textarea {{ maybeReadOnly }}>{{ data.caption }}</textarea>
+				</label>
+				<# if ( 'image' === data.type ) { #>
+					<label class="setting" data-setting="alt">
+						<span class="name">Alt Text</span>
+						<input type="text" value="{{ data.alt }}" {{ maybeReadOnly }} />
+					</label>
+				<# } #>
+				<label class="setting" data-setting="description">
+					<span class="name">Description</span>
+					<textarea {{ maybeReadOnly }}>{{ data.description }}</textarea>
+				</label>
+				<div class="setting">
+					<span class="name">Uploaded By</span>
+					<span class="value">{{ data.authorName }}</span>
+				</div>
+				<# if ( data.uploadedToTitle ) { #>
+					<div class="setting">
+						<span class="name">Uploaded To</span>
+						<# if ( data.uploadedToLink ) { #>
+							<span class="value"><a href="{{ data.uploadedToLink }}">{{ data.uploadedToTitle }}</a></span>
+						<# } else { #>
+							<span class="value">{{ data.uploadedToTitle }}</span>
+						<# } #>
+					</div>
+				<# } #>
+				<div class="attachment-compat"></div>
+			</div>
+
+			<div class="actions">
+				<a class="view-attachment" href="{{ data.link }}">View attachment page</a>
+				<# if ( data.can.save ) { #> |
+					<a href="{{ data.editLink }}">Edit more details</a>
+				<# } #>
+				<# if ( ! data.uploading && data.can.remove ) { #> |
+											<button type="button" class="button-link delete-attachment">Delete Permanently</button>
+									<# } #>
+			</div>
+
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-attachment">
+		<div class="attachment-preview js--select-attachment type-{{ data.type }} subtype-{{ data.subtype }} {{ data.orientation }}">
+			<div class="thumbnail">
+				<# if ( data.uploading ) { #>
+					<div class="media-progress-bar"><div style="width: {{ data.percent }}%"></div></div>
+				<# } else if ( 'image' === data.type && data.sizes ) { #>
+					<div class="centered">
+						<img src="{{ data.size.url }}" draggable="false" alt="" />
+					</div>
+				<# } else { #>
+					<div class="centered">
+						<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+							<img src="{{ data.image.src }}" class="thumbnail" draggable="false" alt="" />
+						<# } else if ( data.sizes && data.sizes.medium ) { #>
+							<img src="{{ data.sizes.medium.url }}" class="thumbnail" draggable="false" alt="" />
+						<# } else { #>
+							<img src="{{ data.icon }}" class="icon" draggable="false" alt="" />
+						<# } #>
+					</div>
+					<div class="filename">
+						<div>{{ data.filename }}</div>
+					</div>
+				<# } #>
+			</div>
+			<# if ( data.buttons.close ) { #>
+				<button type="button" class="button-link attachment-close media-modal-icon"><span class="screen-reader-text">Remove</span></button>
+			<# } #>
+		</div>
+		<# if ( data.buttons.check ) { #>
+			<button type="button" class="check" tabindex="-1"><span class="media-modal-icon"></span><span class="screen-reader-text">Deselect</span></button>
+		<# } #>
+		<#
+		var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly';
+		if ( data.describe ) {
+			if ( 'image' === data.type ) { #>
+				<input type="text" value="{{ data.caption }}" class="describe" data-setting="caption"
+					placeholder="Caption this image&hellip;" {{ maybeReadOnly }} />
+			<# } else { #>
+				<input type="text" value="{{ data.title }}" class="describe" data-setting="title"
+					<# if ( 'video' === data.type ) { #>
+						placeholder="Describe this video&hellip;"
+					<# } else if ( 'audio' === data.type ) { #>
+						placeholder="Describe this audio file&hellip;"
+					<# } else { #>
+						placeholder="Describe this media file&hellip;"
+					<# } #> {{ maybeReadOnly }} />
+			<# }
+		} #>
+	</script>
+
+	<script type="text/html" id="tmpl-attachment-details">
+		<h2>
+			Attachment Details			<span class="settings-save-status">
+				<span class="spinner"></span>
+				<span class="saved">Saved.</span>
+			</span>
+		</h2>
+		<div class="attachment-info">
+			<div class="thumbnail thumbnail-{{ data.type }}">
+				<# if ( data.uploading ) { #>
+					<div class="media-progress-bar"><div></div></div>
+				<# } else if ( 'image' === data.type && data.sizes ) { #>
+					<img src="{{ data.size.url }}" draggable="false" alt="" />
+				<# } else { #>
+					<img src="{{ data.icon }}" class="icon" draggable="false" alt="" />
+				<# } #>
+			</div>
+			<div class="details">
+				<div class="filename">{{ data.filename }}</div>
+				<div class="uploaded">{{ data.dateFormatted }}</div>
+
+				<div class="file-size">{{ data.filesizeHumanReadable }}</div>
+				<# if ( 'image' === data.type && ! data.uploading ) { #>
+					<# if ( data.width && data.height ) { #>
+						<div class="dimensions">
+							{{ data.width }} by {{ data.height }} pixels						</div>
+					<# } #>
+
+					<# if ( data.can.save && data.sizes ) { #>
+						<a class="edit-attachment" href="{{ data.editLink }}&amp;image-editor" target="_blank">Edit Image</a>
+					<# } #>
+				<# } #>
+
+				<# if ( data.fileLength && data.fileLengthHumanReadable ) { #>
+					<div class="file-length">Length:						<span aria-hidden="true">{{ data.fileLength }}</span>
+						<span class="screen-reader-text">{{ data.fileLengthHumanReadable }}</span>
+					</div>
+				<# } #>
+
+				<# if ( ! data.uploading && data.can.remove ) { #>
+											<button type="button" class="button-link delete-attachment">Delete Permanently</button>
+									<# } #>
+
+				<div class="compat-meta">
+					<# if ( data.compat && data.compat.meta ) { #>
+						{{{ data.compat.meta }}}
+					<# } #>
+				</div>
+			</div>
+		</div>
+
+		<label class="setting" data-setting="url">
+			<span class="name">URL</span>
+			<input type="text" value="{{ data.url }}" readonly />
+		</label>
+		<# var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly'; #>
+				<label class="setting" data-setting="title">
+			<span class="name">Title</span>
+			<input type="text" value="{{ data.title }}" {{ maybeReadOnly }} />
+		</label>
+				<# if ( 'audio' === data.type ) { #>
+				<label class="setting" data-setting="artist">
+			<span class="name">Artist</span>
+			<input type="text" value="{{ data.artist || data.meta.artist || '' }}" />
+		</label>
+				<label class="setting" data-setting="album">
+			<span class="name">Album</span>
+			<input type="text" value="{{ data.album || data.meta.album || '' }}" />
+		</label>
+				<# } #>
+		<label class="setting" data-setting="caption">
+			<span class="name">Caption</span>
+			<textarea {{ maybeReadOnly }}>{{ data.caption }}</textarea>
+		</label>
+		<# if ( 'image' === data.type ) { #>
+			<label class="setting" data-setting="alt">
+				<span class="name">Alt Text</span>
+				<input type="text" value="{{ data.alt }}" {{ maybeReadOnly }} />
+			</label>
+		<# } #>
+		<label class="setting" data-setting="description">
+			<span class="name">Description</span>
+			<textarea {{ maybeReadOnly }}>{{ data.description }}</textarea>
+		</label>
+	</script>
+
+	<script type="text/html" id="tmpl-media-selection">
+		<div class="selection-info">
+			<span class="count"></span>
+			<# if ( data.editable ) { #>
+				<button type="button" class="button-link edit-selection">Edit Selection</button>
+			<# } #>
+			<# if ( data.clearable ) { #>
+				<button type="button" class="button-link clear-selection">Clear</button>
+			<# } #>
+		</div>
+		<div class="selection-view"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-attachment-display-settings">
+		<h2>Attachment Display Settings</h2>
+
+		<# if ( 'image' === data.type ) { #>
+			<label class="setting align">
+				<span>Alignment</span>
+				<select class="alignment"
+					data-setting="align"
+					<# if ( data.userSettings ) { #>
+						data-user-setting="align"
+					<# } #>>
+
+					<option value="left">
+						Left					</option>
+					<option value="center">
+						Center					</option>
+					<option value="right">
+						Right					</option>
+					<option value="none" selected>
+						None					</option>
+				</select>
+			</label>
+		<# } #>
+
+		<div class="setting">
+			<label>
+				<# if ( data.model.canEmbed ) { #>
+					<span>Embed or Link</span>
+				<# } else { #>
+					<span>Link To</span>
+				<# } #>
+
+				<select class="link-to"
+					data-setting="link"
+					<# if ( data.userSettings && ! data.model.canEmbed ) { #>
+						data-user-setting="urlbutton"
+					<# } #>>
+
+				<# if ( data.model.canEmbed ) { #>
+					<option value="embed" selected>
+						Embed Media Player					</option>
+					<option value="file">
+				<# } else { #>
+					<option value="none" selected>
+						None					</option>
+					<option value="file">
+				<# } #>
+					<# if ( data.model.canEmbed ) { #>
+						Link to Media File					<# } else { #>
+						Media File					<# } #>
+					</option>
+					<option value="post">
+					<# if ( data.model.canEmbed ) { #>
+						Link to Attachment Page					<# } else { #>
+						Attachment Page					<# } #>
+					</option>
+				<# if ( 'image' === data.type ) { #>
+					<option value="custom">
+						Custom URL					</option>
+				<# } #>
+				</select>
+			</label>
+			<input type="text" class="link-to-custom" data-setting="linkUrl" />
+		</div>
+
+		<# if ( 'undefined' !== typeof data.sizes ) { #>
+			<label class="setting">
+				<span>Size</span>
+				<select class="size" name="size"
+					data-setting="size"
+					<# if ( data.userSettings ) { #>
+						data-user-setting="imgsize"
+					<# } #>>
+											<#
+						var size = data.sizes['thumbnail'];
+						if ( size ) { #>
+							<option value="thumbnail" >
+								Thumbnail &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['medium'];
+						if ( size ) { #>
+							<option value="medium" >
+								Medium &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['large'];
+						if ( size ) { #>
+							<option value="large" >
+								Large &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['full'];
+						if ( size ) { #>
+							<option value="full"  selected='selected'>
+								Full Size &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+									</select>
+			</label>
+		<# } #>
+	</script>
+
+	<script type="text/html" id="tmpl-gallery-settings">
+		<h2>Gallery Settings</h2>
+
+		<label class="setting">
+			<span>Link To</span>
+			<select class="link-to"
+				data-setting="link"
+				<# if ( data.userSettings ) { #>
+					data-user-setting="urlbutton"
+				<# } #>>
+
+				<option value="post" <# if ( ! wp.media.galleryDefaults.link || 'post' == wp.media.galleryDefaults.link ) {
+					#>selected="selected"<# }
+				#>>
+					Attachment Page				</option>
+				<option value="file" <# if ( 'file' == wp.media.galleryDefaults.link ) { #>selected="selected"<# } #>>
+					Media File				</option>
+				<option value="none" <# if ( 'none' == wp.media.galleryDefaults.link ) { #>selected="selected"<# } #>>
+					None				</option>
+			</select>
+		</label>
+
+		<label class="setting">
+			<span>Columns</span>
+			<select class="columns" name="columns"
+				data-setting="columns">
+									<option value="1" <#
+						if ( 1 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						1					</option>
+									<option value="2" <#
+						if ( 2 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						2					</option>
+									<option value="3" <#
+						if ( 3 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						3					</option>
+									<option value="4" <#
+						if ( 4 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						4					</option>
+									<option value="5" <#
+						if ( 5 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						5					</option>
+									<option value="6" <#
+						if ( 6 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						6					</option>
+									<option value="7" <#
+						if ( 7 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						7					</option>
+									<option value="8" <#
+						if ( 8 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						8					</option>
+									<option value="9" <#
+						if ( 9 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						9					</option>
+							</select>
+		</label>
+
+		<label class="setting">
+			<span>Random Order</span>
+			<input type="checkbox" data-setting="_orderbyRandom" />
+		</label>
+
+		<label class="setting size">
+			<span>Size</span>
+			<select class="size" name="size"
+				data-setting="size"
+				<# if ( data.userSettings ) { #>
+					data-user-setting="imgsize"
+				<# } #>
+				>
+									<option value="thumbnail">
+						Thumbnail					</option>
+									<option value="medium">
+						Medium					</option>
+									<option value="large">
+						Large					</option>
+									<option value="full">
+						Full Size					</option>
+							</select>
+		</label>
+	</script>
+
+	<script type="text/html" id="tmpl-playlist-settings">
+		<h2>Playlist Settings</h2>
+
+		<# var emptyModel = _.isEmpty( data.model ),
+			isVideo = 'video' === data.controller.get('library').props.get('type'); #>
+
+		<label class="setting">
+			<input type="checkbox" data-setting="tracklist" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<# if ( isVideo ) { #>
+			<span>Show Video List</span>
+			<# } else { #>
+			<span>Show Tracklist</span>
+			<# } #>
+		</label>
+
+		<# if ( ! isVideo ) { #>
+		<label class="setting">
+			<input type="checkbox" data-setting="artists" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<span>Show Artist Name in Tracklist</span>
+		</label>
+		<# } #>
+
+		<label class="setting">
+			<input type="checkbox" data-setting="images" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<span>Show Images</span>
+		</label>
+	</script>
+
+	<script type="text/html" id="tmpl-embed-link-settings">
+		<label class="setting link-text">
+			<span>Link Text</span>
+			<input type="text" class="alignment" data-setting="linkText" />
+		</label>
+		<div class="embed-container" style="display: none;">
+			<div class="embed-preview"></div>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-embed-image-settings">
+		<div class="thumbnail">
+			<img src="{{ data.model.url }}" draggable="false" alt="" />
+		</div>
+
+					<label class="setting caption">
+				<span>Caption</span>
+				<textarea data-setting="caption" />
+			</label>
+		
+		<label class="setting alt-text">
+			<span>Alt Text</span>
+			<input type="text" data-setting="alt" />
+		</label>
+
+		<div class="setting align">
+			<span>Align</span>
+			<div class="button-group button-large" data-setting="align">
+				<button class="button" value="left">
+					Left				</button>
+				<button class="button" value="center">
+					Center				</button>
+				<button class="button" value="right">
+					Right				</button>
+				<button class="button active" value="none">
+					None				</button>
+			</div>
+		</div>
+
+		<div class="setting link-to">
+			<span>Link To</span>
+			<div class="button-group button-large" data-setting="link">
+				<button class="button" value="file">
+					Image URL				</button>
+				<button class="button" value="custom">
+					Custom URL				</button>
+				<button class="button active" value="none">
+					None				</button>
+			</div>
+			<input type="text" class="link-to-custom" data-setting="linkUrl" />
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-image-details">
+		<div class="media-embed">
+			<div class="embed-media-settings">
+				<div class="column-image">
+					<div class="image">
+						<img src="{{ data.model.url }}" draggable="false" alt="" />
+
+						<# if ( data.attachment && window.imageEdit ) { #>
+							<div class="actions">
+								<input type="button" class="edit-attachment button" value="Edit Original" />
+								<input type="button" class="replace-attachment button" value="Replace" />
+							</div>
+						<# } #>
+					</div>
+				</div>
+				<div class="column-settings">
+											<label class="setting caption">
+							<span>Caption</span>
+							<textarea data-setting="caption">{{ data.model.caption }}</textarea>
+						</label>
+					
+					<label class="setting alt-text">
+						<span>Alternative Text</span>
+						<input type="text" data-setting="alt" value="{{ data.model.alt }}" />
+					</label>
+
+					<h2>Display Settings</h2>
+					<div class="setting align">
+						<span>Align</span>
+						<div class="button-group button-large" data-setting="align">
+							<button class="button" value="left">
+								Left							</button>
+							<button class="button" value="center">
+								Center							</button>
+							<button class="button" value="right">
+								Right							</button>
+							<button class="button active" value="none">
+								None							</button>
+						</div>
+					</div>
+
+					<# if ( data.attachment ) { #>
+						<# if ( 'undefined' !== typeof data.attachment.sizes ) { #>
+							<label class="setting size">
+								<span>Size</span>
+								<select class="size" name="size"
+									data-setting="size"
+									<# if ( data.userSettings ) { #>
+										data-user-setting="imgsize"
+									<# } #>>
+																			<#
+										var size = data.sizes['thumbnail'];
+										if ( size ) { #>
+											<option value="thumbnail">
+												Thumbnail &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['medium'];
+										if ( size ) { #>
+											<option value="medium">
+												Medium &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['large'];
+										if ( size ) { #>
+											<option value="large">
+												Large &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['full'];
+										if ( size ) { #>
+											<option value="full">
+												Full Size &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																		<option value="custom">
+										Custom Size									</option>
+								</select>
+							</label>
+						<# } #>
+							<div class="custom-size<# if ( data.model.size !== 'custom' ) { #> hidden<# } #>">
+								<label><span>Width <small>(px)</small></span> <input data-setting="customWidth" type="number" step="1" value="{{ data.model.customWidth }}" /></label><span class="sep">&times;</span><label><span>Height <small>(px)</small></span><input data-setting="customHeight" type="number" step="1" value="{{ data.model.customHeight }}" /></label>
+							</div>
+					<# } #>
+
+					<div class="setting link-to">
+						<span>Link To</span>
+						<select data-setting="link">
+						<# if ( data.attachment ) { #>
+							<option value="file">
+								Media File							</option>
+							<option value="post">
+								Attachment Page							</option>
+						<# } else { #>
+							<option value="file">
+								Image URL							</option>
+						<# } #>
+							<option value="custom">
+								Custom URL							</option>
+							<option value="none">
+								None							</option>
+						</select>
+						<input type="text" class="link-to-custom" data-setting="linkUrl" />
+					</div>
+					<div class="advanced-section">
+						<h2><button type="button" class="button-link advanced-toggle">Advanced Options</button></h2>
+						<div class="advanced-settings hidden">
+							<div class="advanced-image">
+								<label class="setting title-text">
+									<span>Image Title Attribute</span>
+									<input type="text" data-setting="title" value="{{ data.model.title }}" />
+								</label>
+								<label class="setting extra-classes">
+									<span>Image CSS Class</span>
+									<input type="text" data-setting="extraClasses" value="{{ data.model.extraClasses }}" />
+								</label>
+							</div>
+							<div class="advanced-link">
+								<div class="setting link-target">
+									<label><input type="checkbox" data-setting="linkTargetBlank" value="_blank" <# if ( data.model.linkTargetBlank ) { #>checked="checked"<# } #>>Open link in a new tab</label>
+								</div>
+								<label class="setting link-rel">
+									<span>Link Rel</span>
+									<input type="text" data-setting="linkRel" value="{{ data.model.linkRel }}" />
+								</label>
+								<label class="setting link-class-name">
+									<span>Link CSS Class</span>
+									<input type="text" data-setting="linkClassName" value="{{ data.model.linkClassName }}" />
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-image-editor">
+		<div id="media-head-{{ data.id }}"></div>
+		<div id="image-editor-{{ data.id }}"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-audio-details">
+		<# var ext, html5types = {
+			mp3: wp.media.view.settings.embedMimes.mp3,
+			ogg: wp.media.view.settings.embedMimes.ogg
+		}; #>
+
+				<div class="media-embed media-embed-details">
+			<div class="embed-media-settings embed-audio-settings">
+				<audio style="visibility: hidden"
+	controls
+	class="wp-audio-shortcode"
+	width="{{ _.isUndefined( data.model.width ) ? 400 : data.model.width }}"
+	preload="{{ _.isUndefined( data.model.preload ) ? 'none' : data.model.preload }}"
+	<#
+		if ( ! _.isUndefined( data.model.autoplay ) && data.model.autoplay ) {
+		#> autoplay<#
+	}
+		if ( ! _.isUndefined( data.model.loop ) && data.model.loop ) {
+		#> loop<#
+	}
+	#>
+>
+	<# if ( ! _.isEmpty( data.model.src ) ) { #>
+	<source src="{{ data.model.src }}" type="{{ wp.media.view.settings.embedMimes[ data.model.src.split('.').pop() ] }}" />
+	<# } #>
+
+		<# if ( ! _.isEmpty( data.model.mp3 ) ) { #>
+	<source src="{{ data.model.mp3 }}" type="{{ wp.media.view.settings.embedMimes[ 'mp3' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.ogg ) ) { #>
+	<source src="{{ data.model.ogg }}" type="{{ wp.media.view.settings.embedMimes[ 'ogg' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.flac ) ) { #>
+	<source src="{{ data.model.flac }}" type="{{ wp.media.view.settings.embedMimes[ 'flac' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.m4a ) ) { #>
+	<source src="{{ data.model.m4a }}" type="{{ wp.media.view.settings.embedMimes[ 'm4a' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.wav ) ) { #>
+	<source src="{{ data.model.wav }}" type="{{ wp.media.view.settings.embedMimes[ 'wav' ] }}" />
+	<# } #>
+		</audio>
+	
+				<# if ( ! _.isEmpty( data.model.src ) ) {
+					ext = data.model.src.split('.').pop();
+					if ( html5types[ ext ] ) {
+						delete html5types[ ext ];
+					}
+				#>
+				<div class="setting">
+					<label for="audio-source">URL</label>
+					<input type="text" id="audio-source" readonly data-setting="src" value="{{ data.model.src }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.mp3 ) ) {
+					if ( ! _.isUndefined( html5types.mp3 ) ) {
+						delete html5types.mp3;
+					}
+				#>
+				<div class="setting">
+					<label for="mp3-source">MP3</span>
+					<input type="text" id="mp3-source" readonly data-setting="mp3" value="{{ data.model.mp3 }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.ogg ) ) {
+					if ( ! _.isUndefined( html5types.ogg ) ) {
+						delete html5types.ogg;
+					}
+				#>
+				<div class="setting">
+					<label for="ogg-source">OGG</span>
+					<input type="text" id="ogg-source" readonly data-setting="ogg" value="{{ data.model.ogg }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.flac ) ) {
+					if ( ! _.isUndefined( html5types.flac ) ) {
+						delete html5types.flac;
+					}
+				#>
+				<div class="setting">
+					<label for="flac-source">FLAC</span>
+					<input type="text" id="flac-source" readonly data-setting="flac" value="{{ data.model.flac }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.m4a ) ) {
+					if ( ! _.isUndefined( html5types.m4a ) ) {
+						delete html5types.m4a;
+					}
+				#>
+				<div class="setting">
+					<label for="m4a-source">M4A</span>
+					<input type="text" id="m4a-source" readonly data-setting="m4a" value="{{ data.model.m4a }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.wav ) ) {
+					if ( ! _.isUndefined( html5types.wav ) ) {
+						delete html5types.wav;
+					}
+				#>
+				<div class="setting">
+					<label for="wav-source">WAV</span>
+					<input type="text" id="wav-source" readonly data-setting="wav" value="{{ data.model.wav }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</div>
+				<# } #>
+				
+				<# if ( ! _.isEmpty( html5types ) ) { #>
+				<div class="setting">
+					<span>Add alternate sources for maximum HTML5 playback:</span>
+					<div class="button-large">
+					<# _.each( html5types, function (mime, type) { #>
+					<button class="button add-media-source" data-mime="{{ mime }}">{{ type }}</button>
+					<# } ) #>
+					</div>
+				</div>
+				<# } #>
+
+				<div class="setting preload">
+					<span>Preload</span>
+					<div class="button-group button-large" data-setting="preload">
+						<button class="button" value="auto">Auto</button>
+						<button class="button" value="metadata">Metadata</button>
+						<button class="button active" value="none">None</button>
+					</div>
+				</div>
+
+				<label class="setting checkbox-setting autoplay">
+					<input type="checkbox" data-setting="autoplay" />
+					<span>Autoplay</span>
+				</label>
+
+				<label class="setting checkbox-setting">
+					<input type="checkbox" data-setting="loop" />
+					<span>Loop</span>
+				</label>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-video-details">
+		<# var ext, html5types = {
+			mp4: wp.media.view.settings.embedMimes.mp4,
+			ogv: wp.media.view.settings.embedMimes.ogv,
+			webm: wp.media.view.settings.embedMimes.webm
+		}; #>
+
+				<div class="media-embed media-embed-details">
+			<div class="embed-media-settings embed-video-settings">
+				<div class="wp-video-holder">
+				<#
+				var w = ! data.model.width || data.model.width > 640 ? 640 : data.model.width,
+					h = ! data.model.height ? 360 : data.model.height;
+
+				if ( data.model.width && w !== data.model.width ) {
+					h = Math.ceil( ( h * w ) / data.model.width );
+				}
+				#>
+
+				<#  var w_rule = '', classes = [],
+		w, h, settings = wp.media.view.settings,
+		isYouTube = isVimeo = false;
+
+	if ( ! _.isEmpty( data.model.src ) ) {
+		isYouTube = data.model.src.match(/youtube|youtu\.be/);
+		isVimeo = -1 !== data.model.src.indexOf('vimeo');
+	}
+
+	if ( settings.contentWidth && data.model.width >= settings.contentWidth ) {
+		w = settings.contentWidth;
+	} else {
+		w = data.model.width;
+	}
+
+	if ( w !== data.model.width ) {
+		h = Math.ceil( ( data.model.height * w ) / data.model.width );
+	} else {
+		h = data.model.height;
+	}
+
+	if ( w ) {
+		w_rule = 'width: ' + w + 'px; ';
+	}
+
+	if ( isYouTube ) {
+		classes.push( 'youtube-video' );
+	}
+
+	if ( isVimeo ) {
+		classes.push( 'vimeo-video' );
+	}
+
+#>
+<div style="{{ w_rule }}" class="wp-video">
+<video controls
+	class="wp-video-shortcode {{ classes.join( ' ' ) }}"
+	<# if ( w ) { #>width="{{ w }}"<# } #>
+	<# if ( h ) { #>height="{{ h }}"<# } #>
+			<#
+		if ( ! _.isUndefined( data.model.poster ) && data.model.poster ) {
+			#> poster="{{ data.model.poster }}"<#
+		} #>
+			preload			="{{ _.isUndefined( data.model.preload ) ? 'metadata' : data.model.preload }}"
+				<#
+		if ( ! _.isUndefined( data.model.autoplay ) && data.model.autoplay ) {
+		#> autoplay<#
+	}
+		if ( ! _.isUndefined( data.model.loop ) && data.model.loop ) {
+		#> loop<#
+	}
+	#>
+>
+	<# if ( ! _.isEmpty( data.model.src ) ) {
+		if ( isYouTube ) { #>
+		<source src="{{ data.model.src }}" type="video/youtube" />
+		<# } else if ( isVimeo ) { #>
+		<source src="{{ data.model.src }}" type="video/vimeo" />
+		<# } else { #>
+		<source src="{{ data.model.src }}" type="{{ settings.embedMimes[ data.model.src.split('.').pop() ] }}" />
+		<# }
+	} #>
+
+		<# if ( data.model.mp4 ) { #>
+	<source src="{{ data.model.mp4 }}" type="{{ settings.embedMimes[ 'mp4' ] }}" />
+	<# } #>
+		<# if ( data.model.m4v ) { #>
+	<source src="{{ data.model.m4v }}" type="{{ settings.embedMimes[ 'm4v' ] }}" />
+	<# } #>
+		<# if ( data.model.webm ) { #>
+	<source src="{{ data.model.webm }}" type="{{ settings.embedMimes[ 'webm' ] }}" />
+	<# } #>
+		<# if ( data.model.ogv ) { #>
+	<source src="{{ data.model.ogv }}" type="{{ settings.embedMimes[ 'ogv' ] }}" />
+	<# } #>
+		<# if ( data.model.flv ) { #>
+	<source src="{{ data.model.flv }}" type="{{ settings.embedMimes[ 'flv' ] }}" />
+	<# } #>
+		{{{ data.model.content }}}
+</video>
+</div>
+	
+				<# if ( ! _.isEmpty( data.model.src ) ) {
+					ext = data.model.src.split('.').pop();
+					if ( html5types[ ext ] ) {
+						delete html5types[ ext ];
+					}
+				#>
+				<div class="setting">
+					<label for="video-source">URL</label>
+					<input type="text" id="video-source" readonly data-setting="src" value="{{ data.model.src }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.mp4 ) ) {
+					if ( ! _.isUndefined( html5types.mp4 ) ) {
+						delete html5types.mp4;
+					}
+				#>
+				<div class="setting">
+					<label for="mp4-source">MP4</label>
+					<input type="text" id="mp4-source" readonly data-setting="mp4" value="{{ data.model.mp4 }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.m4v ) ) {
+					if ( ! _.isUndefined( html5types.m4v ) ) {
+						delete html5types.m4v;
+					}
+				#>
+				<div class="setting">
+					<label for="m4v-source">M4V</label>
+					<input type="text" id="m4v-source" readonly data-setting="m4v" value="{{ data.model.m4v }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.webm ) ) {
+					if ( ! _.isUndefined( html5types.webm ) ) {
+						delete html5types.webm;
+					}
+				#>
+				<div class="setting">
+					<label for="webm-source">WEBM</label>
+					<input type="text" id="webm-source" readonly data-setting="webm" value="{{ data.model.webm }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.ogv ) ) {
+					if ( ! _.isUndefined( html5types.ogv ) ) {
+						delete html5types.ogv;
+					}
+				#>
+				<div class="setting">
+					<label for="ogv-source">OGV</label>
+					<input type="text" id="ogv-source" readonly data-setting="ogv" value="{{ data.model.ogv }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.flv ) ) {
+					if ( ! _.isUndefined( html5types.flv ) ) {
+						delete html5types.flv;
+					}
+				#>
+				<div class="setting">
+					<label for="flv-source">FLV</label>
+					<input type="text" id="flv-source" readonly data-setting="flv" value="{{ data.model.flv }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</div>
+				<# } #>
+								</div>
+
+				<# if ( ! _.isEmpty( html5types ) ) { #>
+				<div class="setting">
+					<span>Add alternate sources for maximum HTML5 playback:</span>
+					<div class="button-large">
+					<# _.each( html5types, function (mime, type) { #>
+					<button class="button add-media-source" data-mime="{{ mime }}">{{ type }}</button>
+					<# } ) #>
+					</div>
+				</div>
+				<# } #>
+
+				<# if ( ! _.isEmpty( data.model.poster ) ) { #>
+				<div class="setting">
+					<label for="poster-image">Poster Image</label>
+					<input type="text" id="poster-image" readonly data-setting="poster" value="{{ data.model.poster }}" />
+					<button type="button" class="button-link remove-setting">Remove poster image</button>
+				</div>
+				<# } #>
+				<div class="setting preload">
+					<span>Preload</span>
+					<div class="button-group button-large" data-setting="preload">
+						<button class="button" value="auto">Auto</button>
+						<button class="button" value="metadata">Metadata</button>
+						<button class="button active" value="none">None</button>
+					</div>
+				</div>
+
+				<label class="setting checkbox-setting autoplay">
+					<input type="checkbox" data-setting="autoplay" />
+					<span>Autoplay</span>
+				</label>
+
+				<label class="setting checkbox-setting">
+					<input type="checkbox" data-setting="loop" />
+					<span>Loop</span>
+				</label>
+
+				<div class="setting" data-setting="content">
+					<#
+					var content = '';
+					if ( ! _.isEmpty( data.model.content ) ) {
+						var tracks = jQuery( data.model.content ).filter( 'track' );
+						_.each( tracks.toArray(), function (track) {
+							content += track.outerHTML; #>
+						<label for="video-track">Tracks (subtitles, captions, descriptions, chapters, or metadata)</span>
+						<input class="content-track" type="text" id="video-track" readonly value="{{ track.outerHTML }}" />
+						<button type="button" class="button-link remove-setting remove-track">Remove video track</button>
+						<# } ); #>
+					<# } else { #>
+					<span>Tracks (subtitles, captions, descriptions, chapters, or metadata)</span>
+					<em>There are no associated subtitles.</em>
+					<# } #>
+					<textarea class="hidden content-setting">{{ content }}</textarea>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="tmpl-editor-gallery">
+		<# if ( data.attachments.length ) { #>
+			<div class="gallery gallery-columns-{{ data.columns }}">
+				<# _.each( data.attachments, function( attachment, index ) { #>
+					<dl class="gallery-item">
+						<dt class="gallery-icon">
+							<# if ( attachment.thumbnail ) { #>
+								<img src="{{ attachment.thumbnail.url }}" width="{{ attachment.thumbnail.width }}" height="{{ attachment.thumbnail.height }}" alt="" />
+							<# } else { #>
+								<img src="{{ attachment.url }}" alt="" />
+							<# } #>
+						</dt>
+						<# if ( attachment.caption ) { #>
+							<dd class="wp-caption-text gallery-caption">
+								{{{ data.verifyHTML( attachment.caption ) }}}
+							</dd>
+						<# } #>
+					</dl>
+					<# if ( index % data.columns === data.columns - 1 ) { #>
+						<br style="clear: both;">
+					<# } #>
+				<# } ); #>
+			</div>
+		<# } else { #>
+			<div class="wpview-error">
+				<div class="dashicons dashicons-format-gallery"></div><p>No items found.</p>
+			</div>
+		<# } #>
+	</script>
+
+	<script type="text/html" id="tmpl-crop-content">
+		<img class="crop-image" src="{{ data.url }}" alt="Image crop area preview. Requires mouse interaction.">
+		<div class="upload-errors"></div>
+	</script>
+
+	<script type="text/html" id="tmpl-site-icon-preview">
+		<h2>Preview</h2>
+		<strong aria-hidden="true">As a browser icon</strong>
+		<div class="favicon-preview">
+			<img src="//blogs.bmc.com/wp-admin/images/browser.png" class="browser-preview" width="182" height="" alt="" />
+
+			<div class="favicon">
+				<img id="preview-favicon" src="{{ data.url }}" alt="Preview as a browser icon"/>
+			</div>
+			<span class="browser-title" aria-hidden="true">BMC Blogs</span>
+		</div>
+
+		<strong aria-hidden="true">As an app icon</strong>
+		<div class="app-icon-preview">
+			<img id="preview-app-icon" src="{{ data.url }}" alt="Preview as an app icon"/>
+		</div>
+	</script>
+
+	<script type="text/javascript">
+/* <![CDATA[ */
+var countVars = {"disqusShortname":"bmcsoftware"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/comment_count.js"></script>
+<script type="text/javascript" src="Wat17_files/underscore.js"></script>
+<script type="text/javascript" src="Wat17_files/shortcode.js"></script>
+<script type="text/javascript" src="Wat17_files/backbone.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/wp-util.js"></script>
+<script type="text/javascript" src="Wat17_files/wp-backbone.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var _wpMediaModelsL10n = {"settings":{"ajaxurl":"\/wp-admin\/admin-ajax.php","post":{"id":0}}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/media-models.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var pluploadL10n = {"queue_limit_exceeded":"You have attempted to queue too many files.","file_exceeds_size_limit":"%s exceeds the maximum upload size for this site.","zero_byte_file":"This file is empty. Please try another.","invalid_filetype":"Sorry, this file type is not permitted for security reasons.","not_an_image":"This file is not an image. Please try another.","image_memory_exceeded":"Memory exceeded. Please try another smaller file.","image_dimensions_exceeded":"This is larger than the maximum size. Please try another.","default_error":"An error occurred in the upload. Please try again later.","missing_upload_url":"There was a configuration error. Please contact the server administrator.","upload_limit_exceeded":"You may only upload 1 file.","http_error":"HTTP error.","upload_failed":"Upload failed.","big_upload_failed":"Please try uploading this file with the %1$sbrowser uploader%2$s.","big_upload_queued":"%s exceeds the maximum upload size for the multi-file uploader when used in your browser.","io_error":"IO error.","security_error":"Security error.","file_cancelled":"File canceled.","upload_stopped":"Upload stopped.","dismiss":"Dismiss","crunching":"Crunching\u2026","deleted":"moved to the trash.","error_uploading":"\u201c%s\u201d has failed to upload."};
+var _wpPluploadSettings = {"defaults":{"file_data_name":"async-upload","url":"\/wp-admin\/async-upload.php","filters":{"max_file_size":"367001600b","mime_types":[{"extensions":"jpg,jpeg,jpe,gif,png,bmp,tiff,tif,ico,asf,asx,wmv,wmx,wm,avi,divx,flv,mov,qt,mpeg,mpg,mpe,mp4,m4v,ogv,webm,mkv,3gp,3gpp,3g2,3gp2,txt,asc,c,cc,h,srt,csv,tsv,ics,rtx,css,vtt,dfxp,mp3,m4a,m4b,aac,ra,ram,wav,ogg,oga,flac,mid,midi,wma,wax,mka,rtf,pdf,class,tar,zip,gz,gzip,rar,7z,psd,xcf,doc,pot,pps,ppt,wri,xla,xls,xlt,xlw,mdb,mpp,docx,docm,dotx,dotm,xlsx,xlsm,xlsb,xltx,xltm,xlam,pptx,pptm,ppsx,ppsm,potx,potm,ppam,sldx,sldm,onetoc,onetoc2,onetmp,onepkg,oxps,xps,odt,odp,ods,odg,odc,odb,odf,wp,wpd,key,numbers,pages,svg"}]},"multipart_params":{"action":"upload-attachment","_wpnonce":"d0db604e9d"}},"browser":{"mobile":false,"supported":true},"limitExceeded":false};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/wp-plupload.js"></script>
+<script type="text/javascript" src="Wat17_files/core.js"></script>
+<script type="text/javascript" src="Wat17_files/widget.js"></script>
+<script type="text/javascript" src="Wat17_files/mouse.js"></script>
+<script type="text/javascript" src="Wat17_files/sortable.js"></script>
+<script type="text/javascript" src="Wat17_files/wp-mediaelement.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpApiSettings = {"root":"https:\/\/blogs.bmc.com\/blogs\/wp-json\/","nonce":"fe86434176","versionString":"wp\/v2\/"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/api-request.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var _wpMediaViewsL10n = {"url":"URL","addMedia":"Add Media","search":"Search","select":"Select","cancel":"Cancel","update":"Update","replace":"Replace","remove":"Remove","back":"Back","selected":"%d selected","dragInfo":"Drag and drop to reorder media files.","uploadFilesTitle":"Upload Files","uploadImagesTitle":"Upload Images","mediaLibraryTitle":"Media Library","insertMediaTitle":"Add Media","createNewGallery":"Create a new gallery","createNewPlaylist":"Create a new playlist","createNewVideoPlaylist":"Create a new video playlist","returnToLibrary":"\u2190 Return to library","allMediaItems":"All media items","allDates":"All dates","noItemsFound":"No items found.","insertIntoPost":"Insert into post","unattached":"Unattached","mine":"Mine","trash":"Trash","uploadedToThisPost":"Uploaded to this post","warnDelete":"You are about to permanently delete this item from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkDelete":"You are about to permanently delete these items from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkTrash":"You are about to trash these items.\n  'Cancel' to stop, 'OK' to delete.","bulkSelect":"Bulk Select","cancelSelection":"Cancel Selection","trashSelected":"Trash Selected","untrashSelected":"Untrash Selected","deleteSelected":"Delete Selected","deletePermanently":"Delete Permanently","apply":"Apply","filterByDate":"Filter by date","filterByType":"Filter by type","searchMediaLabel":"Search Media","searchMediaPlaceholder":"Search media items...","noMedia":"No media files found.","attachmentDetails":"Attachment Details","insertFromUrlTitle":"Insert from URL","setFeaturedImageTitle":"Featured Image","setFeaturedImage":"Set featured image","createGalleryTitle":"Create Gallery","editGalleryTitle":"Edit Gallery","cancelGalleryTitle":"\u2190 Cancel Gallery","insertGallery":"Insert gallery","updateGallery":"Update gallery","addToGallery":"Add to gallery","addToGalleryTitle":"Add to Gallery","reverseOrder":"Reverse order","imageDetailsTitle":"Image Details","imageReplaceTitle":"Replace Image","imageDetailsCancel":"Cancel Edit","editImage":"Edit Image","chooseImage":"Choose Image","selectAndCrop":"Select and Crop","skipCropping":"Skip Cropping","cropImage":"Crop Image","cropYourImage":"Crop your image","cropping":"Cropping\u2026","suggestedDimensions":"Suggested image dimensions: %1$s by %2$s pixels.","cropError":"There has been an error cropping your image.","audioDetailsTitle":"Audio Details","audioReplaceTitle":"Replace Audio","audioAddSourceTitle":"Add Audio Source","audioDetailsCancel":"Cancel Edit","videoDetailsTitle":"Video Details","videoReplaceTitle":"Replace Video","videoAddSourceTitle":"Add Video Source","videoDetailsCancel":"Cancel Edit","videoSelectPosterImageTitle":"Select Poster Image","videoAddTrackTitle":"Add Subtitles","playlistDragInfo":"Drag and drop to reorder tracks.","createPlaylistTitle":"Create Audio Playlist","editPlaylistTitle":"Edit Audio Playlist","cancelPlaylistTitle":"\u2190 Cancel Audio Playlist","insertPlaylist":"Insert audio playlist","updatePlaylist":"Update audio playlist","addToPlaylist":"Add to audio playlist","addToPlaylistTitle":"Add to Audio Playlist","videoPlaylistDragInfo":"Drag and drop to reorder videos.","createVideoPlaylistTitle":"Create Video Playlist","editVideoPlaylistTitle":"Edit Video Playlist","cancelVideoPlaylistTitle":"\u2190 Cancel Video Playlist","insertVideoPlaylist":"Insert video playlist","updateVideoPlaylist":"Update video playlist","addToVideoPlaylist":"Add to video playlist","addToVideoPlaylistTitle":"Add to Video Playlist","settings":{"tabs":[],"tabUrl":"https:\/\/blogs.bmc.com\/wp-admin\/media-upload.php?chromeless=1","mimeTypes":{"image":"Images","audio":"Audio","video":"Video"},"captions":true,"nonce":{"sendToEditor":"099ce9301f"},"post":{"id":0},"defaultProps":{"link":"","align":"","size":""},"attachmentCounts":{"audio":1,"video":1},"oEmbedProxyUrl":"https:\/\/blogs.bmc.com\/blogs\/wp-json\/oembed\/1.0\/proxy","embedExts":["mp3","ogg","flac","m4a","wav","mp4","m4v","webm","ogv","flv"],"embedMimes":{"mp3":"audio\/mpeg","ogg":"audio\/ogg","flac":"audio\/flac","m4a":"audio\/mpeg","wav":"audio\/wav","mp4":"video\/mp4","m4v":"video\/mp4","webm":"video\/webm","ogv":"video\/ogg","flv":"video\/x-flv"},"contentWidth":810,"months":[{"year":"2019","month":"7","text":"July 2019"},{"year":"2019","month":"6","text":"June 2019"},{"year":"2019","month":"5","text":"May 2019"},{"year":"2019","month":"4","text":"April 2019"},{"year":"2019","month":"3","text":"March 2019"},{"year":"2019","month":"2","text":"February 2019"},{"year":"2019","month":"1","text":"January 2019"},{"year":"2018","month":"12","text":"December 2018"},{"year":"2018","month":"11","text":"November 2018"},{"year":"2018","month":"10","text":"October 2018"},{"year":"2018","month":"9","text":"September 2018"},{"year":"2018","month":"8","text":"August 2018"},{"year":"2018","month":"7","text":"July 2018"},{"year":"2018","month":"6","text":"June 2018"},{"year":"2018","month":"5","text":"May 2018"},{"year":"2018","month":"4","text":"April 2018"},{"year":"2018","month":"3","text":"March 2018"},{"year":"2018","month":"2","text":"February 2018"},{"year":"2018","month":"1","text":"January 2018"},{"year":"2017","month":"12","text":"December 2017"},{"year":"2017","month":"11","text":"November 2017"},{"year":"2017","month":"10","text":"October 2017"},{"year":"2017","month":"9","text":"September 2017"},{"year":"2017","month":"8","text":"August 2017"},{"year":"2017","month":"7","text":"July 2017"},{"year":"2017","month":"6","text":"June 2017"},{"year":"2017","month":"5","text":"May 2017"},{"year":"2017","month":"4","text":"April 2017"},{"year":"2017","month":"3","text":"March 2017"},{"year":"2017","month":"2","text":"February 2017"},{"year":"2017","month":"1","text":"January 2017"},{"year":"2016","month":"12","text":"December 2016"},{"year":"2016","month":"11","text":"November 2016"},{"year":"2016","month":"10","text":"October 2016"},{"year":"2016","month":"9","text":"September 2016"},{"year":"2016","month":"8","text":"August 2016"},{"year":"2016","month":"7","text":"July 2016"},{"year":"2016","month":"6","text":"June 2016"},{"year":"2016","month":"5","text":"May 2016"},{"year":"2016","month":"4","text":"April 2016"},{"year":"2016","month":"3","text":"March 2016"},{"year":"2016","month":"2","text":"February 2016"},{"year":"2016","month":"1","text":"January 2016"},{"year":"2015","month":"12","text":"December 2015"},{"year":"2015","month":"11","text":"November 2015"},{"year":"2015","month":"10","text":"October 2015"},{"year":"2015","month":"9","text":"September 2015"},{"year":"2015","month":"8","text":"August 2015"},{"year":"2015","month":"7","text":"July 2015"},{"year":"2015","month":"6","text":"June 2015"},{"year":"2015","month":"5","text":"May 2015"},{"year":"2015","month":"4","text":"April 2015"},{"year":"2015","month":"3","text":"March 2015"},{"year":"2015","month":"2","text":"February 2015"},{"year":"2015","month":"1","text":"January 2015"},{"year":"2014","month":"12","text":"December 2014"},{"year":"2014","month":"11","text":"November 2014"},{"year":"2014","month":"10","text":"October 2014"},{"year":"2014","month":"9","text":"September 2014"},{"year":"2014","month":"8","text":"August 2014"},{"year":"2014","month":"7","text":"July 2014"},{"year":"2014","month":"6","text":"June 2014"},{"year":"2014","month":"5","text":"May 2014"},{"year":"2014","month":"3","text":"March 2014"}],"mediaTrash":0}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/media-views.js"></script>
+<script type="text/javascript" src="Wat17_files/media-editor.js"></script>
+<script type="text/javascript" src="Wat17_files/media-audiovideo.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpreview = {"ajaxurl":"https:\/\/blogs.bmc.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/main_002.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var vce_js_settings = {"sticky_header":"1","sticky_header_offset":"160","sticky_header_logo":"https:\/\/blogs.bmc.com\/wp-content\/uploads\/2018\/07\/BMCblogs_Logo.png","logo":"https:\/\/blogs.bmc.com\/wp-content\/uploads\/2018\/08\/BMCblogs_Logo.svg","logo_retina":"","logo_mobile":"","logo_mobile_retina":"","rtl_mode":"0","ajax_url":"https:\/\/blogs.bmc.com\/wp-admin\/admin-ajax.php","ajax_mega_menu":"1","mega_menu_slider":"","mega_menu_subcats":"","lay_fa_grid_center":"1","full_slider_autoplay":"5000","grid_slider_autoplay":"5000","grid_big_slider_autoplay":"5000","fa_big_opacity":{"1":"0.5","2":"0.7"},"top_bar_mobile":"1","top_bar_mobile_group":"","top_bar_more_link":"More"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Wat17_files/min.js"></script>
+<script type="text/javascript" src="Wat17_files/collapsible.js"></script>
+<script type="text/javascript" src="Wat17_files/wp-embed.js"></script>
+<script type="text/javascript">
+				/* <![CDATA[ */
+					jQuery('a').filter(function() { return this.hostname && this.hostname !== location.hostname; }).addClass("external"); jQuery(document).on("click",".external", function(){ var url = $(this).attr('href'); var href = url.replace(/(^\w+:|^)\/\//, ''); /*$(this).attr("target","_blank");*/ $(this).attr("href","http://"+href); });
+				/* ]]> */
+				</script>
+
+<div id="sidr-main" class="sidr left"><div class="sidr-inner">
+	<ul id="sidr-id-vce_main_navigation_menu" class="sidr-class-nav-menu"><li id="sidr-id-menu-item-12482" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12482 sidr-class-vce-cat-674"><a href="https://www.bmc.com/blogs/categories/aiops/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">AIOps</span></a></li><li id="sidr-id-menu-item-12483" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12483 sidr-class-vce-cat-694"><a href="https://www.bmc.com/blogs/categories/machine-learning-big-data/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Big Data</span></a></li><li id="sidr-id-menu-item-12484" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12484 sidr-class-vce-cat-6"><a href="https://www.bmc.com/blogs/categories/devops/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">DevOps</span></a></li><li id="sidr-id-menu-item-12488" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12488 sidr-class-vce-cat-9"><a href="https://www.bmc.com/blogs/categories/itsm/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">ITSM</span></a></li><li id="sidr-id-menu-item-12485" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12485 sidr-class-vce-cat-4"><a href="https://www.bmc.com/blogs/categories/mainframe/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Mainframe</span></a></li><li id="sidr-id-menu-item-12486" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-current-post-ancestor sidr-class-current-menu-parent sidr-class-current-post-parent sidr-class-menu-item-12486 sidr-class-vce-cat-8"><a href="https://www.bmc.com/blogs/categories/cloud/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Multi-Cloud</span></a></li><li id="sidr-id-menu-item-12487" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12487 sidr-class-vce-cat-200"><a href="https://www.bmc.com/blogs/categories/secops-security-compliance/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Security</span></a></li><li id="sidr-id-menu-item-12481" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12481 sidr-class-vce-cat-5"><a href="https://www.bmc.com/blogs/categories/workload-automation/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Workload Automation</span></a></li><li id="sidr-id-menu-item-12447" class="sidr-class-menu-item sidr-class-menu-item-type-custom sidr-class-menu-item-object-custom sidr-class-menu-item-has-children sidr-class-menu-item-12447"><a href="#" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">More</span></a>
+<ul class="sidr-class-sub-menu">
+	<li id="sidr-id-menu-item-12489" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12489 sidr-class-vce-cat-13"><a href="https://www.bmc.com/blogs/categories/bmc-beat/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">The BMC Beat</span></a>	</li><li id="sidr-id-menu-item-12490" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12490 sidr-class-vce-cat-50"><a href="https://www.bmc.com/blogs/categories/business-of-it/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">The Business of IT</span></a>	</li><li id="sidr-id-menu-item-12492" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12492 sidr-class-vce-cat-661"><a href="https://www.bmc.com/blogs/categories/gdpr/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">GDPR</span></a>	</li><li id="sidr-id-menu-item-12493" class="sidr-class-menu-item sidr-class-menu-item-type-taxonomy sidr-class-menu-item-object-category sidr-class-menu-item-12493 sidr-class-vce-cat-11"><a href="https://www.bmc.com/blogs/categories/it-operations/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">IT Operations</span></a>	</li><li id="sidr-id-menu-item-14095" class="sidr-class-menu-item sidr-class-menu-item-type-post_type sidr-class-menu-item-object-page sidr-class-menu-item-14095"><a href="https://www.bmc.com/blogs/bmc-bloggers-list/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">BMC Bloggers List</span></a>	</li><li id="sidr-id-menu-item-14350" class="sidr-class-menu-item sidr-class-menu-item-type-post_type sidr-class-menu-item-object-page sidr-class-menu-item-14350"><a href="https://www.bmc.com/blogs/guides/" class="sidr-class-menu-image-title-after"><span class="sidr-class-menu-image-title">Guides Index</span></a></li></ul>
+<span class="vce-menu-parent fa fa-angle-down"></span></li><li id="sidr-id-menu-item-12880" class="sidr-class-menu-item sidr-class-menu-item-type-custom sidr-class-menu-item-object-custom sidr-class-menu-item-12880"><a target="_blank" href="https://www.bmc.com/" class="sidr-class-menu-image-title-hide sidr-class-menu-image-not-hovered"><span class="sidr-class-menu-image-title">BMC</span><img src="Wat17_files/bmc_logo_header.svg" class="sidr-class-menu-image sidr-class-menu-image-title-hide" alt="" width="1" height="1"></a></li><li class="sidr-class-search-header-wrap"><a class="sidr-class-search_header" href="javascript:void(0)"><i class="sidr-class-fa sidr-class-fa-search"></i></a><ul class="sidr-class-search-header-form-ul"><li><form class="sidr-class-search-header-form" action="//www.bmc.com/blogs/" method="get">
+							<input name="s" class="sidr-class-search-input" size="20" type="text" value="Type here to search..." onfocus="(this.value == 'Type here to search...') &amp;&amp; (this.value = '')" onblur="(this.value == '') &amp;&amp; (this.value = 'Type here to search...')" placeholder="Type here to search..."></form></li></ul></li></ul></div></div></body></html>

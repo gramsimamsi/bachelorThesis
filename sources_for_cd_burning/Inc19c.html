@@ -1,0 +1,505 @@
+<!-- Page generated 2019-07-02 12:48:38 +0000 -->
+<!-- relative link basehrefs -->
+<!-- Logic for 'edit this button' -->
+<!-- End of logic for 'edit this button' -->
+<!DOCTYPE html>
+<html lang="en"><head>
+	<!-- base href="https://docs.docker.com/engine/" -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+		@charset "UTF-8";
+		[ng\:cloak],
+		[ng-cloak],
+		[data-ng-cloak],
+		[x-ng-cloak],
+		.ng-cloak,
+		.x-ng-cloak,
+		.ng-hide:not(.ng-hide-animate) {
+			display: none !important;
+		}
+
+		ng\:form {
+			display: block;
+		}
+	</style>
+	<script type="text/javascript" async="" src="Inc19c_files/analytics.js"></script><script type="text/javascript" async="" src="Inc19c_files/gtm.js"></script><script id="pd-rating-js" src="Inc19c_files/rating.js"></script><script type="text/javascript" async="" src="Inc19c_files/analytics_002.js"></script><script type="text/javascript">
+	  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
+	  analytics.load("IWj9D0UpZHZdZUZX9jl98PcpBFWBnBMy");
+	  analytics.page();
+	  }}();
+	</script>
+	
+	<!-- favicon -->
+	<link rel="icon" type="image/x-icon" href="https://docs.docker.com/favicons/docs@2x.ico" sizes="129x128">
+	<meta name="msapplication-TileImage" content="/favicons/docs@2x.ico">
+	<link rel="apple-touch-icon" type="image/x-icon" href="https://docs.docker.com/favicons/docs@2x.ico" sizes="129x128">
+	<meta property="og:image" content="/favicons/docs@2x.ico">
+	<!-- metadata -->
+	<meta property="og:type" content="website">
+	<meta property="og:updated_time" itemprop="dateUpdated" content="2019-07-02T12:48:38+00:00">
+	<meta property="og:image" itemprop="image primaryImageOfPage" content="/images/docs@2x.png">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:domain" content="docs.docker.com">
+	<meta name="twitter:site" content="@docker_docs">
+	<meta name="twitter:url" content="https://twitter.com/docker_docs">
+	<meta name="twitter:title" itemprop="title name" content="About Docker Engine">
+	<meta name="twitter:description" property="og:description" itemprop="description" content="Develop, Ship and Run Any Application, Anywhere Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and...">
+	<meta name="twitter:image:src" content="/images/docs@2x.png">
+	<meta name="twitter:image:alt" content="Docker Documentation">
+	<meta property="article:published_time" itemprop="datePublished" content="2019-07-02T12:48:38+00:00">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="Engine">
+	<link rel="stylesheet" href="Inc19c_files/font-awesome.css">
+	<link rel="stylesheet" href="Inc19c_files/bootstrap.css">
+	<link id="pygments" rel="stylesheet" href="Inc19c_files/perldoc.css">
+	<link id="pagestyle" rel="stylesheet" href="Inc19c_files/style.css">
+
+	<!-- Go get "Open Sans" font from Google -->
+	<link href="Inc19c_files/css.css" rel="stylesheet">
+	<!-- SEO stuff -->
+	<title>About Docker Engine | Docker Documentation</title>
+<meta property="og:title" content="About Docker Engine">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Engine">
+<meta property="og:description" content="Engine">
+<link rel="canonical" href="https://docs.docker.com/engine/">
+<meta property="og:url" content="https://docs.docker.com/engine/">
+<meta property="og:site_name" content="Docker Documentation">
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"WebPage","headline":"About Docker Engine","description":"Engine","url":"https://docs.docker.com/engine/"}</script>
+	<!-- END SEO STUFF -->
+	
+	<script language="javascript">
+	// Default to assuming this is an archive and hiding some stuff
+	// See js/archive.js and js/docs.js for logic relating to this
+	var isArchive = true;
+	var dockerVersion = 'v18.09';
+	</script>
+<script charset="utf-8" src="Inc19c_files/rate.php"></script><script charset="utf-8" src="Inc19c_files/rating-results.php"></script><style type="text/css" id="pd_popup_holder_style_8453675">#pd_popup_holder_8453675 { position:absolute; display:none; width:175px; height:auto; top:0px; left:0px; z-index:10000; border:solid 1px #CCC; background-color:white; padding:0px 15px;font-family:Arial,Sans;box-shadow: -10px 10px 20px rgba(0, 0, 0, .5);-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25);-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25); }</style></head>
+<body ng-app="Docker" ng-controller="DockerController" class="colums">
+	<header>
+		 <nav class="nav-secondary navbar navbar-fixed-top">
+    <!-- <div class="fan"></div> -->
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="https://docs.docker.com/"><img class="logo" src="Inc19c_files/docker-docs-logo.svg" alt="Docker Docs" title="Docker Docs"></a>
+        </div>
+        <div class="navbar-collapse" aria-expanded="false" style="height: 1px;">
+            <div class="search-form" id="search-div" style="visibility: visible;">
+    <form class="search-form form-inline ng-pristine ng-valid" id="searchForm" action="/search/" style="visibility: visible;">
+        <input class="search-field form-control ds-input" id="st-search-input" name="q" placeholder="Search the docs" type="search" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; vertical-align: top;">
+        <div id="autocompleteContainer">
+            <div id="autocompleteResults"></div>
+        </div>
+        <!-- <button type="submit" class="search-submit btn btn-default">Search</button> -->
+    </form>
+</div>
+<div class="sidebar-toggle">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+</div>
+<div class="nav-container">
+    <div id="tabs">
+        <ul class="tabs" id="jsTOCHorizontal"><li id="guides"><a href="https://docs.docker.com/">Guides</a></li>
+<li id="manuals"><a href="https://docs.docker.com/ee/">Product manuals</a></li>
+<li id="glossary"><a href="https://docs.docker.com/glossary/">Glossary</a></li>
+<li id="reference"><a href="https://docs.docker.com/reference/">Reference</a></li>
+<li id="samples"><a href="https://docs.docker.com/samples/">Samples</a></li>
+</ul>
+    </div>
+    <div class="ctrl-right hidden-xs hidden-sm">
+        <a href="javascript:void(0)" id="menu-toggle"><i class="fa fa-indent" aria-hidden="true"></i></a>
+        <div class="btn-group" style="visibility: visible;">
+  <button type="button" class="btn btn-default dropdown-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Docker v18.09 (current)        <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="https://docs.docker.com/edge/">Docker edge</a></li><li><a href="https://docs.docker.com/v18.03/">Docker v18.03</a></li><li><a href="https://docs.docker.com/v17.12/">Docker v17.12</a></li><li><a href="https://docs.docker.com/v17.09/">Docker v17.09</a></li><li><a href="https://docs.docker.com/v17.06/">Docker v17.06</a></li><li><a href="https://docs.docker.com/v17.03/">Docker v17.03</a></li>
+  </ul>
+</div>
+
+    </div>
+</div>
+
+        </div>
+    </div>
+</nav>
+	</header>
+
+	<div class="wrapper right-open">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-body">
+					<main class="col-content content">
+						<section class="section">
+							
+								
+							<h1>About Docker Engine</h1>  <span class="reading-time" title="Estimated reading time">
+  <span class="reading-time-label">Estimated reading time: </span>
+  
+  
+    3 minutes
+  
+</span>
+
+							
+							
+							<p><strong>Develop, Ship and Run Any Application, Anywhere</strong></p>
+
+<p><a href="https://www.docker.com/"><strong>Docker</strong></a> is a platform for developers and sysadmins
+to develop, ship, and run applications.  Docker lets you quickly assemble
+applications from components and eliminates the friction that can come when
+shipping code. Docker lets you get your code tested and deployed into production
+as fast as possible.</p>
+
+<p>Docker consists of:</p>
+
+<ul>
+  <li>The Docker Engine - our lightweight and powerful open source containerization
+technology combined with a work flow for building and containerizing your
+applications.</li>
+  <li><a href="https://hub.docker.com/">Docker Hub</a> - our SaaS service for
+sharing and managing your application stacks.</li>
+</ul>
+
+<h2 id="why-docker">Why Docker?</h2>
+
+<p><em>Faster delivery of your applications</em></p>
+
+<ul>
+  <li>We want your environment to work better. Docker containers,
+    and the work flow that comes with them, help your developers,
+    sysadmins, QA folks, and release engineers work together to get your code
+    into production and make it useful. We’ve created a standard
+    container format that lets developers care about their applications
+    inside containers while sysadmins and operators can work on running the
+    container in your deployment. This separation of duties streamlines and
+    simplifies the management and deployment of code.</li>
+  <li>We make it easy to build new containers, enable rapid iteration of
+    your applications, and increase the visibility of changes. This
+    helps everyone in your organization understand how an application works
+    and how it is built.</li>
+  <li>Docker containers are lightweight and fast! Containers have
+    sub-second launch times, reducing the cycle
+    time of development, testing, and deployment.</li>
+</ul>
+
+<p><em>Deploy and scale more easily</em></p>
+
+<ul>
+  <li>Docker containers run (almost) everywhere. You can deploy
+    containers on desktops, physical servers, virtual machines, into
+    data centers, and up to public and private clouds.</li>
+  <li>Since Docker runs on so many platforms, it’s easy to move your
+    applications around. You can easily move an application from a
+    testing environment into the cloud and back whenever you need.</li>
+  <li>Docker’s lightweight containers also make scaling up and
+    down fast and easy. You can quickly launch more containers when
+    needed and then shut them down easily when they’re no longer needed.</li>
+</ul>
+
+<p><em>Get higher density and run more workloads</em></p>
+
+<ul>
+  <li>Docker containers don’t need a hypervisor, so you can pack more of
+    them onto your hosts. This means you get more value out of every
+    server and can potentially reduce what you spend on equipment and
+    licenses.</li>
+</ul>
+
+<p><em>Faster deployment makes for easier management</em></p>
+
+<ul>
+  <li>As Docker speeds up your work flow, it gets easier to make lots
+    of small changes instead of huge, big bang updates. Smaller
+    changes mean reduced risk and more uptime.</li>
+</ul>
+
+<h2 id="about-this-guide">About this guide</h2>
+
+<p>The <a href="https://docs.docker.com/engine/understanding-docker/">Understanding Docker section</a> helps you:</p>
+
+<ul>
+  <li>See how Docker works at a high level</li>
+  <li>Understand the architecture of Docker</li>
+  <li>Discover Docker’s features;</li>
+  <li>See how Docker compares to virtual machines</li>
+  <li>See some common use cases.</li>
+</ul>
+
+<h3 id="installation-guides">Installation guides</h3>
+
+<p>The <a href="https://docs.docker.com/engine/installation/">installation section</a> shows you how to install Docker
+on a variety of platforms.</p>
+
+<h3 id="docker-user-guide">Docker user guide</h3>
+
+<p>To learn about Docker in more detail and to answer questions about usage and
+implementation, check out the <a href="https://docs.docker.com/engine/userguide/">Docker User Guide</a>.</p>
+
+<h2 id="release-notes">Release notes</h2>
+
+<p>A summary of the changes in each release in the current series can now be found
+on the separate <a href="https://docs.docker.com/release-notes">Release Notes page</a></p>
+
+<h2 id="feature-deprecation-policy">Feature Deprecation Policy</h2>
+
+<p>As changes are made to Docker there may be times when existing features
+need to be removed or replaced with newer features. Before an existing
+feature is removed it is labeled as “deprecated” within the documentation
+and remains in Docker for at least 3 stable releases unless specified
+explicitly otherwise. After that time it may be removed.</p>
+
+<p>Users are expected to take note of the list of deprecated features each
+release and plan their migration away from those features, and (if applicable)
+towards the replacement features as soon as possible.</p>
+
+<p>The complete list of deprecated features can be found on the
+<a href="https://docs.docker.com/engine/deprecated/">Deprecated Features page</a>.</p>
+
+<h2 id="licensing">Licensing</h2>
+
+<p>Docker is licensed under the Apache License, Version 2.0. See
+<a href="https://github.com/moby/moby/blob/master/LICENSE">LICENSE</a> for the full
+license text.</p>
+
+							<!-- tags -->
+							
+							
+							
+							<span class="glyphicon glyphicon-tags" style="padding-right: 10px"></span><span style="vertical-align: 2px"><a href="https://docs.docker.com/glossary/?term=Engine">Engine</a></span>
+							
+							<!-- link corrections -->
+              <script language="JavaScript">
+							var x = document.links.length;
+							var baseHref = document.getElementsByTagName('base')[0].href
+							for (i = 0; i < x; i++) {
+							  var munged = false;
+							  var thisHREF = document.links[i].href;
+							  var originalURL = "/engine/";
+							  if (thisHREF.indexOf(baseHref + "#") > -1) {
+							    // hash fix
+							    //console.log('BEFORE: base:',baseHref,'thisHREF:',thisHREF,'originalURL:',originalURL);
+							    thisHREF = originalURL + thisHREF.replace(baseHref, "");
+							    //console.log('AFTER: base:',baseHref,'thisHREF:',thisHREF,'originalURL:',originalURL);
+							  }
+							  if ((thisHREF.indexOf(window.location.hostname) > -1 || thisHREF.indexOf('http') == -1) && document.links[i].className.indexOf("nomunge") < 0) {
+							    munged = true;
+							    thisHREF = thisHREF.replace(".md", "/").replace("/index/", "/");
+							    document.links[i].setAttribute('href', thisHREF);
+							  }
+							}
+							</script>
+							
+						  <div id="ratings-div" style="color: rgb(185, 194, 204); text-align: center; margin-top: 150px; visibility: visible;">
+								<div id="pd_rating_holder_8453675" style="display: inline-block;"><div class="rating-msg" id="PDRTJS_8453675_msg" style="text-align: center; font:normal normal 12px/20px verdana; color: #333333;">Rate this page:</div><p style="padding: 0px; margin: 0px; clear: both;"></p><div class="rating-icons" id="pd_rate_8453675" style="float:left;"><div class="rating-nero-icon" onmouseout="PDRTJS_8453675.rebuild();" onclick="PDRTJS_8453675.rate(1);" onmouseover="PDRTJS_8453675.hover(1);" id="PDRTJS_8453675_nero_1" style="background-size: 32px 32px !important; cursor: pointer; width: 16px; height: 16px;  line-height: 16px; background: url(https://polldaddy.com/images/ratings/nero-hand-sml.png) bottom left; float: left; padding: 0px; margin: 0px; margin: 0px;">&nbsp;</div><div class="rating-nero-value" id="PDRTJS_8453675_msg_1" style="text-align: center; font:normal normal 12px/20px verdana; color: #333333; float:left; padding: 0px 4px;">32</div><div class="rating-nero-icon" onmouseout="PDRTJS_8453675.rebuild();" onclick="PDRTJS_8453675.rate(2);" onmouseover="PDRTJS_8453675.hover(2);" id="PDRTJS_8453675_nero_2" style="background-size: 32px 32px !important; cursor: pointer; width: 16px; height: 16px;  line-height: 16px; background: url(https://polldaddy.com/images/ratings/nero-hand-sml.png) bottom right; float: left; padding: 0px; margin: 0px; margin: 0px;">&nbsp;</div><div class="rating-nero-value" id="PDRTJS_8453675_msg_2" style="text-align: center; font:normal normal 12px/20px verdana; color: #333333; float:left; padding: 0px 4px;">11</div></div><span style="float:left;">&nbsp;</span><div id="rating_info_8453675" style="display:none;float:left;background:url(https://polldaddy.com/images/ratings/info.png) no-repeat 3px 2px;width:16px;height:16px;cursor:pointer; null " onclick="javascript:PDRTJS_8453675.togglePopup();return false;"><span style="display:none;">i</span></div><div class="pd_popup_holder" id="pd_popup_holder_8453675">&nbsp;</div></div>
+								<script type="text/javascript">
+									PDRTJS_settings_8453675 = {
+										"id": "8453675",
+										"unique_id": "engine/index.md",
+										"title": "About Docker Engine",
+										"permalink": "https://github.com/docker/docker.github.io/blob/master/engine/index.md"
+									};
+									(function(d, c, j) {
+										if (!document.getElementById(j)) {
+											var pd = d.createElement(c),
+												s;
+											pd.id = j;
+											pd.src = ('https:' == document.location.protocol) ? 'https://polldaddy.com/js/rating/rating.js' : 'http://i0.poll.fm/js/rating/rating.js';
+											s = document.getElementsByTagName(c)[0];
+											s.parentNode.insertBefore(pd, s);
+										}
+									}(document, 'script', 'pd-rating-js'));
+								</script>
+							</div>
+							
+						</section>
+					</main>
+					<nav class="col-nav">
+						<div id="sidebar-nav" class="sidebar hidden-sm hidden-xs">
+						<div id="navbar" class="nav-sidebar">
+    <ul class="nav" id="jsTOCLeftNav"><li><a href="https://docs.docker.com/glossary/?term=amd64">amd64</a></li><li><a href="https://docs.docker.com/glossary/?term=aufs">aufs</a></li><li><a href="https://docs.docker.com/glossary/?term=base%20image">base image</a></li><li><a href="https://docs.docker.com/glossary/?term=boot2docker">boot2docker</a></li><li><a href="https://docs.docker.com/glossary/?term=btrfs">btrfs</a></li><li><a href="https://docs.docker.com/glossary/?term=build">build</a></li><li><a href="https://docs.docker.com/glossary/?term=cgroups">cgroups</a></li><li><a href="https://docs.docker.com/glossary/?term=collection">collection</a></li><li><a href="https://docs.docker.com/glossary/?term=Compose">Compose</a></li><li><a href="https://docs.docker.com/glossary/?term=copy-on-write">copy-on-write</a></li><li><a href="https://docs.docker.com/glossary/?term=container">container</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker">Docker</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker%20Enterprise%20Edition">Docker Enterprise Edition</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker%20Desktop%20for%20Mac">Docker Desktop for Mac</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker%20Desktop%20for%20Windows">Docker Desktop for Windows</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker%20Hub">Docker Hub</a></li><li><a href="https://docs.docker.com/glossary/?term=Dockerfile">Dockerfile</a></li><li><a href="https://docs.docker.com/glossary/?term=ENTRYPOINT">ENTRYPOINT</a></li><li><a href="https://docs.docker.com/glossary/?term=filesystem">filesystem</a></li><li><a href="https://docs.docker.com/glossary/?term=grant">grant</a></li><li><a href="https://docs.docker.com/glossary/?term=image">image</a></li><li><a href="https://docs.docker.com/glossary/?term=Kitematic">Kitematic</a></li><li><a href="https://docs.docker.com/glossary/?term=layer">layer</a></li><li><a href="https://docs.docker.com/glossary/?term=libcontainer">libcontainer</a></li><li><a href="https://docs.docker.com/glossary/?term=libnetwork">libnetwork</a></li><li><a href="https://docs.docker.com/glossary/?term=link">link</a></li><li><a href="https://docs.docker.com/glossary/?term=Machine">Machine</a></li><li><a href="https://docs.docker.com/glossary/?term=namespace">namespace</a></li><li><a href="https://docs.docker.com/glossary/?term=node">node</a></li><li><a href="https://docs.docker.com/glossary/?term=overlay%20network%20driver">overlay network driver</a></li><li><a href="https://docs.docker.com/glossary/?term=overlay%20storage%20driver">overlay storage driver</a></li><li><a href="https://docs.docker.com/glossary/?term=parent%20image">parent image</a></li><li><a href="https://docs.docker.com/glossary/?term=registry">registry</a></li><li><a href="https://docs.docker.com/glossary/?term=repository">repository</a></li><li><a href="https://docs.docker.com/glossary/?term=role">role</a></li><li><a href="https://docs.docker.com/glossary/?term=role-based%20access%20control">role-based access control</a></li><li><a href="https://docs.docker.com/glossary/?term=SSH">SSH</a></li><li><a href="https://docs.docker.com/glossary/?term=service">service</a></li><li><a href="https://docs.docker.com/glossary/?term=service%20discovery">service discovery</a></li><li><a href="https://docs.docker.com/glossary/?term=subject">subject</a></li><li><a href="https://docs.docker.com/glossary/?term=swarm">swarm</a></li><li><a href="https://docs.docker.com/glossary/?term=Docker%20Swarm">Docker Swarm</a></li><li><a href="https://docs.docker.com/glossary/?term=swarm%20mode">swarm mode</a></li><li><a href="https://docs.docker.com/glossary/?term=tag">tag</a></li><li><a href="https://docs.docker.com/glossary/?term=task">task</a></li><li><a href="https://docs.docker.com/glossary/?term=Toolbox">Toolbox</a></li><li><a href="https://docs.docker.com/glossary/?term=Union%20file%20system">Union file system</a></li><li><a href="https://docs.docker.com/glossary/?term=virtual%20machine">virtual machine</a></li><li><a href="https://docs.docker.com/glossary/?term=volume">volume</a></li><li><a href="https://docs.docker.com/glossary/?term=x86_64">x86_64</a></li></ul>
+</div>
+
+						</div>
+					</nav>
+					<div class="col-toc">
+							<div class="sidebar hidden-xs hidden-sm">
+							<div class="toc-nav">
+								<div class="feedback-links">
+									<ul>
+										
+										<li style="visibility: visible;"><a href="https://github.com/docker/docker.github.io/edit/master/engine/index.md"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit this page</a></li>
+										<li><a href="https://github.com/docker/docker.github.io/issues/new?body=File:%20[engine/index.md](https://docs.docker.com/engine/)" class="nomunge"><i class="fa fa-check" aria-hidden="true"></i> Request docs changes</a></li>
+										<li><a href="https://success.docker.com/support"><i class="fa fa-question" aria-hidden="true"></i> Get support</a></li>
+										<!-- toggle mode -->
+										<li>
+											<div class="toggle-mode">
+												<div class="icon">
+													<i class="fa fa-sun-o" aria-hidden="true"></i>
+												</div>
+												<div class="toggle-switch">
+													<label class="switch">
+														<input type="checkbox" id="switch-style">
+														<div class="slider round"></div>
+												</label>
+												</div>
+												<div class="icon">
+													<i class="fa fa-moon-o" aria-hidden="true"></i>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+								   
+									<div id="side-toc-title">On this page:</div>
+									
+<ul id="my_toc" class="inline_toc">
+  <li><a href="#why-docker" class="nomunge">Why Docker?</a></li>
+  <li><a href="#about-this-guide" class="nomunge">About this guide</a>
+    <ul>
+      <li><a href="#installation-guides" class="nomunge">Installation guides</a></li>
+      <li><a href="#docker-user-guide" class="nomunge">Docker user guide</a></li>
+    </ul>
+  </li>
+  <li><a href="#release-notes" class="nomunge">Release notes</a></li>
+  <li><a href="#feature-deprecation-policy" class="nomunge">Feature Deprecation Policy</a></li>
+  <li><a href="#licensing" class="nomunge">Licensing</a></li>
+</ul>
+
+
+								</div>
+								
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<footer class="footer">
+		  
+    <div class="container">
+        <div class="top_footer">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <ul class="footer_links">
+                        <li><a href="https://www.docker.com/what-docker">What is Docker</a></li>
+                        <li><a href="https://www.docker.com/what-container">What is a Container</a></li>
+                        <li><a href="https://www.docker.com/use-cases">Use Cases</a></li>
+                        <li><a href="https://www.docker.com/customers">Customers</a></li>
+                        <li><a href="https://www.docker.com/partners/partner-program">Partners</a></li>
+                        <li class="break"><a href="https://www.docker.com/industry-government">For Government</a></li>
+                        <li><a href="https://www.docker.com/company">About Docker</a></li>
+                        <li><a href="https://www.docker.com/company/management">Management</a></li>
+                        <li><a href="https://www.docker.com/company/news-and-press">Press &amp; News</a></li>
+                        <li><a href="https://www.docker.com/careers">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <ul class="footer_links">
+                        <li><a href="https://www.docker.com/products/overview">Product</a></li>
+                        <li><a href="https://www.docker.com/pricing">Pricing</a></li>
+                        <li><a href="https://www.docker.com/docker-community">Community Edition</a></li>
+                        <li class="break"><a href="https://www.docker.com/enterprise">Enterprise Edition </a></li>
+                        <li><a href="https://www.docker.com/products/docker-datacenter">Docker Datacenter</a></li>
+                        <li><a href="https://hub.docker.com/">Docker Hub</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <ul class="footer_links">
+                        <li><a href="https://docs.docker.com/">Documentation</a></li>
+                        <li><a href="https://www.docker.com/docker">Learn</a></li>
+                        <li><a href="https://blog.docker.com/" target="_blank">Blog</a></li>
+                        <li><a href="https://engineering.docker.com/" target="_blank">Engineering Blog</a></li>
+                        <li><a href="https://training.docker.com/" target="_blank">Training</a></li>
+                        <li><a href="https://success.docker.com/support">Support</a></li>
+                        <li><a href="https://success.docker.com/kbase">Knowledge Base</a></li>
+                        <li><a href="https://www.docker.com/products/resources">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <ul class="footer_links">
+                        <li><a href="https://www.docker.com/docker-community">Community</a></li>
+                        <li><a href="https://www.docker.com/technologies/overview">Open Source</a></li>
+                        <li><a href="https://www.docker.com/community/events">Events</a></li>
+                        <li><a href="https://forums.docker.com/" target="_blank">Forums</a></li>
+                        <li><a href="https://www.docker.com/community/docker-captains">Docker Captains</a></li>
+                        <li><a href="https://www.docker.com/docker-community/scholarships">Scholarships</a></li>
+                        <li><a href="https://blog.docker.com/curated/">Community News</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-nav">
+                <nav class="footer_sub_nav">
+                    <ul class="menu">
+                        <li><a href="http://status.docker.com/">Status</a></li>
+                        <li><a href="https://www.docker.com/docker-security">Security</a></li>
+                        <li><a href="https://www.docker.com/legal">Legal</a></li>
+                        <li><a href="https://www.docker.com/company/contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="bottom_footer">
+            <div class="footer-copyright col-xs-12 col-md-8">
+                <p class="copyright">
+                    Copyright © 2019 Docker Inc. All rights reserved. </p>
+            </div>
+            <div class="footer_social_nav">
+                <ul class="nav-social">
+                    <li class="fa fa-twitter"><a href="http://twitter.com/docker">Twitter</a></li>
+                    <li class="fa fa-youtube"><a href="http://www.youtube.com/user/dockerrun">Youtube</a></li>
+                    <li class="fa fa-github"><a href="https://github.com/docker">GitHub</a></li>
+                    <li class="fa fa-linkedin"><a href="https://www.linkedin.com/company/docker">Linkedin</a></li>
+                    <li class="fa fa-facebook"><a href="https://www.facebook.com/docker.run">Facebook</a></li>
+                    <li class="fa fa-reddit"><a href="http://www.reddit.com/r/docker">Reddit</a></li>
+                    <li class="fa fa-slideshare"><a href="http://www.slideshare.net/docker">Slideshare</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+	</footer>
+	<link rel="stylesheet" href="Inc19c_files/github.css">
+	
+	<!-- <script src="/js/anchorlinks.js"></script> -->
+	<script defer="defer" src="Inc19c_files/menu.js"></script>
+	<script src="Inc19c_files/jquery.js"></script>
+	<script src="Inc19c_files/bootstrap.js"></script>
+	<!-- Always include the archive.js, but it doesn't do much unless we are an archive -->
+	<script language="javascript">
+	// Default to assuming this is an archive and hiding some stuff
+	// See js/archive.js and js/docs.js for logic relating to this
+	var isArchive = true;
+	var dockerVersion = 'v18.09';
+	// In archives, we need to know the page root and we get it from JEKYLL_ENV in the jekyll build command
+	var jekyllEnv = 'development';
+	// If unset (in non-archive branches), defaults to "development". In that case, reset it to empty
+	if (jekyllEnv == 'development') {
+		jekyllEnv = '';
+	}
+	var pageURL = jekyllEnv + '/engine/';
+	</script>
+	<script src="Inc19c_files/archive.js"></script>
+	<script src="Inc19c_files/stickyfill.js"></script>
+	<script defer="defer" src="Inc19c_files/metadata.js"></script>
+	<script src="Inc19c_files/glossary.js"></script>
+	<script src="Inc19c_files/collections_tocs.js"></script>
+	<script defer="defer" src="Inc19c_files/docs.js"></script>
+	<script defer="defer" src="Inc19c_files/toc.js"></script>
+	<script language="javascript">
+	jQuery(document).ready(function(){
+				hookupTOCEvents();
+			});
+	</script>
+
+
+
+</body></html>
