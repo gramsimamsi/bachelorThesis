@@ -312,7 +312,7 @@ MONITORING AND ALERTING
 	prometheus, grafana (visualization), neuvector, (sysdig) falco, aqua, twistlock
 
 
-\subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
+\subsection{V01 - Reconaissance through interface components}
 Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
 components: kubernetes dashboard, kubernetes apiserver, OCP web console, 
@@ -321,7 +321,7 @@ TODO
 
 MEASURES SAME AS V02
 
-\subsection{V02 - Read confidentials through Kubernetes \& platform control plane interfaces}
+\subsection{V02 - Reading confidentials through interface components}
 Gather confidential information through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 
 TODO
@@ -348,7 +348,7 @@ SECRETS MANAGEMENT
 ENABLE ALERTING
 	on events like adding admin / granting admin privs / creating namespace / touching things deemed critical. TODO: how?
 
-\subsection{V03 - Change configuration through Kubernetes \& platform control plane interfaces}
+\subsection{V03 - Configuration manipulation through interface components}
 Change the existing configuration through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
 TODO
 
@@ -356,7 +356,7 @@ V06 LIMIT CAPABILITIES
 
 EVERYTHING FROM V02
 
-\subsection{V04 - Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+\subsection{V04 - Compromise internal master components}
 This vector comprises reconaissance, leaks of confidentials and configuration changes through Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
 
 TODO
@@ -366,7 +366,7 @@ CLUSTER ISOLATION
 FOLLOW ADDITIONAL TIPS BY SUPPLIER
 
 
-\subsection{V05 - Supply compromised container (base) image}
+\subsection{V05 - Image poisoning and baiting}
 Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too. Additionally, an image build process typically runs as root, leading to compromise possibilities to compromise the node where an image is built from a rogue dockerfile. (TODO: provoking stale image usage to exploit vulns, too?)
 
 TODO
@@ -386,7 +386,7 @@ VET IMAGES BEFORE USAGE
 RE-ASSESS ALL VERSIONS OF ALL IMAGES REGULARLY
 	regularly scan all available images in all their versions and disable images that are (or have become) vulnerable. Especially old image versions should be purged, since those can be vulnerable to well-documented exploits.
 
-\subsection{V06 - Supply compromised k8s configuration}
+\subsection{V06 - Configuration poisoning and baiting}
 Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
 
 TODO
@@ -408,7 +408,7 @@ LIMIT CAPABILITIES
 	verify with tool / 3rd party			put through kubesec.io offline/ kube-bench/ kubeaudit / kubeatf (enforce: k8guard) or 4-eyes-principle or security clearance on config changes (probably too overkill)						
 
 
-\subsection{V07 - Compromise other application components (lateral movement)}
+\subsection{V07 - Lateral movement through cluster}
 Once an attacker gains access to a container, he may try to access more lucrative application components or information, i.e. sniffing traffic or accessing databases or containers with more confidential information/traffic.
 
 TODO
@@ -419,14 +419,14 @@ ENCRYPR CROSS-CONTAINER TRAFFIC
 AUTHORIZATION/AUTHENTICATION FOR ACCESS, EVEN WITHIN
 	namespace isolation, network restriction, ...appSec problem?
 
-\subsection{V08 - Container breakout (R/W, Privilege Escalation)}
+\subsection{V08 - Container breakout}
 Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
-
+%TODO refer current docker10 discussion on github!
 TODO
 
 V06 LIMIT CAPABILITIES -> RESTRICT HOST IMPACT
 
-\subsection{V09 - Compromise local image cache}
+\subsection{V09 - Image cache compromise}
 If the cached image of a container can be manipulated, another container (which might even seem to fulfill the same function) violating security principles could be started.
 
 TODO
@@ -435,7 +435,7 @@ ENSURE IMAGE PROVENANCE
 	docker content trust, code signing
 
 
-\subsection{V10 - Modify running container}
+\subsection{V10 - Container modification at runtime}
 Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
 
 TODO
@@ -443,7 +443,7 @@ TODO
 LIMIT CAPABILITIES
 	like V13, but during runtime
 
-\subsection{V11 - Hoard resources (sabotage)}
+\subsection{V11 - Resource hoarding (sabotage)}
 The provided resources may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
 
 TODO
@@ -460,14 +460,14 @@ LIMIT ACCOUNT CAPABILITIES
 LOGGING OR MONITORING CONFIG CHANGES
 	see generic -> logging/monitoring
 
-\subsection{V12 - Misuse resources (cryptojacking)}
+\subsection{V12 - Resource misuse (cryptojacking)}
 The provided resources may be misconfigured or misused for financial gains (mining cryptocurrencies)
 
 TODO
 
 MEASURES SAME AS V11 EXCEPT COMPONENT ISOLATION
 
-\subsection{V13 - Add malicious container}
+\subsection{V13 - Adding rogue containers}
 A malicious container may be started within the cluster
 TODO
 
@@ -476,7 +476,7 @@ LIMIT ADMISSION AND CAPABILITIES
 	container runtime: V16->additional restrictions + V17->minimal node setup
 
 
-\subsection{V14 - Add malicious node}
+\subsection{V14 - Adding rogue nodes}
 A malicious node may be added to the cluster
 TODO
 
@@ -484,7 +484,7 @@ REQUIRE ADMIN TO AUTHORIZE NODE ADD
 	Source: NIST-SP800-190, chapter 4.3.5      TODO: how to in ocp / AKS?
 
 
-\subsection{V15 - Bad user practice (outside of cluster)}
+\subsection{V15 - Leveraging bad user practice}
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
 
 TODO
@@ -502,7 +502,7 @@ ORGANIZATIONAL MEASURES
 % login with user token:	oc login --token '<token>'
 % check user rights: 
 
-\subsection{V16 - Incufficient base infrastructure hardening}
+\subsection{V16 - Leveraging bad infrastructure}
 The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown
 
 %TODO: also other (external) parts of company infrastructure
@@ -524,7 +524,7 @@ ADDITIONAL RESTRICTIONS AVAILABLE
 	NIST-SP800-190 chapters: 3.5, 4.5, 4.6
 	cloud config: check with ScoutSuite and analyze/enforce with cloud-custodian, Azure: check with azurite?
 
-\subsection{V17 - Entry through known, unpatched vulnerabilities}
+\subsection{V17 - Leveraging bad patch management}
 Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
 
 TODO reference microsoft mail to reboot clusters in figure \ref{securityMailMS}
@@ -636,8 +636,9 @@ TODO: apply OCP updates when incoming?
 %TODO: END OLD STUFF, REVISIT%
 
 \section{Estimating the risk} \label{riskEstimate}
-%TODO put full tables into appendix + only reference here.
-%TODO get cell background colour working in latex tables
+%TODO put full tables into appendix + only reference here? or move estimate derivement to appendix
+%TODO get cell background colour working in latex tables? or...
+%TODO ...sort comparison table by sum of risk (aks+ocp) desc
 
 The resulting risk estimation is illustrated in Table \ref{tab:estimateComparison}. The individual values these results are derived from can be seen in tables \ref{tab:ocpRiskTable} and \ref{tab:aksRiskTable}. The details on how these values were determined are explained hereafter.
 
@@ -647,60 +648,59 @@ The resulting risk estimation is illustrated in Table \ref{tab:estimateCompariso
 \begin{tabular}{|c|l|c|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & {\ul OCP Risk} & {\ul AKS Risk} \\ \hline
-V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & \textbf{3}     & \textbf{3}     \\ \hline
-V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & \textbf{6}     & \textbf{7}     \\ \hline
-V03             & Change configuration through Kubernetes \& platform control plane interfaces           & \textbf{7}     & \textbf{8}     \\ \hline
-V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & \textbf{5}     & \textbf{6}     \\ \hline
-V05             & Supply compromised container (base) image                                              & \textbf{7}     & \textbf{7}     \\ \hline
-V06             & Supply compromised k8s configuration                                                   & \textbf{10}    & \textbf{10}    \\ \hline
-V07             & Compromise other application components (lateral movement)                             & \textbf{7}     & \textbf{7}     \\ \hline
-V08             & Container breakout (R/W, Privilege Escalation)                                         & \textbf{5}     & \textbf{7}     \\ \hline
-V09             & Compromise local image cache                                                           & \textbf{3}     & \textbf{3}     \\ \hline
-V10             & Modify running container                                                               & \textbf{5}     & \textbf{5}     \\ \hline
-V11             & Hoard resources (sabotage)                                                             & \textbf{8}     & \textbf{5}     \\ \hline
-V12             & Misuse resources (cryptojacking)                                                       & \textbf{5}     & \textbf{8}     \\ \hline
-V13             & Add malicious container                                                                & \textbf{5}     & \textbf{6}     \\ \hline
-V14             & Add malicious node                                                                     & \textbf{6}     & \textbf{6}     \\ \hline
-V15             & Bad user practice (outside of cluster)                                                 & \textbf{6}     & \textbf{6}     \\ \hline
-V16             & Incufficient base infrastructure hardening                                             & \textbf{9}     & \textbf{9}     \\ \hline
-V17             & Entry through known, unpatched vulnerabilities                                         & \textbf{10}    & \textbf{10}    \\ \hline
+V01             & Reconaissance through interface components                                             & \textbf{3}     & \textbf{3}     \\ \hline
+V02             & Reading confidentials through interface components                                     & \textbf{6}     & \textbf{7}     \\ \hline
+V03             & Configuration manipulation through interface components                                & \textbf{7}     & \textbf{8}     \\ \hline
+V04             & Compromise internal master components                                                  & \textbf{5}     & \textbf{6}     \\ \hline
+V05             & Image poisoning and baiting                                                            & \textbf{7}     & \textbf{7}     \\ \hline
+V06             & Configuration poisoning and baiting                                                    & \textbf{10}    & \textbf{10}    \\ \hline
+V07             & Lateral movement through cluster                                                       & \textbf{7}     & \textbf{7}     \\ \hline
+V08             & Container breakout                                                                     & \textbf{5}     & \textbf{7}     \\ \hline
+V09             & Image cache compromise                                                                 & \textbf{3}     & \textbf{3}     \\ \hline
+V10             & Container modification at runtime                                                      & \textbf{5}     & \textbf{5}     \\ \hline
+V11             & Resource hoarding (sabotage)                                                           & \textbf{8}     & \textbf{5}     \\ \hline
+V12             & Resource misuse (cryptojacking)                                                        & \textbf{5}     & \textbf{8}     \\ \hline
+V13             & Adding rogue containers                                                                & \textbf{5}     & \textbf{6}     \\ \hline
+V14             & Adding rogue nodes                                                                     & \textbf{6}     & \textbf{6}     \\ \hline
+V15             & Leveraging bad user practice                                                           & \textbf{6}     & \textbf{6}     \\ \hline
+V16             & Leveraging bad infrastructure                                                          & \textbf{9}     & \textbf{9}     \\ \hline
+V17             & Leveraging bad patch management                                                        & \textbf{10}    & \textbf{10}    \\ \hline
 \end{tabular}%
 }
-\caption{A comparison of the resulting risk for the OCP and AKS environment}
 \label{tab:estimateComparison}
 \end{table}
-
+\captionof{table}{A comparison of the resulting risk for the OCP and AKS environments}
 
 \begin{landscape}
 \begin{table}[]
-\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
+%\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
 \label{tab:ocpRiskTable}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
-V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
-V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
-V03             & Change configuration through Kubernetes \& platform control plane interfaces           & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
-V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & 3                                        & 1                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
-V05             & Supply compromised container (base) image                                              & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
-V06             & Supply compromised k8s configuration                                                   & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
-V07             & Compromise other application components (lateral movement)                             & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
-V08             & Container breakout (R/W, Privilege Escalation)                                         & 2                                        & 2                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
-V09             & Compromise local image cache                                                           & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
-V10             & Modify running container                                                               & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
-V11             & Hoard resources (sabotage)                                                             & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
-V12             & Misuse resources (cryptojacking)                                                       & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
-V13             & Add malicious container                                                                & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
-V14             & Add malicious node                                                                     & 3                                        & 1                              & 2                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
-V15             & Bad user practice (outside of cluster)                                                 & 3                                        & 4                              & 2                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
-V16             & Incufficient base infrastructure hardening                                             & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
-V17             & Entry through known, unpatched vulnerabilities                                         & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V01             & Reconaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
+V02             & Reading confidentials through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
+V03             & Configuration manipulation through interface components                                & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V04             & Compromise internal master components                                                  & 3                                        & 1                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
+V05             & Image poisoning and baiting                                                            & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V06             & Configuration poisoning and baiting                                                    & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V07             & Lateral movement through cluster                                                       & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V08             & Container breakout                                                                     & 2                                        & 2                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
+V09             & Image cache compromise                                                                 & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
+V10             & Container modification at runtime                                                      & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
+V11             & Resource hoarding (sabotage)                                                           & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V12             & Resource misuse (cryptojacking)                                                        & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V13             & Adding rogue containers                                                                & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V14             & Adding rogue nodes                                                                     & 3                                        & 1                              & 2                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V15             & Leveraging bad user practice                                                           & 3                                        & 4                              & 2                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
+V16             & Leveraging bad infrastructure                                                          & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
+V17             & Leveraging bad patch management                                                        & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
 \end{tabular}%
 }
 \end{table}
+\captionof{table}{The risk estimation of all vectors for an OCP 3.11 cluster}
 \end{landscape}
-
 
 \begin{landscape}
 \begin{table}[]
@@ -709,31 +709,32 @@ V17             & Entry through known, unpatched vulnerabilities                
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
-V01             & Reconaissance through Kubernetes \& platform control plane interfaces                  & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
-V02             & Read confidentials through Kubernetes \& platform control plane interfaces             & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
-V03             & Change configuration through Kubernetes \& platform control plane interfaces           & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
-V04             & Compromise internal k8s control plane components (etcd, scheduler, controller-manager) & 4                                        & 1                              & 3                                        & 0                    & 2                                      & 3            & \textbf{6}           \\ \hline
-V05             & Supply compromised container (base) image                                              & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
-V06             & Supply compromised k8s configuration                                                   & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
-V07             & Compromise other application components (lateral movement)                             & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
-V08             & Container breakout (R/W, Privilege Escalation)                                         & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
-V09             & Compromise local image cache                                                           & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
-V10             & Modify running container                                                               & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
-V11             & Hoard resources (sabotage)                                                             & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
-V12             & Misuse resources (cryptojacking)                                                       & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
-V13             & Add malicious container                                                                & 4                                        & 2                              & 3                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
-V14             & Add malicious node                                                                     & 4                                        & 1                              & 1                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
-V15             & Bad user practice (outside of cluster)                                                 & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 2            & \textbf{6}           \\ \hline
-V16             & Incufficient base infrastructure hardening                                             & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
-V17             & Entry through known, unpatched vulnerabilities                                         & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V01             & Reconaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
+V02             & Reading confidentials through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V03             & Configuration manipulation through interface components                                & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V04             & Compromise internal master components                                                  & 4                                        & 1                              & 3                                        & 0                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V05             & Image poisoning and baiting                                                            & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V06             & Configuration poisoning and baiting                                                    & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
+V07             & Lateral movement through cluster                                                       & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V08             & Container breakout                                                                     & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
+V09             & Image cache compromise                                                                 & 1                                        & 1                              & 2                                        & 2                    & 1.5                                    & 2            & \textbf{3}           \\ \hline
+V10             & Container modification at runtime                                                      & 2                                        & 2                              & 3                                        & 2                    & 2.25                                   & 2            & \textbf{5}           \\ \hline
+V11             & Resource hoarding (sabotage)                                                           & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 2            & \textbf{5}           \\ \hline
+V12             & Resource misuse (cryptojacking)                                                        & 3                                        & 2                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
+V13             & Adding rogue containers                                                                & 4                                        & 2                              & 3                                        & 2                    & 2.75                                   & 2            & \textbf{6}           \\ \hline
+V14             & Adding rogue nodes                                                                     & 4                                        & 1                              & 1                                        & 2                    & 2                                      & 3            & \textbf{6}           \\ \hline
+V15             & Leveraging bad user practice                                                           & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 2            & \textbf{6}           \\ \hline
+V16             & Leveraging bad infrastructure                                                          & 4                                        & 4                              & 2                                        & 2                    & 3                                      & 3            & \textbf{9}           \\ \hline
+V17             & Leveraging bad patch management                                                        & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 3            & \textbf{10}          \\ \hline
 \end{tabular}%
 }
-\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
+%\caption{The risk estimation of all vectors for an AKS 3.11 cluster}
 \label{tab:aksRiskTable}
 \end{table}
+\captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster}
 \end{landscape}
 
-\subsection{V01 - Reconaissance through Kubernetes \& platform control plane interfaces}
+\subsection{V01 - Reconaissance through interface components}
 
 %OCP
 A user with access to the apiserver / webinterface(s) and read access can scout out information.
@@ -745,7 +746,7 @@ The information gathering processes and interfaces are known and documented pret
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn’t change total risk value
 
-\subsection{V02 - Read confidentials through Kubernetes \& platform control plane interfaces}
+\subsection{V02 - Reading confidentials through interface components}
 %OCP
 In addition to V01, a user with access to the apiserver / webinterface(s) and read access can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain privileged access like pull/push images, trigger actions in other applications / containers, …
 These can be gathered and used for further access by an attacker.
@@ -756,7 +757,7 @@ Kube-hunter is a readily available tool and checks for this automatically.
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, pushing it just over the edge from medium to high
 
-\subsection{V03 - Change configuration through Kubernetes \& platform control plane interfaces}
+\subsection{V03 - Configuration manipulation through interface components}
 %OCP
 In adition to both V01 and V02, a user with access to the apiserver / webinterface(s) and write access can change configurations on the cluster. By default, each account (project admin or project user, but not cluster admin) can only change the configuration of namespaces resources (i.e. access to project-specific resources like pods, services, routes, but not cluster-global resources like nodes, SCCs or interface/authorization configurations). 
 
@@ -767,7 +768,7 @@ Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated high in the end
 
 
-\subsection{V04 - Compromise internal k8s control plane components (etcd, scheduler, controller-manager)}
+\subsection{V04 - Compromise internal master components}
 %OCP
 Misconfiguration of internal Kubernetes components (accessible by systems it is not assigned to be accessible by) could lead to a full cluster compromise. The cluster configuration and all secrets / authorization credentials are stored in the etcd instance(s). One would need to seriously fuck up the setup, since OCP configures everything through ansible and you would have to knowingly change some internal settings not intended to be changed in order to achieve this. Configurations are maintained by red hat, meaning config changes will be applied in updates and additionally sent out to notify relevant people subscribed to those alerts.
 
@@ -778,7 +779,7 @@ Same as OCP, except accessible from anywhere (cloud, duh).
 The master components are updated, configured and maintained by Microsoft, only when a restart is required the cluster administrator has to trigger it manually.
 -> increases total risk value slightly, both are still rated medium in the end
 
-\subsection{V05 - Supply compromised container (base) image}
+\subsection{V05 - Image poisoning and baiting}
 %OCP
 This has two facettes: it can be untargeted (image spraying) and targeted (compromising a specific image known to be used by the target).
 
@@ -796,7 +797,7 @@ Base containers and malware / known vulnerable versions are readily available fr
 %AKS
 Exactly the same as OCP
 
-\subsection{V06 - Supply compromised k8s configuration}
+\subsection{V06 - Configuration poisoning and baiting}
 %OCP
 Similar to V07, this can be done either untargeted by spraying to tutorials / help forums or targeted, similar to spear phising.
 If a cluster administrator does not fully analyze or understand the configuration he gets from public sources, the cluster could be compromised fully, i.e. by implementing backdoors through malicious containers with special access and ability to be remotely accessed by the attacker.
@@ -806,7 +807,7 @@ Examples are readily available from public sources, but need some technical expe
 %AKS
 Exactly the same as OCP
 
-\subsection{V07 - Compromise other application components (lateral movement)}
+\subsection{V07 - Lateral movement through cluster}
 %OCP
 Once an attacker sits within a container, he can scan the network for other containers, hosts, services, apis or similar interfaces to further his access. By default, all containers in all projects (except master \& infra components) are put in the same subnet, allowing everyone to communicate with anyone else.
 This is especially troubling for securing an environment with multiple tenants – even if the DB is not publically accessible, unauthorized access can be leveraged by anyone in the cluster.
@@ -817,7 +818,8 @@ Scanning tools like nmap etc. to find components to talk to are readily availabl
 Same as OCP. 
 The worst AKS-specific problem with this is the mitigation. This risk is not clearly documented in the setup section of the documentation. If one stumbles upon this information in further sections of the docs after setting up his cluster, he might postpone or deny changing the setting to isolate different projects by default. This is because a full cluster rebuild is needed to change this setting!
 
-\subsection{V08 - Container breakout (R/W, Privilege Escalation)}
+\subsection{V08 - Container breakout}
+
 %OCP
 A deployed container poses the risk of allowing access to the node it is running on, thus allowing an attacker to “break out” of the container and perform actions on the node.
 This poses a considerable threat, since any container may run on any node by default, allowing an attacker full access to any containers running on the node he controls, which will – especially over time – have a great chance to include containers belonging to other projects.
@@ -832,7 +834,7 @@ This is more on the usability>security side of things.
 -> raises risk, jumping from medium to high.
 
 
-\subsection{V09 - Compromise local image cache}
+\subsection{V09 - Image cache compromise}
 %OCP
 If you can swap out the cached container image on a host, the swapped-in version will run the next time this node spins up this container.
 This is a very sneaky way to inject a malicious container, but within the default settings, access to the host file system is required.
@@ -842,7 +844,7 @@ Not well known and not entirely trivial to do (sneakily).
 %AKS
 Same as OCP.
 
-\subsection{V10 - Modify running container}
+\subsection{V10 - Container modification at runtime}
 %OCP
 Instead of deploying a container with malicious contents, an attacker can try to modify and use an already running container to its needs by loading additional tools/binaries, changing configurations or exfiltrating data. This could be done through an RCE vuln, ssh access or others, just like any compromised linux machine.
 
@@ -851,7 +853,7 @@ Instead of deploying a container with malicious contents, an attacker can try to
 %AKS
 Same as OCP.
 
-\subsection{V11 - Hoard resources (sabotage)}
+\subsection{V11 - Resource hoarding (sabotage)}
 %OCP
 With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting DOS attacks or wiping nodes or cluster configurations. Since it is a complex system, finding the sabotaged component can take considerable know-how and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
 
@@ -861,7 +863,7 @@ Wiping is common sense, sabotaging the cluster in a complex and effective way ma
 Difference to OCP: you can easily spin up more resources in the cloud -> less impact
 -> risk decreases by a considerable margin, high to medium
 
-\subsection{V12 - Misuse resources (cryptojacking)}
+\subsection{V12 - Resource misuse (cryptojacking)}
 %OCP
 In contrast to V14, an attacker will try to be sneaky if done well.
 The goal here is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
@@ -872,7 +874,7 @@ Cryptojacking is regularly cited as an up-and-coming attack, but to do it with a
 Difference to OCP: an attacker can easily spin up more resources in the cloud -> more impact
 -> risk increases by a considerable margin, medium to high
 
-\subsection{V13 - Add malicious container}
+\subsection{V13 - Adding rogue containers}
 %OCP
 Instead of manipulating running containers, an attacker with user access and permissions to spin up containers may start their own ones. (BYOC – bring-your-own-container?)
 This is still restricted by container admission restrictions on the user/project, but at least he can install all needed binaries beforehand and his shell doesn’t die whenever the underlying container might be stopped.
@@ -883,7 +885,7 @@ Doing this is common sense, as before some technical skill is required to prepar
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated medium in the end
 
-\subsection{V14 - Add malicious node}
+\subsection{V14 - Adding rogue nodes}
 %OCP
 An attacker could try to add a malicious node to the cluster and inspect or manipulate data in or exfiltrate data from containers scheduled on it. Since any container may run anywhere, there is a high chance of all containers eventually being run on a given node over time, exposing the whole cluster to an attacker. This could be sped up by manipulating the reports of remaining resources on the node towards the scheduler.
 By design, cluster administrator access is needed to add a node within OCP.
@@ -896,7 +898,7 @@ Accessible from anywhere (cloud).
 In contrast to OCP, you can spin up additional nodes more easily in AKS if configured on creation, but to access/control/manipulate them you still need cluster administrator access.
 A tutorial on getting ssh access is available, but that’s lengthy and not trivial.
 
-\subsection{V15 - Bad user practice (outside of cluster)}
+\subsection{V15 - Leveraging bad user practice}
 %OCP
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories, password reuse, scouting specific software or container images used, publishing logs with information valuable to an attacker and more.
 Could be done targeted (i.e. specific OSINT) or untargeted through github crawlers, scanning account/password dumps, …
@@ -908,7 +910,7 @@ There are tools available to do this, using them effectively requires some techn
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn’t change total risk value
 
-\subsection{V16 - Incufficient base infrastructure hardening}
+\subsection{V16 - Leveraging bad infrastructure}
 %OCP
 The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
 Vector exists mostly to sink all “classic” infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
@@ -923,7 +925,7 @@ Suprisingly, same as OCP (despite the azure promise of PaaS-we-manage-your-infra
 That’s the case since security updates on nodes that require a reboot are not done automatically, but have to be triggered manually or configured to trigger automatically.
 Remediation is far less work though.
 
-\subsection{V17 - Entry through known, unpatched vulnerabilities}
+\subsection{V17 - Leveraging bad patch management}
 %OCP
 Sinkhole vector for patch management. Would be a measure against every preceding vector otherwise.
 Worst case could be anything, thus maximum risk. (See kubernetes CVE with 9.8 / 10)
@@ -943,7 +945,7 @@ Normally one should start with the vector currently having the highest overall r
 
 TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
 
-\section{Managing the risk of V07 - Lateral movement from container}
+\section{Managing the risk of V07 - Lateral movement through cluster}
 %TODO write out all from ppt with commands, pictures
 TODO this was done in both AKS and OCP, is possible with both default configs!
 
@@ -962,11 +964,11 @@ TODO: show implementing measures through commands in ppt
 %TODO
 TODO show remediation through demo of unsuccessful attack
 
-\subsection{Risk reassessment 1}
+\subsection{Risk reassessment}
 %TODO
 TODO updated table of risk for ocp AND aks
 
-\section{Managing the risk of V08 - Container Breakout}
+\section{Managing the risk of V08 - Container breakout}
 %TODO write out all from ppt with commands, pictures
 TODO this was done on AKS and OCP, but needed changes in default OCP settings to work.
 
@@ -987,7 +989,7 @@ TODO: show implementing measures through commands in ppt
 
 TODO show remediation through demo of unsuccessful attack
 
-\subsection{Risk reassessment 2}
+\subsection{Risk reassessment revisited}
 
 TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
 
@@ -1001,6 +1003,8 @@ This chapter aims to provide answers to the remaining questions posed in chapter
 
 \subsection{Comparing on-premise and public cloud}
 %TODO
+
+TODO reference table \ref{tab:estimateComparison}
 
 TODO explain problem of generically comparing, without going into specific solutions -> just comparing OCP vs. AKS.
 
