@@ -337,3 +337,13 @@ https://brauner.github.io/2019/02/12/privileged-containers.html
 
 moby vs. docker:
 https://www.mirantis.com/blog/ok-i-give-up-is-docker-now-moby-and-what-is-linuxkit/
+
+Tools and Techniques: Securing APIs in Kubernetes Environment
+https://www.youtube.com/watch?v=byWsbXRlqmc
+^7:29: GCP citation "k8s does not provide...security across Namespaces"
+^14:55: role vs. clusterrole
+^24:05: network policy recommendations
+^24:32: cluster pwn through accessible cloud API
+^30:32: podSecPolicy explanation FOLLOWED BY BEST PRACTICES
+^35:40: AUDIT POLICY FOR LOGGING! (followed by app logging)
+^43:20: "credential management you have to DIY"

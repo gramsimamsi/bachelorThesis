@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<meta name="google-site-verification" content="woFGOBDXdYqOInoJ8yXHyUdw08AF-tC-0jmKv5r24WQ">
+
+	<!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<![endif]-->
+
+	<script async="" src="San17_files/gtm.js"></script><script>dataLayer = [];</script>
+    <script>(function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'}); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-KHGG4KL');</script>
+	<title>Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes | Sysdig</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v11.6 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="Best practices to configure alerting in your Kubernetes cluster, including service quality, kubernetes metadata grouping and correlating events with graphs.">
+<link rel="canonical" href="https://sysdig.com/blog/alerting-kubernetes/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes | Sysdig">
+<meta property="og:description" content="Best practices to configure alerting in your Kubernetes cluster, including service quality, kubernetes metadata grouping and correlating events with graphs.">
+<meta property="og:url" content="https://sysdig.com/blog/alerting-kubernetes/">
+<meta property="og:site_name" content="Sysdig">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:section" content="Uncategorized">
+<meta property="article:published_time" content="2017-03-23T21:53:53+00:00">
+<meta property="article:modified_time" content="2019-02-13T23:23:28+00:00">
+<meta property="og:updated_time" content="2019-02-13T23:23:28+00:00">
+<meta property="og:image" content="https://sysdig.com/wp-content/uploads/2017/03/Kubernetes-Monitoring-4-e1490396304491.jpg">
+<meta property="og:image:secure_url" content="https://sysdig.com/wp-content/uploads/2017/03/Kubernetes-Monitoring-4-e1490396304491.jpg">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="450">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Best practices to configure alerting in your Kubernetes cluster, including service quality, kubernetes metadata grouping and correlating events with graphs.">
+<meta name="twitter:title" content="Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes | Sysdig">
+<meta name="twitter:site" content="@sysdig">
+<meta name="twitter:image" content="https://sysdig.com/wp-content/themes/sysdig/assets/images/twitter-share-sysdig.png">
+<meta name="twitter:creator" content="@sysdig">
+<script type="application/ld+json" class="yoast-schema-graph yoast-schema-graph--main">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://sysdig.com/#organization","name":"Draios Inc","url":"https://sysdig.com/","sameAs":["https://www.linkedin.com/company/sysdig","https://www.youtube.com/channel/UCDbiexphNqm5BkSFpQuxRAA","https://twitter.com/sysdig"],"logo":{"@type":"ImageObject","@id":"https://sysdig.com/#logo","url":"https://sysdig.com/wp-content/uploads/2018/06/sysdig-logo-new-text-only.png","width":186,"height":62,"caption":"Draios Inc"},"image":{"@id":"https://sysdig.com/#logo"}},{"@type":"WebSite","@id":"https://sysdig.com/#website","url":"https://sysdig.com/","name":"Sysdig","publisher":{"@id":"https://sysdig.com/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://sysdig.com/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"ImageObject","@id":"https://sysdig.com/blog/alerting-kubernetes/#primaryimage","url":"https://sysdig.com/wp-content/uploads/2017/03/Kubernetes-Monitoring-4-e1490396304491.jpg","width":600,"height":450},{"@type":"WebPage","@id":"https://sysdig.com/blog/alerting-kubernetes/#webpage","url":"https://sysdig.com/blog/alerting-kubernetes/","inLanguage":"en-US","name":"Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes | Sysdig","isPartOf":{"@id":"https://sysdig.com/#website"},"primaryImageOfPage":{"@id":"https://sysdig.com/blog/alerting-kubernetes/#primaryimage"},"datePublished":"2017-03-23T21:53:53+00:00","dateModified":"2019-02-13T23:23:28+00:00","description":"Best practices to configure alerting in your Kubernetes cluster, including service quality, kubernetes metadata grouping and correlating events with graphs."},{"@type":"Article","@id":"https://sysdig.com/blog/alerting-kubernetes/#article","isPartOf":{"@id":"https://sysdig.com/blog/alerting-kubernetes/#webpage"},"author":{"@id":"https://sysdig.com/#/schema/person/236f69e29e61d514446129dff0879eb5"},"headline":"Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes","datePublished":"2017-03-23T21:53:53+00:00","dateModified":"2019-02-13T23:23:28+00:00","commentCount":0,"mainEntityOfPage":{"@id":"https://sysdig.com/blog/alerting-kubernetes/#webpage"},"publisher":{"@id":"https://sysdig.com/#organization"},"image":{"@id":"https://sysdig.com/blog/alerting-kubernetes/#primaryimage"},"keywords":"Kubernetes","articleSection":""},{"@type":["Person"],"@id":"https://sysdig.com/#/schema/person/236f69e29e61d514446129dff0879eb5","name":"Jorge Salamero Sanz","image":{"@type":"ImageObject","@id":"https://sysdig.com/#authorlogo","url":"https://secure.gravatar.com/avatar/b26b790f3d08bfd850818346486108f4?s=96&d=mm&r=g","caption":"Jorge Salamero Sanz"},"sameAs":[]}]}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Sysdig » Feed" href="https://sysdig.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Sysdig » Comments Feed" href="https://sysdig.com/comments/feed/">
+<link rel="stylesheet" id="wp-block-library-css" href="San17_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-karla-css" href="San17_files/css.css" type="text/css" media="screen">
+<link rel="stylesheet" id="sysdig-main-css" href="San17_files/main.css" type="text/css" media="screen">
+<script type="text/javascript" src="San17_files/jquery.js"></script>
+<script type="text/javascript" src="San17_files/jquery-migrate.js"></script>
+<link rel="https://api.w.org/" href="https://sysdig.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://sysdig.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://sysdig.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="https://sysdig.com/?p=3912">
+<link rel="alternate" type="application/json+oembed" href="https://sysdig.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fsysdig.com%2Fblog%2Falerting-kubernetes%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://sysdig.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fsysdig.com%2Fblog%2Falerting-kubernetes%2F&amp;format=xml">
+<link rel="icon" href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/08/cropped-sysdig-favicon-32x32.png" sizes="32x32">
+<link rel="icon" href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/08/cropped-sysdig-favicon-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/08/cropped-sysdig-favicon-180x180.png">
+<meta name="msapplication-TileImage" content="https://sysdig.com/wp-content/uploads/2018/08/cropped-sysdig-favicon-270x270.png">
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript><link id="mktoForms2BaseStyle" rel="stylesheet" type="text/css" href="San17_files/forms2.css"><link id="mktoForms2ThemeStyle" rel="stylesheet" type="text/css" href="San17_files/forms2-theme-plain.css"><style>#mktoStyleLoaded {color:#123456;}</style><style>#mktoStyleLoaded {color:#123456;}</style></head>
+
+<body class="post-template-default single single-post postid-3912 single-format-standard">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHGG4KL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	
+<div id="page" class="site">
+	
+<!-- secondary nav -->
+<nav id="site-nav-desktop-secondary" class="navbar navbar--desktop-secondary navbar-expand-lg navbar-light d-none d-lg-block">
+    <div class="container">
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-desktop-secondary">
+
+            <ul id="desktop-secondary" class="navbar-nav ml-auto"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7977" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7977 nav-item"><a title="Resources" href="https://sysdig.com/resources/" class="nav-link">Resources</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9878" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-9878 nav-item"><a title="Blog" href="https://sysdig.com/blog/" class="nav-link">Blog</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7978" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7978 nav-item"><a title="Support" href="https://sysdig.com/support/" class="nav-link">Support</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-12767" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12767 nav-item"><a title="Partners" href="https://sysdig.com/partners/" class="nav-link">Partners</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9430" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown menu-item-9430 nav-item"><a title="Log in" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-9430">Log in</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-9430" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9431" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9431 nav-item"><a title="Monitor" target="_blank" rel="nofollow" href="https://app.sysdigcloud.com/#/login" class="dropdown-item">Monitor</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9432" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9432 nav-item"><a title="Secure" target="_blank" rel="nofollow" href="https://secure.sysdig.com/#/login" class="dropdown-item">Secure</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-11289" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11289 nav-item"><a title="Support" target="_blank" rel="nofollow" href="https://support.sysdig.com/login" class="dropdown-item">Support</a></li>
+</ul>
+</li>
+</ul>
+        </div><!-- .navbar-collapse -->
+
+    </div><!-- .container -->
+</nav><!-- desktop secondary nav -->
+
+
+<!-- main nav -->
+<nav id="site-nav-desktop-primary" class="navbar navbar--desktop-primary navbar-expand-lg navbar-light c-navbar-modal">
+    <div class="c-navbar-modal__inner container">
+
+        <a class="navbar-brand" href="https://sysdig.com/" rel="home">
+            <img class="logo lazyloaded" src="San17_files/logo-sysdig-black.svg" alt="Sysdig" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-black.svg" data-was-processed="true"><noscript><img class="logo" src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-black.svg" alt="Sysdig"></noscript>
+        </a>
+
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="navbar-collapse-main" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse o-container-breakout-md js-navbar-modal-collapse" id="navbar-collapse-main">
+
+
+            <ul id="desktop-primary" class="navbar-nav navbar-nav--desktop-primary ml-auto d-none d-lg-block d-lg-flex"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7968" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-7968 nav-item"><a title="Products" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-7968">Products</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-7968" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15361" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15361 nav-item"><a title="The Sysdig Platform" href="https://sysdig.com/platform/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/03/nav-icon-platform.svg');">The Sysdig Platform</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15364" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15364 nav-item"><a title="Sysdig Monitor" href="https://sysdig.com/products/monitor/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/03/nav-icon-monitor.svg');">Sysdig Monitor</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15367" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15367 nav-item"><a title="Sysdig Secure" href="https://sysdig.com/products/secure/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/03/nav-icon-secure.svg');">Sysdig Secure</a></li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8239" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-8239 nav-item"><a title="OpenSource" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-8239">OpenSource</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-8239" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7974" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7974 nav-item"><a title="The OpenSource Journey" href="https://sysdig.com/opensource/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/07/icon-opensource.svg');">The OpenSource Journey</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7973" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7973 nav-item"><a title="Sysdig + Sysdig Inspect" href="https://sysdig.com/opensource/inspect/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/07/nav-icon-inspect.svg');">Sysdig + Sysdig Inspect</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7972" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7972 nav-item"><a title="Falco" href="https://sysdig.com/opensource/falco/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/07/nav-icon-falco.svg');">Falco</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-10678" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10678 nav-item"><a title="Sysdig + Prometheus" href="https://sysdig.com/opensource/prometheus/" class="dropdown-item has-hover-icon" style="background-image: url('https://sysdig.com/wp-content/uploads/2018/09/icon-prometheus_2.svg');">Sysdig + Prometheus</a></li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15377" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15377 nav-item"><a title="Pricing" href="https://sysdig.com/pricing/" class="nav-link">Pricing</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7975" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7975 nav-item"><a title="Use Cases" href="https://sysdig.com/use-cases/" class="nav-link">Use Cases</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7939" class="menu-button get-started menu-item menu-item-type-custom menu-item-object-custom menu-item-7939 nav-item"><a title="Get Started" href="#" class="nav-link">Get Started</a></li>
+</ul>
+
+            <ul id="mobile-primary" class="navbar-nav navbar-nav--mobile-primary d-lg-none"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7997" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-7997 nav-item"><a title="Products" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-7997">Products</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-7997" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15381" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15381 nav-item"><a title="Sysdig Monitor" href="https://sysdig.com/products/monitor/" class="dropdown-item">Sysdig Monitor</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15382" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15382 nav-item"><a title="Sysdig Secure" href="https://sysdig.com/products/secure/" class="dropdown-item">Sysdig Secure</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15379" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15379 nav-item"><a title="The Sysdig Platform" href="https://sysdig.com/platform/" class="dropdown-item">The Sysdig Platform</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15380" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15380 nav-item"><a title="Pricing" href="https://sysdig.com/pricing/" class="dropdown-item">Pricing</a></li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8388" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-8388 nav-item"><a title="OpenSource" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-8388">OpenSource</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-8388" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8006" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8006 nav-item"><a title="The OpenSource Journey" href="https://sysdig.com/opensource/" class="dropdown-item">The OpenSource Journey</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8007" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8007 nav-item"><a title="Sysdig + Sysdig Inspect" href="https://sysdig.com/opensource/inspect/" class="dropdown-item">Sysdig + Sysdig Inspect</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8008" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8008 nav-item"><a title="Falco" href="https://sysdig.com/opensource/falco/" class="dropdown-item">Falco</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-10677" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10677 nav-item"><a title="Sysdig + Prometheus" href="https://sysdig.com/opensource/prometheus/" class="dropdown-item">Sysdig + Prometheus</a></li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7999" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7999 nav-item"><a title="Use Cases" href="https://sysdig.com/use-cases/" class="nav-link">Use Cases</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8000" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-8000 nav-item"><a title="Support" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-8000">Support</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-8000" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8009" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8009 nav-item"><a title="Resources" href="https://sysdig.com/resources/" class="dropdown-item">Resources</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8389" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8389 nav-item"><a title="Webinars" href="https://sysdig.com/resources/webinars/" class="dropdown-item">Webinars</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8391 nav-item"><a title="Support Center" href="https://sysdig.com/support/" class="dropdown-item">Support Center</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-11292" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11292 nav-item"><a title="Support Log-in" href="https://support.sysdig.com/login" class="dropdown-item">Support Log-in</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8390" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8390 nav-item"><a title="Sysdig Status" href="http://status.sysdigcloud.com/" class="dropdown-item">Sysdig Status</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9905" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9905 nav-item"><a title="Docs" href="https://sysdig.com/support/" class="dropdown-item">Docs</a></li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9880" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-9880 nav-item"><a title="Company" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-9880">Company</a>
+<ul class="dropdown-menu" aria-labelledby="menu-item-dropdown-9880" role="menu">
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8014" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8014 nav-item"><a title="About Us" href="https://sysdig.com/about/" class="dropdown-item">About Us</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8078" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-8078 nav-item"><a title="Blog" href="https://sysdig.com/blog/" class="dropdown-item">Blog</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-16714" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16714 nav-item"><a title="Jobs" href="https://sysdig.com/jobs/" class="dropdown-item">Jobs</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7945" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7945 nav-item"><a title="Press Releases" href="https://sysdig.com/press-releases/" class="dropdown-item">Press Releases</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-13971" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13971 nav-item"><a title="Press Kit" href="https://sysdig.com/press-kit/" class="dropdown-item">Press Kit</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7946" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7946 nav-item"><a title="In the News" href="https://sysdig.com/news-releases/" class="dropdown-item">In the News</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8017" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8017 nav-item"><a title="Contact" href="https://sysdig.com/contact/" class="dropdown-item">Contact</a></li>
+	<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-12770" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12770 nav-item"><a title="Partners" href="https://sysdig.com/partners/" class="dropdown-item">Partners</a></li>
+</ul>
+</li>
+</ul>
+            <div class="c-mobile-nav-extras d-lg-none">
+                <div class="o-container">
+                    <div class="c-search-form-wrap c-search-form-wrap--white mb-5">
+                        
+
+<form role="search" method="get" class="c-search-form" action="https://sysdig.com/">
+	<label class="c-search-form__label">
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="c-search-form__field" placeholder="Search" name="s">
+	</label>
+	<button type="submit" class="c-search-form__button"><span>Search</span></button>
+</form>                    </div>
+
+                    <p class="c-heading">Need sales?</p>
+<div class="wp-block-button wp-block-button--secondary">
+  <a class="wp-block-button__link" href="https://sysdig.com/contact/">Reach out today</a>
+</div>
+
+<p class="c-heading mt-md-5">Follow us.</p>                    <ul class="c-social-icons">
+	        <li>
+            <a href="https://twitter.com/sysdig" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>twitter</title>
+<path d="M32 7.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://github.com/draios" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>github</title>
+<path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://slack.sysdig.com/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>slack</title>
+<path d="M13.172 14.66l1.38 4.113 4.273-1.432-1.38-4.099-4.273 1.44v-0.023z"></path>
+<path d="M25.099 18.74l-2.073 0.695 0.72 2.147c0.291 0.867-0.18 1.807-1.048 2.099-0.2 0.060-0.38 0.089-0.58 0.084-0.681-0.020-1.301-0.451-1.54-1.132l-0.72-2.143-4.28 1.431 0.719 2.144c0.281 0.869-0.18 1.811-1.059 2.1-0.2 0.064-0.38 0.089-0.58 0.085-0.68-0.020-1.301-0.453-1.541-1.133l-0.719-2.159-2.081 0.699c-0.2 0.060-0.38 0.081-0.58 0.081-0.681-0.021-1.301-0.46-1.54-1.14-0.3-0.88 0.18-1.819 1.040-2.1l2.080-0.7-1.316-4.117-2.068 0.7c-0.188 0.064-0.38 0.088-0.571 0.085-0.66-0.021-1.3-0.451-1.521-1.131-0.279-0.867 0.18-1.805 1.061-2.099l2.080-0.693-0.72-2.14c-0.28-0.872 0.181-1.812 1.061-2.1 0.879-0.293 1.817 0.181 2.099 1.044l0.719 2.144 4.26-1.432-0.72-2.14c-0.279-0.86 0.18-1.8 1.052-2.099 0.869-0.281 1.812 0.18 2.1 1.055l0.72 2.161 2.073-0.68c0.868-0.292 1.808 0.18 2.1 1.039 0.291 0.872-0.18 1.812-1.045 2.1l-2.076 0.699 1.38 4.115 2.068-0.688c0.869-0.281 1.811 0.18 2.1 1.060 0.293 0.88-0.18 1.82-1.039 2.099l-0.015-0.039zM30.66 11.599c-3.3-10.991-8.065-13.56-19.061-10.259-10.991 3.299-13.56 8.061-10.259 19.061 3.3 10.993 8.061 13.56 19.061 10.259 10.993-3.3 13.56-8.061 10.259-19.061z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.youtube.com/channel/UCDbiexphNqm5BkSFpQuxRAA" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>youtube</title>
+<path d="M31.681 9.6c0 0-0.313-2.206-1.275-3.175-1.219-1.275-2.581-1.281-3.206-1.356-4.475-0.325-11.194-0.325-11.194-0.325h-0.012c0 0-6.719 0-11.194 0.325-0.625 0.075-1.987 0.081-3.206 1.356-0.963 0.969-1.269 3.175-1.269 3.175s-0.319 2.588-0.319 5.181v2.425c0 2.587 0.319 5.181 0.319 5.181s0.313 2.206 1.269 3.175c1.219 1.275 2.819 1.231 3.531 1.369 2.563 0.244 10.881 0.319 10.881 0.319s6.725-0.012 11.2-0.331c0.625-0.075 1.988-0.081 3.206-1.356 0.962-0.969 1.275-3.175 1.275-3.175s0.319-2.587 0.319-5.181v-2.425c-0.006-2.588-0.325-5.181-0.325-5.181zM12.694 20.15v-8.994l8.644 4.513-8.644 4.481z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.linkedin.com/company/sysdig/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>linkedin-square</title>
+<path d="M29 0h-26c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h26c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 26h-4v-14h4v14zM10 10c-1.106 0-2-0.894-2-2s0.894-2 2-2c1.106 0 2 0.894 2 2s-0.894 2-2 2zM26 26h-4v-8c0-1.106-0.894-2-2-2s-2 0.894-2 2v8h-4v-14h4v2.481c0.825-1.131 2.087-2.481 3.5-2.481 2.488 0 4.5 2.238 4.5 5v9z"></path>
+</svg>
+            </a>
+        </li>
+	</ul>
+
+                    <div class="c-legal">
+                        <p>Copyright 2019 Sysdig, Inc. All Rights Reserved.</p>
+                        <div class="c-legal__links">
+                            <a href="https://sysdig.com/privacy-policy/">Privacy Policy</a>                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- mega menu toggler -->
+        <button class="navbar-toggler d-none d-lg-block" type="button" data-toggle="collapse" data-target="#site-nav-mega" aria-controls="site-nav-desktop-mega" aria-expanded="false" aria-label="Toggle Mega Menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </div><!-- .container -->
+</nav>
+
+
+<nav id="site-nav-mega" class="c-mega collapse">
+    <div class="c-mega__container">
+
+        <p class="sr-only">Mega Menu</p>
+
+        <div class="c-mega__main-menu">
+
+            
+                <div class="c-mega__tab-links nav flex-column" id="mega-tab" role="tablist" aria-orientation="vertical">
+
+                    <a class="nav-link sr-only sr-only-focusable" id="mega-splash-tab" data-toggle="tab" href="#mega-splash" role="tab" aria-controls="mega-splash" aria-selected="false">Featured</a>
+
+                    
+                        <a class="nav-link" id="mega-solutions-tab" data-toggle="tab" href="#mega-solutions" role="tab" aria-controls="mega-solutions" aria-selected="false">Solutions</a>
+
+                    
+                        <a class="nav-link" id="mega-support-tab" data-toggle="tab" href="#mega-support" role="tab" aria-controls="mega-support" aria-selected="false">Support</a>
+
+                    
+                        <a class="nav-link" id="mega-company-tab" data-toggle="tab" href="#mega-company" role="tab" aria-controls="mega-company" aria-selected="false">Company</a>
+
+                    
+                </div><!-- end pills -->
+
+            
+            <div class="c-mega-main__other pt-4">
+                <div class="c-search-form-wrap c-search-form-wrap--sm mb-4 mr-5">
+                    
+
+<form role="search" method="get" class="c-search-form" action="https://sysdig.com/">
+	<label class="c-search-form__label">
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="c-search-form__field" placeholder="Search" name="s">
+	</label>
+	<button type="submit" class="c-search-form__button"><span>Search</span></button>
+</form>                </div>
+	            <ul class="c-social-icons">
+	        <li>
+            <a href="https://twitter.com/sysdig" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>twitter</title>
+<path d="M32 7.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://github.com/draios" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>github</title>
+<path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://slack.sysdig.com/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>slack</title>
+<path d="M13.172 14.66l1.38 4.113 4.273-1.432-1.38-4.099-4.273 1.44v-0.023z"></path>
+<path d="M25.099 18.74l-2.073 0.695 0.72 2.147c0.291 0.867-0.18 1.807-1.048 2.099-0.2 0.060-0.38 0.089-0.58 0.084-0.681-0.020-1.301-0.451-1.54-1.132l-0.72-2.143-4.28 1.431 0.719 2.144c0.281 0.869-0.18 1.811-1.059 2.1-0.2 0.064-0.38 0.089-0.58 0.085-0.68-0.020-1.301-0.453-1.541-1.133l-0.719-2.159-2.081 0.699c-0.2 0.060-0.38 0.081-0.58 0.081-0.681-0.021-1.301-0.46-1.54-1.14-0.3-0.88 0.18-1.819 1.040-2.1l2.080-0.7-1.316-4.117-2.068 0.7c-0.188 0.064-0.38 0.088-0.571 0.085-0.66-0.021-1.3-0.451-1.521-1.131-0.279-0.867 0.18-1.805 1.061-2.099l2.080-0.693-0.72-2.14c-0.28-0.872 0.181-1.812 1.061-2.1 0.879-0.293 1.817 0.181 2.099 1.044l0.719 2.144 4.26-1.432-0.72-2.14c-0.279-0.86 0.18-1.8 1.052-2.099 0.869-0.281 1.812 0.18 2.1 1.055l0.72 2.161 2.073-0.68c0.868-0.292 1.808 0.18 2.1 1.039 0.291 0.872-0.18 1.812-1.045 2.1l-2.076 0.699 1.38 4.115 2.068-0.688c0.869-0.281 1.811 0.18 2.1 1.060 0.293 0.88-0.18 1.82-1.039 2.099l-0.015-0.039zM30.66 11.599c-3.3-10.991-8.065-13.56-19.061-10.259-10.991 3.299-13.56 8.061-10.259 19.061 3.3 10.993 8.061 13.56 19.061 10.259 10.993-3.3 13.56-8.061 10.259-19.061z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.youtube.com/channel/UCDbiexphNqm5BkSFpQuxRAA" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>youtube</title>
+<path d="M31.681 9.6c0 0-0.313-2.206-1.275-3.175-1.219-1.275-2.581-1.281-3.206-1.356-4.475-0.325-11.194-0.325-11.194-0.325h-0.012c0 0-6.719 0-11.194 0.325-0.625 0.075-1.987 0.081-3.206 1.356-0.963 0.969-1.269 3.175-1.269 3.175s-0.319 2.588-0.319 5.181v2.425c0 2.587 0.319 5.181 0.319 5.181s0.313 2.206 1.269 3.175c1.219 1.275 2.819 1.231 3.531 1.369 2.563 0.244 10.881 0.319 10.881 0.319s6.725-0.012 11.2-0.331c0.625-0.075 1.988-0.081 3.206-1.356 0.962-0.969 1.275-3.175 1.275-3.175s0.319-2.587 0.319-5.181v-2.425c-0.006-2.588-0.325-5.181-0.325-5.181zM12.694 20.15v-8.994l8.644 4.513-8.644 4.481z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.linkedin.com/company/sysdig/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>linkedin-square</title>
+<path d="M29 0h-26c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h26c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 26h-4v-14h4v14zM10 10c-1.106 0-2-0.894-2-2s0.894-2 2-2c1.106 0 2 0.894 2 2s-0.894 2-2 2zM26 26h-4v-8c0-1.106-0.894-2-2-2s-2 0.894-2 2v8h-4v-14h4v2.481c0.825-1.131 2.087-2.481 3.5-2.481 2.488 0 4.5 2.238 4.5 5v9z"></path>
+</svg>
+            </a>
+        </li>
+	</ul>
+            </div>
+
+        </div><!-- .c-mega__main-menu -->
+
+        <div class="c-mega__panels tab-content" id="mega-tabContent">
+
+            <!-- initial panel for cover content -->
+            <div class="c-mega__panel-splash tab-pane active" id="mega-splash" role="tabpanel" aria-labelledby="mega-main-tab">
+                <div class="c-mega__ctas card-deck">
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      
+      <p class="c-mega__cta-heading"><span class="c-mega__cta-flag">New</span>Sign Up for Sysdig Monitor.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://sysdig.com/sign-up/?UTM_Source=Website&amp;UTM_SFDC_Campaign=701j0000002IsVf&amp;UTM_Offer=Monitor-trial&amp;UTM_Campaign=Monitor-trial&amp;UTM_Medium=Home-Box-1">Free 14 day trial</a>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      
+      <p class="c-mega__cta-heading">Talk to a real person about Sysdig.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://sysdig.com/contact/?UTM_Source=Website&amp;UTM_SFDC_Campaign=701f1000001cniD&amp;UTM_Offer=Contact-sales&amp;UTM_Campaign=contact-sales&amp;UTM_Medium=Home-Box-2">Contact us</a>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>            </div>
+
+            
+                
+                    <div class="c-mega__panel tab-pane" id="mega-solutions" role="tabpanel" aria-labelledby="mega-solutions-tab">
+
+                        <ul id="menu-mega-solutions" class="c-mega__sub-menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-16159" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16159 nav-item"><a title="The Sysdig Platform" href="https://sysdig.com/platform/" class="nav-link">The Sysdig Platform</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8019" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8019 nav-item"><a title="The Open Source Journey" href="https://sysdig.com/opensource/" class="nav-link">The Open Source Journey</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8020" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8020 nav-item"><a title="Sysdig &amp; Sysdig Inspect" href="https://sysdig.com/opensource/inspect/" class="nav-link">Sysdig &amp; Sysdig Inspect</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8021" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8021 nav-item"><a title="Falco" href="https://sysdig.com/opensource/falco/" class="nav-link">Falco</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-12769" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12769 nav-item"><a title="Partners" href="https://sysdig.com/partners/" class="nav-link">Partners</a></li>
+</ul>
+                        <div class="c-mega__ctas card-deck">
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      <span class="c-mega__cta-flag">Monitor</span>
+      <p class="c-mega__cta-heading">Sysdig Monitor in 3 minutes.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://www.youtube.com/watch?v=F2rds6mrk1g&amp;UTM_Source=Website&amp;UTM_SFDC_Campaign=701f10000021jZW&amp;UTM_Offer=Monitor-3min-video&amp;UTM_Campaign=video&amp;UTM_Medium=Solutions-Box-1" target="_blank" rel="nofollow">Watch now</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      <span class="c-mega__cta-flag">Secure</span>
+      <p class="c-mega__cta-heading">Sysdig Secure in 3 minutes.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://www.youtube.com/watch?v=e_kdjHjK7mY&amp;UTM_Source=Website&amp;UTM_SFDC_Campaign=701f10000021jZb&amp;UTM_Offer=Secure-3min-video&amp;UTM_Campaign=video&amp;UTM_Medium=Solutions-Box-2" target="_blank" rel="nofollow">Watch now</a>
+      </div>
+    </div>
+  </div>
+  
+</div>
+                    </div>
+                
+                    <div class="c-mega__panel tab-pane" id="mega-support" role="tabpanel" aria-labelledby="mega-support-tab">
+
+                        <ul id="menu-mega-support" class="c-mega__sub-menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9904" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9904 nav-item"><a title="Docs" href="https://sysdig.com/support/" class="nav-link">Docs</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8024" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8024 nav-item"><a title="Resources" href="https://sysdig.com/resources/" class="nav-link">Resources</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8159" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8159 nav-item"><a title="Webinars" href="https://sysdig.com/resources/webinars/" class="nav-link">Webinars</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8164" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8164 nav-item"><a title="Support Center" href="https://sysdig.com/support/" class="nav-link">Support Center</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-11291" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11291 nav-item"><a title="Support Log-in" href="https://support.sysdig.com/login" class="nav-link">Support Log-in</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8158" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8158 nav-item"><a title="Sysdig Status" href="http://status.sysdigcloud.com/" class="nav-link">Sysdig Status</a></li>
+</ul>
+                        <div class="c-mega__ctas card-deck">
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      <span class="c-mega__cta-flag">Monitor</span>
+      <p class="c-mega__cta-heading">Sysdig Monitor 101.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://sysdig.teachable.com/p/sysdig-101?UTM_Source=Website&amp;UTM_SFDC_Campaign=701f10000021jZl&amp;UTM_Offer=Monitor-101&amp;UTM_Campaign=training&amp;UTM_Medium=Support-Box-1" target="_blank" rel="nofollow">Guided customer training</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      <span class="c-mega__cta-flag">Secure</span>
+      <p class="c-mega__cta-heading">Sysdig Secure 101.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://sysdig.teachable.com/p/sysdig-secure-101?UTM_Source=Website&amp;UTM_SFDC_Campaign=701f10000021jZg&amp;UTM_Offer=Secure-101&amp;UTM_Campaign=training&amp;UTM_Medium=Support-Box-2" target="_blank" rel="nofollow">Guided customer training</a>
+      </div>
+    </div>
+  </div>
+  
+</div>
+                    </div>
+                
+                    <div class="c-mega__panel tab-pane" id="mega-company" role="tabpanel" aria-labelledby="mega-company-tab">
+
+                        <ul id="menu-mega-company" class="c-mega__sub-menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8029" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8029 nav-item"><a title="About Us" href="https://sysdig.com/about/" class="nav-link">About Us</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-13970" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13970 nav-item"><a title="Press Kit" href="https://sysdig.com/press-kit/" class="nav-link">Press Kit</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7943" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7943 nav-item"><a title="Press Releases" href="https://sysdig.com/press-releases/" class="nav-link">Press Releases</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8032" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8032 nav-item"><a title="Contact" href="https://sysdig.com/contact/" class="nav-link">Contact</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-7944" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7944 nav-item"><a title="In the News" href="https://sysdig.com/news-releases/" class="nav-link">In the News</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-16711" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16711 nav-item"><a title="Jobs" href="https://sysdig.com/jobs/" class="nav-link">Jobs</a></li>
+</ul>
+                        <div class="c-mega__ctas card-deck">
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      
+      <span class="c-mega__cta-flag">Online Training</span>
+      <p class="c-mega__cta-heading">Monitoring + securing containers + microservices.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://www.brighttalk.com/webcast/16287/311855?UTM_Source=Website&amp;UTM_SFDC_Campaign=701f1000002p8fF&amp;UTM_Offer=best-practices-monitoring-securing&amp;UTM_Campaign=webinar&amp;UTM_Medium=Company-Box-1" target="_blank" rel="nofollow">Find out more</a>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="c-mega__cta card">
+    <div class="card-body">
+      
+      <span class="c-mega__cta-flag">Case Study</span>
+      <p class="c-mega__cta-heading c-heading--sm">How 6 of the world’s largest companies use Kub + Sysdig.</p>
+      <div class="c-mega__cta-link wp-block-button wp-block-button--secondary">
+        <a class="wp-block-button__link" href="https://sysdig.com/resources/case-studies/6-largest-companies-using-kubernetes-and-sysdig/">Read Now</a>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+                    </div>
+                                    </div><!-- .c-mega__panels -->
+
+    </div><!-- c-mega__container -->
+</nav><!-- .c-mega -->
+
+
+<!-- sticky nav -->
+<nav class="c-mobile-nav js-mobile-nav-bar navbar d-lg-none" aria-hidden="true">
+    <button class="js-mobile-nav-get-started-trigger u-button-clear text-white">Get Started</button>
+    <button class="navbar-toggler js-mobile-nav-trigger collapsed" type="button" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="navbar-collapse-main" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+<nav class="c-desktop-sticky-nav js-desktop-sticky-nav-bar navbar d-none d-lg-flex" aria-hidden="true">
+    <div class="container">
+        <a class="navbar-brand" href="https://sysdig.com/" rel="home">
+            <img class="logo lazyloaded" src="San17_files/logo-sysdig-white.svg" alt="Sysdig" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-white.svg" data-was-processed="true"><noscript><img class="logo" src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-white.svg" alt="Sysdig"></noscript>
+        </a>
+        <button class="c-desktop-sticky-nav__get-started js-mobile-nav-get-started-trigger u-button-clear text-white">GET STARTED</button>
+        <button class="navbar-toggler js-desktop-sticky-nav-trigger" type="button" data-toggle="collapse" data-target="#site-nav-mega" aria-controls="site-nav-mega" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+	<div id="content" class="site-content">
+<div id="primary" class="content-area"><main id="main" class="site-main">
+	
+<article id="post-3912" class="post-3912 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized tag-kubernetes">
+
+	<header class="entry-header o-section o-section--sm u-bg-blockstripes-teal-v1">
+	    <div class="o-container">
+	        <div class="row text-center">
+	            <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
+
+	                <img class="c-resource-cat-list__icon mb-3 lazyloaded" src="San17_files/resource-icon-blog.svg" alt="Blog Icon" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/resource-icon-blog.svg" data-was-processed="true"><noscript><img class="c-resource-cat-list__icon mb-3"
+	                     src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/resource-icon-blog.svg"
+	                     alt="Blog Icon"></noscript>
+
+	                <p class="c-heading c-heading--xs c-heading--sans text-teal">Blog Post</p>
+
+	                <h1 class="entry-title">Monitoring Kubernetes (part 2): Best practices for alerting on Kubernetes</h1>
+	                <div class="entry-meta">
+						<span class="byline"> By <span class="author vcard">Jorge Salamero Sanz</span> </span><br>
+	                	<span class="posted-on">on <time class="entry-date published updated" datetime="2017-03-23T14:53:53-07:00">March 23, 2017</time></span>					</div><!-- .entry-meta -->
+
+	            </div>
+	        </div>
+	    </div>
+	</header>
+
+		
+	<div class="entry-content o-section">
+		<div class="c-post-content o-container">
+
+			
+<p>A step by step cookbook on how to configure alerting in your Kubernetes cluster with a focus on the infrastructure layer.</p>
+
+<p><em>This article is part of our series on operating Kubernetes in production. Part 1 covered the basics of <a href="https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/" target="_blank">Kubernetes and monitoring tools</a>; this part covers Kubernetes alerting best practices. Next we’ll cover <a href="https://sysdig.com/blog/kubernetes-service-discovery-docker/" target="_blank">troubleshooting Kubernetes service discovery</a>, and finally the final section is <a href="https://sysdig.com/blog/monitoring-docker-kubernetes-wayblazer/" target="_blank">a real-world use case of monitoring Kubernetes</a>.</em></p>
+
+<p>Monitoring is a fundamental piece in every successful infrastructure.
+ Monitoring is the base of hierarchy of reliability. Monitoring helps 
+reducing response time to incidents, enabling detecting, troubleshooting
+ and debugging systemic problems. In the Cloud times where 
+infrastructure is highly dynamic, monitoring is also fundamental for 
+capacity planning.</p>
+
+<p>Effective alerting is at the bedrock of a monitoring strategy. 
+Naturally, with the shift to containers and Kubernetes-orchestrated 
+environments, your alerting strategy will need to evolve as well.</p>
+
+<p>This is due to a few core reasons, many of which we covered in <a href="https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/" target="_blank">How To Monitor Kubernetes</a>:</p>
+
+<ul><li><strong>Visibility:</strong> Containers are black boxes. 
+Traditional tools can only check against public monitoring endpoints. If
+ you want to deeply monitor the service in question, you need to take a 
+different approach.</li>
+<li><strong>New infrastructure layers:</strong> Between your services 
+and the host now you have a new layer: the containers and the container 
+orchestrator. These are new internal services that you need to monitor 
+and your monitoring system needs to understand them.</li>
+<li><strong>Dynamic rescheduling:</strong> Container are not coupled 
+with nodes like services where before, so traditional monitoring doesn’t
+ work effectively. There is no a static endpoint where service metrics 
+are available, no static number of service instances running (think of a
+ canary deployment or auto-scaling setup). It is fine that a process is 
+being killed in one node because most of the chances are that is being 
+rescheduled somewhere else in your infrastructure.</li>
+<li><strong>Metadata and labels:</strong> With services spread across 
+multiple containers, monitoring system level and service specific 
+metrics for all of those, plus all the new services that Kubernetes 
+brings in, how to give all these information some sense for our own 
+sanity? Sometimes you want to see a metric like network requests across a
+ service distributed in containers in different nodes, sometimes you 
+want to see the same metric for all containers in a specific node, no 
+matter what service they belong to. This is basically a 
+multi-dimensional metric system. You need to look at the metrics from 
+different perspectives. If we automatically tag metrics with the 
+different labels existing in Kubernetes and our monitoring system 
+understands Kubernetes metadata, we just came up with a way of 
+aggregating and segmenting metrics as required on each situation.</li>
+</ul><p>With these issues in mind, let’s create a set of alerts that are
+ essential to any Kubernetes environment. Our Kubernetes alerts tutorial
+ will cover:</p>
+
+<ul><li><a href="#apps">Alerting on application layer metrics</a></li>
+<li><a href="#services">Alerting on services running on Kubernetes</a></li>
+<li><a href="#kubernetes">Alerting on the Kubernetes infrastructure</a></li>
+<li><a href="#host">Alerting on the host / node layer</a></li>
+</ul><p>As a bonus, we’ll also look into how your <a href="#syscalls">alerting can accelerate troubleshooting by monitoring your syscalls</a> around problems. Let’s dig in! <!--'Made with TweetDis plugin for Wordpress'--> </p><div class="tweetdis_box tweetdis_none "> <a class="tweetdis_box_link tweetdis_box_09 tweetdis_color_1" href="#" onclick="window.open('https://twitter.com/intent/tweet?text=%204%20layers%20to%20monitor%20in%20%23Kubernetes%3A%20application%20KPIs%2C%20services%2C%20orchestration%20and%20nodes%20%20https%3A%2F%2Fsysdig.com%2Fblog%2Falerting-kubernetes%2F', '_blank', 'width=500,height=500'); return false;"> <p class="tweetdis_font_smaller"> 4 layers to monitor in #Kubernetes: application KPIs, services, orchestration and nodes </p> <span class="tweetdis_clearfix"> <span class="tweetdis_click_to_tweet"> <i></i>Click to tweet </span> </span> </a> </div><p></p>
+
+<h2 id="apps">Alerting on application layer metrics</h2>
+
+<p>Metrics that allow you to confirm that your application performing as
+ expected are known as working metrics. These metrics typically come 
+from your users’ or consumers’ expected actions on the service or 
+metrics generated internally by your applications via statsd, or JMX. If
+ your monitoring system natively provides network data, you can also use
+ that to create response time-based alerting.</p>
+
+<p>The following example is a public REST API endpoint monitoring alert for latency over 1 second in a 10 minute window, over the <code>javaapp</code> deployment in the production namespace <code>prod</code>.</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png"><img src="San17_files/kubernetes_service_latency_alert-1.png" alt="Alerting Kubernetes service latency" class="img-lightbox alignleft size-full wp-image-4275 u-drop-shadow lazyloaded" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-300x200.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-768x513.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-575x383.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-175x117.png 175w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-800x533.png 800w, / 1w" data-lazy-sizes="(max-width: 975px) 100vw, 975px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png" sizes="(max-width: 975px) 100vw, 975px" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-300x200.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-768x513.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-575x383.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-175x117.png 175w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-800x533.png 800w, / 1w" data-was-processed="true" width="975" height="651"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png" alt="Alerting Kubernetes service latency" width="975" height="651" class="img-lightbox alignleft size-full wp-image-4275 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-300x200.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-768x513.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-575x383.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-175x117.png 175w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_service_latency_alert-1-800x533.png 800w, / 1w" sizes="(max-width: 975px) 100vw, 975px"></noscript></a></p>
+
+<p>All these alerts will highly depend on your application, your 
+workload patterns, etc… but the real question is how you’re going to get
+ the data itself consistently across all your services. In an ideal 
+environment you don’t need to purchase a synthetic monitoring service in
+ addition to your core monitoring tools to get this one critical set of 
+metrics.</p>
+
+<p>Some metrics and their alerts often found in this category are:</p>
+
+<ul><li>Service response time</li>
+<li>Service availability up/down</li>
+<li>SLA compliance</li>
+<li>Successful / error requests per second</li>
+</ul><h2 id="services">Alerting on services running on Kubernetes</h2>
+
+<p>When looking at the service level, shouldn’t be very different from 
+what you were doing before Kubernetes if you had your services 
+clustered. Think of databases like MySQL/MariaDB or MongoDB where you 
+will look at the replication status and lag. Is there anything to take 
+into account now then?</p>
+
+<p>Yes! if you want to know how your service operates and performs 
+globally you will need to leverage your monitoring tool capabilities to 
+do metric aggregation and segmentation based on containers metadata.</p>
+
+<p>We know Kubernetes tags containers within a deployment, or exposed through a service, as we explained in <a href="https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/" target="_blank">How to Monitor Kubernetes</a>.
+ Now you need to take that into account when you define your alerts, for
+ example scoping alerts only for the production environment, probably 
+defined by a namespace.</p>
+
+<p>The following is an example from a Cassandra cluster:</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20973%20668'%3E%3C/svg%3E" alt="Alerting Kubernetes Cassandra" class="img-lightbox alignleft size-full wp-image-4269 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1.png 973w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-300x206.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-768x527.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-575x395.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-175x120.png 175w, / 1w" data-lazy-sizes="(max-width: 973px) 100vw, 973px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1.png" width="973" height="668"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1.png" alt="Alerting Kubernetes Cassandra" width="973" height="668" class="img-lightbox alignleft size-full wp-image-4269 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1.png 973w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-300x206.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-768x527.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-575x395.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_cassandra_alert-1-175x120.png 175w, / 1w" sizes="(max-width: 973px) 100vw, 973px"></noscript></a></p>
+
+<p>The metric <code>cassandra.compactions.pending</code> exists per 
+instance if we run Cassandra in Kubernetes, AWS EC2 or Openstack, but 
+now we want to look at this metric aggregated across the <code>cassandra</code> replication controller inside our <code>prod</code>
+ namespace. Both labels have come from Kubernetes, but we could also 
+change the scope including tags coming from AWS or other cloud 
+providers, like availability zones for example.</p>
+
+<p>Some metrics and their alerts often found in this category are:</p>
+
+<ul><li>HTTP requests</li>
+<li>Database connections, replication</li>
+<li>Threads, file descriptors, connections</li>
+<li>Middleware specific metrics: Python uwsgi workers, JVM heap size, etc</li>
+</ul><p>Also, if external managed services are being used, you most 
+probably want to import metrics from those providers as they still might
+ have incidents that you need to react to.</p>
+
+<h2 id="kubernetes">Alerting on the Kubernetes infrastructure</h2>
+
+<p>Monitoring and alerting at the container orchestration level is 
+two-fold. On one side we need to monitor if the services handled by 
+Kubernetes do meet the requirements we defined. On the other side we 
+need to make sure all the components of Kubernetes are up and running.</p>
+
+<h3>Services handled by Kubernetes</h3>
+
+<h4>1.1 Do we have enough pods/containers running for each application?</h4>
+
+<p>Kubernetes has a few options to handle an application that has 
+multiple pods: Deployments, Replica Sets and Replication Controllers. 
+There are few differences between them but the 3 can be used to maintain
+ a number of instances of running the same application. There the number
+ of running instances can be changed dynamically if we scale up and 
+down, and this process can even be automated with auto-scaling.</p>
+
+<p>There are also multiple reasons why the number of running containers 
+can change: rescheduling containers in a different host because a node 
+failed or because there are not enough resources; a rolling deploying of
+ a new version, etc. If the number of replicas or instances running 
+during an extended period of time is lower than the number of replicas 
+we desire, it’s a symptom of something not working properly (not enough 
+nodes or resources available, Kubernetes or Docker Engine failure, 
+Docker image broken, etc).</p>
+
+<p>An alert that compares:</p>
+
+<pre><code>timeAvg(kubernetes.replicaSet.replicas.running) &lt; timeAvg(kubernetes.replicaSet.replicas.desired)
+</code></pre>
+
+<p>across all services is almost a must in any Kubernetes deployment. As
+ we mentioned before, this situation is acceptable during container 
+reschedule and migrations, so keep an eye on the configured <code>.spec.minReadySeconds</code> value for each container (time from container start until becomes available in ready status). You might also want to check <code>.spec.strategy.rollingUpdate.maxUnavailable</code> which defines how many containers can be taken offline during a rolling deployment.</p>
+
+<p>The following is an example alert with this condition applied to a deployment <code>wordpress-wordpress</code> within a <code>wordpress</code> namespace in a cluster with name <code>kubernetes-dev</code>.</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20975%20694'%3E%3C/svg%3E" alt="Alerting Kubernetes low replicas replicaSet" class="img-lightbox alignleft size-full wp-image-4273 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-300x214.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-768x547.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-575x409.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-175x125.png 175w, / 1w" data-lazy-sizes="(max-width: 975px) 100vw, 975px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1.png" width="975" height="694"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1.png" alt="Alerting Kubernetes low replicas replicaSet" width="975" height="694" class="img-lightbox alignleft size-full wp-image-4273 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-300x214.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-768x547.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-575x409.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_low_replicas_alert-1-175x125.png 175w, / 1w" sizes="(max-width: 975px) 100vw, 975px"></noscript></a></p>
+
+<h4>1.2 Do we have any pod/containers for a given application?</h4>
+
+<p>Similar to the previous alert but with higher priority (this one for 
+example is a candidate for getting paged in the middle of the night), we
+ will alert if there are no containers at all running for a given 
+application.</p>
+
+<p>In the following example, we apply the alert for the same deployment but triggering if running pods is &lt; 1 during 1 minute:</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20975%20697'%3E%3C/svg%3E" alt="Kubernetes no replicas replicaSet alert" class="img-lightbox alignleft size-full wp-image-4274 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-300x214.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-768x549.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-575x411.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-175x125.png 175w, / 1w" data-lazy-sizes="(max-width: 975px) 100vw, 975px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1.png" width="975" height="697"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1.png" alt="Kubernetes no replicas replicaSet alert" width="975" height="697" class="img-lightbox alignleft size-full wp-image-4274 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1.png 975w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-300x214.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-768x549.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-575x411.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_no_running_replicaset_alert-1-175x125.png 175w, / 1w" sizes="(max-width: 975px) 100vw, 975px"></noscript></a></p>
+
+<h4>1.3 Is there any pod/container in a restart loop?</h4>
+
+<p>When deploying a new version which is broken, if there are not enough
+ resources available or just some requirements or dependencies are not 
+in place, we might end up with a container or pod restarting 
+continuously in a loop. That’s called <em>CrashLoopBackOff</em>. When 
+this happens pods never get into ready status and therefore are counted 
+as unavailable and not as running, so this scenario is already captured 
+by the alerts before. Still I like to set up an alert that catches this 
+behavior across our entire infrastructure and lets us know the specific 
+problem right away. It’s not the kind of alert that interrupts your 
+sleep but gives you useful information.</p>
+
+<p>This is an example applied across the entire infrastructure detecting more than 4 restarts over the last 2 minutes:</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20974%20579'%3E%3C/svg%3E" alt="Kubernetes CrashLoopBackOff alert" class="img-lightbox alignleft size-full wp-image-4270 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1.png 974w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-300x178.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-768x457.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-575x342.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-175x104.png 175w, / 1w" data-lazy-sizes="(max-width: 974px) 100vw, 974px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1.png" width="974" height="579"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1.png" alt="Kubernetes CrashLoopBackOff alert" width="974" height="579" class="img-lightbox alignleft size-full wp-image-4270 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1.png 974w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-300x178.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-768x457.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-575x342.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_crashloopbackoff_alert-1-175x104.png 175w, / 1w" sizes="(max-width: 974px) 100vw, 974px"></noscript></a></p>
+
+<h3>Monitoring Kubernetes services</h3>
+
+<p>In addition to making sure Kubernetes is doing its job, we also want 
+to monitor Kubernetes internal health. This will depend on the different
+ components on your Kubernetes setup, as these can change depend on your
+ deployment choices but there are some basic components that will 
+definitely will be there.</p>
+
+<h4>2.1 Is etcd running?</h4>
+
+<p>etcd is the distributed service discovery, communication, command 
+channel for Kubernetes. Monitoring etcd can go as deep as monitoring any
+ distributed key value database but will keep things simple here: can we
+ reach etcd?</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20977%20659'%3E%3C/svg%3E" alt="Kubernetes etcd alert" class="img-lightbox alignleft size-full wp-image-4271 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1.png 977w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-300x202.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-768x518.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-575x388.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-175x118.png 175w, / 1w" data-lazy-sizes="(max-width: 977px) 100vw, 977px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1.png" width="977" height="659"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1.png" alt="Kubernetes etcd alert" width="977" height="659" class="img-lightbox alignleft size-full wp-image-4271 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1.png 977w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-300x202.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-768x518.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-575x388.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_etcd_alert-1-175x118.png 175w, / 1w" sizes="(max-width: 977px) 100vw, 977px"></noscript></a></p>
+
+<p>We can go further and monitor set commands failure or node count, but
+ we will leave that for a future article around etcd monitoring.</p>
+
+<h4>2.2 Do we have enough nodes in our cluster?</h4>
+
+<p>A node failure is not a problem in Kubernetes, the scheduler will 
+spawn containers in other available nodes. But, what if we are running 
+out of nodes? Or the resources requirements for the deployed 
+applications overbook existing nodes? Or are we hitting any quota limit?</p>
+
+<p>Alerting in this cases is not easy, as it will depend on how many 
+nodes you want to have on standby or how far you want to push 
+oversubscription on your existing nodes. To monitor node status alert on
+ the metrics <code>kube_node_status_ready</code> and <code>kube_node_spec_unschedulable</code>.</p>
+
+<p>If you want to alert on capacity, you will have to sum each scheduled
+ pod requests for cpu and memory and then check doesn’t go over each 
+node <code>kube_node_status_capacity_cpu_cores</code> and <code>kube_node_status_capacity_memory_bytes</code>.</p>
+
+<h2 id="host">Alerting on the host / node layer</h2>
+
+<p>Alerting at the host layer shouldn’t be very different from 
+monitoring VMs or machines. It’s going to be mostly about if the host is
+ up or down/unreachable, and resources availability (CPU, memory, disk, 
+etc).</p>
+
+<p>The main difference is the severity of the alerts now. Before, a 
+system down likely meant you had an application down and an incident to 
+handle (barring effective high availability). With Kubernetes, services 
+are now ready to move across hosts and host alerts should never wake up 
+up from bed.</p>
+
+<p>Let’s see a couple of options that we should still consider:</p>
+
+<h4>1. Host is down</h4>
+
+<p>If a host is down or unreachable we want to receive a notification. 
+We will apply this single alert across our entire infrastructure. We are
+ going to give it a 5 minutes wait time in our case, since we don’t want
+ to see noisy alerts on network connectivity hiccups. You might want to 
+lower that down to 1 or 2 minutes depending on how quickly you want to 
+receive a notification.</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20976%20489'%3E%3C/svg%3E" alt="Kubernetes host down alert" class="img-lightbox alignleft size-full wp-image-4272 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1.png 976w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-300x150.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-768x385.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-575x288.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-175x88.png 175w, / 1w" data-lazy-sizes="(max-width: 976px) 100vw, 976px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1.png" width="976" height="489"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1.png" alt="Kubernetes host down alert" width="976" height="489" class="img-lightbox alignleft size-full wp-image-4272 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1.png 976w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-300x150.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-768x385.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-575x288.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_host_down_alert-1-175x88.png 175w, / 1w" sizes="(max-width: 976px) 100vw, 976px"></noscript></a></p>
+
+<h4>2. Disk usage</h4>
+
+<p>This is a slightly more complex alert. We apply this alert across all
+ file systems of our entire infrastructure. We manage to do that setting
+ <code>everywhere</code> as scope and firing a separate evaluation/alert per <code>fs.mountDir</code>.</p>
+
+<p>This is a generic alert that triggers over 80% usage but you might 
+want different policies like a second higher priority alert with a 
+higher threshold like 95% or different thresholds depending on the file 
+system.</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20993%20582'%3E%3C/svg%3E" alt="Kubernetes node disk usage alert" class="img-lightbox alignleft size-full wp-image-4278 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1.png 993w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-300x176.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-768x450.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-575x337.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-175x103.png 175w, / 1w" data-lazy-sizes="(max-width: 993px) 100vw, 993px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1.png" width="993" height="582"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1.png" alt="Kubernetes node disk usage alert" width="993" height="582" class="img-lightbox alignleft size-full wp-image-4278 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1.png 993w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-300x176.png 300w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-768x450.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-575x337.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_disk_usage_alert-1-175x103.png 175w, / 1w" sizes="(max-width: 993px) 100vw, 993px"></noscript></a></p>
+
+<p>If you want to create different thresholds for different services or hosts, simply change the <em>scope</em> where you want to apply a particular threshold.</p>
+
+<h4>3. Some other resources</h4>
+
+<p>Usual suspects in this category are alerts on load, CPU usage, memory
+ and swap usage. You probably want to alert if any of these is 
+significantly high during a prolonged time frame. A compromise needs to 
+be found between the threshold, the wait time and how noise can become 
+your alerting system with no actionable alerts.</p>
+
+<p>If you still want to set up metrics for these resources look at the following metrics:</p>
+
+<ul><li>For load: <code>load.average.1m</code>, <code>load.average.5m</code> and <code>load.average.15m</code></li>
+<li>For CPU: <code>cpu.used.percent</code></li>
+<li>For memory: <code>memory.used.percent</code> or <code>memory.bytes.used</code></li>
+<li>For swap: <code>memory.swap.used.percent</code> or <code>memory.swap.bytes.used</code></li>
+</ul><p>Some people also include in this category monitoring the cloud provider resources that are part of their infrastructure.</p>
+
+<h2 id="syscalls">Sysdig bonus: monitoring syscalls</h2>
+
+<p>From the moment an alert triggers and you receive the notification, 
+the real work starts for the members of the DevOps team on duty. 
+Sometimes the <em>run book</em> is as simple as checking it was just an 
+minor anomaly in the workload. It might be an incident in the cloud 
+provider, but hopefully Kubernetes is taking care of that and just 
+struggling for a few moments coping with the load.</p>
+
+<p>But if some more hairy problem is in front of us, we can see 
+ourselves pulling out all the weapons: providers status pages, logs 
+(hopefully from a central location), any kind of APM or distributed 
+tracing if developers instrumented the code or maybe external synthetic 
+monitoring. Then we pray the incident left some clues for us in any of 
+these places so we can trace down the problem to the multiple source 
+causes that came along together.</p>
+
+<p>What if we could automatically start a dump of all system calls when 
+the alert was fired? System calls are the source of truth of what 
+happens and will contain all the information we can get. Chances are 
+that the issue still is exposing the source causes when the alert is 
+triggered. <a href="https://sysdig.com/">Sysdig Monitor</a> allows to automatically start a capture of all system calls when an alert gets triggered.</p>
+
+<p>For example I always configure this for <em>CrashLoopBackOff</em> scenarios:</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1.png"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20797%20950'%3E%3C/svg%3E" alt="Kubernetes sysdig capture with alert" class="img-lightbox alignleft size-full wp-image-4276 u-drop-shadow" data-lazy-srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1.png 797w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-252x300.png 252w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-768x915.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-575x685.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-175x209.png 175w, / 1w" data-lazy-sizes="(max-width: 797px) 100vw, 797px" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1.png" width="797" height="950"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1.png" alt="Kubernetes sysdig capture with alert" width="797" height="950" class="img-lightbox alignleft size-full wp-image-4276 u-drop-shadow" srcset="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1.png 797w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-252x300.png 252w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-768x915.png 768w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-575x685.png 575w, https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/kubernetes_sysdig_capture_alert-1-175x209.png 175w, / 1w" sizes="(max-width: 797px) 100vw, 797px"></noscript></a></p>
+
+<p><a href="https://sysdig.com/">Sysdig Monitor</a> agent exposes 
+metrics that are calculated from system call interception that wouldn’t 
+be possible unless you had instrumented your code. Think of HTTP 
+response time or SQL response time. Sysdig Monitor agent captures <code>read()</code> and <code>write()</code>
+ system calls on sockets, decodes the application protocol and 
+calculates the metrics that are forwarded into our time series database.
+ The beauty of this is getting dashboards and alerts out of the box 
+without touching your developer’s code:</p>
+
+<p><a href="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/Peek-2017-06-13-19-46.gif"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201820%20926'%3E%3C/svg%3E" alt="Create Kubernetes alert with Sysdig Monitor" class="img-lightbox alignleft size-full wp-image-4277 u-drop-shadow" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/Peek-2017-06-13-19-46.gif" width="1820" height="926"><noscript><img src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/Peek-2017-06-13-19-46.gif" alt="Create Kubernetes alert with Sysdig Monitor" width="1820" height="926" class="img-lightbox alignleft size-full wp-image-4277 u-drop-shadow"></noscript></a></p>
+
+<h2>Conclusions</h2>
+
+<p>We have seen how using container orchestration platforms increase the
+ number of pieces moving around in your system. Having container native 
+monitoring in place is a key element for having a reliable 
+infrastructure. Monitoring cannot just focus on the infrastructure later
+ but needs to understand the entire stack from the hosts at the bottom 
+up to the top where the application metrics are.</p>
+
+<p>Being able to leverage Kubernetes and cloud providers metadata to 
+aggregate and segment metrics and alerts will be a requirement for 
+effective monitoring across all layers. We have seen how to use the 
+labels to update the alerts we already had or create the new ones 
+required on Kubernetes.</p>
+
+<p>Next, let’s take a look at a typical <a href="https://sysdig.com/blog/kubernetes-service-discovery-docker/">service discovery troubleshooting challenge in a Kubernetes</a>-orchestrated environment.</p>
+
+<iframe src="San17_files/Y47lYsNuKvA.html" width="853" height="480"></iframe>
+                
+            
+	<nav class="navigation post-navigation" role="navigation">
+		<p class="screen-reader-text">Post navigation</p>
+		<div class="nav-links"><div class="nav-previous c-button c-button--back c-button--back-teal"><a class="c-button__link" href="https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/">Previous Post</a></div><div class="nav-next c-button c-button--secondary"><a class="c-button__link" href="https://sysdig.com/blog/kubernetes-service-discovery-docker/">Next Post</a></div></div>
+	</nav>            
+            <!-- Pathfactory Content Recommendations -->
+            <div id="contentRecommendations"></div>
+            
+        </div>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer o-section o-section--lg u-bg-blocks-teal-v2">
+	    <div class="o-container">
+	        <div class="row u-alignwidth-wide">
+
+	            <div class="col-md-6 u-gutter-right">
+
+	                <p class="c-heading c-heading--sans text-teal mb-3">Share This</p>
+	                <div class="mb-5">
+                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                        <div class="c-social-icons-blog-footer">
+                            <div class="addthis_inline_share_toolbox"></div>
+                        </div>
+	                </div>
+
+	                <p class="c-heading c-heading--sans text-teal">Stay up to date</p>
+					<p class="c-heading mb-4">Sign up to recieve our newest.</p>
+					<div class="c-form-newsletter mb-5 mb-md-0">
+						<div class="c-form-newsletter">
+	    <div class="u-spinner" id="u-spinner_1080" style="display: none;">
+        <div class="u-spinner__cube1"></div>
+        <div class="u-spinner__cube2"></div>
+    </div>
+    <form data-formid="1080" data-forminstance="one" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); width: 101px;" id="" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"><style type="text/css"></style><div class="mktoFormRow"><input type="hidden" name="UTM_Campaign__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Content__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Medium__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Offer__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Source__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Term__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Email_15633628256050.14834856507374117" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Email Address</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Email_15633628256050.14834856507374117" name="Email" maxlength="255" type="email" class="mktoField mktoEmailField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap"><label for="subscriptionContainerNewsletter" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Subscription: Container Newsletter:</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><div class="mktoLogicalField mktoCheckboxList mktoHasWidth" style="width: 150px;"><input name="subscriptionContainerNewsletter" id="mktoCheckbox_2930_0_15633628256050.14834856507374117" type="checkbox" value="yes" class="mktoField"><label for="mktoCheckbox_2930_0_15633628256050.14834856507374117">The Container Newsletter</label></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap"><label for="subscriptionGeneralMarketing" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Subscription: General Marketing:</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><div class="mktoLogicalField mktoCheckboxList mktoHasWidth" style="width: 150px;"><input name="subscriptionGeneralMarketing" id="mktoCheckbox_2931_0_15633628256050.14834856507374117" type="checkbox" value="yes" class="mktoField"><label for="mktoCheckbox_2931_0_15633628256050.14834856507374117">Sysdig News and Updates</label></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="Privacy_Consent_to_Processing__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoButtonRow"><span class="mktoButtonWrap mktoNative" style="margin-left: 110px;"><button type="submit" class="mktoButton">Submit</button></span></div><input type="hidden" name="formid" class="mktoField mktoFieldDescriptor" value="1080"><input type="hidden" name="munchkinId" class="mktoField mktoFieldDescriptor" value="067-QZT-881"></form>
+    <form data-sysdigformid="1080" class="sysdig-form" style="display: block;" data-status="initiated"><div class="c-form-newsletter__box" id="newsletter-box"><input name="Email" type="email" placeholder="Email Address *"><button class="c-search-form__button" type="submit"><span>Submit</span></button></div><div class="row" id="checkbox-row"><div class="col-md-12"><div class="c-form-checkbox"><input name="subscriptionContainerNewsletter" id="mktoCheckbox_2930_0_1080" type="checkbox" value="YES"><label for="mktoCheckbox_2930_0_1080">The Container Newsletter</label></div><div class="c-form-checkbox"><input name="subscriptionGeneralMarketing" id="mktoCheckbox_2931_0_1080" type="checkbox" value="YES"><label for="mktoCheckbox_2931_0_1080">Sysdig News and Updates</label></div></div></div><div class="row" id="hidden-row"><input name="UTM_Campaign__c" type="hidden" value=""><input name="UTM_Content__c" type="hidden" value=""><input name="UTM_Medium__c" type="hidden" value=""><input name="UTM_Offer__c" type="hidden" value=""><input name="UTM_Source__c" type="hidden" value=""><input name="UTM_Term__c" type="hidden" value=""><input name="Privacy_Consent_to_Processing__c" type="hidden" value=""><input name="formid" type="hidden" value="1080"><input name="munchkinId" type="hidden" value="067-QZT-881"></div></form>
+    <div id="success-message" style="display: none;">
+		<p class="font-family-karla c-heading">Thank You For Signing Up!</p>    </div>
+</div>
+					</div>
+
+	            </div>
+
+	            					<div class="col-md-6 u-gutter-left u-border-rule-black-left@desktop">
+						<p class="c-heading mb-4">Related Posts</p>
+													<p class="mb-2 text-black">Monitoring Kubernetes (part 1)</p>
+							<div class="c-button c-button--secondary mb-5">
+			                    <a class="c-button__link" href="https://sysdig.com/blog/monitoring-kubernetes-with-sysdig-cloud/">Read more</a>
+			                </div>
+													<p class="mb-2 text-black">Monitoring Kubernetes (part 3): Kubernetes troubleshooting service discovery</p>
+							<div class="c-button c-button--secondary mb-5">
+			                    <a class="c-button__link" href="https://sysdig.com/blog/kubernetes-service-discovery-docker/">Read more</a>
+			                </div>
+													<p class="mb-2 text-black">Monitoring Kubernetes (part 4): Docker + Kubernetes at WayBlazer – A use case</p>
+							<div class="c-button c-button--secondary mb-5">
+			                    <a class="c-button__link" href="https://sysdig.com/blog/monitoring-docker-kubernetes-wayblazer/">Read more</a>
+			                </div>
+											</div>
+				
+	        </div>
+	    </div>
+	</footer>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="San17_files/addthis_widget.js"></script>
+</article><!-- #post-3912 .c-box -->
+
+</main><!-- #main --></div><!-- #primary -->
+	</div><!-- #content -->
+
+    
+	<footer id="site-footer" class="c-site-footer border-top-0">
+		<div class="container">
+							<img class="c-site-footer__content-area-icon" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/07/icon-spade.svg"><noscript><img class="c-site-footer__content-area-icon" src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/07/icon-spade.svg" /></noscript>
+			
+			<div class="c-site-footer__content-area">
+
+				<div class="c-site-footer__contact">
+					<p class="c-heading">Need sales?</p>
+<div class="wp-block-button wp-block-button--secondary">
+  <a class="wp-block-button__link" href="https://sysdig.com/contact/">Reach out today</a>
+</div>
+
+<p class="c-heading mt-md-5">Follow us.</p>                    <ul class="c-social-icons">
+	        <li>
+            <a href="https://twitter.com/sysdig" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>twitter</title>
+<path d="M32 7.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://github.com/draios" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>github</title>
+<path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://slack.sysdig.com/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>slack</title>
+<path d="M13.172 14.66l1.38 4.113 4.273-1.432-1.38-4.099-4.273 1.44v-0.023z"></path>
+<path d="M25.099 18.74l-2.073 0.695 0.72 2.147c0.291 0.867-0.18 1.807-1.048 2.099-0.2 0.060-0.38 0.089-0.58 0.084-0.681-0.020-1.301-0.451-1.54-1.132l-0.72-2.143-4.28 1.431 0.719 2.144c0.281 0.869-0.18 1.811-1.059 2.1-0.2 0.064-0.38 0.089-0.58 0.085-0.68-0.020-1.301-0.453-1.541-1.133l-0.719-2.159-2.081 0.699c-0.2 0.060-0.38 0.081-0.58 0.081-0.681-0.021-1.301-0.46-1.54-1.14-0.3-0.88 0.18-1.819 1.040-2.1l2.080-0.7-1.316-4.117-2.068 0.7c-0.188 0.064-0.38 0.088-0.571 0.085-0.66-0.021-1.3-0.451-1.521-1.131-0.279-0.867 0.18-1.805 1.061-2.099l2.080-0.693-0.72-2.14c-0.28-0.872 0.181-1.812 1.061-2.1 0.879-0.293 1.817 0.181 2.099 1.044l0.719 2.144 4.26-1.432-0.72-2.14c-0.279-0.86 0.18-1.8 1.052-2.099 0.869-0.281 1.812 0.18 2.1 1.055l0.72 2.161 2.073-0.68c0.868-0.292 1.808 0.18 2.1 1.039 0.291 0.872-0.18 1.812-1.045 2.1l-2.076 0.699 1.38 4.115 2.068-0.688c0.869-0.281 1.811 0.18 2.1 1.060 0.293 0.88-0.18 1.82-1.039 2.099l-0.015-0.039zM30.66 11.599c-3.3-10.991-8.065-13.56-19.061-10.259-10.991 3.299-13.56 8.061-10.259 19.061 3.3 10.993 8.061 13.56 19.061 10.259 10.993-3.3 13.56-8.061 10.259-19.061z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.youtube.com/channel/UCDbiexphNqm5BkSFpQuxRAA" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>youtube</title>
+<path d="M31.681 9.6c0 0-0.313-2.206-1.275-3.175-1.219-1.275-2.581-1.281-3.206-1.356-4.475-0.325-11.194-0.325-11.194-0.325h-0.012c0 0-6.719 0-11.194 0.325-0.625 0.075-1.987 0.081-3.206 1.356-0.963 0.969-1.269 3.175-1.269 3.175s-0.319 2.588-0.319 5.181v2.425c0 2.587 0.319 5.181 0.319 5.181s0.313 2.206 1.269 3.175c1.219 1.275 2.819 1.231 3.531 1.369 2.563 0.244 10.881 0.319 10.881 0.319s6.725-0.012 11.2-0.331c0.625-0.075 1.988-0.081 3.206-1.356 0.962-0.969 1.275-3.175 1.275-3.175s0.319-2.587 0.319-5.181v-2.425c-0.006-2.588-0.325-5.181-0.325-5.181zM12.694 20.15v-8.994l8.644 4.513-8.644 4.481z"></path>
+</svg>
+            </a>
+        </li>
+	        <li>
+            <a href="https://www.linkedin.com/company/sysdig/" target="_blank" rel="noopener noreferrer nofollow">
+			    <!-- Generated by IcoMoon.io -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<title>linkedin-square</title>
+<path d="M29 0h-26c-1.65 0-3 1.35-3 3v26c0 1.65 1.35 3 3 3h26c1.65 0 3-1.35 3-3v-26c0-1.65-1.35-3-3-3zM12 26h-4v-14h4v14zM10 10c-1.106 0-2-0.894-2-2s0.894-2 2-2c1.106 0 2 0.894 2 2s-0.894 2-2 2zM26 26h-4v-8c0-1.106-0.894-2-2-2s-2 0.894-2 2v8h-4v-14h4v2.481c0.825-1.131 2.087-2.481 3.5-2.481 2.488 0 4.5 2.238 4.5 5v9z"></path>
+</svg>
+            </a>
+        </li>
+	</ul>
+				</div>
+
+				<div class="c-site-footer__menus">
+
+											
+							<div class="c-site-footer__menu-wrap">
+								<p class="c-site-footer__menu-title">Solutions</p>
+
+								<ul id="menu-footer-solutions" class="c-site-footer__menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15369" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15369 nav-item"><a title="Sysdig Monitor" href="https://sysdig.com/products/monitor/" class="nav-link">Sysdig Monitor</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15370" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15370 nav-item"><a title="Sysdig Secure" href="https://sysdig.com/products/secure/" class="nav-link">Sysdig Secure</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15368" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15368 nav-item"><a title="Sysdig Platform" href="https://sysdig.com/platform/" class="nav-link">Sysdig Platform</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8383" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8383 nav-item"><a title="OpenSource" href="https://sysdig.com/opensource/" class="nav-link">OpenSource</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8384" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8384 nav-item"><a title="Sysdig &amp; Sysdig Inspect" href="https://sysdig.com/opensource/inspect/" class="nav-link">Sysdig &amp; Sysdig Inspect</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8385" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8385 nav-item"><a title="Falco" href="https://sysdig.com/opensource/falco/" class="nav-link">Falco</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8386" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8386 nav-item"><a title="Use Cases" href="https://sysdig.com/use-cases/" class="nav-link">Use Cases</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-15376" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15376 nav-item"><a title="Pricing" href="https://sysdig.com/pricing/" class="nav-link">Pricing</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-12768" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12768 nav-item"><a title="Partners" href="https://sysdig.com/partners/" class="nav-link">Partners</a></li>
+</ul>
+							</div>
+
+						
+							<div class="c-site-footer__menu-wrap">
+								<p class="c-site-footer__menu-title">Support</p>
+
+								<ul id="menu-footer-support" class="c-site-footer__menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8166" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8166 nav-item"><a title="Support Center" href="https://sysdig.com/support/" class="nav-link">Support Center</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-11290" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-11290 nav-item"><a title="Support Log-in" target="_blank" rel="nofollow" href="https://support.sysdig.com/login" class="nav-link">Support Log-in</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-12782" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12782 nav-item"><a title="Submit Ticket" href="https://sysdig.com/support/submit-ticket/" class="nav-link">Submit Ticket</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8165" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8165 nav-item"><a title="Sysdig Status" target="_blank" rel="nofollow" href="http://status.sysdigcloud.com/" class="nav-link">Sysdig Status</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8182" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8182 nav-item"><a title="Webinars" href="https://sysdig.com/resources/webinars/" class="nav-link">Webinars</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8378" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8378 nav-item"><a title="Newsletters" href="https://sysdig.com/newsletters/" class="nav-link">Newsletters</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8109" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8109 nav-item"><a title="Resources" href="https://sysdig.com/resources/" class="nav-link">Resources</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-9939" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9939 nav-item"><a title="Docs" href="https://sysdig.com/support/" class="nav-link">Docs</a></li>
+</ul>
+							</div>
+
+						
+							<div class="c-site-footer__menu-wrap">
+								<p class="c-site-footer__menu-title">Company</p>
+
+								<ul id="menu-footer-company" class="c-site-footer__menu nav flex-column"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-16712" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-16712 nav-item"><a title="Blog" href="https://sysdig.com/blog/" class="nav-link">Blog</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8110" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8110 nav-item"><a title="About Us" href="https://sysdig.com/about/" class="nav-link">About Us</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-13969" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13969 nav-item"><a title="Press Kit" href="https://sysdig.com/press-kit/" class="nav-link">Press Kit</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8376" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8376 nav-item"><a title="In The News" href="https://sysdig.com/news-releases/" class="nav-link">In The News</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8375" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8375 nav-item"><a title="Press Releases" href="https://sysdig.com/press-releases/" class="nav-link">Press Releases</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-8115" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8115 nav-item"><a title="Contact" href="https://sysdig.com/contact/" class="nav-link">Contact</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-16713" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16713 nav-item"><a title="Jobs" href="https://sysdig.com/jobs/" class="nav-link">Jobs</a></li>
+</ul>
+							</div>
+
+											
+				</div><!-- .c-site-footer__menus -->
+			</div><!-- .c-site-footer__content-area -->
+
+			<div class="c-legal">
+				<p>Copyright 2019 Sysdig, Inc. All Rights Reserved.</p>
+				<div class="c-legal__links">
+					<a href="https://sysdig.com/privacy-policy/">Privacy Policy</a>				</div>
+			</div>
+
+		</div><!-- .container -->
+	</footer><!-- .site-footer -->
+<div id="getStartedModal" class="modal fade choice-modal step-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header text-right">
+                <img class="d-md-none" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" alt="" data-lazy-src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-black.svg"><noscript><img class="d-md-none" src="https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/themes/sysdig/assets/images/logo-sysdig-black.svg" alt=""></noscript>
+                <a href="#" class="btn close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+			<div class="modal-body text-md-center">
+                <!-- STEP 1 -->
+                <div id="step_1" class="choice-modal__choice-wrapper active">
+                    <p class="c-heading c-heading--sm c-heading--sans text-teal font-weight-bold">Step 1</p>
+                    <p class="c-heading c-heading--sm">How would you like to learn about our products?</p>
+                    <div class="container">
+                        <div class="row pt-4 pb-4">
+                            <div class="col-12 col-md-5 ml-md-auto col-lg-4 offset-lg-1 choice-modal__choice start">
+                                <div class="choice-modal__choice-radio c-form-radio">
+                                    <input class="form-check-input" type="radio" name="choice[step2]" id="step_2_choice_one" value="one">
+                                    <label class="form-check-label" for="step_2_choice_one"></label>
+                                </div>
+                                <label for="step_2_choice_one" class="c-heading c-heading--sm c-heading--sans text-capitalize text-teal font-weight-light">Live Walkthrough</label>
+                                <p>
+                                    Get to know Monitor &amp; Secure with one of our representatives.
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-5 offset-md-1 mr-md-auto col-lg-4 offset-lg-2 choice-modal__choice start">
+                                <div class="choice-modal__choice-radio c-form-radio">
+                                    <input class="form-check-input" type="radio" name="choice[step2]" id="step_2_choice_two" value="two">
+                                    <label class="form-check-label" for="step_2_choice_two"></label>
+                                </div>
+                                <label for="step_2_choice_two" class="c-heading c-heading--sm c-heading--sans text-capitalize text-teal font-weight-light">Free Trial of Monitor</label>
+                                <p>
+                                    Download it today to immediately dig into your data.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="c-button">
+                            <button class="c-button__link next-step-radio" data-step="2">Continue</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- STEP 2 -->
+                <div id="step_2" class="choice-modal__choice-wrapper">
+                    <div class="choice-modal__choice one final">
+                        <!-- FORM START -->
+<div class="row">
+	<div class="col-md-10 ml-auto mr-auto">
+		    <div class="u-spinner" id="u-spinner_1105" style="display: none;">
+        <div class="u-spinner__cube1"></div>
+        <div class="u-spinner__cube2"></div>
+    </div>
+    <form data-formid="1105" data-forminstance="one" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); width: 101px;" id="" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"><style type="text/css"></style><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="FirstName_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>First Name</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="FirstName_15633628255980.4937858077643378" name="FirstName" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="LastName_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Last Name</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="LastName_15633628255980.4937858077643378" name="LastName" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Title_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Title</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Title_15633628255980.4937858077643378" name="Title" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Email_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Company Email</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Email_15633628255980.4937858077643378" name="Email" maxlength="255" type="email" class="mktoField mktoEmailField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Company_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Company Name</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Company_15633628255980.4937858077643378" name="Company" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Phone_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Phone</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Phone_15633628255980.4937858077643378" name="Phone" maxlength="255" type="tel" class="mktoField mktoTelField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap"><label for="Notes__c_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Additional details (optional)</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><textarea id="Notes__c_15633628255980.4937858077643378" name="Notes__c" rows="2" class="mktoField mktoHasWidth" maxlength="250" style="width: 150px;"></textarea><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Country_15633628255980.4937858077643378" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Country</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><select id="Country_15633628255980.4937858077643378" name="Country" class="mktoField mktoHasWidth mktoRequired" style="width: 150px;"><option value="" selected="selected">Country...</option><option value="Afghanistan">Afghanistan</option><option value="Aland Islands">Aland Islands</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Anguilla">Anguilla</option><option value="Antarctica">Antarctica</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Aruba">Aruba</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bermuda">Bermuda</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Bouvet Island">Bouvet Island</option><option value="Brazil">Brazil</option><option value="British Indian Ocean Territory">British Indian Ocean Territory</option><option value="Brunei Darussalam">Brunei Darussalam</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Cape Verde">Cape Verde</option><option value="Cayman Islands">Cayman Islands</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Christmas Island">Christmas Island</option><option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Congo, the Democratic Republic of the">Congo, the Democratic Republic of the</option><option value="Cook Islands">Cook Islands</option><option value="Costa Rica">Costa Rica</option><option value="Cote d'Ivoire">Cote d'Ivoire</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Curaçao">Curaçao</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Ethiopia">Ethiopia</option><option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option><option value="Faroe Islands">Faroe Islands</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="French Guiana">French Guiana</option><option value="French Polynesia">French Polynesia</option><option value="French Southern Territories">French Southern Territories</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Gibraltar">Gibraltar</option><option value="Greece">Greece</option><option value="Greenland">Greenland</option><option value="Grenada">Grenada</option><option value="Guadeloupe">Guadeloupe</option><option value="Guatemala">Guatemala</option><option value="Guernsey">Guernsey</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option><option value="Holy See (Vatican City State)">Holy See (Vatican City State)</option><option value="Honduras">Honduras</option><option value="Hong Kong">Hong Kong</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Isle of Man">Isle of Man</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jersey">Jersey</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option><option value="Korea, Republic of">Korea, Republic of</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Macao">Macao</option><option value="Macedonia">Macedonia</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Martinique">Martinique</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mayotte">Mayotte</option><option value="Mexico">Mexico</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Montserrat">Montserrat</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Caledonia">New Caledonia</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="Niue">Niue</option><option value="Norfolk Island">Norfolk Island</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Pitcairn">Pitcairn</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Reunion">Reunion</option><option value="Romania">Romania</option><option value="Russian Federation">Russian Federation</option><option value="Rwanda">Rwanda</option><option value="Saint Barthélemy">Saint Barthélemy</option><option value="Saint Helena, Ascension and Tristan da Cunha">Saint Helena, Ascension and Tristan da Cunha</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Martin (French part)">Saint Martin (French part)</option><option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Sint Maarten (Dutch part)">Sint Maarten (Dutch part)</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option><option value="Swaziland">Swaziland</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="SysdigTown">SysdigTown</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tokelau">Tokelau</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Turks and Caicos Islands">Turks and Caicos Islands</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="US Virgin Islands">US Virgin Islands</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Virgin Islands, British">Virgin Islands, British</option><option value="Wallis and Futuna">Wallis and Futuna</option><option value="Western Sahara">Western Sahara</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option></select><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoPlaceholder mktoPlaceholderState"></div><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="Privacy_Consent_to_Processing__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoButtonRow"><span class="mktoButtonWrap mktoNative" style="margin-left: 110px;"><button type="submit" class="mktoButton">Submit</button></span></div><input type="hidden" name="formid" class="mktoField mktoFieldDescriptor" value="1105"><input type="hidden" name="munchkinId" class="mktoField mktoFieldDescriptor" value="067-QZT-881"></form>
+    <form data-sysdigformid="1105" data-formbutton="default" data-formclass="" data-formtemplate="get-started-live-walkthrough" data-sysdigapi="" data-trialtype="" data-columns="double" class="sysdig-form" style="display: block;" data-status="initiated">
+        <p class="c-heading c-heading--sm c-heading--sans text-teal font-weight-bold">Step 2 of 2</p>
+        <p class="c-heading c-heading--sm">Great Choice! Tell us a little about yourself.</p>
+        <p class="text-center pb-3">Our service plans are customized to each user.</p>
+    <div class="row" id="input-row"><div class="col-md-6"><input name="FirstName" type="text" placeholder="First Name *"></div><div class="col-md-6"><input name="LastName" type="text" placeholder="Last Name *"></div><div class="col-md-6"><input name="Title" type="text" placeholder="Title *"></div><div class="col-md-6"><input name="Email" type="email" placeholder="Company Email *"></div><div class="col-md-6"><input name="Company" type="text" placeholder="Company Name *"></div><div class="col-md-6"><input name="Phone" type="tel" placeholder="Phone *"></div><div class="col-md-12"><textarea name="Notes__c" rows="2" maxlength="250" placeholder="Additional details (optional) *"></textarea></div><div class="col-md-6"><select class="c-form-select" name="Country" id="countrySelect"><option value="Country..." selected="selected">Country...</option><option value="Afghanistan">Afghanistan</option><option value="Aland Islands">Aland Islands</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Anguilla">Anguilla</option><option value="Antarctica">Antarctica</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Aruba">Aruba</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bermuda">Bermuda</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Bouvet Island">Bouvet Island</option><option value="Brazil">Brazil</option><option value="British Indian Ocean Territory">British Indian Ocean Territory</option><option value="Brunei Darussalam">Brunei Darussalam</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Cape Verde">Cape Verde</option><option value="Cayman Islands">Cayman Islands</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Christmas Island">Christmas Island</option><option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Congo, the Democratic Republic of the">Congo, the Democratic Republic of the</option><option value="Cook Islands">Cook Islands</option><option value="Costa Rica">Costa Rica</option><option value="Cote d'Ivoire">Cote d'Ivoire</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Curaçao">Curaçao</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Ethiopia">Ethiopia</option><option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option><option value="Faroe Islands">Faroe Islands</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="French Guiana">French Guiana</option><option value="French Polynesia">French Polynesia</option><option value="French Southern Territories">French Southern Territories</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Gibraltar">Gibraltar</option><option value="Greece">Greece</option><option value="Greenland">Greenland</option><option value="Grenada">Grenada</option><option value="Guadeloupe">Guadeloupe</option><option value="Guatemala">Guatemala</option><option value="Guernsey">Guernsey</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option><option value="Holy See (Vatican City State)">Holy See (Vatican City State)</option><option value="Honduras">Honduras</option><option value="Hong Kong">Hong Kong</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Isle of Man">Isle of Man</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jersey">Jersey</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option><option value="Korea, Republic of">Korea, Republic of</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Macao">Macao</option><option value="Macedonia">Macedonia</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Martinique">Martinique</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mayotte">Mayotte</option><option value="Mexico">Mexico</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Montserrat">Montserrat</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Caledonia">New Caledonia</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="Niue">Niue</option><option value="Norfolk Island">Norfolk Island</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Pitcairn">Pitcairn</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Reunion">Reunion</option><option value="Romania">Romania</option><option value="Russian Federation">Russian Federation</option><option value="Rwanda">Rwanda</option><option value="Saint Barthélemy">Saint Barthélemy</option><option value="Saint Helena, Ascension and Tristan da Cunha">Saint Helena, Ascension and Tristan da Cunha</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Martin (French part)">Saint Martin (French part)</option><option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Sint Maarten (Dutch part)">Sint Maarten (Dutch part)</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option><option value="Swaziland">Swaziland</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="SysdigTown">SysdigTown</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tokelau">Tokelau</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Turks and Caicos Islands">Turks and Caicos Islands</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="US Virgin Islands">US Virgin Islands</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Virgin Islands, British">Virgin Islands, British</option><option value="Wallis and Futuna">Wallis and Futuna</option><option value="Western Sahara">Western Sahara</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option></select></div></div><div class="row" id="checkbox-row"><div class="col-md-12"></div></div><div class="row" id="hidden-row"><input name="Privacy_Consent_to_Processing__c" type="hidden" value=""><input name="formid" type="hidden" value="1105"><input name="munchkinId" type="hidden" value="067-QZT-881"></div><div class="row" id="disclaimer-row"><div class="col-12"><div><p><strong>*Required Fields </strong>By signing up, you agree to the Sysdig <a href="https://sysdig.com/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and opting in to communications regarding Sysdig products, services, and events.</p></div></div></div><div class="d-flex sysdig-form-submit-button justify-content-between align-items-center"><div class="c-button c-button--back"><a class="c-button__link change-step mr-sm-0" data-step="1" href="#">Go Back</a></div><div class="c-button"><button class="c-button__link" type="submit" value="submit"><span class="form-loading"><i class="form-loading-submitting c-icon c-icon-teal c-icon--cog"></i><i class="form-loading-success c-icon c-icon-teal c-icon--check"></i><i class="form-loading-error c-icon c-icon-teal c-icon--warning"></i></span><span class="js-submit-text">Submit</span></button></div></div></form>
+    <div id="success-message" style="display: none;">
+        <!-- POST FORM SUBMIT -->
+        <p class="c-heading c-heading--sm">Thank you for wanting a Live Walkthrough!</p>
+        <p class="text-center pb-3">We look forward to speaking with you soon. Thanks for your interest!</p>
+        <div class="c-button">
+            <button class="c-button__link close-modal">Finish</button>
+        </div>
+    </div>
+	</div>
+</div>
+                    </div>
+                    <div class="choice-modal__choice two final">
+                        <!-- FORM START -->
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+		    <div class="u-spinner" id="u-spinner_1067" style="display: none;">
+        <div class="u-spinner__cube1"></div>
+        <div class="u-spinner__cube2"></div>
+    </div>
+    <form data-formid="1067" data-forminstance="two" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); width: 101px;" id="" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"><style type="text/css"></style><div class="mktoFormRow"><input type="hidden" name="UTM_Campaign__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Content__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Medium__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Offer__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Source__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="UTM_Term__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><input type="hidden" name="Trial_Type__c" class="mktoField mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;" value=""><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="FirstName_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>First Name</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="FirstName_15633628256040.08471736845620548" name="FirstName" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="LastName_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Last Name</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="LastName_15633628256040.08471736845620548" name="LastName" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Email_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Company Email</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Email_15633628256040.08471736845620548" name="Email" maxlength="255" type="email" class="mktoField mktoEmailField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Phone_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Phone</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Phone_15633628256040.08471736845620548" name="Phone" maxlength="255" type="tel" class="mktoField mktoTelField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Company_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Company Name:</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Company_15633628256040.08471736845620548" name="Company" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Title_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Title</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><input id="Title_15633628256040.08471736845620548" name="Title" maxlength="255" type="text" class="mktoField mktoTextField mktoHasWidth mktoRequired" style="width: 150px;"><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoFieldDescriptor mktoFormCol" style="margin-bottom: 5px;"><div class="mktoOffset" style="width: 5px;"></div><div class="mktoFieldWrap mktoRequiredField"><label for="Country_15633628256040.08471736845620548" class="mktoLabel mktoHasWidth" style="width: 100px;"><div class="mktoAsterix">*</div>Country</label><div class="mktoGutter mktoHasWidth" style="width: 5px;"></div><select id="Country_15633628256040.08471736845620548" name="Country" class="mktoField mktoHasWidth mktoRequired" style="width: 150px;"><option value="" selected="selected">Country...</option><option value="Afghanistan">Afghanistan</option><option value="Aland Islands">Aland Islands</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Anguilla">Anguilla</option><option value="Antarctica">Antarctica</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Aruba">Aruba</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bermuda">Bermuda</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Bouvet Island">Bouvet Island</option><option value="Brazil">Brazil</option><option value="British Indian Ocean Territory">British Indian Ocean Territory</option><option value="Brunei Darussalam">Brunei Darussalam</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Cape Verde">Cape Verde</option><option value="Cayman Islands">Cayman Islands</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Christmas Island">Christmas Island</option><option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Congo, the Democratic Republic of the">Congo, the Democratic Republic of the</option><option value="Cook Islands">Cook Islands</option><option value="Costa Rica">Costa Rica</option><option value="Cote d'Ivoire">Cote d'Ivoire</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Curaçao">Curaçao</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Ethiopia">Ethiopia</option><option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option><option value="Faroe Islands">Faroe Islands</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="French Guiana">French Guiana</option><option value="French Polynesia">French Polynesia</option><option value="French Southern Territories">French Southern Territories</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Gibraltar">Gibraltar</option><option value="Greece">Greece</option><option value="Greenland">Greenland</option><option value="Grenada">Grenada</option><option value="Guadeloupe">Guadeloupe</option><option value="Guatemala">Guatemala</option><option value="Guernsey">Guernsey</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option><option value="Holy See (Vatican City State)">Holy See (Vatican City State)</option><option value="Honduras">Honduras</option><option value="Hong Kong">Hong Kong</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Isle of Man">Isle of Man</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jersey">Jersey</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option><option value="Korea, Republic of">Korea, Republic of</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Macao">Macao</option><option value="Macedonia">Macedonia</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Martinique">Martinique</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mayotte">Mayotte</option><option value="Mexico">Mexico</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Montserrat">Montserrat</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Caledonia">New Caledonia</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="Niue">Niue</option><option value="Norfolk Island">Norfolk Island</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Pitcairn">Pitcairn</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Reunion">Reunion</option><option value="Romania">Romania</option><option value="Russian Federation">Russian Federation</option><option value="Rwanda">Rwanda</option><option value="Saint Barthélemy">Saint Barthélemy</option><option value="Saint Helena, Ascension and Tristan da Cunha">Saint Helena, Ascension and Tristan da Cunha</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Martin (French part)">Saint Martin (French part)</option><option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Sint Maarten (Dutch part)">Sint Maarten (Dutch part)</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option><option value="Swaziland">Swaziland</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="SysdigTown">SysdigTown</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tokelau">Tokelau</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Turks and Caicos Islands">Turks and Caicos Islands</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="US Virgin Islands">US Virgin Islands</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Virgin Islands, British">Virgin Islands, British</option><option value="Wallis and Futuna">Wallis and Futuna</option><option value="Western Sahara">Western Sahara</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option></select><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoClear"></div></div><div class="mktoFormRow"><div class="mktoPlaceholder mktoPlaceholderState"></div><div class="mktoClear"></div></div><div class="mktoButtonRow"><span class="mktoButtonWrap mktoNative" style="margin-left: 110px;"><button type="submit" class="mktoButton">Submit</button></span></div><input type="hidden" name="formid" class="mktoField mktoFieldDescriptor" value="1067"><input type="hidden" name="munchkinId" class="mktoField mktoFieldDescriptor" value="067-QZT-881"></form>
+    <form data-sysdigformid="1067" data-formbutton="default" data-formclass="" data-formtemplate="get-started-free-trial" data-sysdigapi="signup" data-trialtype="monitor-pro-14" data-columns="double" data-recaptcharesponse="" class="sysdig-form" style="display: block;" data-status="initiated">
+        <p class="c-heading c-heading--sm c-heading--sans text-teal font-weight-bold">Step 2 of 2</p>
+        <p class="c-heading c-heading--sm">Great Choice! Tell us a little about yourself.</p>
+        <p class="text-center pb-3">We'll email you a link to download a trial of Sysdig Monitor.</p>
+    <div class="row" id="input-row"><div class="col-md-6"><input name="FirstName" type="text" placeholder="FirstName *"></div><div class="col-md-6"><input name="LastName" type="text" placeholder="LastName *"></div><div class="col-md-6"><input name="Email" type="email" placeholder="Email *"></div><div class="col-md-6"><input name="Phone" type="tel" placeholder="Phone *"></div><div class="col-md-6"><input name="Company" type="text" placeholder="Company *"></div><div class="col-md-6"><input name="Title" type="text" placeholder="Title *"></div><div class="col-md-6"><select class="c-form-select" name="Country" id="countrySelect"><option value="Country..." selected="selected">Country...</option><option value="Afghanistan">Afghanistan</option><option value="Aland Islands">Aland Islands</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Anguilla">Anguilla</option><option value="Antarctica">Antarctica</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Aruba">Aruba</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bermuda">Bermuda</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Bouvet Island">Bouvet Island</option><option value="Brazil">Brazil</option><option value="British Indian Ocean Territory">British Indian Ocean Territory</option><option value="Brunei Darussalam">Brunei Darussalam</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Cape Verde">Cape Verde</option><option value="Cayman Islands">Cayman Islands</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option><option value="Christmas Island">Christmas Island</option><option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Congo, the Democratic Republic of the">Congo, the Democratic Republic of the</option><option value="Cook Islands">Cook Islands</option><option value="Costa Rica">Costa Rica</option><option value="Cote d'Ivoire">Cote d'Ivoire</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Curaçao">Curaçao</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Ethiopia">Ethiopia</option><option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option><option value="Faroe Islands">Faroe Islands</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="France">France</option><option value="French Guiana">French Guiana</option><option value="French Polynesia">French Polynesia</option><option value="French Southern Territories">French Southern Territories</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Gibraltar">Gibraltar</option><option value="Greece">Greece</option><option value="Greenland">Greenland</option><option value="Grenada">Grenada</option><option value="Guadeloupe">Guadeloupe</option><option value="Guatemala">Guatemala</option><option value="Guernsey">Guernsey</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option><option value="Holy See (Vatican City State)">Holy See (Vatican City State)</option><option value="Honduras">Honduras</option><option value="Hong Kong">Hong Kong</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Isle of Man">Isle of Man</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jersey">Jersey</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option><option value="Korea, Republic of">Korea, Republic of</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Macao">Macao</option><option value="Macedonia">Macedonia</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Martinique">Martinique</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mayotte">Mayotte</option><option value="Mexico">Mexico</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Montserrat">Montserrat</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Caledonia">New Caledonia</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="Niue">Niue</option><option value="Norfolk Island">Norfolk Island</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Pitcairn">Pitcairn</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Reunion">Reunion</option><option value="Romania">Romania</option><option value="Russian Federation">Russian Federation</option><option value="Rwanda">Rwanda</option><option value="Saint Barthélemy">Saint Barthélemy</option><option value="Saint Helena, Ascension and Tristan da Cunha">Saint Helena, Ascension and Tristan da Cunha</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Martin (French part)">Saint Martin (French part)</option><option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Sint Maarten (Dutch part)">Sint Maarten (Dutch part)</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Georgia and the South Sandwich Islands">South Georgia and the South Sandwich Islands</option><option value="South Sudan">South Sudan</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option><option value="Swaziland">Swaziland</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="SysdigTown">SysdigTown</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tokelau">Tokelau</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Turks and Caicos Islands">Turks and Caicos Islands</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Arab Emirates">United Arab Emirates</option><option value="United Kingdom">United Kingdom</option><option value="United States">United States</option><option value="Uruguay">Uruguay</option><option value="US Virgin Islands">US Virgin Islands</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Virgin Islands, British">Virgin Islands, British</option><option value="Wallis and Futuna">Wallis and Futuna</option><option value="Western Sahara">Western Sahara</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option></select></div></div><div class="row" id="checkbox-row"><div class="col-md-12"></div></div><div class="row" id="hidden-row"><input name="UTM_Campaign__c" type="hidden" value=""><input name="UTM_Content__c" type="hidden" value=""><input name="UTM_Medium__c" type="hidden" value=""><input name="UTM_Offer__c" type="hidden" value=""><input name="UTM_Source__c" type="hidden" value=""><input name="UTM_Term__c" type="hidden" value=""><input name="Trial_Type__c" type="hidden" value="monitor-pro-14"><input name="formid" type="hidden" value="1067"><input name="munchkinId" type="hidden" value="067-QZT-881"></div><div class="d-flex flex-column flex-lg-row justify-content-between align-items-center mb-4" id="recaptcha-row"><div class="recaptcha-wrapper"><div class="g-recaptcha" id="recaptcha_957981368687"></div></div></div><div class="row" id="disclaimer-row"><div class="col-12"><div><p><strong>*Required Fields </strong>By signing up, you agree to the Sysdig <a href="https://sysdig.com/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and opting in to communications regarding Sysdig products, services, and events.</p></div></div></div><div class="d-flex sysdig-form-submit-button justify-content-between align-items-center"><div class="c-button c-button--back"><a class="c-button__link change-step mr-sm-0" data-step="1" href="#">Go Back</a></div><div class="c-button"><button class="c-button__link" type="submit" value="submit"><span class="form-loading"><i class="form-loading-submitting c-icon c-icon-teal c-icon--cog"></i><i class="form-loading-success c-icon c-icon-teal c-icon--check"></i><i class="form-loading-error c-icon c-icon-teal c-icon--warning"></i></span><span class="js-submit-text">Submit</span></button></div></div></form>
+    <div id="success-message" style="display: none;">
+        <p class="c-heading c-heading--sm">Thank you for signing up! </p>
+        <p class="c-subhead c-subhead--sans text-center text-bluish-grey mb-4">Please check your email account for your trial activation link.</p>
+        <p>Our <a href="https://sysdig.com/resources/">resources</a> section offers a depth of information, including troubleshooting. </p>
+        <p>Our <a href="https://sysdig.com/support/">support</a> section is also available to you. </p>
+        <div class="c-button">
+            <button class="c-button__link close-modal">Finish</button>
+        </div>
+    </div>
+    </div>
+</div>
+                    </div>
+                </div>
+                <!-- STEP 3 - Free Trial - Success - Thank You -->
+                <div id="step_3" class="choice-modal__choice-wrapper">
+                    <div class="choice-modal__choice post-form-submit">
+                        <!-- POST FORM SUBMIT -->
+                        <p class="c-heading c-heading--sm">Welcome to the Sysdig community!</p>
+                        <p class="text-center pb-3">We look forward to 
+speaking with you soon. In the meantime, check your email for an 
+activation link to your free 2-week Sysdig Monitor trial. Thanks for 
+your interest!</p>
+                        <div class="c-button">
+                            <button class="c-button__link close-modal">Finish</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- STEP 4 - Live Walkthrough - Success - Thank You-->
+                <div id="step_4" class="choice-modal__choice-wrapper">
+                    <div class="choice-modal__choice post-form-submit">
+                        <!-- POST FORM SUBMIT -->
+                        <p class="c-heading c-heading--sm">Thank you for wanting a Live Walkthrough!</p>
+                        <p class="text-center pb-3">We look forward to speaking with you soon. Thanks for your interest!</p>
+                        <div class="c-button">
+                            <button class="c-button__link close-modal">Finish</button>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="modal-footer text-md-center choice-modal__footer">
+				<div class="choice-modal__footer-one">
+                    <div class="mb-4">
+                        <p class="c-heading--sans font-weight-bold text-uppercase mb-1">True to our roots</p>
+                        <div class="c-button--secondary">
+                            <a href="https://sysdig.com/opensource/" class="c-button__link">Learn more about our Open Source products</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice-modal__footer-three">
+                    <p class="c-heading c-heading--sm c-heading--sans text-capitalize text-teal font-weight-light">We're Here to help</p>
+                    <p>Check out the <a href="https://sysdig.com/resources/">Resources</a> for advice on troubleshooting.</p>
+                    <p>We have a robust library of <a href="https://sysdig.com/support/">Support</a> documents that you may find useful.</p>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+</div><!-- #page -->
+
+<link rel="stylesheet" id="tweetdis-public-css" href="San17_files/tweetdis-public.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var sysdigLocalizedObject = {"ajaxUrl":"https:\/\/sysdig.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="San17_files/main.js"></script>
+<script type="text/javascript" src="San17_files/bootstrap.js"></script>
+<script type="text/javascript" src="San17_files/utm-cookies.js"></script>
+<script type="text/javascript" src="San17_files/wp-embed.js"></script>
+<script>
+            window.lazyLoadOptions = {
+                elements_selector: "img[data-lazy-src],.rocket-lazyload",
+                data_src: "lazy-src",
+                data_srcset: "lazy-srcset",
+                data_sizes: "lazy-sizes",
+                class_loading: "lazyloading",
+                class_loaded: "lazyloaded",
+                threshold: 300,
+                callback_loaded: function(element) {
+                    if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+                        if (element.classList.contains("lazyloaded") ) {
+                            if (typeof window.jQuery != "undefined") {
+                                if (jQuery.fn.fitVids) {
+                                    jQuery(element).parent().fitVids();
+                                }
+                            }
+                        }
+                    }
+                }};
+        window.addEventListener('LazyLoad::Initialized', function (e) {
+            var lazyLoadInstance = e.detail.instance;
+        
+            if (window.MutationObserver) {
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        for (i = 0; i < mutation.addedNodes.length; i++) {
+                            if (typeof mutation.addedNodes[i].getElementsByTagName !== 'function') {
+                                return;
+                            }
+
+                           if (typeof mutation.addedNodes[i].getElementsByClassName !== 'function') {
+                                return;
+                            }
+
+                            imgs = mutation.addedNodes[i].getElementsByTagName('img');
+                            iframes = mutation.addedNodes[i].getElementsByTagName('iframe');
+                            rocket_lazy = mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');
+
+                            if ( 0 === imgs.length && 0 === iframes.length && 0 === rocket_lazy.length ) {
+                                return;
+                            }
+
+                            lazyLoadInstance.update();
+                        }
+                    } );
+                } );
+                
+                var b      = document.getElementsByTagName("body")[0];
+                var config = { childList: true, subtree: true };
+                
+                observer.observe(b, config);
+            }
+        }, false);
+        </script><script data-no-minify="1" async="" src="San17_files/lazyload.js"></script>
+
+
+<div id="mktoStyleLoaded" style="display: none; border-top-color: rgb(18, 52, 86);"></div><div id="mktoStyleLoaded" style="display: none; border-top-color: rgb(18, 52, 86);"></div><div id="mktoStyleLoaded" style="display: none; border-top-color: rgb(18, 52, 86);"></div><form data-formid="1105" data-forminstance="one" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); visibility: hidden; position: absolute; top: -500px; left: -1000px; width: 1903px;" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"></form><form data-formid="1067" data-forminstance="two" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); visibility: hidden; position: absolute; top: -500px; left: -1000px; width: 1903px;" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"></form><form data-formid="1080" data-forminstance="one" style="display: none; font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); visibility: hidden; position: absolute; top: -500px; left: -1000px; width: 1903px;" novalidate="novalidate" class="mktoForm mktoHasWidth mktoLayoutLeft"></form><iframe name="mktoFormsXDIframe0.3178195112746143" id="MktoForms2XDIframe" style="display: none;" src="San17_files/XDFrame.html"></iframe></body></html>

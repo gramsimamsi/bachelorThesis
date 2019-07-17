@@ -168,7 +168,7 @@ The intended way for a user to deploy or change their application is to manipula
 There are many \gls{k8s} distributions, many of which are certified kubernetes offerings, meaning they all comply to the same standards and interfaces. These are set by the Linux Foundation through the \gls{cncf} which oversees the project.
 The kubernetes code base is open source and maintained on GitHub, but any implementation fulfilling the (publicised) requirements can become \gls{k8s} certified, regardless of how much code they changed.\footcite[][, section 'There are over 80 Certified Kubernetes offerings.']{certifiedK8s} You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
 
-\subsubsection{Kubernetes components}
+\subsubsection{Kubernetes components} \label{k8sComponents}
 
 In order to deliver a functioning \gls{k8s} cluster, multiple binary components are needed.
 Master components provide the control plane, while node components are run on each underlying machine in order to maintain and provide the environment to execute the containers you want to run eventually.
@@ -177,7 +177,7 @@ Master components are often exclusively run on machines dedicated to them, which
 The most relevant master components from the perspective of this thesis are:
 \begin{itemize}
 
-\item The kube-apiserver, which exposes the Kubernetes API. It is the front-end for the Kubernetes control plane; User commands are typically directed at and processed by this component.
+\item The kube-apiserver, which exposes the Kubernetes \gls{api}. It is the front-end for the Kubernetes control plane; User commands are typically directed at and processed by this component.
 
 \item Etcd, a distributed high-availability key value store where, among other things, secrets and authentication information are stored.
 
@@ -236,7 +236,7 @@ Since multiple identical pods may provide the same functionality and instances o
 \subsubsection{Using Kubernetes}
 There are many ways and solutions to set up a \gls{k8s} cluster. Anyone can write their own one from scratch, but so-called turnkey solutions for cloud and on-premise environments exist, too, which significantly reduce the time and effort required to set up and run a cluster.\footcite[][, sections 'Turnkey Cloud Solutions' and 'On-Premises turnkey cloud solutions']{turnkey}
 %TODO maybe: buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/features from different products
-Once your cluster is set up, it is typically interacted with through the \gls{k8s} API. For human interaction, kubectl is a \gls{cli} reference implementation which enables remote interaction with it.\footcite[][, section 'The Kubernetes API']{k8sApi}
+Once your cluster is set up, it is typically interacted with through the \gls{k8s} \gls{api}. For human interaction, kubectl is a \gls{cli} reference implementation which enables remote interaction with it.\footcite[][, section 'The Kubernetes API']{k8sApi}
 In order to create or manipulate an object, you need to provide its new specification. This is typcally supplied to kubectl as a .yaml file, an example of which can be seen in listing \ref{lst:example-yaml-file}.\footcite[][, section 'Describing a Kubernetes Object']{k8sObjects}
 
 \begin{lstlisting}[
@@ -296,95 +296,67 @@ Picking up the three scenarios of section \ref{scopeLimit}, we identify the poss
 
 The identification of attack vectors within scope turned out to be a big challenge, both in research and preparation for a clear presentation. 
 As new minor versions of \gls{k8s} release approximately every tree months and the Kubernetes project only maintains release branches for the most recent three minor releases\footcite[][, section 'Supported versions']{k8sSupport}, the underlying system evolves continuously. Due to lengthy review processes, accredited literature about the topic are rare and risk being outdated quite quickly. Even less formal sources like blog posts or guidelines published by organizations are both rare, still unfinished at the point of this writing or updated continually, further complicating the creation of a snapshot regarding the current state. Nonetheless, we tried to achieve it on a best-effort basis.
-These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, we will generically mention the applicable measures and mention specific examples for \gls{aks} and \gls{ocp}.
-In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broeadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
+These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, we will generically mention the applicable measures and may provide specific examples for \gls{aks} and \gls{ocp} for further illustration.
+%TODO ^leave 'specific examples in? did you provide any?
+In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
 
-\section{Identified vectors}
+\section{Identified vectors and security measures}
 %TODO write out pretty, absorb explanations from risk estimate chapter
 The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as V\textit{xx}.
 
 %TODO
-TODO mention these generic measures
-LOG ALL THE THINGS
-	ELK/EFK-stack or Splunk with log forwarding/aggregation (container AND nodes), k8s audit logging (k8s)
+%TODO mention these generic measures
+%LOG ALL THE THINGS
+%	ELK/EFK-stack or Splunk with log forwarding/aggregation (container AND nodes), k8s audit logging (k8s)
 	
-MONITORING AND ALERTING
-	prometheus, grafana (visualization), neuvector, (sysdig) falco, aqua, twistlock
+%MONITORING AND ALERTING
+%	prometheus, grafana (visualization), neuvector, (sysdig) falco, aqua, twistlock
 
 
-\subsection{V01 - Reconaissance through interface components}
-Gather information useful for further attacks through accessible: the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
+\subsection{V01 - Reconnaissance through interface components} \label{v01}
+An attacker could gather information through the available interfaces in order to prepare further attacks and look for vulnerabilities to exploit.
+A \gls{k8s} cluster has many interfaces, some of which are intended to be accessed by users or other non-master-components. The components providing these include the kube-apiserver introduced in section \ref{k8sComponents}, the popular web-based \gls{k8s} user interface called Dashboard\footcite[][, first paragraph]{k8sDashboard} as well as solution-specific interfaces like the \gls{ocp} web console\footcite[][, section 'Overview']{ocpWebConsole} or the Azure Portal for \gls{aks}\footcite[][, section 'Create an AKS cluster']{azurePortal}.
+Other interfaces are intended to be accessible from inside a cluster. These may include the components accessible from cluster-external sources, but also \gls{api}s for the integration of additional functionality. A common use case for such \gls{api}s is the provisioning of additional cloud resources in order to scale up the cluster.
+One example of reconnaissance against the kube-apiserver was demonstrated at KubeCon 2019\footcite[][, starting at 8:45]{lizReconDemo}, while an example of leveraging the cloud api can be found in a blog post\footcite{aksApiExploit}.
 
-components: kubernetes dashboard, kubernetes apiserver, OCP web console, 
-
-TODO
-
-MEASURES SAME AS V02
+Following the security principle of limiting the attack surface\footcite[][, p. 4 to 5]{k8sBook}, the measures against this include blocking access to or outright deactivating interfaces. If interfaces are unused, i.e. the \gls{k8s} Dashboard where only \gls{cli} tools are used for cluster interaction, one can easily deactivate the Dashboard and thus reduce the attack surface without further work needed. If an interface is used, but alternatives exist, it may be advisable to evaluate whether a change in workflows or software architectures in order to decomission the interface may provide an overall benefit.
+Least privilege, another security principle\footcite[][, p. 3 to 4]{k8sBook}, can be followed by restricting access to used interfaces. Authentication can be required of both humans and automated processes and their access may be restricted to the information and capabilities strictly needed to operate. KubiScan, an open source tool to scan the \gls{rbac} permissions of a \gls{k8s} cluster for permissions considered risky, is publically available to assess a given cluster. Users might be required to log in through a two factor authentication to hinder access through stolen credentials. Network restrictions can be put in place to restrict the vantage points from which an attacker may gain access.
+Following Defense in Depth\footcite[][, p. 3]{k8sBook}, this should not only be done from the outside, but access from inside the cluster, too. As an example, most containers don't need access to \gls{k8s} master components, so these requests can be blocked by \gls{k8s} Egress Network Policies\footcite[][, section 'The NetworkPolicy Resource']{egressNetPol}. The impact of successful attacks could be limited through Alerting and restriction of the attacks 'blast radius'. Logging and alerting processes may be implemented through \gls{k8s} audit policies\footcite[][, section 'Audit Policy']{auditPolicy} for requests that are considered suspicious and do not occur in normal operations, examples of which can be found in online sources\footcite[][, section 'Alerting on the Kubernetes infrastructure']{sysdigMonitoring}. The 'blast radius' may be reduced by isolating different applications or teams trough multiple namespaces and restricting access to non-namespaced resources to cluster administrators, thus isolating an attacker to a single namespace instead of the whole cluster. An even more drastic isolation could be achieved through isolation by cluster, resulting in separate \gls{k8s} master components per isolated entity.
 
 \subsection{V02 - Reading confidentials through interface components}
-Gather confidential information through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
+The components mentioned in section \ref{v01} could also be used by an attacker to gather confidential information, which can be either useful in and of itself or used to gain further access. Extracted private keys, tokens or passwords  may be leveraged to authenticate with additional privileges in order to steal or manipulate container images, adjacent applications, source code and interact with other interfaces.
 
-TODO
-
-DEACTIVATE OR BLOCK UNUSED INTERFACES
-	administration: uninstall / deactivate configurable interfaces , check RBAC permissions with kubiscan
-	from container: network policies blacklisting APIs/consoles
-	from company network: firewall (bad practice)
-	
-	
-LIMIT INTERFACE CAPABILITIES
-	deactivate capabilities to the highest authority level  whenever possible/applicable
-	
-SECURE ACCESS
-	no unauth, no ABAC, integrate existing RBAC you are managing anyway
-	use 2FA when possible (i.e. for dev and/or admin access to cloud) <- openstack: 2FA may be integratable to AD? TODO
-	
-FOLLOW LEAST PRIVILEGE PRINCIPLE
-	limit access to each user in their scope (possibly further - need to know principle?)
-	
-SECRETS MANAGEMENT
-	DO NOT load secrets from dockerfile / podconfig / env vars or other shit! DO use kubernetes secrets (or better: external key mgmt like hashicorp vault or azure ad pod identity / openshift vault) TODO: how to enforce?
-	
-ENABLE ALERTING
-	on events like adding admin / granting admin privs / creating namespace / touching things deemed critical. TODO: how?
+Despite presenting a more serious damage potential, the measures of section \ref{v01} also apply here since they target the same interfaces.
+In addition to that, special attention should be paid to the way secrets are passed into code running under \gls{k8s}. Embedding secret information into container images should be avoided, since those are not only unencrypted and difficult to change, but may be extracted by an attacker reading the Dockerfile or inspecting an image themselves. Supplying them through environment variables is also not recommended, as those might be exposed in unconsidered ways. It is recommended to supply them to containers at runtime through \gls{k8s} secrets or external tools like those integrated into cloud platforms or offered by third-party providers. Popular third-party solutions include HashiCorp Vault and CyberArk Conjur.\footcite[][, chapter 7]{k8sBook}
 
 \subsection{V03 - Configuration manipulation through interface components}
-Change the existing configuration through the Kubernetes dashboard \& apiserver as well as potential platform webinterfaces \& apiserver(s)
-TODO
+With write access to the components mentioned in section \ref{v01}, an attacker may change configurations of the cluster or its environment, i.e. security controls set in place through the cloud provider platform. Examples include disabling security restrictions, rendering alerting processes disfunctional by blocking their communication or swapping container images with functional, but compromised alternatives.
 
-V06 LIMIT CAPABILITIES
-
-EVERYTHING FROM V02
+As this has a higher potential for damage, special care should be taken. The measures of section \ref{v01} are applicable here, too. Special thought may be put into restricting write permissions to the most privileged user accounts, i.e. cluster or cloud administrators for actions that can influence systems outside of a namespace or cluster.
+In order to automatically deny actions, \gls{k8s} Pod Security Policies\footcite[][, section 'What is a Pod Security Policy?']{securityPolicy} may be leveraged. Since these are non-namespaced \gls{k8s} objects themselves, they could be circumvented by anyone with permissions to manipulate non-namespaced objects, i.e. cluster administrators.
 
 \subsection{V04 - Compromise internal master components}
-This vector comprises reconaissance, leaks of confidentials and configuration changes through Kubernetes components not intended to be accessible: etcd stores, kube-scheduler and kube-controller-manager
+In contrast to the components mentioned in section \ref{v01}, there are others only intended to be interacted with by other \gls{k8s} master components, which may also be compromised by an attacker. We will refer to these as internal components.
+The most promising target is the etcd key value store introduced in section \ref{k8sComponents}, as through it an attacker may gain any permission they want.
 
-TODO
-
-CLUSTER ISOLATION
-
-FOLLOW ADDITIONAL TIPS BY SUPPLIER
-
+The available security measures are much more straightforward than those of the interface components, which is why all (ab)use cases have been united in one vector.
+Master components can be run on any machine in the cluster, but are often run on dedicated master nodes.\footcite[][, section 'Master Components']{k8sComponents}
+Therefore, \gls{k8s} solutions can restrict access to these by either not exposing them to anyone outside the pool of master nodes or, in case the components themselves are deployed as containers, restricting write access to their namespace they are running in as well as communication to the containers themselves.
+Synonymous to section \ref{v01}, isolating through separate clusters per team or application can restrict the damage potential through separate master components.
 
 \subsection{V05 - Image poisoning and baiting}
-Supplying a malicious container image leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (dockerhub images or dockerfiles on tutorials/help forums), but can be done targeted, too. Additionally, an image build process typically runs as root, leading to compromise possibilities to compromise the node where an image is built from a rogue dockerfile. (TODO: provoking stale image usage to exploit vulns, too?)
+An attacker may try and lead a cluster user to run containers from a bad container image that is controlled by the attacker, insecure, or both.\footcite[][, p. 13 to 14]{nistK8s}
+This could be done as an untargeted attack by offering images on popular public image repositories like Docker Hub or providing examples of similarly bad Dockerfiles in tutorials or support forums.
+Since building new containers from scratch is a lot of work, container images for popular applications are often sought after to either build upon or use out-of-the-box.
+Applications for which no official container image is maintained are an especially common niche for such attacks.
+In contrast to this, an attacker could also try a more targeted attack by uploading bad images to the (possibly private) repository used by their target.
+Even previously trusted images may become insecure over time as new vulnerabilities are publicized, thus becoming "stale".\footcite[][, p. 14]{nistK8s}
+It should be noted that providing Dockerfiles instead of images may be easier to identify as malicious, but when a user builds an image from it anyway, the build process will commonly run under a root user.\footnote{While \gls{k8s} currently doesn't provide image building capabilities out-of-the-box, many \gls{k8s} certified solutions implement this functionality.}
 
-TODO
-
-POLICIES FOR CONTAINER IMAGES
-	Define what makes an image safe (enough) for usage. (light: only allow verified dockerhub images. Heavy: run images through a vetting process or build them from scratch)
-	Define in what intervals both policy and set of base images are reviewed
-
-RESTRICT THE SET OF POTENTIALLY USED IMAGES
-	Use a dedicated private image registry which only gets vetted images OR enforce image whitelisting from public sources (including restricting versions, only allow the ones you vetted!)
-	
-VET IMAGES BEFORE USAGE
-	Run your defined image vetting process for every container before it becomes available for use
-	Re-vet new versions before they are admitted for usage
-	scan with fossa, clair, microscanner, OPA policies
-
-RE-ASSESS ALL VERSIONS OF ALL IMAGES REGULARLY
-	regularly scan all available images in all their versions and disable images that are (or have become) vulnerable. Especially old image versions should be purged, since those can be vulnerable to well-documented exploits.
+In order to mitigate all of the above, only safe images should be used to run containers within a cluster. Although this sounds simple in theory, it may prove to be far more complex in practice.  One would first have to define what constitutes a safe image in their context before implementing any measures ensuring their usage.
+Docker Hub introduced measures that help identifying more trustworthy images by labeling them as Verified Publisher Images or Certified Images respectively\footcite[][, sections 'Verified Publisher Images and Plugins' and 'Certified Images and Plugins']{safeImagesDockerhub}.
+In order to restrict the amount of possible images used, a private registry could be used and the cluster restricted to only using images from that registry. User may then be allowed to build new images based on those in the registry and upload those to it. 
+Images could also go through a (either manual or automated) vetting process before being admitted to a registry. Images in a registry may be reassessed on a regular basis, too, so images with known vulnerabilities can be identified and removed. Multiple tools that provide automated image scans exist and can be found online\footcite[][, section 'Securing your container images']{k8sBookWebsite}, some of which provide integration into \gls{k8s} clusters or cloud platforms.
 
 \subsection{V06 - Configuration poisoning and baiting}
 Supplying a malicious kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
@@ -648,7 +620,7 @@ The resulting risk estimation is illustrated in Table \ref{tab:estimateCompariso
 \begin{tabular}{|c|l|c|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & {\ul OCP Risk} & {\ul AKS Risk} \\ \hline
-V01             & Reconaissance through interface components                                             & \textbf{3}     & \textbf{3}     \\ \hline
+V01             & Reconnaissance through interface components                                             & \textbf{3}     & \textbf{3}     \\ \hline
 V02             & Reading confidentials through interface components                                     & \textbf{6}     & \textbf{7}     \\ \hline
 V03             & Configuration manipulation through interface components                                & \textbf{7}     & \textbf{8}     \\ \hline
 V04             & Compromise internal master components                                                  & \textbf{5}     & \textbf{6}     \\ \hline
@@ -679,7 +651,7 @@ V17             & Leveraging bad patch management                               
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
-V01             & Reconaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
+V01             & Reconnaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidentials through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
 V04             & Compromise internal master components                                                  & 3                                        & 1                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
@@ -709,7 +681,7 @@ V17             & Leveraging bad patch management                               
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
 {\ul Vector ID} & \multicolumn{1}{c|}{{\ul Vector}}                                                      & \multicolumn{1}{c|}{{\ul Vantage Point}} & \multicolumn{1}{c|}{{\ul RAL}} & \multicolumn{1}{c|}{{\ul Detectability}} & {\ul Exploitability} & \multicolumn{1}{c|}{{\ul Probability}} & {\ul Impact} & {\ul Resulting risk} \\ \hline
-V01             & Reconaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
+V01             & Reconnaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidentials through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
 V04             & Compromise internal master components                                                  & 4                                        & 1                              & 3                                        & 0                    & 2                                      & 3            & \textbf{6}           \\ \hline
@@ -734,7 +706,7 @@ V17             & Leveraging bad patch management                               
 \captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster}
 \end{landscape}
 
-\subsection{V01 - Reconaissance through interface components}
+\subsection{V01 - Reconnaissance through interface components}
 
 %OCP
 A user with access to the apiserver / webinterface(s) and read access can scout out information.
