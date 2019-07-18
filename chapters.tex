@@ -300,6 +300,8 @@ These vectors are applicable to all \gls{k8s} solutions, although the available 
 %TODO ^leave 'specific examples in? did you provide any?
 In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all systems, we felt comfortable to broadly encapsulate them for a more clear understanding. If we were to rigorously differentiate between only slightly different vectors, this list would be multiple times as long as it already is.
 
+%TODO say that this is not perfect, but more would be out of scope / no time left?
+
 \section{Identified vectors and security measures}
 %TODO write out pretty, absorb explanations from risk estimate chapter
 The following headlines will each define and explain one of the 17 identified attack vectors of this thesis. For brevity of reference, each has a Vector ID assigned which is formatted as V\textit{xx}.
@@ -329,7 +331,7 @@ The components mentioned in section \ref{v01} could also be used by an attacker 
 Despite presenting a more serious damage potential, the measures of section \ref{v01} also apply here since they target the same interfaces.
 In addition to that, special attention should be paid to the way secrets are passed into code running under \gls{k8s}. Embedding secret information into container images should be avoided, since those are not only unencrypted and difficult to change, but may be extracted by an attacker reading the Dockerfile or inspecting an image themselves. Supplying them through environment variables is also not recommended, as those might be exposed in unconsidered ways. It is recommended to supply them to containers at runtime through \gls{k8s} secrets or external tools like those integrated into cloud platforms or offered by third-party providers. Popular third-party solutions include HashiCorp Vault and CyberArk Conjur.\footcite[][, chapter 7]{k8sBook}
 
-\subsection{V03 - Configuration manipulation through interface components}
+\subsection{V03 - Configuration manipulation through interface components} \label{v03}
 With write access to the components mentioned in section \ref{v01}, an attacker may change configurations of the cluster or its environment, i.e. security controls set in place through the cloud provider platform. Examples include disabling security restrictions, rendering alerting processes dysfunctional by blocking their communication or swapping container images with functional, but compromised alternatives.
 
 As this has a higher potential for damage, special care should be taken. The measures of section \ref{v01} are applicable here, too. Special thought may be put into restricting write permissions to the most privileged user accounts, i.e. cluster or cloud administrators for actions that can influence systems outside of a namespace or cluster.
@@ -344,7 +346,7 @@ Master components can be run on any machine in the cluster, but are often run on
 Therefore, \gls{k8s} solutions can restrict access to these by either not exposing them to anyone outside the pool of master nodes or, in case the components themselves are deployed as containers, restricting write access to their namespace they are running in as well as communication to the containers themselves.
 Synonymous to section \ref{v01}, isolating through separate clusters per team or application can restrict the damage potential through separate master components.
 
-\subsection{V05 - Image poisoning and baiting}
+\subsection{V05 - Image poisoning and baiting} \label{v05}
 An attacker may try and lead a cluster user to run containers from a bad container image that is controlled by the attacker, insecure, or both.\footcite[][, p. 13 to 14]{nistK8s}
 This could be done as an untargeted attack by offering images on popular public image repositories like Docker Hub or providing examples of similarly bad Dockerfiles in tutorials or support forums.
 Since building new containers from scratch is a lot of work, container images for popular applications are often sought after to either build upon or use out-of-the-box.
@@ -353,67 +355,47 @@ In contrast to this, an attacker could also try a more targeted attack by upload
 Even previously trusted images may become insecure over time as new vulnerabilities are publicized, thus becoming "stale".\footcite[][, p. 14]{nistK8s}
 It should be noted that providing Dockerfiles instead of images may be easier to identify as malicious, but when a user builds an image from it anyway, the build process will commonly run under a root user.\footnote{While \gls{k8s} currently doesn't provide image building capabilities out-of-the-box, many \gls{k8s} certified solutions implement this functionality.}
 
-In order to mitigate all of the above, only safe images should be used to run containers within a cluster. Although this sounds simple in theory, it may prove to be far more complex in practice.  One would first have to define what constitutes a safe image in their context before implementing any measures ensuring their usage.
+In order to mitigate all of the above, only safe images should be used to run containers within a cluster. Although this sounds simple in theory, it may prove to be far more complex in practice. One would first have to define what constitutes a safe image in their context before implementing any measures ensuring their usage.
 Docker Hub introduced measures that help identifying more trustworthy images by labeling them as Verified Publisher Images or Certified Images respectively\footcite[][, sections 'Verified Publisher Images and Plugins' and 'Certified Images and Plugins']{safeImagesDockerhub}.
 In order to restrict the amount of possible images used, a private registry could be used and the cluster restricted to only using images from that registry. User may then be allowed to build new images based on those in the registry and upload those to it. 
+The damage potential of images may be limited by restricting the capabilities a container may gain through the Pod Security Policies introduced in section \ref{v03}.
 Images could also go through a (either manual or automated) vetting process before being admitted to a registry. Images in a registry may be reassessed on a regular basis, too, so images with known vulnerabilities can be identified and removed. Multiple tools that provide automated image scans exist and can be found online\footcite[][, section 'Securing your container images']{k8sBookWebsite}, some of which provide integration into \gls{k8s} clusters or cloud platforms.
 
 \subsection{V06 - Configuration poisoning and baiting}
-Supplying a malicious Kubernetes configuration leading to security violations on the cluster (remote access for an attacker, resource misuse, data leakage, …). Most easily done untargeted (tutorials/ help forums), but can be done targeted, too.
+An attacker may try and lead a cluster user or even administrator to configure the cluster in such a way that the attacker gains control, the cluster is left insecure, or both.\footcite[][, p. 13 to 14]{nistK8s}
+This vector has a lot in common with the one described in section \ref{v05}. A bad configuration might include bad containers, but does not have to, which is why we kept this as a separate vector. Attacks like this are far easier to do untargeted by offering tutorials and posts in support forums, but might also be conducted in a targeted way, similar to spear phishing attacks.
+The number of possibilities for specific bad configurations is near endless. Easy and effective misconfigurations may be achieved by swapping out popular image names with similar ones controlled by the attacker (i.e. 'nodejs' instead of 'node'), preconfiguring weak or attacker known default passwords, simply omitting or misconfiguring security measures so they do not work effectively (i.e. defining Network Policies, but not applying them) or making internal interfaces available to the public network.
 
-TODO
-
-RAISE OPERATOR AWARENESS
-	Train operators (cluster administrators \& users) regularly									
-	Make sure that operators are aware of the risks of copy-pasting									
-										
-OTHER ORGANIZATIONAL MEASURES
-	write guidelines with good security policies (what to use by default, what exceptions could be allowed and what processes have to be followed before admitted)	
-
-LIMIT CAPABILITIES
-	K8s PodSecurityPolicies			Enable and configure global ( \& potentially additional namespace-identified) Pod Security Policies, which define default values and enforce specific settings if defined. ATTENTION: currently in preview for AKS!						
-	(openshift SCCs)			(recommentations: TODO! RunAsUser=MustRunAsNonRoot , RunAsGroup=MustRunAsNonRoot, AllowPrivilegeEscalation=false (<- careful, might break setuid binaries! Not-as-good-alternative: DefaultAllowPrivilegeEscalation=false), privileged=false)						
-										
-	restrict communication			no traffic to oder projects (OCP) or namespaces (AKS)						
-	restrict images			use private repo / dockerhub-official images only						All of these: either implemented by dev or enforced by admin. Suggestion: enforced by cluster admin (scc / networkpolicy in podsecuritypolicy) with exceptions granted when needed
-	restrict host impact			no priviledged containers, no priviledge escalation (asking to become priviledged), restrict kernel capabilities, no root containers (maybe yes, but with user namespace remapping only?), procmounttype default (apply restrictions by container runtimes in /proc), restrict mount volume types and host volume paths, (maybe use sandboxing through gvisor / kata containers?)						
-	verify with tool / 3rd party			put through kubesec.io offline/ kube-bench/ kubeaudit / kubeatf (enforce: k8guard) or 4-eyes-principle or security clearance on config changes (probably too overkill)						
-
+As there are many potential ways for misconfiguration, there are also many measures to mitigate them.
+Raising user and administrator awareness for the risk of using a configuration supplied by outsiders is recommended. Continuously training them to provide the knowledge needed to thoroughly understand and assess these configurations may help in mitigating this problem, too. 
+Free and helpful tools in assessing configurations are kubesec.io, kube-bench\footnote{https://github.com/aquasecurity/kube-bench} and kubeaudit\footnote{https://github.com/Shopify/kubeaudit}.
+Defining guidelines and best practices for configurations could be done and enforced by regular manual reviews or automated checks through tools like the Open Policy Agent admission controls\footcite[][, section 'Wrap Up']{opaAdmission} or k8Guard\footnote{https://k8guard.github.io/}.
+As bad configurations may include bad containers, the measures introduced in section \ref{v05} are applicable, too.
 
 \subsection{V07 - Lateral movement through cluster}
-Once an attacker gains access to a container, he may try to access more lucrative application components or information, i.e. sniffing traffic or accessing databases or containers with more confidential information/traffic.
+Once an attacker gains access to a container, he may try to access more lucrative information, applications or cluster components. Ways to achieve this could be sniffing network traffic or scanning the network for other containers, hosts, services, apis or similar interfaces.
 
-TODO
-
-ENCRYPR CROSS-CONTAINER TRAFFIC
-	istio with mTLS for traffic encryption and signing OR guideline for devs to use TLS everywhere OR enforce with OPA?		
-			
-AUTHORIZATION/AUTHENTICATION FOR ACCESS, EVEN WITHIN
-	namespace isolation, network restriction, ...appSec problem?
+Applicable security measures include network isolation through Network Policies\footcite[][, section 'The NetworkPolicy Resource']{netPols} and mutual TLS authentication for network communication through tools like Istio\footcite[][, section 'Mutual TLS authentication']{istioMtls}.
 
 \subsection{V08 - Container breakout}
-Once inside a container, an attacker may try to gain access to the underlying host by a multitude of means. This includes invoking syscalls, accessing the host file system and elevation priviledges within or outside of the container environment
-%TODO refer current docker10 discussion on github!
-TODO
+A popular phrase about container security is that "[c]ontainers do not contain"\footcite[][, first headline]{doNotContain}.
+Once an attacker is able to execute commands in a container within the cluster, he may try influence components outside its isolation confinements. 
+If an attacker successfully gains access to the underlying system, they might gain visibility into or control over any container running on it, including those of other applications. Additionally, they could gain access to internal cluster components like the kubelet\footnote{refer to section \ref{k8sComponents} for additional details}.
+Ways to achieve this include the invocation of syscalls, accessing mounted parts of the host file system and requesting additional capabilities. More ways to achieve this are discussed while the \gls{owasp} Docker Top 10 are being worked on at the time of this writing\footcite[][, dialogue by GitHub users 'drwetter', 'gramsimamsi' and 'wurstbrot']{dockerTop10GithubIssue}.
 
-V06 LIMIT CAPABILITIES -> RESTRICT HOST IMPACT
+This can again be mitigated by restricting the capabilities and host access a given container is provided through the Pod Security Policies mentioned in section \ref{v03}.
+"Sandboxed" containers may be leveraged here, too, which provide more isolation between a container and its host at the cost of performance. Popular implementations include gVisor\footnote{https://github.com/google/gvisor} and Kata Containers\footnote{https://katacontainers.io/}.
 
 \subsection{V09 - Image cache compromise}
-If the cached image of a container can be manipulated, another container (which might even seem to fulfill the same function) violating security principles could be started.
+If the container image cached by a container runtime on the underlying host system is swapped out by an attacker, another container controlled by the attacker might be started.
 
-TODO
-
-ENSURE IMAGE PROVENANCE
-	docker content trust, code signing
-
+In order to mitigate this, container runtimes may support capabilities to check for the integrity of a container image. An example of such features is Docker Content Trust, which enables integrity verification at runtime\footcite[][, section 'About Docker Content Trust (DCT)']{dockerContentTrust}.
 
 \subsection{V10 - Container modification at runtime}
-Once inside a container, an attacker may try to modify the container to exfiltrate data or better suit their needs for further intrusion
+Instead of starting bad containers as discussed in section \ref{v13}, an attacker may try to modify it in order to suit their needs and support further attacks.
+This may be done by downloading and running additional binaries, establishing connections to Command and Control Servers or manipulating the software and files in place.
 
-TODO
-
-LIMIT CAPABILITIES
-	like V13, but during runtime
+Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Monitoring tools could be used to detect this, of which several commercial products are offered and often integrated into (cloud) provider platforms\footcite[][, slide 40 to 41]{runtimeProt}.
 
 \subsection{V11 - Resource hoarding (sabotage)}
 The provided resources may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
@@ -439,9 +421,11 @@ TODO
 
 MEASURES SAME AS V11 EXCEPT COMPONENT ISOLATION
 
-\subsection{V13 - Adding rogue containers}
+\subsection{V13 - Adding rogue containers} \ref{v13}
 A malicious container may be started within the cluster
 TODO
+
+reference v10 and contrast
 
 LIMIT ADMISSION AND CAPABILITIES
 	k8s: V06 -> limit capabilities
