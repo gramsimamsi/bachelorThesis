@@ -339,7 +339,7 @@ In order to automatically deny actions, \gls{k8s} Pod Security Policies\footcite
 
 \subsection{V04 - Compromise internal master components}
 In contrast to the components mentioned in section \ref{v01}, there are others only intended to be interacted with by other \gls{k8s} master components, which may also be compromised by an attacker. We will refer to these as internal components.
-The most promising target is the etcd key value store introduced in section \ref{k8sComponents}, as through it an attacker may gain any permission they want.
+The most promising target is the etcd key value store introduced in section \ref{k8sComponents}, as through it an attacker may gain any permission they want\footcite[][, chapter 'Running etcd Safely']{k8sBook}.
 
 The available security measures are much more straightforward than those of the interface components, which is why all (ab)use cases have been united in one vector.
 Master components can be run on any machine in the cluster, but are often run on dedicated master nodes.\footcite[][, section 'Master Components']{k8sComponents}
@@ -372,12 +372,12 @@ Free and helpful tools in assessing configurations are kubesec.io, kube-bench\fo
 Defining guidelines and best practices for configurations could be done and enforced by regular manual reviews or automated checks through tools like the Open Policy Agent admission controls\footcite[][, section 'Wrap Up']{opaAdmission} or k8Guard\footnote{https://k8guard.github.io/}.
 As bad configurations may include bad containers, the measures introduced in section \ref{v05} are applicable, too.
 
-\subsection{V07 - Lateral movement through cluster}
+\subsection{V07 - Lateral movement through cluster} \label{v07}
 Once an attacker gains access to a container, he may try to access more lucrative information, applications or cluster components. Ways to achieve this could be sniffing network traffic or scanning the network for other containers, hosts, services, apis or similar interfaces.
 
 Applicable security measures include network isolation through Network Policies\footcite[][, section 'The NetworkPolicy Resource']{netPols} and mutual TLS authentication for network communication through tools like Istio\footcite[][, section 'Mutual TLS authentication']{istioMtls}.
 
-\subsection{V08 - Container breakout}
+\subsection{V08 - Container breakout} \label{v08}
 A popular phrase about container security is that "[c]ontainers do not contain"\footcite[][, first headline]{doNotContain}.
 Once an attacker is able to execute commands in a container within the cluster, he may try influence components outside its isolation confinements. 
 If an attacker successfully gains access to the underlying system, they might gain visibility into or control over any container running on it, including those of other applications. Additionally, they could gain access to internal cluster components like the kubelet\footnote{refer to section \ref{k8sComponents} for additional details}.
@@ -391,65 +391,42 @@ If the container image cached by a container runtime on the underlying host syst
 
 In order to mitigate this, container runtimes may support capabilities to check for the integrity of a container image. An example of such features is Docker Content Trust, which enables integrity verification at runtime\footcite[][, section 'About Docker Content Trust (DCT)']{dockerContentTrust}.
 
-\subsection{V10 - Container modification at runtime}
+\subsection{V10 - Container modification at runtime} \label{v10}
 Instead of starting bad containers as discussed in section \ref{v13}, an attacker may try to modify it in order to suit their needs and support further attacks.
 This may be done by downloading and running additional binaries, establishing connections to Command and Control Servers or manipulating the software and files in place.
 
-Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Monitoring tools could be used to detect this, of which several commercial products are offered and often integrated into (cloud) provider platforms\footcite[][, slide 40 to 41]{runtimeProt}.
+Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Limiting network connections to cluster-external sources may mitigate ways to download additional software or exfiltrate data. This could be done via Egress Network Policies, which were introduced in section \ref{v01}
+Monitoring tools could be used to detect this, of which several commercial products are offered and often integrated into (cloud) provider platforms\footcite[][, slide 40 to 41]{runtimeProt}.
 
-\subsection{V11 - Resource hoarding (sabotage)}
-The provided resources may be misconfigured or misused to disrupt service availability (i.e. through fork bombing or misconfiguration)
+\subsection{V11 - Resource hoarding (sabotage)} \label{v11}
+An attacker with the ability to use resources or manipulate configuration may misuse or misconfigure them in order to disrupt the availability of specific applications or the cluster as a whole in DOS attacks.
+This may be done in a myriad of ways. Exhausting the available resources through fork bombs\footcite[][, chapter 'Fork Bombs and Resource-Based Attacks']{k8sBook} or intensive use of memory, RAM, network bandwidth, processing power or available network ports may be a straightforward technique. They could also delete data and binaries, i.e. \gls{k8s} objects and node programs and operating system components, wherever they have access to.
+If an attacker tries to achieve disruption for a long period of time, they could misconfigure the setup in a way that is either difficult to debug or reverse.
 
-TODO
-
-ISOLATION OF COMPONENTS
-	different namespaces (with different resource limits) for different parts of app, depending on criticality
-	
-LIMIT RESOURCE USAGE
-	per-app / per-namespace resource limits on CPU, Storage, RAM, Bandwidth, cloud budget, what else?
-	
-LIMIT ACCOUNT CAPABILITIES
-	least privilege for dev accounts to limit misconfiguration (i.e. to his own namespace) <- no creation of new namespaces except for within his own resource limits!
-	
-LOGGING OR MONITORING CONFIG CHANGES
-	see generic -> logging/monitoring
+Measures against this include dedicated master nodes, which are a common practice anyway, in order to keep entities without administrator access from affecting the master nodes an master components running on them. Synonymous to section \ref{v01}, isolating applications or teams through different namespaces or even clusters would reduce the 'blast radius' of a successful attack. Once this isolation is in place, resource quotas\footcite[][, section 'Viewing and Setting Quotas']{resourceQuota} could be set in place to constrain the total resource consumption of a namespace. Tools to monitor usage\footcite[][, first paragraph]{k8sResourceMonitoring} could be set in place, as well as alerting mechanisms for unusually high resource consumption. Misconfiguration could be mitigated by the same logging and alerting measures introduced in section \ref{v01}. Deployment management tools like Helm could also be used, which simplify persisting the \gls{k8s} object states in a version-control system.
 
 \subsection{V12 - Resource misuse (cryptojacking)}
-The provided resources may be misconfigured or misused for financial gains (mining cryptocurrencies)
+Instead of sabotaging the cluster and/or applications, an attacker may use resources they can allocate to achieve monetary gain. This is often done by mining cryptocurrencies. The most commonly cited example for this is the incident of electric car manufacturer Tesla, where attackers used the control gained over their cloud infrastructure to run mining software in order to gain cryptocurrency with resources paid for by the company\footcite[][, section 'The Latest Victim: Tesla']{teslaIncident}.
 
-TODO
+The measures against this include those introduced in section \ref{v11}. As this vector might be more difficult to detect if done well, a focus on detection may be of use.
+More advanced measures are presented by RedLock, the company which uncovered the Tesla incident, on their blog\footcite[][, section 'Preventing Such Compromises']{teslaIncident}.
 
-MEASURES SAME AS V11 EXCEPT COMPONENT ISOLATION
+\subsection{V13 - Adding rogue containers} \label{v13}
+In contrast to sections \ref{v05} and \ref{v10}, an attacker capable of starting containers in the cluster may simply start their own malicious one. Since they could try to configure it in any way they want, this could help them in further attacks, leveraging vectors like those described in sections \ref{v07} or \ref{v08}.
 
-\subsection{V13 - Adding rogue containers} \ref{v13}
-A malicious container may be started within the cluster
-TODO
-
-reference v10 and contrast
-
-LIMIT ADMISSION AND CAPABILITIES
-	k8s: V06 -> limit capabilities
-	container runtime: V16->additional restrictions + V17->minimal node setup
-
+The mitigations of section \ref{v10} mostly apply here, except for those against downloading additional binaries at runtime. An attacker could simply supply these within a Dockerfile or container image so they would already be installed. Against this, the detection and mitigation measures against bad images described in section \ref{v05} are applicable.
 
 \subsection{V14 - Adding rogue nodes}
-A malicious node may be added to the cluster
-TODO
+An attacker could try and add a host as a cluster node which is controlled by them. If successful, containers will be scheduled on the new node, allowing an attacker access to these containers in order to read, exfiltrate or manipulate data. They would also have control over the kubelet on this node, as described in section \ref{v08}.
+In a sufficient time period, the chance of any container in the cluster running on the node at least once increases. This process could be sped up by manipulating the reporting data sent by the kubelet to the kube-scheduler, faking a lot of unused resources on it so more containers are scheduled.
 
-REQUIRE ADMIN TO AUTHORIZE NODE ADD
-	Source: NIST-SP800-190, chapter 4.3.5      TODO: how to in ocp / AKS?
-
+In order to mitigate this, nodes would have to authenticate themselves to the apiserver and permissions to add new nodes should be limited to the highest possible user accounts like cluster administrators.
 
 \subsection{V15 - Leveraging bad user practice}
-This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories and more.
-
-TODO
-
-ORGANIZATIONAL MEASURES
-	inform users \& admins of risks regarding…	
-		…phishing (classic awareness)
-		…openly publishing stuff (open source (repos), presentations, talking to external people, troubleshooting threads on stackoverflow, potential partners/vendors, …) TODO: are there infosec modules/courses/resources for this?
-
+An attacker may leverage bad user practice to gain access to or permissions within a cluster. 
+This vector comprises user practices outside of the cluster that lead to risks within it.
+Examples include phishing for user accounts, gathering keys/tokens published to public code repositories, gathering passwords published in credential leaks or dumps, scouting specific software or container images used as well as gathering logs published with information valuable to an attacker.
+This could be done in a targeted way (i.e. specific Open Source Intelligence gathering or sending spearphishing emails) or untargeted by searching large repositories like Github for information formatted in a specific way. A practical example would include looking for published '.kube\textbackslash config' files, where authentication information and kube-apiserver addresses are saved to\footcite[][, section 'Define clusters, users, and contexts']{kubectlClusterAccess}. Gaining access through tokens in public logs has been demonstrated, too\footcite[][, section 'Results and notable findings']{ciKnew}.
 
 %TODO: dont forget
 %default kubeconfig file location on user machine: $HOME/.kube/config <- contains certs + tokens for login, specifies which apiservers, ...
@@ -596,7 +573,8 @@ TODO: apply OCP updates when incoming?
 %TODO get cell background colour working in latex tables? or...
 %TODO ...sort comparison table by sum of risk (aks+ocp) desc
 
-The resulting risk estimation is illustrated in Table \ref{tab:estimateComparison}. The individual values these results are derived from can be seen in tables \ref{tab:ocpRiskTable} and \ref{tab:aksRiskTable}. The details on how these values were determined are explained hereafter.
+The resulting risk estimation is illustrated in Table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. The details on how these values were determined are explained hereafter.
+
 
 \begin{table}[H]
 \centering
@@ -623,14 +601,12 @@ V16             & Leveraging bad infrastructure                                 
 V17             & Leveraging bad patch management                                                        & \textbf{10}    & \textbf{10}    \\ \hline
 \end{tabular}%
 }
-\label{tab:estimateComparison}
 \end{table}
-\captionof{table}{A comparison of the resulting risk for the OCP and AKS environments}
+\captionof{table}{A comparison of the resulting risk for the OCP and AKS environments\label{estimateComparison}}
 
 \begin{landscape}
 \begin{table}[]
 %\caption{The risk estimation of all vectors for an OCP 3.11 cluster}
-\label{tab:ocpRiskTable}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
@@ -655,7 +631,7 @@ V17             & Leveraging bad patch management                               
 \end{tabular}%
 }
 \end{table}
-\captionof{table}{The risk estimation of all vectors for an OCP 3.11 cluster}
+\captionof{table}{The risk estimation of all vectors for an OCP 3.11 cluster\label{ocpRiskTable}}
 \end{landscape}
 
 \begin{landscape}
@@ -685,9 +661,8 @@ V17             & Leveraging bad patch management                               
 \end{tabular}%
 }
 %\caption{The risk estimation of all vectors for an AKS 3.11 cluster}
-\label{tab:aksRiskTable}
 \end{table}
-\captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster}
+\captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster\label{aksRiskTable}}
 \end{landscape}
 
 \subsection{V01 - Reconnaissance through interface components}
