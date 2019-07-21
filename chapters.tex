@@ -435,53 +435,28 @@ This could be done in a targeted way (i.e. specific Open Source Intelligence gat
 % login with user token:	oc login --token '<token>'
 % check user rights: 
 
-\subsection{V16 - Leveraging bad infrastructure}
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown
+\subsection{V16 - Leveraging bad infrastructure} \label{v16}
+Even if the cluster itself is secured properly, an attacker may gain access through the underlying infrastructure if it isn't.
+This includes the configuration of cloud infrastructure as well as on-premise configurations.
+Servers may open insecure or unnecessary ports towards the public as well as interfaces that allows someone any sort of control, i.e. allowing public access to the Docker remote API\footcite[][, section 'Publicly Accessible Docker Hosts']{dockerRemoteAccess}.
+Internally, an attacker may access data belonging to other applications by leveraging side channel attacks like Spectre and Meltdown\footcite[][, section 'Which cloud providers are affected by Meltdown?']{spectreMeltdown}.
 
-%TODO: also other (external) parts of company infrastructure
-TODO
+Measures against this include well known and documented security measures and best practices for traditional server infrastructure, including the full range of \gls{cis} benchmarks available\footcite[][, refer to the list presented]{cisBenchmarkList}.
+Keeping the \gls{os} and programs of the underlying nodes minimal by only installing the necessary tools, functions and binaries may aid by reducing potential vulnerabilities on top of reducing the resource overhead.
+Establishing a 'bastion host'\footcite[][, section 'What is a bastion host, and do I need one?']{bastionHostAws} as single point of remote entry to the cluster may be advisable if such functionality is required.
+Measures can also be found in the \gls{owasp} \gls{csvs}\footcite[][, section 'Infrastructure']{csvsGithub}, \gls{cis} Docker Benchmark\footcite[][, chapters 1 through 3 and 5]{cisDocker}, the \gls{cis} Kubernetes Benchmark\footcite[][, chapters 'Worker Node Security Configuration' and 'Configuration Files']{cisK8s} and the NIST publication\footcite[][, chapters 3.5, 4.5 and 4.6]{nistK8s}.
+Cloud configuration may be assessed and/or enforced with automated tools like ScoutSuite\footnote{https://github.com/nccgroup/ScoutSuite}, cloud-custodian\footnote{https://github.com/cloud-custodian/cloud-custodian} or environment-specific tools like azurite\footnote{https://github.com/mwrlabs/Azurite}.
 
-"CONVENTIONAL" HARDENING
-	established resources like CIS benchmarks
+\subsection{V17 - Leveraging bad patch management} \label{v17}
+An attacker may leverage publicly known vulnerabilities in software that is not up to date on any component used in the environment.
+This may even include systems assumed to be responsible for by other parties. Even in \gls{paas} environments like \gls{aks}, servers have to be restarted by the cloud customer in order for some security updates to take effect. An example for this can be seen in an email sent to an Azure cloud account holder, a screenshot of which is provided in figure \ref{securityMailMS}.
 
-V17 NODE PATCH MGMT MEASURES
-
-V17 NODE MINIMAL OS MEASURES
-	
-ADDITIONAL RESTRICTIONS AVAILABLE
-	disable SSH access to hosts whenever possible (access through physical when bare-metal / hypervisor interfaces if VM nodes). If needed and risk accepted, enable ssh access through bastion host
-	close exposed ports configured, but not needed (dangling container runtime daemon?)
-	CSVS chapter: infrastructure
-	CIS Docker Benchmark chapters: Chapters 1-3 \& 5 (+ Docker Content trust)
-	CIS Kubernetes Benchmark chapters: Worker Node Security Configuration \& Configuration Files
-	NIST-SP800-190 chapters: 3.5, 4.5, 4.6
-	cloud config: check with ScoutSuite and analyze/enforce with cloud-custodian, Azure: check with azurite?
-
-\subsection{V17 - Leveraging bad patch management}
-Every system has to be kept up to date with  security patches. Publicly known vulnerabilities might otherwise be exploited, leading to potentially devastating violations of security principles
-
-TODO reference Microsoft mail to reboot clusters in figure \ref{securityMailMS}
-
-TODO
-
-PATCH MANAGEMENT MEASURES
-(Components: Hosts, Kubernetes cluster, containers, other cluster tools (Jenkins, …)
-	Define responsibilities for Patch Management Guidelines and their execution (while accounting for vacation time and sick days)
-	Define Patch Management Guideline(s) covering all components, I.e. when to patch, when to upgrade, when to take offline
-	Executing people: subscribe to vulnerability notification feeds or set up automated patching
-	AKS-specific: Security Updates are not rolled out automatically if that would result in downtime! Someone has to restart nodes manually or set up automated process!
-	OpenShift-specific: execute guidelines
-	Regularly assess all components for conformity with the desired state
-	Host: Conventional patch management measures
-	Kubernetes: execute guidelines
-	Container: automated scanning (i.e. with clair) or regular manual assessment, subscribe to alerts (new vulns in container images / code OR other components!)
-	
-MINIMAL SETUP	
-	Container-optimized node OS (i.e. CoreOS, Google Container-optimized OS)
-	Use minimal base images (slim is good, alpine is better) for your containers
-	Install only tools required for the operation each specific container on the images used
-	Avoid and eliminate tool functionality overlap (i.e. you don't need two different tools to gather the same logs, each might be at risk through vulns)
-
+Mitigating this is straightforward in theory - apply security updates, fixes and intermediary workarounds whenever they become available.
+In practice this proves to be an ongoing real-world problem, as the WannaCry epidemic very publicly demonstrated\footcite[][, p. 2]{wannaCryPatching}.
+Any and all unpatched components could pose a risk. Thus, responsibilities and guidelines should be defined for when and what to patch. Fallback plans accounting for vacation time and sick days should be implemented, too. The employees responsible for updating should set up or subscribe to their relevant vulnerability notification feeds, i.e. alerts for new vulnerabilities\footcite[][, first paragraph]{azureAlerts}.
+Servers should follow conventional patch management processes, as these are similar to conventional system infrastructure. Kubernetes distributions should be kept up to date with updates provided by the \gls{k8s} distributor. Of note is the short time of guaranteed support by the \gls{k8s} reference implementation. The Kubernetes project maintains the most recent three minor releases with a new minor version planned approximately every three months\footcite[][, section 'Supported versions']{k8sSupport}. This would result in a cluster upgrade to be required every nine months in order to stay supported. Other distributions may have longer time periods of guaranteed support, i.e. \gls{ocp}\footcite[][, section 'OpenShift Container Platform v3']{ocpSupport}.
+Applying updates to containers by updating container images should be done regularly. This includes both incrementing the version numbers of their base images to a version without currently known vulnerabilities as well as updating binaries directly downloaded during the build process. As an 'update' command run by the package manager during the build process works dynamically, security updates to those packages are included any time an image is built again. In consequence, images should be rebuilt periodically.
+Using the image version tag 'latest' is not recommended, as this could automatically propagate bad images pushed to the image repository through to production environments\footcite[][, p. 40]{k8sBook}. Automated scanning may be implemented by open source tools like clair\footnote{https://github.com/coreos/clair}. Limiting the probability for new vulnerabilities by reducing the software installed as described in section \ref{v16} may help, too.
 
 \chapter{Assessing the attack surface risk}
 %TODO: derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies
@@ -505,66 +480,99 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \end{itemize}
 
-
 %START OLD STUFF, REVISIT%
+\mybox{yellow}{
 Focus on three scenarios: attack through network, hijacked container, bad user
+}
 
+\mybox{yellow}{
 Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
 Some newer information might be used for big outliers, but everything else just gets a side note
+}
 
+\mybox{yellow}{
 RISK ASSESSMENT METHODOLOGY:
 difficulties with: 
 A how generically should vectors be set?
 B how to structure vectors (into categories?) 
+}
 
+\mybox{yellow}{
 Solution to A: vectors split and merged after risk assessment sketch; if there were considerable differences in the estimated values, they were split. If no diffs, they were merged.
 Solution to B: Considerable time invested, no optimal solution was found. Ultimately ignored this, since more time investment wast feasible or added much value to the goals. TODO: Explain process, what was looked at and why it wast good, how we arrived at the end structure.
+}
 
+\mybox{yellow}{
 Risk assessment formula:
 Risk = Probability * Impact.
 Impact was taken as single value of 1 through 3  and estimated through None/Theoretical (0), Low/Intermediate-Step (1), non-severe security principle violation (2), severe security principle violation (3)
+}
 
+\mybox{yellow}{
 Probability was a bitch to define properly. Therefore split into four factors: Vantage Point, Required Access Level (RAL), Detectability and Exploitability. Those initially had values between 0 though 3, but outlier values of 4  were defined for RAL and Vantage Point (in sync with existing assessment methodologies within HvS).
 The average of these four values is taken as the total probability value, ranging from 0.25 through 3.5 (low <= 1.25, medium <= 2.25).
 Vantage Point: physical access (0, see above since your own or the cloud providers hardware-accessing employees can also do whatever they want); node or management-interface (1); within container (2); within company network (3); from public www (4)
 Required Access Level: cloud/infrastructure admin (0, since a rogue employee with super-admin can do whatever they want and this is about baseline security); cluster/system-admin (1); cluster/system user with read/write access (2); cluster/system user with read-only access (3); unauthenticated (4)
 Detectability: Difficult (1) since it needs custom tools for environment-specific vuln detection; Average (2) since it is either generic but needs simple custom tools or its individualized but can be identified with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to find the vuln
 Exploitability: Theoretical (0, since this is the level of unpublished 0-days and we are still doing baseline security); difficult (1) needs custom tools for environment-specific exploitation; Average(2), since its a generic exploit but needs simple custom tools or its individualized but can be exploited with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to exploit the vuln
+}
 
+\mybox{yellow}{
 This leads to a total risk of 0 through 10.5, which is then rounded to full integers and capped at 10. In accordance to HvS internal models, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high.
+}
 
+\mybox{yellow}{
 specific values for each vector are estimated in a context with multiple assumptions:
 TODO: callback to assumptions in scope limitation
+}
 
+\mybox{yellow}{
 - If multiple techniques can be used / impacts can occur to leverage a vector, all factor values of the one with the highest total risk are taken
 - Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
+}
 
+\mybox{yellow}{
 goal is to reduce values above threshold X to below threshold X by applying security measures. This aims to ensure a basic security level, not something against APT groups / zero-day protection / targeted attacks with a lot of resources and competence. (no online banking, user data of average confidentiality etc)
+}
 
+\mybox{yellow}{
 Default values are defined as the following:
+}
 
+\mybox{yellow}{
 SETUP OF PRACTICAL PART:
+}
 
+\mybox{yellow}{
 Version freeze:
-\gls{ocp} 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
+OCP 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
 AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
+}
 
+\mybox{yellow}{
 Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
 - action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (\#65799, @dekkagaijin)
 - https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
 - ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (\#65499, @krunaljain)
 - kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (\#65739, @liggitt)
 The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (\#65593, @bsalamat)
+}
 
+\mybox{yellow}{
 no major changes => OCP 3.11, AKS-k8s 1.11.9!
+}
 
+\mybox{yellow}{
 Dependency compatibilities:
 OCP 3.11: docker 1.13, CRI-O 1.11 (Source: LINK COMMENTED %https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
 k8s-1.11: docker 1.11.2 to 1.13.1  (Source: LINK COMMENTED % https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
 Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
+}
 
+\mybox{yellow}{
 -> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
 TODO: apply OCP updates when incoming?
+}
 
 %TODO: END OLD STUFF, REVISIT%
 
@@ -668,203 +676,244 @@ V17             & Leveraging bad patch management                               
 \subsection{V01 - Reconnaissance through interface components}
 
 %OCP
+\mybox{yellow}{
 A user with access to the apiserver / webinterface(s) and read access can scout out information.
 By default, each account (project admin or project user, but not cluster admin) can only see information about his own project, a cluster admin can see all namespaces.
 This could show outdated software versions, running systems / containers / pods / user account privileges / misconfigurations and may support in planning and confirming effectiveness of further attacks.
-
 The information gathering processes and interfaces are known and documented pretty well, but the information gathered has to be analyzed specific to the environment.
+}
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn't change total risk value
-
+}
 \subsection{V02 - Reading confidentials through interface components}
+
 %OCP
+\mybox{yellow}{
 In addition to V01, a user with access to the apiserver / webinterface(s) and read access can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain privileged access like pull/push images, trigger actions in other applications / containers, …
 These can be gathered and used for further access by an attacker.
-
 Kube-hunter is a readily available tool and checks for this automatically.
+}
 
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, pushing it just over the edge from medium to high
-
+}
 \subsection{V03 - Configuration manipulation through interface components}
+
 %OCP
+\mybox{yellow}{
 In addition to both V01 and V02, a user with access to the apiserver / webinterface(s) and write access can change configurations on the cluster. By default, each account (project admin or project user, but not cluster admin) can only change the configuration of namespaces resources (i.e. access to project-specific resources like pods, services, routes, but not cluster-global resources like nodes, SCCs or interface/authorization configurations). 
-
 The capabilities can be looked up through the API, what you can achieve with it has to be analyzed environment-specifically though.
-
+}
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated high in the end
-
+}
 
 \subsection{V04 - Compromise internal master components}
-%OCP
-Misconfiguration of internal Kubernetes components (accessible by systems it is not assigned to be accessible by) could lead to a full cluster compromise. The cluster configuration and all secrets / authorization credentials are stored in the etcd instance(s). One would need to seriously fuck up the setup, since OCP configures everything through ansible and you would have to knowingly change some internal settings not intended to be changed in order to achieve this. Configurations are maintained by red hat, meaning config changes will be applied in updates and additionally sent out to notify relevant people subscribed to those alerts.
 
+%OCP
+\mybox{yellow}{
+Misconfiguration of internal Kubernetes components (accessible by systems it is not assigned to be accessible by) could lead to a full cluster compromise. The cluster configuration and all secrets / authorization credentials are stored in the etcd instance(s). One would need to seriously fuck up the setup, since OCP configures everything through ansible and you would have to knowingly change some internal settings not intended to be changed in order to achieve this. Configurations are maintained by red hat, meaning config changes will be applied in updates and additionally sent out to notify relevant people subscribed to those alerts.
 Kube-hunter checks for misconfiguration, but cant find any (non-false-positive) openings with default settings. Would need zero-day / known vuln in Microsoft or red hat configs
+}
 
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 The master components are updated, configured and maintained by Microsoft, only when a restart is required the cluster administrator has to trigger it manually.
 -> increases total risk value slightly, both are still rated medium in the end
-
+}
 \subsection{V05 - Image poisoning and baiting}
-%OCP
-This has two facettes: it can be untargeted (image spraying) and targeted (compromising a specific image known to be used by the target).
 
+%OCP
+\mybox{yellow}{
+This has two facettes: it can be untargeted (image spraying) and targeted (compromising a specific image known to be used by the target).
 The untargeted version needs the least access, since it simply needs a (free) dockerhub account to upload malicious images that could or couldn't fulfill the function they are advertised to do. This is done in the hopes of someone downloading that image for use in his own environment, thus starting attacker-supplied containers within their cluster.
 This could allow an attacker remote access to a container in the cluster and/or exfiltrate information.
 Even without injecting malware, an attacker could mislabel old software versions as newer ones so software with known vulnerabilities is deployed because it is though to be up to date.
-
 The targeted version could be specialized uploads to docker hub (similar to broad phishing vs. spear phishing) or “poisoning” an internal container image repository.
-
 Image builds run as root, which could further be exploited – but this would need a vulnerability in the OCP / Azure build process.
-
 These methods are publicly known and both the docker container runtime and docker hub actively try to mitigate this, but malicious images are only deleted when reported by enough users and the security settings within the container runtime are not set by default.
 Base containers and malware / known vulnerable versions are readily available from public sources, but need some technical expertise to plug together.
-
+}
 %AKS
+\mybox{yellow}{
 Exactly the same as OCP
-
+}
 \subsection{V06 - Configuration poisoning and baiting}
+
 %OCP
+\mybox{yellow}{
 Similar to V07, this can be done either untargeted by spraying to tutorials / help forums or targeted, similar to spear phishing.
 If a cluster administrator does not fully analyze or understand the configuration he gets from public sources, the cluster could be compromised fully, i.e. by implementing backdoors through malicious containers with special access and ability to be remotely accessed by the attacker.
-
 Examples are readily available from public sources, but need some technical expertise to plug together.
-
+}
 %AKS
+\mybox{yellow}{
 Exactly the same as OCP
-
+}
 \subsection{V07 - Lateral movement through cluster}
+
 %OCP
+\mybox{yellow}{
 Once an attacker sits within a container, he can scan the network for other containers, hosts, services, apis or similar interfaces to further his access. By default, all containers in all projects (except master \& infra components) are put in the same subnet, allowing everyone to communicate with anyone else.
 This is especially troubling for securing an environment with multiple tenants – even if the DB is not publicly accessible, unauthorized access can be leveraged by anyone in the cluster.
-
 Scanning tools like nmap etc. to find components to talk to are readily available, but their results are cluster-specific (everyone runs something different). Therefore some technical expertise is needed to leverage the network access needed. 
-
+}
 %AKS
+\mybox{yellow}{
 Same as OCP. 
 The worst AKS-specific problem with this is the mitigation. This risk is not clearly documented in the setup section of the documentation. If one stumbles upon this information in further sections of the docs after setting up his cluster, he might postpone or deny changing the setting to isolate different projects by default. This is because a full cluster rebuild is needed to change this setting!
-
+}
 \subsection{V08 - Container breakout}
 
 %OCP
+\mybox{yellow}{
 A deployed container poses the risk of allowing access to the node it is running on, thus allowing an attacker to “break out” of the container and perform actions on the node.
 This poses a considerable threat, since any container may run on any node by default, allowing an attacker full access to any containers running on the node he controls, which will – especially over time – have a great chance to include containers belonging to other projects.
-
 The OCP default settings limit the possibility of this dramatically, the risk lies more in organizations relaxing the defaults in favor of easy usability. (A majority of container images straight from docker hub require UID 0, which is denied by the default SCC ‘restricted’ in OCP during admission. This results in crashlooping and non-functional containers, developers would need to customize any image themselves. The easiest way to stop those problems this is to permit the default service account within a project access to the ‘privileged’ SCC permissions. This would significantly increase the risk of a container breakout!)
-
 This is probably the most-talked about attack vector regarding containers, but techniques are not obviously documented and breakout methods would have to be customized to the restrictions applied within a cluster.
+}
 
 %AKS
+\mybox{yellow}{
 Difference to OCP: containers can be run with UID 0 and more relaxed settings in general by default. User-namespace remapping not in place by default, vastly increasing the risk of a container breakout!
 This is more on the usability>security side of things. 
 -> raises risk, jumping from medium to high.
-
+}
 
 \subsection{V09 - Image cache compromise}
+
 %OCP
+\mybox{yellow}{
 If you can swap out the cached container image on a host, the swapped-in version will run the next time this node spins up this container.
 This is a very sneaky way to inject a malicious container, but within the default settings, access to the host file system is required.
-
 Not well known and not entirely trivial to do (sneakily).
-
+}
 %AKS
+\mybox{yellow}{
 Same as OCP.
-
+}
 \subsection{V10 - Container modification at runtime}
+
 %OCP
+\mybox{yellow}{
 Instead of deploying a container with malicious contents, an attacker can try to modify and use an already running container to its needs by loading additional tools/binaries, changing configurations or exfiltrating data. This could be done through an RCE vuln, ssh access or others, just like any compromised Linux machine.
-
 -> Common sense to do this, same technical level as any command line interaction with a Linux system.
-
+}
 %AKS
-Same as OCP.
+\mybox{yellow}{
+Same as OCP.}
 
 \subsection{V11 - Resource hoarding (sabotage)}
-%OCP
-With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting DOS attacks or wiping nodes or cluster configurations. Since it is a complex system, finding the sabotaged component can take considerable know-how and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
 
+%OCP
+\mybox{yellow}{
+With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting DOS attacks or wiping nodes or cluster configurations. Since it is a complex system, finding the sabotaged component can take considerable know-how and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
 Wiping is common sense, sabotaging the cluster in a complex and effective way may take deeper knowledge and be customized to the environment.
+}
 
 %AKS
+\mybox{yellow}{
 Difference to OCP: you can easily spin up more resources in the cloud -> less impact
 -> risk decreases by a considerable margin, high to medium
-
+}
 \subsection{V12 - Resource misuse (cryptojacking)}
+
 %OCP
+\mybox{yellow}{
 In contrast to V14, an attacker will try to be sneaky if done well.
 The goal here is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
-
 Cryptojacking is regularly cited as an up-and-coming attack, but to do it with a low risk of being detected needs some technical skill.
+}
 
 %AKS
+\mybox{yellow}{
 Difference to OCP: an attacker can easily spin up more resources in the cloud -> more impact
 -> risk increases by a considerable margin, medium to high
+}
 
 \subsection{V13 - Adding rogue containers}
+
 %OCP
+\mybox{yellow}{
 Instead of manipulating running containers, an attacker with user access and permissions to spin up containers may start their own ones. (BYOC – bring-your-own-container?)
 This is still restricted by container admission restrictions on the user/project, but at least he can install all needed binaries beforehand and his shell doesn't die whenever the underlying container might be stopped.
-
 Doing this is common sense, as before some technical skill is required to prepare a malicious container
+}
 
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> increases total risk value slightly, both are still rated medium in the end
-
+}
 \subsection{V14 - Adding rogue nodes}
+
 %OCP
+\mybox{yellow}{
 An attacker could try to add a malicious node to the cluster and inspect or manipulate data in or exfiltrate data from containers scheduled on it. Since any container may run anywhere, there is a high chance of all containers eventually being run on a given node over time, exposing the whole cluster to an attacker. This could be sped up by manipulating the reports of remaining resources on the node towards the scheduler.
 By design, cluster administrator access is needed to add a node within OCP.
-
 This technique is not talked about that much, but still available in public resources and possible in all clusters. Docs are publicly available to add nodes to a cluster, basic Linux server administration skills are needed to follow them.
-
+}
 %AKS
+\mybox{yellow}{
 Accessible from anywhere (cloud).
 -> total risk value unchanged
 In contrast to OCP, you can spin up additional nodes more easily in AKS if configured on creation, but to access/control/manipulate them you still need cluster administrator access.
 A tutorial on getting ssh access is available, but that's lengthy and not trivial.
-
+}
 \subsection{V15 - Leveraging bad user practice}
+
 %OCP
+\mybox{yellow}{
 This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories, password reuse, scouting specific software or container images used, publishing logs with information valuable to an attacker and more.
 Could be done targeted (i.e. specific OSINT) or untargeted through github crawlers, scanning account/password dumps, …
 Whatever you get could be used to access the cluster with the permissions granted by service-/user-accounts or as a reconnaissance base for further attacks.
-
 There are tools available to do this, using them effectively requires some technical skill.
-
+}
 %AKS
+\mybox{yellow}{
 Same as OCP, except accessible from anywhere (cloud, duh).
 -> doesn't change total risk value
-
+}
 \subsection{V16 - Leveraging bad infrastructure}
+
 %OCP
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. This includes Side-Channel attacks like Spectre \& Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
-Vector exists mostly to sink all “classic” infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
-
+\mybox{yellow}{
+The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. 
+This includes Side-Channel attacks like Spectre and Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
+Vector exists mostly to sink all classic infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
 Among worst case: unauthenticated access to run commands which is hosted publicly on the internet for anyone to access and indexed by shodan. Bye bye cluster.
-(Too many scenarios to hypothesize here, Ill just point the finger at conventional server \& infra hardening standards and guidelines)
-
+(Too many scenarios to hypothesize here, Ill just point the finger at conventional server and infra hardening standards and guidelines)
 -> Well known, still needs some technical skill to find vulns and exploit them
+}
 
 %AKS
+\highlight[yellow]{
 Surprisingly, same as OCP (despite the azure promise of PaaS-we-manage-your-infra)!
 That's the case since security updates on nodes that require a reboot are not done automatically, but have to be triggered manually or configured to trigger automatically.
 Remediation is far less work though.
+}
 
 \subsection{V17 - Leveraging bad patch management}
+
 %OCP
+\highlight[yellow]{
 Sinkhole vector for patch management. Would be a measure against every preceding vector otherwise.
 Worst case could be anything, thus maximum risk. (See kubernetes CVE with 9.8 / 10)
 
 To check for this is common sense, some technical skill may be needed to find and exploit unpatched stuff.
+}
 
 %AKS
+\highlight[yellow]{
 Same as OCP. Even infra still needs user interaction to be patched, see preceding vector.
+}
 
 \chapter{Managing the attack surface risk}
 
@@ -874,46 +923,56 @@ With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} 
 %TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)
 Normally one should start with the vector currently having the highest overall risk. We chose two other vectors, since these were more representative of the environments within scope and concise enough to properly present the process. Securing the underlying physical servers or \gls{vm}s is not an optimal example representing the process of securing a solution based on orchestrated containers.
 
+\highlight[yellow]{
 TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
+}
 
 \section{Managing the risk of V07 - Lateral movement through cluster}
 %TODO write out all from ppt with commands, pictures
+\highlight[red]{
 TODO this was done in both AKS and OCP, is possible with both default configs!
-
+}
 \subsection{Demonstrating the successful attack without security measures}
 %TODO
+\highlight[yellow]{
 TODO: show demo on OCP and AKS, or just one and put the other in appendix?
 
 TODO: show getting in and damage, refer to ppt for commands, console I/O and screenshots
-
+}
 \subsection{Selecting security measures}
 %TODO
+\highlight[yellow]{
 TODO: use multitenant networkplugin (OCP) and network policies (k8s)
 TODO: show implementing measures through commands in ppt
-
+}
 \subsection{Demonstration with implemented security measures}
 %TODO
+\highlight[yellow]{
 TODO show remediation through demo of unsuccessful attack
-
+}
 \subsection{Risk reassessment}
 %TODO
+\highlight[yellow]{
 TODO updated table of risk for ocp AND aks
-
+}
 \section{Managing the risk of V08 - Container breakout}
 %TODO write out all from ppt with commands, pictures
+\highlight[yellow]{
 TODO this was done on AKS and OCP, but needed changes in default OCP settings to work.
-
+}
 \subsection{Demonstrating the successful attack without security measures}
 %TODO
+\highlight[yellow]{
 TODO: show demo on OCP and AKS, or just one and put the other in appendix?
 
 TODO: show getting in and damage, refer to ppt for commands, console I/O and screenshots
-
+}
 \subsection{Selecting security measures}
 %TODO
-TODO font allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
+\highlight[yellow]{
+TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 TODO: show implementing measures through commands in ppt
-
+}
 \subsection{Demonstration with implemented security measures}
 %TODO
 %TODO: maybe show again without privileged, but with uid 0?
@@ -921,26 +980,29 @@ TODO: show implementing measures through commands in ppt
 TODO show remediation through demo of unsuccessful attack
 
 \subsection{Risk reassessment revisited}
-
+\highlight[red]{
 TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
-
+}
 \section{Continuing the risk management process}
 %TODO process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
-
+\highlight[yellow]{
 TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
+}
 
 \chapter{Conclusion}
 This chapter aims to provide answers to the remaining questions posed in chapter \ref{goal}.
 
 \subsection{Comparing on-premise and public cloud}
 %TODO
+\highlight[yellow]{
+TODO reference table} \ref{estimateComparison}
 
-TODO reference table \ref{tab:estimateComparison}
-
+\highlight[yellow]{
 TODO explain problem of generically comparing, without going into specific solutions -> just comparing OCP vs. AKS.
-
+}
+\highlight[yellow]{
 TODO both have pros and cons, regardless of specific solution picked.  Specific solutions have their pros and cons, too. cloud risk may be higher initially (both in the solutions we looked at and in general), but there are measures to reduce that to acceptable level for baseline security. some use cases benefit from buy-iaas-provide-paas, since more control with you as provider. high-security requirements on-prem probably better (and may be needed for compliance). -> our POV both work, would have to be decided on a case-by-case basis as they depend on many factors (integration with other offers or services very valuable for cloud-specific, pre-existing on-prem data centers make on-prem easier).
-
+}
 % FOLLOWING SECTION SCRAPPED FOR THESIS! left as comment for reference
 %\subsection{Multi-tenant isolation}
 %Comments on multi-tenant usage
@@ -950,11 +1012,11 @@ TODO both have pros and cons, regardless of specific solution picked.  Specific 
 
 \subsection{Summary}
 %TODO summary of thesis process, outlook, commentary
-
+\highlight[yellow]{
 TODO summary of thesis process - huge scope, could have been better defined beforehand. risk estimate formula still inst perfect, but time would probably still be better allocated to practical stuff or more research, both for thesis and others trying to follow the process. no use in better knowing which one is the biggest problem if no time left to reduce risk in the end. hope that more sources are published and industry standards crystallize so not everyone has to do that much research on their own.
 
 TODO outlook - stuff will continue to move fast, hopefully with security in mind. we are currently far better with security than i.e. pre k8s-1.8. more security features will be introduced or go stable (refer to future k8s pod sandbox option in YAML files). as mentioned in multi-tenant isolation, cluster federation might help and will introduce new solutions, but probably also new problems. rootless builds, currently through buildah etc, becoming more mainstream will probably be the next big security thing here.
 % rootless container runtime \& build: https://github.com/moby/moby/pull/38050 %
 
 TODO commentary - hope this helps someone and spares some time. am excited for future tools and platform developments.
-
+}

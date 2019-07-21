@@ -1,0 +1,58 @@
+function postStuff(){var hr=new XMLHttpRequest();var url="member-management.php";var fn=document.getElementById("fname").value;var ln=document.getElementById("lname").value;var vars="firstname="+fn+"&lastname="+ln;hr.open("POST",url,true);hr.setRequestHeader("Content-type","application/x-www-form-urlencoded");hr.onreadystatechange=function(){if(hr.readyState==4&&hr.status==200){var return_data=hr.responseText;document.getElementById("status").innerHTML=return_data;}}
+hr.send(vars);document.getElementById("status").innerHTML="processing...";}
+function check_member_status(){var member_email=get_member_email();$.ajax({url:process_membership.ajax_url,data:{action:'check_member_status',member_email:member_email},type:'post',success:function(output){$(".member-message").addClass("hide");if(output=="new-member")
+{$("#membership-type").removeClass("hide");$("#member-benefits-text").removeClass("hide");$(".member-quote-desk").removeClass("hide");$("#smb-btn").append($("#smb-btn-renew").children());$("#submit-button").text("Submit");}
+else if(output=="member-exists")
+{getCompanyName();$("#smb-btn-renew").append($("#smb-btn").children());$("#submit-button").text("Request Renewal");$("#member-exists").removeClass("hide");hideElements();}else
+hideElements();}});}
+function check_price(membership_type,number_employees,number_years)
+{$.ajax({url:process_membership.ajax_url,data:{action:'check_price',membership_type:membership_type,number_employees:number_employees,number_years:number_years,},type:'post',success:function(output){$(".member-total-price").text(output);$(".member-total-price-h").text(output);$(".single-price").text(output);if($('#member-radio-employees').is(':visible'))
+{if($('#member-radio-employees').val()!='-1')
+{$("#num-employees").text($('#member-radio-employees').val()+' employees');$("#num-employeess").text($('#member-radio-employees').val()+' employees');}}
+else{if($('#member-radio-revenue').val()!='-1')
+{$("#num-employees").text($('#member-radio-revenue').val()+' revenue');$("#num-employeess").text($('#member-radio-revenue').val()+' revenue');}}}});}
+function submit_form(member_email,membership_type,member_revenue,number_employees,number_years,total_price,technology)
+{var company_name=$("input[name=company_name]").val();var website_address=$("input[name=website_address]").val();var company_street=$("input[name=company_street]").val();var company_street2=$("input[name=company_street2]").val();var company_country=$("#company_country").val();var company_city=$("input[name=company_city]").val();var company_state=$("#company_state option:selected").text();var company_zip_code=$("input[name=company_zip_code]").val();var registrant_first_name=$("input[name=registrant_first_name]").val();var registrant_last_name=$("input[name=registrant_last_name]").val();var registrant_title=$("input[name=registrant_title]").val();var registrant_phone_number=$("input[name=registrant_phone_number]").val();var registrant_referrer=$("#registrant_referrer_other").val();var promo_code=$("#promo_code").val();var comments=$("textarea#comments").val();$.ajax({url:process_membership.ajax_url,data:{action:'submit_form',member_email:member_email,membership_type:membership_type,member_revenue:member_revenue,number_employees:number_employees,number_years:number_years,total_price:total_price,technology:technology,company_name:company_name,website_address:website_address,company_street:company_street,company_street2:company_street2,company_country:company_country,company_city:company_city,company_state:company_state,company_zip_code:company_zip_code,registrant_first_name:registrant_first_name,registrant_last_name:registrant_last_name,registrant_title:registrant_title,registrant_phone_number:registrant_phone_number,registrant_referrer:registrant_referrer,promo_code:promo_code,gr_response:grecaptcha.getResponse(),comments:comments},type:'post',success:function(output){window.location.href=output;}});}
+function submitOnRenew()
+{var member_email=get_member_email();var gr_resp=grecaptcha.getResponse();$.ajax({url:process_membership.ajax_url,data:{action:'submitOnRenew',member_email:member_email,gr_response:gr_resp,},type:'post',success:function(output){document.location.href=output},});}
+function test_submit()
+{$.ajax({url:process_membership.ajax_url,data:{action:'test_submit',},type:'post',success:function(output){alert(output);}});}
+function getCompanyName()
+{var member_email=$("#email").val();$.ajax({url:process_membership.ajax_url,data:{action:'getCompanyName',member_email:member_email,},type:'post',success:function(output){document.getElementById("company-name").textContent=output;}});}
+function getQueryVariable(variable)
+{var query=window.location.search.substring(1);var vars=query.split("&");for(var i=0;i<vars.length;i++){var pair=vars[i].split("=");if(pair[0]==variable){return pair[1];}}
+return(false);}
+function get_membership_type()
+{return $("#member-type").val();}
+function get_member_email()
+{return $("#email").val();}
+function on_membership_process_change()
+{$(document).on('change','._someDropDown',function(e){});}
+function on_membership_type_change(membership_type)
+{$.ajax({url:process_membership.ajax_url,data:{action:'get_membership_data',membership_type:membership_type,},type:'post',success:function(output){$("#member-revenue-div").removeClass("hide");if(output.includes("revenue"))
+{$(".member-radio-revenue").empty();$(".member-radio-employees").empty();$(".member-radio-revenue").append('<option name="revenue" value="-1" selected>Select Total Revenue</option>');$(".member-radio-revenue").append(output);$("#academic-paragraph").addClass("hide");$("#consulting-paragraph").removeClass("hide");$("#hidden-part-form").removeClass("hide");$("#number-years").addClass("hide");check_price(membership_type,$('#member-radio-revenue').val(),$("input[name=years]:checked").val());if($(".member-radio-revenue > option").length<=1)
+$("#member-revenue-div").addClass("hide");validateInput();}
+else if(output.includes("employees"))
+{$(".member-radio-employees").empty();$(".member-radio-revenue").empty();$(".member-radio-employees").append('<option name="employees" value="-1" selected>Select the Number of Employees</option>');$(".member-radio-employees").append(output);$("#consulting-paragraph").addClass("hide");$("#academic-paragraph").removeClass("hide");$("#hidden-part-form").removeClass("hide");$("#number-years").removeClass("hide");check_price(membership_type,$('#member-radio-employees').val(),$("input[name=years]:checked").val());validateInput();}
+else{hideElements();$("#membership-type").removeClass("hide");}}});}
+function displaySubmitButton()
+{}
+function enableSBtn(){}
+function disableSBtn(){$("#submit-button").prop('disabled','disabled');}
+function hideSubmitButton()
+{}
+function hideElements()
+{$("#membership-type").addClass("hide");$("#academic-paragraph").addClass("hide");$("#consulting-paragraph").addClass("hide");$("#hidden-part-form").addClass("hide");}
+function resetPrice()
+{$(".member-total-price").text("$0.00");$(".single-price").text("");$("#num-employees").text("");$("#num-employeess").text("");}
+function updateMemberTitleText()
+{var membership_type=get_membership_type();$.ajax({url:process_membership.ajax_url,data:{action:'getMembershipDescription',membership_type:membership_type},type:'post',success:function(output){$(".member-paragraph-title-dynamic").text(membership_type);$(".member-paragraph-text-dynamic").html(output);}});}
+function getStateProvice()
+{var company_country=$("#company_country").val();$.ajax({url:process_membership.ajax_url,data:{action:'getStateProvice',company_country:company_country},type:'post',success:function(output){$("#company_state").html(output);}});}
+function getCheckedBoxes(){var checkboxesChecked=[];$("input:checkbox[name=intended_use]:checked").each(function(){checkboxesChecked.push($(this).val());});return checkboxesChecked;}
+function validateInput()
+{var numfields=$('.validate').length;var value=$('.validate').filter(function(){return this.value!='';});if(value.length>=0&&(value.length!==numfields)){return false;}else{if(($('#member-radio-revenue').val()!='-1')&&($('#member-radio-employees').val()!='-1'))
+{$('.g-recaptcha').removeClass("hide");return true;}
+return false;}}
+function askQuote()
+{if($('.member-quote-desk').length>0&&$('.member-quote-desk').hasClass("hide")){$(".member-quote-desk").removeClass("hide");}}

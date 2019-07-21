@@ -1,0 +1,1 @@
+jQuery(window).on("track.icegram",function(a,b,c){if(void 0!==b&&""!==b&&"shown"==b&&c.hasOwnProperty("message_id")){var d=icegram.get_message_by_id(c.message_id);void 0!==d.data.button_animation&&jQuery("#icegram_message_"+c.message_id).find(".ig_button ,:submit").addClass("ig_button_anim_"+d.data.button_animation)}});

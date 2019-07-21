@@ -1,0 +1,2 @@
+define(["jquery"],function(s){var e=new StatusPage.page({page:"dn6mqn7xvzz3"}),r={"Partially Degraded Service":"Partial service"},i={critical:"shape-red",major:"shape-orange",minor:"shape-yellow",none:"shape-dash-lime"};e.summary({success:function(e){var a=e.status.description;s(".status-page-widget").removeAttr("hidden");var t=r[a]||a.charAt(0).toUpperCase()+a.substr(1).toLowerCase();s(".status-page-widget .status-description").text(t),s(".status-page-widget .status-dot").addClass(i[e.status.indicator])}})});
+//# sourceMappingURL=status-widget.js.map

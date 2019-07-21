@@ -1,0 +1,11 @@
+pendo.guides=[];
+pendo.normalizedUrl="http://access.redhat.com/support/policy/updates/openshift";
+pendo.lastGuideStepSeen={"isMultiStep":false,"state":""};
+pendo.guideWidget={"enabled":false,"hidePoweredBy":true};
+pendo.guideCssUrl="";
+pendo.throttling={};
+pendo.autoOrdering=["pJfCBTaMrjpmm90-cLkoxqPbXac","oM26zqPCGVGnYv28npg-tq1v6u8","90bW1pRRhnsVCKhKwPt-jQRJByI","3_uiuPtROC2Pf5kCuxMyL6E_bs0","zSopzQrNwRXMXQsGpirH91mh0Zk","YYmlALCXOyCuAvSuP3i_m0DWqdw","Rt8VtEacg5EQ7eHXfU4eLxggp5I","o9AXKY9gEzH7YEZ--lZufnfGr7k","UuqxmQ2RSZVSIJkVP8kK2V8a1rU","Abr41NooxFvXITRN3l6dT-zM9aw","D7tS44A2wdCuVIvV-_sL6B4yGDA","Dl5EDp3TVPFPscFV43M2a04iqQ8","1mwlQfveqXj0YujNd4ISp9T21kw","19Mgu0CxhPxznPz-gLNW31A_D2k","HNYWAGesaXgmEXcfY55Ry_cOR1k","aHQ7qXplnzzc3U_prVCx9sNQHIQ","rwmFZ4-yoyiSt83sX4B2AIQuG5U","VrlchZLoPIyn09oKgyaX_09a0C8","CCZVQrBIbAMCSFu2sT3NKKcNMyc","Z-kSNXonhoqS6Ci6VqaZwJBPvCk","P14J9Q9dWp-TIAmFbDVO-kB0iUs","EBR2LsfVdQ4RSHx0RDDi28b93JE","IwfkccgHNWq0yAHu2w717tXAkvs","oziq5F3YEW3rfI6Fpm2pTfwsW3c","itLfHY38dThlpw5jKUCPMPb-Slw","MRcJFnKkekaHD_oUK5Lw5t6RBLo","fT92Tib2cQ2e8UpoPKkmGSwGm1U","fluTDxEcDwWQu6XCNK4LT8nDNZw","sRxsg9wkLkgQ1O7GfSqi5vjo04Q","jgdGg6Yoqqbl7kCl3dUtJloiwQo","DoJXpYTjUtFGmN0NM7w40xm4xeE","_mrPb-v4x3sOlqdl7G7t3uRF-zU","OzvhjUVnspCTT-wn3abvde3Mca4","B3NKmF3poE-GLe3xJQaLouUqAvU","zHdOGraWWh6SJNDOhdO8otIwPJE","kIAswUHqZV_4212RCQimGB5Lczs","VZnzCKzOOXll3usPbzK89LqKeZ0","mPSATMxDafg6gE10Fyabp3-ASQE","nA2aYrvBkuotwQFXk7xCbcLogBA"];
+pendo.globalJsUrl="";
+pendo.segmentFlags=[];
+pendo.designerEnabled=false;
+pendo.preventCodeInjection=false;

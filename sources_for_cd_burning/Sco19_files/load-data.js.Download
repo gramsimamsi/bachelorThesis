@@ -1,0 +1,14 @@
+function load_data() {
+  if ($("#related-content-container").length) {
+    $("body").append("<div id='related-content-loader' style='display: none !important;'></div>");
+    $("#related-content-loader").load(phpVars.pluginShowUrl, {
+      querystring: phpVars.querystring,
+    });
+  }
+}
+
+if (window.jQuery) {
+  $(document).ready(function() {
+    load_data();
+  });
+}
