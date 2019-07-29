@@ -1,9 +1,9 @@
 \chapter*{Abstract (german)}
 \thispagestyle{empty}
-
+%TODO erster satz: feststellung. kannst das hinterlegen oder umformulieren? Auch im EN-Abstract!
 Die wachsende Zahl von Platform-as-a-Service (PaaS) Lösungen, Cloud-Umgebungen und Microservice-Architekturen bieten neue Angriffsszenarien.
-Dies erhöht den Bedarf an neuen Verteidigungs-Strategien in der IT-Sicherheit von Entwicklungs- und Produktiv-Umgebungen.
-Gerade Lösungen auf Basis von (Kubernetes-konformer) Container-Orchestrierung sind stark gefragt und haben einen sehr unterschiedlichen Aufbau im Kontrast zu konventionelleren und etablierteren Lösungen.
+Dies erhöht den Bedarf an neuen Verteidigungs-Strategien in der IT-Sicherheit von Entwicklungs- und Produktiv-Betriebsumgebungen.
+Gerade Lösungen auf Basis von (Kubernetes konformer) Container-Orchestrierung sind stark gefragt und haben einen sehr unterschiedlichen Aufbau im Kontrast zu konventionellen und etablierten Lösungen.
 Dieser Umstand legt eine nähere Untersuchung dieses Teilbereichs nahe.
 Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 
@@ -13,7 +13,7 @@ Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 
 \item Wie kann ein Anbieter von PaaS-Lösungen an interne und/oder externe Nutzer diese Risiken eindämmen?
 
-\item Was spricht in diesem Kontext aus Sicht eines PaaS-Anbieters jeweils für und gegen Vor-Ort- bzw. Cloud-Lösungen?
+\item Was spricht in diesem Kontext aus Sicht eines PaaS-Anbieters jeweils für und gegen selbst betriebene bzw. Cloud-Lösungen?
 
 \end{itemize}
 
@@ -30,13 +30,13 @@ Aus den Zielen werden drei gängige Angriffsszenarien hergeleitet:
 
 \item Angriff von böswilligen Dritten aus einem Container heraus, über den die Kontrolle übernommen wurde. Ein Beispiel wäre das Asführen von Code oder Befehlen per Zugriff von außen.
 
-\item Fahrlässiger, übernommener oder böswilliger Nutzer bzw. Nutzer-Identität, was ein Kompromittierungsrisiko für diesen und/oder weitere Mandanten und deren Anwendungen darstellt.
+\item Angriff von böswilligen Dritten sowie böswilliger oder fahrlässiger Nutzer bzw. Nutzer-Identität, was ein Kompromittierungsrisiko für diesen und/oder weitere Mandanten und deren Anwendungen darstellt.
 
 \end{itemize}
 
 Sie dienen als Grundlage zur Identifikation von Angriffsvektoren, deren jeweiliges Schadenspotential evaluiert und das bestehende Risiko eingeschätzt werden.
 Es werden potentielle Maßnahmen zur Risiko-Eindämmung gesucht, evaluiert und exemplarisch in der Praxis umgesetzt.
-Im Anschluss findet eine Neubewertung des Risikos vorgenommen, um so beispielhaft eine Methode zum Risikomanagement zu demonstrieren.
+Im Anschluss findet eine Neubewertung des Risikos vorgenommen, um so beispielhaft eine zielführende Methode zum Risikomanagement zu demonstrieren.
 Mithilfe der Ergebnisse werden verschiedene Implementierungs-Empfehlungen verglichen, anhand der verschiedenen Anwendungsfälle differenziert und jeweils Maßnahmen empfohlen.
 
 \bigskip
@@ -50,7 +50,7 @@ Platform-as-a-Service, PaaS, Cloud, Security, Container, Kubernetes, Docker, Ris
 
 The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments and microservice architectures introduce new attack scenarios. 
 This creates the need for new defense strategies in both Development and Operations. 
-Especially solutions providing (Kubernetes compliant) container orchestration are identifiably different and in high demand compared to long established solutions. 
+Especially solutions providing (Kubernetes compliant) container orchestration are identifiably different and high in demand compared to long established solutions. 
 This calls for a more detailed, focused examination. 
 The thesis aims to answer the following questions:
 
@@ -71,13 +71,13 @@ A comparison of existing risks and the need for action derived from it should se
 Examples for widely used PaaS solutions in different environments include OpenShift Container Platform 
 as an on- premise solution and Azure Kubernetes Service as a public cloud solution.
 To achieve the aforementioned goals, the thesis will first limit the view on the problem to a manageable scope by
-concentrating on the components enabled by default and those required for operations of these established and Kubernetes-compliant solutions.
+concentrating on the components enabled by default and those required for operations of these established and Kubernetes compliant solutions.
 Components providing Kubernetes compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
 Three common attack scenarios will be derived from the goals:
 
 \begin{itemize}
 
-\item Malicious third party attacking the underlying infrastructure from within the LAN and/or the
+\item Malicious third party attacking the underlying infrastructure from within the company network and/or the
 internet
 
 \item Malicious third party attacking from inside a hijacked container, i.e. remotely executing code
@@ -90,7 +90,7 @@ his own and/or other applications
 
 These serve as a foundation to identify attack vectors, evaluate their respective potential impact and estimate their risks.
 Possible measures to mitigate those risks will also be explored, evaluated and exemplary put to use in practical examples.
-Subsequently the risk will be re-evaluated in order to illustrate a viable risk management method.
+Subsequently the risk will be re-evaluated in order to illustrate a viable, result oriented risk management method.
 With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
 
 
