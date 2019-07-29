@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html class="web tlp-white ready"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>CVSS v3.1 User Guide</title>
+<meta property="og:title" content="CVSS v3.1 User Guide">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.first.org/1st-icon-512.png">
+<meta property="og:url" content="https://www.first.org/cvss/user-guide">
+<meta property="og:site_name" content="FIRST — Forum of Incident Response and Security Teams">
+<meta property="fb:profile_id" content="296983660669109">
+<meta property="twitter:card" content="summary">
+<meta property="twitter:site" content="@FIRSTdotOrg"><meta name="viewport" content="initial-scale=1,maximum-scale=1.0,user-scalable=no"><link rel="icon" type="image/png" href="https://www.first.org/1st.png"><link rel="apple-touch-icon" sizes="128x128" href="https://www.first.org/favicon.png"><link rel="stylesheet" type="text/css" href="FIR19_files/web.css"></head><body><header><div id="header" data-studio-s="header"><div id="c4" data-studio-c="A_ASg3Q6Iw"><div id="topbar">
+  <div class="sites menu right icon3bars signin">
+
+<div id="socialnetworks">
+<a href="https://twitter.com/FIRSTdotOrg" target="_blank" alt="Twitter @FIRSTdotOrg" class="icon-tw" rel="noopener noreferrer"></a><a href="https://www.linkedin.com/company/first_3" target="_blank" alt="FIRST.Org at LinkedIn" class="icon-linkedin" rel="noopener noreferrer"></a><a href="https://www.facebook.com/FIRSTdotorg" target="_blank" alt="FIRST.Org at Facebook" class="icon-fb" rel="noopener noreferrer"></a><a href="https://github.com/FIRSTdotorg" target="_blank" alt="FIRST.Org at Github" class="icon-github" rel="noopener noreferrer"></a><a href="https://www.youtube.com/c/FIRSTdotorg" target="_blank" alt="FIRST.Org at Youtube" class="icon-youtube" rel="noopener noreferrer"></a>
+</div>
+<a class="button signin" href="https://members.first.org/cvss/user-guide">Sign in</a></div>
+  <div class="nav">
+<p><a href="https://www.first.org/"><img src="FIR19_files/first-logo-200x120.png" alt="FIRST.Org"></a></p>
+<a class="subnav"></a><ul class="navbar"><li><a href="https://www.first.org/about">About FIRST</a><a class="subnav"></a><ul><li><a href="https://www.first.org/about/mission">Mission Statement</a></li><li><a href="https://www.first.org/about/history">History</a></li><li><a href="https://www.first.org/about/organization">Organization</a><a class="subnav"></a><ul><li><a href="https://www.first.org/about/organization/directors">Board of Directors</a></li><li><a href="https://www.first.org/about/organization/executive-director">Executive Director</a></li><li><a href="https://www.first.org/about/organization/secretariat">Secretariat</a></li><li><a href="https://www.first.org/about/organization/committees">Committees</a></li><li><a href="https://www.first.org/events/agm">Annual General Meeting</a></li><li><a href="https://www.first.org/about/organization/reports">Annual Reports</a></li></ul></li><li><a href="https://www.first.org/about/policies">FIRST Policies</a><a class="subnav"></a><ul><li><a href="https://www.first.org/about/policies/bylaws">Bylaws</a></li><li><a href="https://www.first.org/about/policies/board-duties">Board duties</a></li><li><a href="https://www.first.org/about/bugs">Bug Bounty Program</a></li><li><a href="https://www.first.org/about/policies/code-of-conduct">Code of Conduct</a></li><li><a href="https://www.first.org/about/policies/conflict-policy">Conflict of Interest Policy</a></li><li><a href="https://www.first.org/about/policies/doc-rec-retention-policy">Document Record Retention and Destruction Policy</a></li><li><a href="https://www.first.org/newsroom/policy">FIRST Press Policy</a></li><li><a href="https://www.first.org/about/policies/gen-event-reg-refund-policy">General Event Registration Refund Policy</a></li><li><a href="https://www.first.org/about/policies/event-site-selection">Guidelines for Site Selection for all FIRST events</a></li><li><a href="https://www.first.org/identity">Identity &amp; Logo Usage</a></li><li><a href="https://www.first.org/about/policies/media">Media Policy</a></li><li><a href="https://www.first.org/about/policies/privacy">Privacy Policy</a></li><li><a href="https://www.first.org/about/policies/standards">Standards Policy</a></li><li><a href="https://www.first.org/about/policies/translation-policy">Translation Policy</a></li><li><a href="https://www.first.org/about/policies/travel-policy">Travel Policy</a></li><li><a href="https://www.first.org/about/policies/uniform-ipr">Uniform IPR Policy</a></li><li><a href="https://www.first.org/about/policies/whistleblower-policy">Whistleblower Protection Policy</a></li></ul></li><li><a href="https://www.first.org/about/partners">Partnerships</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/partners">Partners</a></li><li><a href="https://www.first.org/global/friends">Friends of FIRST</a></li><li><a href="https://www.first.org/global/supporters">FIRST Supporters</a></li><li><a href="https://www.first.org/global/discounts">Member Discounts</a></li></ul></li><li><a href="https://www.first.org/newsroom">Newsroom</a><a class="subnav"></a><ul><li><a href="https://www.first.org/newsroom/news">What's New</a></li><li><a href="https://www.first.org/newsroom/releases">Press Releases</a></li><li><a href="https://www.first.org/newsroom/news/media">In the News</a></li><li><a href="https://www.first.org/newsroom/newsletters">Newsletters</a></li><li><a href="https://www.first.org/newsroom/policy">FIRST Press Policy</a></li></ul></li><li><a href="https://www.first.org/about/procurement">Procurement</a></li><li><a href="https://www.first.org/about/jobs/">Jobs</a></li><li><a href="https://www.first.org/contact">Contact</a></li></ul></li><li><a href="https://www.first.org/members">Membership</a><a class="subnav"></a><ul><li><a href="https://www.first.org/membership">Becoming a Member</a><a class="subnav"></a><ul><li><a href="https://www.first.org/membership/benefits">Benefits</a></li><li><a href="https://www.first.org/membership/process">Membership Process</a><a class="subnav"></a><ul><li><a href="https://www.first.org/membership/Appendix_A">Full Member Form (App A)</a></li><li><a href="https://www.first.org/membership/Appendix_B">Liaison Form (App B)</a></li></ul></li><li><a href="https://www.first.org/membership/fees">Membership Fees</a></li></ul></li><li><a href="https://www.first.org/members/teams">FIRST Teams</a></li><li><a href="https://www.first.org/members/liaisons">FIRST Liaisons</a></li><li><a href="https://www.first.org/members/map">Members around the world</a></li><li><a href="https://www.first.org/members/application">Membership Application</a><a class="subnav"></a><ul><li><a href="https://www.first.org/members/application/teams">Team Membership Application</a></li><li><a href="https://www.first.org/members/application/liaison">Liaison Membership Application</a></li></ul></li></ul></li><li class="ancestor"><a href="https://www.first.org/global">Initiatives</a><a class="subnav ancestor"></a><ul><li class="ancestor"><a href="https://www.first.org/global/sigs">Special Interest Groups (SIGs)</a><a class="subnav ancestor"></a><ul><li><a href="https://www.first.org/global/sigs/framework" class="borderb">SIGs Framework</a></li><li><a href="https://www.first.org/global/sigs/academicsec">Academic Security SIG</a></li><li><a href="https://www.first.org/global/sigs/bigdata">Big Data SIG</a></li><li><a href="https://www.first.org/global/sigs/ctf">Capture the Flag SIG</a></li><li class="ancestor"><a href="https://www.first.org/cvss">Common Vulnerability Scoring System (CVSS-SIG)</a><a class="subnav ancestor"></a><ul><li><a href="https://www.first.org/cvss/calculator/3.1">Calculator</a></li><li><a href="https://www.first.org/cvss/specification-document">Specification Document</a></li><li class="ancestor"><a href="https://www.first.org/cvss/user-guide" class="ancestor">User Guide</a></li><li><a href="https://www.first.org/cvss/examples">Examples</a></li><li><a href="https://www.first.org/cvss/v3-1">CVSS v3.1 Documentation &amp; Resources</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/calculator/3.1">CVSS v3.1 Calculator</a></li><li><a href="https://www.first.org/cvss/v3.1/specification-document">CVSS v3.1 Specification Document</a></li><li><a href="https://www.first.org/cvss/v3.1/user-guide">CVSS v3.1 User Guide</a></li><li><a href="https://www.first.org/cvss/v3.1/examples">CVSS v3.1 Examples</a></li><li><a href="https://www.first.org/cvss/v3.1/use-design">CVSS v3.1 Calculator Use &amp; Design</a></li></ul></li><li><a href="https://www.first.org/cvss/v3-0">CVSS v3.0 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/calculator/3.0">CVSS v3.0 Calculator</a></li><li><a href="https://www.first.org/cvss/v3.0/specification-document">CVSS v3.0 Specification Document</a></li><li><a href="https://www.first.org/cvss/v3.0/user-guide">CVSS v3.0 User Guide</a></li><li><a href="https://www.first.org/cvss/v3.0/examples">CVSS v3.0 Examples</a></li><li><a href="https://www.first.org/cvss/v3.0/use-design">CVSS v3.0 Calculator Use &amp; Design</a></li></ul></li><li><a href="https://www.first.org/cvss/v2">CVSS v2 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/v2/guide">CVSS v2 Complete Documentation</a></li><li><a href="https://www.first.org/cvss/v2/history">CVSS v2 History</a></li><li><a href="https://www.first.org/cvss/v2/team">CVSS-SIG team</a></li><li><a href="https://www.first.org/cvss/v2/meetings">SIG Meetings</a></li><li><a href="https://www.first.org/cvss/v2/faq">Frequently Asked Questions</a></li><li><a href="https://www.first.org/cvss/v2/adopters">CVSS Adopters</a></li><li><a href="https://www.first.org/cvss/v2/links">CVSS Links</a></li></ul></li><li><a href="https://www.first.org/cvss/v1">CVSS v1 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/v1/intro">Introduction to CVSS</a></li><li><a href="https://www.first.org/cvss/v1/faq">Frequently Asked Questions</a></li><li><a href="https://www.first.org/cvss/v1/guide">Complete CVSS v1 Guide</a></li></ul></li><li><a href="https://www.first.org/cvss/data-representations">JSON &amp; XML Data Representations</a></li><li><a href="https://www.first.org/cvss/training">CVSS On-Line Training Course</a></li><li><a href="https://www.first.org/cvss/identity">Identity &amp; logo usage</a></li></ul></li><li><a href="https://www.first.org/global/sigs/cyberinsurance">Cyber Insurance SIG</a></li><li><a href="https://www.first.org/global/sigs/cti">Cyber Threat Intelligence SIG</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/cti/curriculum/">Curriculum</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/cti/curriculum/introduction">Introduction</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/cti-introduction">Introduction to CTI as a General topic</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/methods-methodology">Methods and Methodology</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/source-evaluation">Source Evaluation and Information Reliability</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/training">Training</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/standards">Standards</a></li><li><a href="https://www.first.org/global/sigs/cti/curriculum/glossary">Glossary</a></li></ul></li></ul></li><li><a href="https://www.first.org/global/sigs/ethics">Ethics SIG</a></li><li><a href="https://www.first.org/global/sigs/ics">Industrial Control Systems SIG (ICS-SIG)</a></li><li><a href="https://www.first.org/global/sigs/iep">Information Exchange Policy SIG (IEP-SIG)</a></li><li><a href="https://www.first.org/global/sigs/information-sharing">Information Sharing SIG</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/information-sharing/misp">Malware Information Sharing Platform</a></li></ul></li><li><a href="https://www.first.org/global/sigs/malware">Malware Analysis</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/malware/resources">Malware Analysis Resources</a></li></ul></li><li><a href="https://www.first.org/global/sigs/metrics">Metrics SIG</a></li><li><a href="https://www.first.org/global/sigs/passive-dns">Passive DNS Exchange</a></li><li><a href="https://www.first.org/global/sigs/psirt">PSIRT SIG</a></li><li><a href="https://www.first.org/global/sigs/red-team">Red Team SIG</a></li><li><a href="https://www.first.org/global/sigs/tlp">Traffic Light Protocol (TLP-SIG)</a></li><li><a href="https://www.first.org/global/sigs/vulnerability-coordination">Vulnerability Coordination</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/vulnerability-coordination/multiparty">Multi-Party Vulnerability Coordination and Disclosure</a></li><li><a href="https://www.first.org/global/sigs/vulnerability-coordination/multiparty/guidelines-v1.0">Guidelines and Practices for Multi-Party Vulnerability Coordination and Disclosure</a></li></ul></li><li><a href="https://www.first.org/global/sigs/vrdx">Vulnerability Reporting and Data eXchange SIG (VRDX-SIG)</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/sigs/vrdx/vdb-catalog">Vulnerability Database Catalog</a></li></ul></li></ul></li><li><a href="https://www.first.org/global/governance">Internet Governance</a></li><li><a href="https://www.first.org/global/irt-database">IR Database</a></li><li><a href="https://www.first.org/global/fellowship">Fellowship Program</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/fellowship/form">Application Form</a></li></ul></li><li><a href="https://www.first.org/hof">IR Hall of Fame</a></li><li><a href="https://www.first.org/volunteers/">Volunteers at FIRST</a><a class="subnav"></a><ul><li><a href="https://www.first.org/volunteers/list">FIRST Volunteers</a></li><li><a href="https://www.first.org/volunteers/participation">Volunteer Contribution Record</a></li></ul></li><li><a href="#new">Previous Activities</a><a class="subnav"></a><ul><li><a href="https://www.first.org/global/practices">Best Practices Contest</a></li></ul></li></ul></li><li><a href="https://www.first.org/standards">Standards &amp; Publications</a><a class="subnav"></a><ul><li><a href="https://www.first.org/standards">Standards</a><a class="subnav"></a><ul><li><a href="https://www.first.org/tlp">Traffic Light Protocol (TLP)</a></li><li><a href="https://www.first.org/cvss">Common Vulnerability Scoring System (CVSS-SIG)</a></li><li><a href="https://www.first.org/iep">Information Exchange Policy (IEP)</a></li><li><a href="https://www.first.org/global/sigs/passive-dns">Passive DNS Exchange</a></li></ul></li><li><a href="https://www.first.org/resources/papers">Publications</a></li><li><a href="https://www.first.org/resources/guides">Best Practices Guide (BPGL)</a></li><li><a href="https://www.first.org/resources/guides/reference">Security Reference Index</a><a class="subnav"></a><ul><li><a href="https://www.first.org/resources/guides/submission">Contribute to the Library</a></li></ul></li></ul></li><li><a href="https://www.first.org/events">Events</a><a class="subnav"></a><ul><li><a href="https://www.first.org/events/calendar">Events Calendar</a></li><li><a href="https://www.first.org/events/first">FIRST Events</a></li><li><a href="https://www.first.org/conference">Annual Conferences</a><a class="subnav"></a><ul><li><a href="https://www.first.org/conference/monitoring">Network Privacy Statement and Conference Monitoring</a></li></ul></li><li><a href="https://www.first.org/events/colloquia">Technical Colloquia &amp; Symposia</a></li><li><a href="https://www.first.org/events/training">Training</a></li></ul></li><li><a href="https://www.first.org/education">Education</a><a class="subnav"></a><ul><li><a href="https://www.first.org/education/services-framework">Services Framework</a></li><li><a href="https://www.first.org/education/trainings">Training Courses</a></li><li><a href="https://www.first.org/education/trainers">For Trainers</a></li></ul></li><li><a href="https://www.first.org/blog">Blog</a></li></ul>
+</div>
+</div></div></div></header><div id="body" data-studio-s="body"><div id="c1" data-studio-c="GAr6BEUE2w" class="data-preview toc-h1 toc-h2 code-border"><a href="#body" class="backtop icon-ctrl"></a><h1 id="Common-Vulnerability-Scoring-System-version-3-1-User-Guide">Common Vulnerability Scoring System version 3.1: User Guide</h1>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="CVSS-Version-3-1-Release">CVSS Version 3.1 Release</h2>
+<p>This page updates with each release of the CVSS standard. It is 
+currently CVSS version 3.1, released in June 2019. If you wish to use a 
+specific version of the User Guide, use:</p>
+<ul>
+<li><a href="https://www.first.org/cvss/v3.1/user-guide">https://www.first.org/cvss/v3.1/user-guide</a> for CVSS version 3.1</li>
+<li><a href="https://www.first.org/cvss/v3.0/user-guide">https://www.first.org/cvss/v3.0/user-guide</a> for CVSS version 3.0</li>
+<li><a href="https://www.first.org/cvss/v2/guide">https://www.first.org/cvss/v2/guide</a> for CVSS version 2</li>
+<li><a href="https://www.first.org/cvss/v1/guide">https://www.first.org/cvss/v1/guide</a> for CVSS version 1</li>
+</ul>
+<hr>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="Common-Vulnerability-Scoring-System-v3-1-User-Guide">Common Vulnerability Scoring System v3.1: User Guide</h1>
+<p>Also available <a href="https://www.first.org/cvss/v3-1/cvss-v31-user-guide_r1.pdf">in PDF format (408KiB)</a>.</p>
+<p>The Common Vulnerability Scoring System (CVSS) is an open framework for
+communicating the characteristics and severity of software vulnerabilities. CVSS
+consists of three metric groups: Base, Temporal, and Environmental. The Base
+group represents the intrinsic qualities of a vulnerability that are constant
+over time and across user environments, the Temporal group reflects the
+characteristics of a vulnerability that change over time, and the Environmental
+group represents the characteristics of a vulnerability that are unique to a
+user's environment. The Base metrics produce a score ranging from 0 to 10, which
+can then be modified by scoring the Temporal and Environmental metrics. A CVSS
+score is also represented as a vector string, a compressed textual
+representation of the values used to derive the score. This document provides
+the official specification for CVSS version 3.1.</p>
+<p>The most current CVSS resources can be found at <a href="https://www.first.org/cvss/">https://www.first.org/cvss/</a></p>
+<p>CVSS is owned and managed by FIRST.Org, Inc. (FIRST), a US-based non-profit
+organization, whose mission is to help computer security incident response teams
+across the world. FIRST reserves the right to update CVSS and this document
+periodically at its sole discretion. While FIRST owns all right and interest in
+CVSS, it licenses it to the public freely for use, subject to the conditions
+below. Membership in FIRST is not required to use or implement CVSS. FIRST does,
+however, require that any individual or entity using CVSS give proper
+attribution, where applicable, that CVSS is owned by FIRST and used by
+permission. Further, FIRST requires as a condition of use that any individual or
+entity which publishes scores conforms to the guidelines described in this
+document and provides both the score and the scoring vector so others can
+understand how the score was derived.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="1-Introduction">1. Introduction</h1>
+<p>This guide supplements the Common Vulnerability Scoring System (CVSS) version
+3.1 Specification Document with additional information including significant
+changes from CVSS version 3.0, additional scoring guidance, and scoring rubrics.</p>
+<p>Since its initial release in 2004, CVSS has enjoyed widespread adoption. In
+September 2007, CVSS v2.0 was adopted as part of the Payment Card Industry Data
+Security Standard (PCI DSS). In order to comply with PCI DSS, merchants
+processing credit cards must demonstrate that none of their computing systems
+has a vulnerability with a CVSS score greater than or equal to 4.0. In 2007, the
+National Institute of Standards and Technology (NIST) included CVSS v2.0 as part
+of its Security Content Automation Protocol (SCAP).<sup id="fnref1:1"><a href="#fn:1" class="footnote-ref">1</a></sup> In March 2016, CVSS v3.0
+was formally adopted as an international standard for scoring vulnerabilities
+(ITU-T X.1521).<sup id="fnref1:2"><a href="#fn:2" class="footnote-ref">2</a></sup></p>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="2-Changes-in-CVSS-Version-3-1">2. Changes in CVSS Version 3.1</h1>
+<p>Changes between CVSS versions 3.0 and 3.1 focus on clarifying and improving the
+existing standard without introducing new metrics or metric values, and without
+making major changes to existing formulas. The significant changes are explained
+below.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t5">2.1. CVSS Measures Severity, not Risk</h2>
+<p>The CVSS Specification Document has been updated to emphasize and clarify the
+fact that CVSS is designed to measure the severity of a vulnerability and should
+not be used alone to assess risk.</p>
+<p>Concerns have been raised that the CVSS Base Score is being used in situations
+where a comprehensive assessment of risk is more appropriate. The CVSS v3.1
+Specification Document now clearly states that the CVSS Base Score represents
+only the intrinsic characteristics of a vulnerability which are constant over
+time and across user environments. The CVSS Base Score should be supplemented
+with a contextual analysis of the environment, and with attributes that may
+change over time by leveraging CVSS Temporal and Environmental Metrics. More
+appropriately, a comprehensive risk assessment system should be employed that
+considers more factors than simply the CVSS Base Score. Such systems typically
+also consider factors outside the scope of CVSS such as exposure and threat.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t6">2.2. Changes to Attack Vector and Modified Attack Vector</h2>
+<p>CVSS v3.0 described the metric values for Attack Vector (AV) using references to
+the Open Systems Interconnection (OSI) model. While technically accurate, this
+wording may be unfamiliar to the general CVSS provider and consumer population,
+so has been reworded.</p>
+<p>The Attack Vector (AV) metric value Adjacent (A) has a limited usage, as defined
+in CVSS v3.0. Ambiguity over the attack vector for logically adjacent or trusted
+networks (MPLS, VPNs, etc.) is addressed by expanding the definition of Adjacent
+to include these <em>limited access</em> networks.</p>
+<p>Section 3.6 contains new guidance on using the Modified Attack Vector
+Environmental Metric when resources are exclusively behind a firewall.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t7">2.3. Changes to Scoring Guidance</h2>
+<p>The CVSS Specification Document and User Guide have been updated with additional
+guidance to help CVSS analysts produce scores that are consistent and defensible
+across various situations that were previously considered ambiguous. A sampling
+of the new scoring guidance is listed below.</p>
+<h3 id="2-3-1-Scoring-Should-Assume-Detailed-Knowledge">2.3.1. Scoring Should Assume Detailed Knowledge</h3>
+<p>The CVSS Specification Document has been updated to clarify that, when scoring
+Base Metrics, it should be assumed that the attacker has advanced knowledge of
+the weaknesses of the target system, including general configuration and default
+defense mechanisms (e.g., built-in firewalls, rate limits, or traffic policing).</p>
+<p>Refer to Section 2.1 of the CVSS v3.1 Specification Document for more
+information.</p>
+<h3 id="2-3-2-Score-Based-on-Privileges-Gained-not-Attained">2.3.2. Score Based on Privileges Gained, not Attained</h3>
+<p>Additional text has been added to Section 2.3 of the Specification Document to
+clarify that only the increase in access, privileges gained, or other negative
+outcome as a result of successful exploitation should be considered when scoring
+the impact metrics of a vulnerability.</p>
+<p>When scoring impact, CVSS analysts should consider the privileges the attacker
+has prior to exploiting a vulnerability and compare those to the privileges they
+have after exploitation. The change in privileges is then captured in the Impact
+Metrics, i.e., Confidentiality, Integrity and Availability.</p>
+<p>Finally, when scoring a delta change in Impact Metric, the final impact should
+be used.</p>
+<h3 id="2-3-3-Assume-Vulnerable-Configurations">2.3.3. Assume Vulnerable Configurations</h3>
+<p>The explanation of Attack Complexity in CVSS v3.0 considers “the presence of
+certain system configuration settings”. This text has been removed from CVSS
+v3.1. If a specific configuration is required for an attack to succeed, the
+vulnerable component should be scored assuming it is in that configuration,
+providing it is a reasonable configuration. Unreasonable configurations are
+those that deliberately place the target in a vulnerable state, e.g., by
+disabling security features, or that conflict with documented configuration
+guidance, e.g., by using a non-default configuration that a product vendor
+explicitly states should never be used.</p>
+<h3 id="2-3-4-Scope-Explanation-Reworded">2.3.4. Scope Explanation Reworded</h3>
+<p>The explanation of Scope in the Specification Document has been rewritten to be
+clearer, along with the concepts of Vulnerable Component and Impacted Component.
+Section 3.5 of the User Guide contains additional information and several
+examples.</p>
+<h3 id="2-3-5-Scoring-Vulnerabilities-in-Software-Libraries-and-Similar">2.3.5. Scoring Vulnerabilities in Software Libraries (and Similar)</h3>
+<p>New guidance explains how to score the impact of a vulnerability in a library.
+Refer to Section 3.7 for more information.</p>
+<h3 id="2-3-6-Multiple-CVSS-Base-Scores">2.3.6. Multiple CVSS Base Scores</h3>
+<p>New guidance explicitly allows multiple CVSS Base Scores to be generated for a
+vulnerability that affects multiple product versions, platforms, and/or
+operating systems. Refer to Section 3.8 for more information.</p>
+<h3 id="2-3-7-Guidance-for-Using-Environmental-Security-Requirements-Metrics">2.3.7. Guidance for Using Environmental Security Requirements Metrics</h3>
+<p>The Environmental Metric Group includes three Security Requirement metrics:
+Confidentiality Requirement (CR), Integrity Requirement (IR), and Availability
+Requirement (AR). Section 3.11 contains new guidance and examples explaining how
+these metrics can be used.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t8">2.4. Guidance for Scoring Attack Vector</h2>
+<p>New guidance on scoring Attack Vector is provided in Section 3.10.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t9">2.5. The CVSS Extensions Framework</h2>
+<p>Section 3.9 defines a standard method of extending CVSS to include additional
+metrics and metric groups while retaining the official Base, Temporal, and
+Environmental Metrics. The additional metrics allow industry sectors such as
+privacy, safety, automotive, healthcare, etc., to score factors that are outside
+the core CVSS standard.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t10">2.6. Formula Changes</h2>
+<p>The formulas used to calculate Base, Temporal and Environmental scores have
+altered in the following ways.</p>
+<h3 id="2-6-1-General-Formula-Restructuring">2.6.1. General Formula Restructuring</h3>
+<p>The formulas have been restructured to make them clearer and remove ambiguity
+caused by defining Impact sub-score for different purposes. These are purely
+clarifications and do not alter the scoring.</p>
+<h3 id="2-6-2-Roundup-Function-Redefinition">2.6.2. Roundup Function Redefinition</h3>
+<p>The “Round up” function in CVSS v3.0 has been renamed <strong>Roundup</strong> and is now
+defined more precisely to minimize the possibility of implementations generating
+different scores due to small floating-point inaccuracies. This can happen due
+to differences in floating point arithmetic between different languages and
+hardware platforms. Appendix A in the Specification Document describes the
+problem in detail and suggests solutions.</p>
+<p>As an example of the scoring differences this redefinition may cause, the CVSS
+v3.1 version of the reference JavaScript CVSS calculator on FIRST's website
+scores the following vulnerabilities differently compared to v3.0:</p>
+<ul>
+<li>The Temporal Score for all vulnerabilities which have a Base Score of 2.5,
+5.0 or 10.0, Exploit Code Maturity (E) of High (H), Remediation Level (RL)
+of Unavailable (U) and Report Confidence (RC) of Unknown (U) is 0.1 lower in
+CVSS v3.1 than for 3.0. For example, the following metric combination has a
+Temporal Score of 4.7 in CVSS v3.0, but 4.6 in v3.1:</li>
+</ul>
+<blockquote>
+<p>CVSS:3.1/AV:P/AC:H/PR:L/UI:R/S:U/C:L/I:L/A:H/E:H/RL:U/RC:U</p>
+</blockquote>
+<ul>
+<li>
+<p>Some combinations of metrics have Environmental Scores that differ when
+scored with CVSS v3.1 rather than v3.0. This is due to a combination of the
+redefinition of Roundup and the change to the ModifiedImpact sub-formula
+explained in the next section. Less than 7% of metric combinations are 0.1
+higher in CVSS v3.1 than v3.0, and less than 1% are 0.1 lower. No
+Environmental Scores differ by more than 0.1.</p>
+</li>
+<li>Other implementations of the CVSS formulas may see different scoring changes
+between CVSS v3.0 and v3.1 if they previously generated different CVSS v3.0
+scores due to the problems that the CVSS v3.1 formula changes are intended
+to fix.</li>
+</ul>
+<h3 id="2-6-3-Change-to-ModifiedImpact-Sub-formula-in-Environmental-Metric-Group">2.6.3. Change to ModifiedImpact Sub-formula in Environmental Metric Group</h3>
+<p>In CVSS v3.0, certain sets of Environmental metrics have the counter-intuitive
+property that changing the value of a Security Requirement or Modified Impact
+metric to a value that should produce a higher Environmental Score results in a
+lower score. The problem occurs only if Modified Scope is Changed and at least
+one of the Security Requirement metrics is High. As an example, the following
+vulnerability has an Environmental Score of 5.6:</p>
+<p>CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:U/RL:T/RC:U/CR:L/IR:L/AR:H/MAV:P/MAC:H/MPR:H/MUI:R/MS:C/<strong>MC:L</strong>/MI:H/MA:H</p>
+<p>Raising Modified Confidentiality (MC) from Low to High should result in an equal
+or higher score, but results in a decreased Environmental Score of 5.5:</p>
+<p>CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H/E:U/RL:T/RC:U/CR:L/IR:L/AR:H/MAV:P/MAC:H/MPR:H/MUI:R/MS:C/<strong>MC:H</strong>/MI:H/MA:H</p>
+<p>The root cause is the part of the <em>ModifiedImpact</em> formula that is used when
+Modified Scope is Changed, and specifically the term <strong>3.25 × (MISS - 0.02)<sup>15</sup></strong>.
+MISS is the Modified Impact Sub-Score. This lowers the highest Environmental
+Scores while making no appreciable difference to low Environmental Scores.
+However, as the highest possible values of MISS are reached, this term increases
+more quickly than the first term of the sub-formula, resulting in the value of
+the sub-formula <em>decreasing</em> as MISS increases.</p>
+<p>Various potential fixes were examined, with the goal of minimizing the number of
+sets of metrics that would result in different Environmental Scores between CVSS
+v3.0 and v3.1. It was found that reducing the effect of MISS by multiplying it
+with a constant worked, but altered more scores than a similar approach that
+also reduced the outer exponent from 15 to 13. The value of the MISS constant
+that is new in CVSS v3.1 is the largest value that fixes all instances of the
+problem, and being the largest value means it results in the fewest changes to
+unaffected scores.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t11">2.7. Update to the Version Identifier in the Vector String</h2>
+<p>The Vector String has been updated so that it begins with CVSS:3.1 rather than
+CVSS:3.0. Although no other changes have been made to the Vector String, CVSS
+v3.1 contains changes to the definition of some of the metric values and to the
+formulas, so it is important to correctly indicate the version of CVSS.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="3-Scoring-Guide">3. Scoring Guide</h1>
+<p>Below are a number of recommendations for analysts when scoring vulnerabilities
+with CVSS v3.1.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t13">3.1. CVSS Scoring in the Exploit Life Cycle</h2>
+<p>When understanding when to score the impact of vulnerabilities, analysts should
+constrain impacts to a reasonable final impact which they are confident an
+attacker is able to achieve. Ability to cause this impact should be supported by
+the Exploitability sub-score as a minimum, but may also include details from the
+vulnerability’s description. For example, consider the following two
+vulnerabilities.</p>
+<p>In vulnerability 1, a remote, unauthenticated attacker can send a trivial,
+crafted request to a web server which causes the web server to disclose the
+plaintext password of the root (administrator) account. The analyst only knows
+from the Exploitability sub-score metrics and the vulnerability description that
+the attacker has access to send a crafted request to the web server in order to
+exploit the vulnerability. Impact should stop there; while an attacker <em>may</em> be
+able to use these credentials to later execute code as the administrator, it is
+not known that the attacker has access to a login prompt or method to execute
+commands with those credentials. Gaining access to this password represents a
+direct, serious loss of Confidentiality only:</p>
+<blockquote>
+<p>Base Score: 7.5 CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N</p>
+</blockquote>
+<p>In vulnerability 2, a local, low-privileged user can send a trivial, crafted
+request to the operating system which causes it to disclose the plaintext
+password of the root (administrator) account. The analyst knows from the
+Exploitability sub-score metrics and the vulnerability description that the
+attacker has access to the operating system, and can log in as a local, low
+privileged attacker. Gaining access to this password represents a direct,
+serious loss of Confidentiality, Integrity, and Availability because the analyst
+can reasonably issue commands as the root / administrator account (assume that
+the attacker could log out from their own account and log back in as root):</p>
+<blockquote>
+<p>Base Score: 7.8 CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</p>
+</blockquote>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t14">3.2. Confidentiality and Integrity, Versus Availability Impacts</h2>
+<p>The Confidentiality and Integrity metrics refer to impacts that affect the
+<em>data</em> used by the service. For example, web content that has been maliciously
+altered, or system files that have been stolen. The Availability impact metric
+refers to the <em>operation</em> of the service. That is, the Availability metric
+speaks to the performance and operation of the service itself – not the
+availability of the data. Consider a vulnerability in an Internet service such
+as web, email, or DNS that allows an attacker to modify or delete all web files
+in a directory. The only impact is to Integrity, not Availability, as the web
+service is still functioning – it just happens to be serving back altered
+content.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t15">3.3. Local Vulnerabilities Exploited by Remote Attackers</h2>
+<p>Guidance concerning Local attacks was improved in CVSS v3.0 by clarifying the
+definitions of the Network and Adjacent values of the Attack Vector metric.
+Specifically, analysts should only score for Network or Adjacent when a
+vulnerability is bound to the network stack. Vulnerabilities which require user
+interaction to download or receive malicious content (which could also be
+delivered locally, e.g., via USB drives) should be scored as Local.</p>
+<p>For example, a document parsing vulnerability, which does not rely on the
+network in order to be exploited, should typically be scored with the Local
+value, regardless of the method used to distribute such a malicious document
+(e.g., it could be a link to a web site, or via a USB flash drive).</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t16">3.4. Vulnerability Chaining</h2>
+<p>CVSS is designed to classify and rate individual vulnerabilities. However, it is
+important to support the needs of the vulnerability analysis community by
+accommodating situations where multiple vulnerabilities are exploited in the
+course of a single attack to compromise a host or application. The scoring of
+multiple vulnerabilities in this manner is termed Vulnerability Chaining. Note
+that this is not a formal metric, but is included as guidance for analysts when
+scoring these kinds of attacks.</p>
+<p>When scoring a chain of vulnerabilities, it is the responsibility of the analyst
+to identify which vulnerabilities are combined to form the chained score. The
+analyst should list the distinct vulnerabilities and their scores, along with
+the chained score. For example, this may be communicated within a vulnerability
+disclosure notice posted on a web page.</p>
+<p>In addition, the analyst may include other types of related vulnerabilities that
+could be chained with the vulnerabilities being scored. Specifically, the
+analyst may list generic types (or classes) of related vulnerabilities that are
+often chained together, or provide further descriptions of required
+preconditions that must exist. For example, one might describe how certain kinds
+of SQL Injection vulnerabilities are precursors to a cross-site scripting (XSS)
+attack, or how a particular kind of buffer overflow would grant local
+privileges. Listing the generic types or classes of vulnerabilities provides the
+minimum information necessary to warn other users, without potentially informing
+attackers about new exploit opportunities.</p>
+<p>Alternatively, the analyst may identify (in the form of a machine readable and
+parsable list of vulnerabilities as CVE IDs or CWEs), a complete list of
+specific related vulnerabilities that are known to be (or are very likely to be)
+chained to one or more of the chained vulnerabilities being scored in order to
+exploit an IT system. In the event that a vulnerability can be exploited only
+after other preconditions are met (such as first exploiting another
+vulnerability), it is acceptable to combine two or more CVSS scores to describe
+the chain of vulnerabilities by scoring for the least-restrictive Exploitability
+sub-score metrics and scoring for the most-impactful Impact sub-score metrics.
+The following example uses the Exploitability, Scope, and Impact sub-scores to
+describe the chain.</p>
+<p>Vulnerability A is CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H. It requires a
+local, low-privileged user in order to exploit.</p>
+<p>Vulnerability B is CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L. It provides an
+unprivileged, remote attacker the ability to execute code on a system with Low
+impacts if a local user interacts to complete the attack.</p>
+<p>Given A and B, chain C could be described as the chain of B → A,<br>
+CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H which combines the Exploitability
+of B, the scope is unchanged in both cases, and the Impact of A, because if one
+can exploit B and gain the code execution as a local user from it, then one has
+satisfied the prerequisite to subsequently launch A causing an impact from
+vulnerability A.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t17">3.5. Scope, Vulnerable Component, and Impacted Component</h2>
+<p>When a vulnerability in a component governed by one security authority is able
+to affect resources governed by another security authority, a Scope change has
+occurred. This typically happens either when the vulnerable component and
+impacted component are part of different systems (physical or logical) governed
+by different security authorities; or when an artificial boundary has been made
+to logically separate vulnerable and impacted components for security reasons
+(e.g., when executing a process in sandbox). When a security boundary mechanism
+separating components is circumvented due to a vulnerability and this causes a
+security impact outside of the security scope of the vulnerable component, a
+Scope change has occurred. In this case, the vulnerability usually resides in
+the component that implements or controls the security boundary since the
+vulnerability restricted to the component alone would not cause an impact
+outside of its scope, assuming the security boundary works as expected.</p>
+<p>The following example vulnerabilities look at different aspects of scoring
+Scope:</p>
+<ol>
+<li>
+<p>A vulnerability in a virtual machine that enables an attacker to read and/or
+delete files on the host operating system (perhaps even its own virtual
+machine) is considered a Scope change. In this example, there are two
+separate security authorities: one that defines and enforces access control
+for the virtual machine and its users, and another that defines and enforces
+access control for the host system within which the virtual machine runs.</p>
+</li>
+<li>
+<p>A violation of a security boundary between microprocessor privilege levels
+should be considered when scoring vulnerabilities using CVSS. User space
+programs’ capabilities running in lower privilege levels are typically
+limited in what instructions they can run and what registers they can write
+to even when running under operating system administrator privileges. A
+vulnerability that allows a program running in a lower privilege level to
+break out and run arbitrary code in a higher privilege level should be
+considered a Scope change.</p>
+</li>
+<li>
+<p>The security boundary between secure enclaves integrated in microprocessors
+and the rest of operating system processes, including the operating system
+kernel itself, should be considered when scoring vulnerabilities using CVSS.
+A vulnerability that allows other processes to impact the confidentiality,
+integrity or availability of data or code in a secure enclave should be
+considered a Scope change.</p>
+</li>
+<li>
+<p>A Scope change occurs when a vulnerability in a web application impacts user
+clients, e.g., web browsers. Common vulnerabilities of this type include
+cross-site scripting and URL redirection. The vulnerability is in the web
+application, but there is an impact to the data/behavior of the victim
+users’ web browsers, which are within a different security scope.</p>
+</li>
+<li>
+<p>In a distributed environment, a vulnerability in a component providing
+connectivity, protection, or authentication services to components in a
+different security authority should be scored as a Scope change if a
+successful attack impacts these other components. For example, a
+vulnerability in a component such as a router, firewall, or authentication
+manager that affects the primary availability of one or more downstream
+components should be scored as a Scope change. However, if a successful
+attack either does not affect at all, or causes only negligible impact to
+components in a different security authority, the vulnerability should be
+scored as Scope unchanged. For example, a vulnerability in a component
+designed to be deployed as part of a larger fault-tolerant topology should
+not be scored with a changed Scope if the fault-tolerance means a successful
+attack does not affect components in different security authorities. Any
+effect on additional services provided by the vulnerable component is
+considered a secondary impact and not a scope change.</p>
+</li>
+<li>
+<p>A vulnerability in a simple Portable Document Format (PDF) reader that
+allows an attacker to compromise other files on the same operating system
+when a victim opens a malicious PDF document is scored as Scope unchanged.
+This assumes the PDF reader does not have any authorization functionality
+that would be considered a separate security authority from the underlying
+operating system.</p>
+</li>
+<li>
+<p>A SQL injection vulnerability in a web application is not usually considered
+a Scope change assuming the credentials are shared between web application
+and impacted SQL database, and therefore they are part of the same security
+scope.</p>
+</li>
+<li>
+<p>A vulnerability that crashes a web server or SSH server is not considered a
+Scope change since the impact is limited only to the service provided by the
+affected server. The impact on users is secondary and is not considered a
+Scope change as users are not considered components.</p>
+</li>
+<li>
+<p>A vulnerability that permits an attacker to exhaust a shared system
+resource, such as filling up a file system, should not be considered a Scope
+change as the attacker is still acting under the usual capabilities of the
+application and not breaching any security boundary.</p>
+</li>
+<li>
+<p>By exploiting a vulnerability in an application that allows users restricted
+access to resources shared with other components across multiple security
+scopes (e.g., operating system resources such as system files), an attacker
+can access resources that they should not be able to access. Since there is
+already a valid path across the trust boundary, there is no Scope change.</p>
+</li>
+<li>A vulnerability in an application that implements its own security authority
+which allows attackers to affect resources outside its security scope is
+scored as a Scope change. This assumes the application provides no features
+for users to access resources governed by a higher-level security authority
+shared with other components across multiple security scopes (e.g., the
+resources of the underlying operating system). One example would be a web
+application that allows users to read and modify web pages and files only
+under the web application’s installation paths, and provides no feature for
+users to interact beyond these paths. A vulnerability in this application
+allowing a malicious user to access operating system files unrelated to this
+application is considered a Scope change.</li>
+</ol>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t18">3.6. Vulnerable Components Protected by a Firewall</h2>
+<p>If a vulnerability is scored with an Attack Vector (AV) of Network (N) and the
+analyst has high confidence that the vulnerable component is deployed on a
+secure network unavailable from the Internet, Modified Attack Vector (MAV) may
+be scored as Adjacent, reducing the overall CVSS v3.1 score.</p>
+<p>Example: MySQL Stored SQL Injection (CVE‑2013‑0375)</p>
+<blockquote>
+<p>Base Score: 6.4 CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:L/A:N</p>
+<p>Environmental Score: 5.4 CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:L/A:N/MAV:A</p>
+</blockquote>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t19">3.7. Scoring Vulnerabilities in Software Libraries (and Similar)</h2>
+<p>When scoring the impact of a vulnerability in a library, independent of any
+adopting program or implementation, the analyst will often be unable to take
+into account the ways in which the library might be used. While specific
+products using the library should generate CVSS scores specific to how they use
+the library, scoring the library itself requires assumptions to be made. The
+analyst should score for the reasonable worst-case implementation scenario. When
+possible, the CVSS information should detail these assumptions.</p>
+<p>For example, a library that performs image conversion would reasonably be used
+by programs that accept images from untrusted sources over a network. In the
+reasonable worst-case, it would pass them to the library without checking the
+validity of the images. As such, an analyst scoring a vulnerability in the
+library that relates to the incoming data should assume an Attack Vector (AV) of
+Network (N), but explain this assumption in the summary of the vulnerability. If
+the library might run with normal privileges, having lower impact on the
+embedding implementation, or with high privileges, increasing the impacts, the
+analyst should assume high privileges while scoring the vulnerability in the
+library.</p>
+<p>When scoring a vulnerability in a given implementation using the impacted
+library, the score must be re-calculated for that specific implementation. For
+example, if an implementation embeds the vulnerable library mentioned in the
+previous example, but only operates on local files, the Attack Vector (AV) would
+be Local (L). If the implementation that embeds this library does not invoke any
+of the faulty functions or does not support the mode that triggers that
+vulnerability, it would have no interface or attack vector to exploit the
+vulnerability. Thus, that vulnerability in the embedded library would have no
+impact on that implementation, resulting in a score for the given implementation
+of 0.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t20">3.8. Multiple CVSS Base Scores</h2>
+<p>It is common for a vulnerability to be present on multiple product versions,
+platforms, and/or operating systems. In some circumstances, the Base metrics may
+differ on different product versions, platforms, and/or operating systems. For
+example, a hypothetical vulnerability is applicable to multiple operating
+systems produced by the same vendor. The Attack Complexity (AC) of this
+vulnerability on a legacy operating system is Low (L). However, a newer
+operating system has new inherent protection capabilities that change the Attack
+Complexity to High (H). This variance ultimately leads to different Base Scores
+for the same vulnerability on the two operating systems.</p>
+<p>It is acceptable to score and publish multiple Base Scores for a single
+vulnerability provided each has additional language outlining the specific
+product versions, platforms, and/or operating systems that are relevant to the
+score. Values for all Base Score attributes (not only a pre-calculated Base
+Score) must be supplied for each affected product version, platform, and/or
+operating system using a standard format. In situations where multiple Base
+Scores are applicable but only a single score is provided, the highest Base
+Score must be utilized.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t21">3.9. CVSS Extensions Framework</h2>
+<p>Opportunities exist to leverage the core foundation of CVSS for additional
+scoring efforts. For example, a proposal was presented to the CVSS Special
+Interest Group (SIG) to incorporate privacy into CVSS by overlaying combinations
+of CVSS Base and Environmental metrics to derive a Privacy Impact.</p>
+<p>The following guidelines define a standard method of extending CVSS to include
+additional metrics and metric groups while retaining the official Base,
+Temporal, and Environmental Metrics. The additional metrics allow industry
+sectors such as privacy, safety, automotive, healthcare, etc., to score factors
+that are outside the core CVSS standard.</p>
+<h3 id="3-9-1-Guidelines">3.9.1. Guidelines</h3>
+<ul>
+<li>
+<p>Formulas, constants or definitions of existing CVSS Base, Temporal, or
+Environmental Metrics must not be modified. If a change to an existing item
+is desired, create a new metric group with a new name and work on it as
+desired.</p>
+</li>
+<li>
+<p>New metrics must not be added to existing metric groups, but must be added
+to new metric groups. New metric groups can be based on existing metric
+groups.</p>
+</li>
+<li>
+<p>New metrics can be based on sub-formulas in the standard, such as the
+Exploitability sub-score, but these could change, be removed or be replaced
+in future revisions of the standard, and so absolute values should not be
+relied upon.</p>
+</li>
+<li>
+<p>New metric groups can optionally have a score. If they do, the score must be
+between 0.0 and 10.0, with 10.0 being the most severe. The score must be
+based on adjusting the Base Score and/or Environmental and Temporal scores,
+similar to how Environmental/Temporal scores adjust the Base Score to
+produce the final score.</p>
+</li>
+<li>
+<p>The CVSS SIG does not officially approve extensions, but rather acts as a
+consulting body, similar to IETF<sup id="fnref1:3"><a href="#fn:3" class="footnote-ref">3</a></sup>. The CVSS SIG welcomes and encourages
+innovation, but has an interest in maintaining consistency across all
+proposed extensions.</p>
+</li>
+<li>
+<p>The list of validated extensions will be listed on the first.org web site,
+similar to IANA<sup id="fnref1:4"><a href="#fn:4" class="footnote-ref">4</a></sup>.</p>
+<ul>
+<li>
+<p>Mandatory Fields: Name, Description, External Authoritative Web Page</p>
+</li>
+<li>Optional Fields: JSON Schema, XML Schema, JavaScript Calculator</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-9-2-Suggested-Vector-String-Format">3.9.2. Suggested Vector String Format</h3>
+<p>CVSS Extension vector strings must be listed separately, utilizing the following
+format:</p>
+<p>CVSS:3.1/AV:x/AC:x/PR:x/UI:x/S:x/C:x/I:x/A:x</p>
+<p>EXT:1.0/NEW1:VAL1/NEW2:VAL2</p>
+<p>where:</p>
+<p>EXT:<em>n</em>.<em>n</em> is a unique extension identifier and major.minor version number</p>
+<p>NEW<em>n</em> is a unique attribute of the extension for each new metric</p>
+<p>VAL<em>n</em> is a unique value for the attribute for each new metric value</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t22">3.10. Attack Vector Considerations</h2>
+<p>When scoring Attack Vector, use Adjacent or Network (as appropriate), when a
+network connection is required for an attack to succeed, even if the attack is
+not launched over a network. For example, a local attacker may be able to trick
+a vulnerable, privileged, local program into sending sensitive data to a server
+of the attacker’s choosing over a network. As a network connection is required
+to gather the sensitive data this is scored with an Attack Vector of Network.</p>
+<p>Vulnerabilities where malicious data is received over a network by one
+component, then passed to a <em>separate</em> component with a vulnerability should be
+scored with an Attack Vector of Local. An example is a web browser that
+downloads a malicious office document, saves it to disk, and then starts a
+vulnerable office application which reads the saved file.</p>
+<p>In cases where the vulnerable functionality is part of the component that
+receives the malicious data, Attack Vector should be scored as Network. An
+example is a web browser with a vulnerability in the browser itself, or a
+browser plugin or extension, that triggers when the malicious data is received.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h2 id="t23">3.11. Security Requirements</h2>
+<p>The Security Requirement metrics are part of the Environmental Metric Group and
+modify the weighting that the modified impact metrics have on the overall
+Environmental Score. This section provides guidance on selecting appropriate
+metric values for these based on the characteristics of a specific environment.
+The examples are simplified to illustrate the concepts.</p>
+<h3 id="3-11-1-Confidentiality-Requirement-CR">3.11.1. Confidentiality Requirement (CR)</h3>
+<p>The Confidentiality Requirement of a system should be based on the
+classification level of the data that is stored or used by the user and/or
+applications running on the target system. Encryption of the data at rest on
+this device should also be taken into consideration when establishing the
+Confidentiality Requirement. Data that passes through a device without being
+consumed or processed (e.g., a switch or firewall) should not be taken into
+consideration when assessing this attribute. See below for examples.</p>
+<p>Note: The volume of data may influence the value of the attribute, but should
+not have as much impact as the classification (i.e., type) of data that is being
+stored or used.</p>
+<ol>
+<li>
+<p>A device that stores data classified at the highest level should have this
+attribute rated as High. However, if the sensitive data is encrypted at
+rest, this attribute may be rated Medium.</p>
+</li>
+<li>
+<p>A device that stores data classified as non-public but not as high as the
+highest level should have this attribute rated as Medium. However, if the
+sensitive data is encrypted at rest, this attribute can be rated Low.</p>
+</li>
+<li>
+<p>A device that stores data that can be openly shared publicly should have
+this attribute rated as Low.</p>
+</li>
+<li>
+<p>Network equipment such as a router, switch, or firewall will generally be
+rated as Medium due strictly to the sensitivity of information such as
+routing tables, etc.</p>
+</li>
+<li>Any system that stores login credentials without encryption should have this
+attribute rated as High. This includes service accounts and credentials
+embedded into scripts or source code.</li>
+</ol>
+<h3 id="3-11-2-Integrity-Requirement-IR">3.11.2. Integrity Requirement (IR)</h3>
+<p>The Integrity Requirements of a system focus on the importance of the accuracy
+of the data it stores or uses. Data that passes through a device without being
+consumed or processed (e.g., a switch or firewall) should not be taken into
+consideration when assessing this attribute. The use of encryption on the data
+at rest should <em>not</em> be taken into consideration for this attribute. See below
+for examples:</p>
+<ol>
+<li>
+<p>Devices that contain monetary transactional data and/or personally
+identifiable information (PII) should be rated High.</p>
+</li>
+<li>
+<p>Devices that contain data directly used to make business or risk management
+decisions should be rated at a minimum of Medium. As the severity of the
+decisions increase, so should the Integrity Requirement rating.</p>
+</li>
+<li>
+<p>Devices that contain data directly used to make health decisions should be
+rated High.</p>
+</li>
+<li>
+<p>Network equipment such as a router or switch will generally be rated at
+least Medium due strictly to the sensitivity of information such as
+forwarding tables, etc.</p>
+</li>
+<li>Firewalls should be rated as High due to the sensitivity of the rule set.</li>
+</ol>
+<h3 id="3-11-3-Availability-Requirement-AR">3.11.3. Availability Requirement (AR)</h3>
+<p>The Availability Requirement of a system should be based on the uptime
+requirements and redundancy of the device or the applications hosted by the
+device. Devices that are part of redundant clusters will have lower Availability
+Requirements. See below for examples:</p>
+<ol>
+<li>
+<p>Devices without full capacity redundancy that are rated with recovery
+requirements less than 24 hours should be rated High.</p>
+</li>
+<li>
+<p>Devices without full capacity redundancy that are rated with recovery
+requirements between 1-5 days should be rated Medium.</p>
+</li>
+<li>
+<p>Devices with recovery requirements of more than 5 days should be rated Low.</p>
+</li>
+<li>
+<p>Clustered devices and/or those with full capacity redundancy should be rated
+as Low.</p>
+</li>
+<li>Devices that are required to have rapid response times for transactional
+purposes based on regulatory requirements, should be rated High.</li>
+</ol>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="4-Glossary-of-Terms">4. Glossary of Terms</h1>
+<p><strong>Affected:</strong> An impacted component is <em>affected</em> by a vulnerability if a
+vulnerability in a vulnerable component is exploitable in a way that causes a
+negative impact to the Confidentiality, Integrity, and/or Availability of the
+impacted component.</p>
+<p><strong>Authority</strong>: A computing container that grants and manages privileges to
+resources. Examples of authorities include a database application, an operating
+system, and a sandbox environment.</p>
+<p><strong>Chained Score</strong>: The Base Score produced by scoring two or more chained
+vulnerabilities.</p>
+<p><strong>Chained Vulnerabilities</strong>: See <em>Vulnerability Chaining</em>.</p>
+<p><strong>Component</strong>: Refers to either a hardware or software component.</p>
+<blockquote>
+<p><strong>Hardware Component</strong>: A physical computing device.</p>
+<p><strong>Software Component</strong>: A software program or module that contains computer
+instructions to be executed, e.g., an operating system, Internet
+application, or device driver.</p>
+</blockquote>
+<p><strong>Exploitable</strong>: A weakness or flaw in a component is <em>exploitable</em> if it
+enables the component to be manipulated in an unintended or unexpected way by an
+attacker to negatively impact Confidentiality, Integrity, and/or Availability.</p>
+<p><strong>Impacted Component</strong>: The component that suffers the consequence of the
+exploited vulnerability. It can either be the same component as the vulnerable
+component, or, if a scope changed has occurred, a different one.</p>
+<p><strong>Privileges</strong>: A collection of rights (typically read, write and execute)
+granted to a user or user process which defines access to computing resources.</p>
+<p><strong>Reasonable</strong>: An action, expectation, or outcome that most informed and aware
+people would consider just, rational, appropriate, ordinary or usual in the
+circumstances.</p>
+<p><strong>Resources</strong>: A software or network object that is accessed, modified, or
+consumed by a computing device, e.g., computer files, memory, CPU cycles, or
+network bandwidth.</p>
+<p><strong>Scope</strong>: The collection of privileges defined and managed by an authorization
+authority when granting access to computing resources.</p>
+<p><strong>Successful Attack</strong>: A successful attack (or successful exploit of a
+vulnerability) is a situation where an attacker causes any negative impact to
+Confidentiality, Integrity, and/or Availability by leveraging a weakness in the
+vulnerable component.</p>
+<p><strong>Vulnerability</strong>: A weakness or flaw in the functional behavior of a vulnerable
+computational component (software or hardware) that can be exploited, resulting
+in a negative impact to the Confidentiality, Integrity, and/or Availability of
+an impacted component.</p>
+<p><strong>Vulnerability Chaining</strong>: The sequential exploit of multiple vulnerabilities
+in order to attack an IT system, where one or more exploits at the end of the
+chain require the successful completion of prior exploits in order to be
+exploited. See also the definition available at
+<a href="https://cwe.mitre.org/documents/glossary/#Chain">https://cwe.mitre.org/documents/glossary/#Chain</a>.</p>
+<p><strong>Vulnerable</strong>: A component is <em>vulnerable</em> if it contains a weakness or flaw
+that can be exploited, given the necessary conditions and/or exposure.</p>
+<p><strong>Vulnerable Component</strong>: The software (or hardware) component that bears the
+vulnerability, and that would be patched.</p>
+<p><strong>Weakness</strong>: An error in software or hardware implementation, code, design, or
+architecture that, depending on exposure, could be exploited by an attacker.</p>
+<a href="#body" class="backtop icon-ctrl"></a><h1 id="5-Scoring-Rubrics">5. Scoring Rubrics</h1>
+<p>The scoring rubrics are an aid to scoring vulnerabilities by supplementing the
+metric definitions in the Specification Document.</p>
+<p><strong>Diagram 1: Attack Vector Rubric</strong></p>
+<p><img src="FIR19_files/9843f726266f4192af5edda60ea62261.png" alt=""></p>
+<p><strong>Diagram 2: Attack Complexity Rubric</strong></p>
+<p><img src="FIR19_files/6c7319e4dd81ef4c714bba85d9039082.png" alt=""></p>
+<p><strong>Diagram 3: User Interaction Rubric</strong></p>
+<p><img src="FIR19_files/fa917756d4de82c82f7f0a234d9c73c8.png" alt=""></p>
+<p><strong>Diagram 4: Privileges Required Rubric</strong></p>
+<p><img src="FIR19_files/d8cfcd93bf5afd287c1d6675e27f5e2c.png" alt=""></p>
+<p><strong>Diagram 5: Scope Rubric</strong></p>
+<p><img src="FIR19_files/d200a3fb716a708b944374d3bf760aee.png" alt=""></p>
+<p><em>Note, if a Scope change has not occurred, Confidentiality, 
+Integrity and
+Availability impacts reflect consequence to the vulnerable component, 
+otherwise they reflect consequence to the component that suffers the 
+greater impact.</em></p>
+<p><strong>Diagram 6: Confidentiality Impact Rubric</strong></p>
+<p><img src="FIR19_files/d08dbd5ca871442bc8e201737637fc97.png" alt=""></p>
+<p><strong>Diagram 7: Integrity Impact Rubric</strong></p>
+<p><img src="FIR19_files/07c13606de4463e733723c47fc9cee4c.png" alt=""></p>
+<p><strong>Diagram 8: Availability Impact Rubric</strong></p>
+<p><img src="FIR19_files/4d192cce20e6a4cc11a00165335c839d.png" alt=""></p>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>See <a href="https://scap.nist.gov/">https://scap.nist.gov/</a>.&nbsp;<a href="#fnref1:1" rev="footnote" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn:2">
+<p>See <a href="https://www.itu.int/rec/T-REC-X.1521-201603-I/en">https://www.itu.int/rec/T-REC-X.1521-201603-I/en</a>.&nbsp;<a href="#fnref1:2" rev="footnote" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn:3">
+<p>The Internet Engineering Task Force (<a href="https://www.ietf.org/">https://www.ietf.org/</a>)&nbsp;<a href="#fnref1:3" rev="footnote" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn:4">
+<p>Internet Assigned Numbers Authority (<a href="https://www.iana.org/">https://www.iana.org/</a>)&nbsp;<a href="#fnref1:4" rev="footnote" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</div></div></div><div id="navbar" data-studio-s="navbar"><div id="c5" data-studio-c="bmO4oBPjnQ"><ul class="navbar"><li class="active"><a href="https://www.first.org/cvss" class="active">Common Vulnerability Scoring System (CVSS-SIG)</a><ul><li><a href="https://www.first.org/cvss/calculator/3.1">Calculator</a></li><li><a href="https://www.first.org/cvss/specification-document">Specification Document</a></li><li class="active"><a href="https://www.first.org/cvss/user-guide" class="">User Guide</a></li><li><a href="https://www.first.org/cvss/examples">Examples</a></li><li><a href="https://www.first.org/cvss/v3-1">CVSS v3.1 Documentation &amp; Resources</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/calculator/3.1">CVSS v3.1 Calculator</a></li><li><a href="https://www.first.org/cvss/v3.1/specification-document">CVSS v3.1 Specification Document</a></li><li><a href="https://www.first.org/cvss/v3.1/user-guide">CVSS v3.1 User Guide</a></li><li><a href="https://www.first.org/cvss/v3.1/examples">CVSS v3.1 Examples</a></li><li><a href="https://www.first.org/cvss/v3.1/use-design">CVSS v3.1 Calculator Use &amp; Design</a></li></ul></li><li><a href="https://www.first.org/cvss/v3-0">CVSS v3.0 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/calculator/3.0">CVSS v3.0 Calculator</a></li><li><a href="https://www.first.org/cvss/v3.0/specification-document">CVSS v3.0 Specification Document</a></li><li><a href="https://www.first.org/cvss/v3.0/user-guide">CVSS v3.0 User Guide</a></li><li><a href="https://www.first.org/cvss/v3.0/examples">CVSS v3.0 Examples</a></li><li><a href="https://www.first.org/cvss/v3.0/use-design">CVSS v3.0 Calculator Use &amp; Design</a></li></ul></li><li><a href="https://www.first.org/cvss/v2">CVSS v2 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/v2/guide">CVSS v2 Complete Documentation</a></li><li><a href="https://www.first.org/cvss/v2/history">CVSS v2 History</a></li><li><a href="https://www.first.org/cvss/v2/team">CVSS-SIG team</a></li><li><a href="https://www.first.org/cvss/v2/meetings">SIG Meetings</a></li><li><a href="https://www.first.org/cvss/v2/faq">Frequently Asked Questions</a></li><li><a href="https://www.first.org/cvss/v2/adopters">CVSS Adopters</a></li><li><a href="https://www.first.org/cvss/v2/links">CVSS Links</a></li></ul></li><li><a href="https://www.first.org/cvss/v1">CVSS v1 Archive</a><a class="subnav"></a><ul><li><a href="https://www.first.org/cvss/v1/intro">Introduction to CVSS</a></li><li><a href="https://www.first.org/cvss/v1/faq">Frequently Asked Questions</a></li><li><a href="https://www.first.org/cvss/v1/guide">Complete CVSS v1 Guide</a></li></ul></li><li><a href="https://www.first.org/cvss/data-representations">JSON &amp; XML Data Representations</a></li><li><a href="https://www.first.org/cvss/training">CVSS On-Line Training Course</a></li><li class=" active"><a href="https://www.first.org/cvss/identity" class=" active">Identity &amp; logo usage</a></li></ul></li></ul></div></div><div id="sidebar" data-studio-s="sidebar"><div id="c6" data-studio-c="xTgO0CL5iQ" class="h3labels subbox"><div id="toc"><h3>Table of Contents</h3><div class="box"><p class="tocindex-h1"><a href="#Common-Vulnerability-Scoring-System-version-3-1-User-Guide"><span class="bullet"></span>Common Vulnerability Scoring System version 3.1: User Guide</a></p><p class="tocindex-h2"><a href="#CVSS-Version-3-1-Release"><span class="bullet"></span>CVSS Version 3.1 Release</a></p><p class="tocindex-h1"><a href="#Common-Vulnerability-Scoring-System-v3-1-User-Guide"><span class="bullet"></span>Common Vulnerability Scoring System v3.1: User Guide</a></p><p class="tocindex-h1"><a href="#1-Introduction"><span class="num">1. </span>Introduction</a></p><p class="tocindex-h1"><a href="#2-Changes-in-CVSS-Version-3-1"><span class="num">2. </span>Changes in CVSS Version 3.1</a></p><p class="tocindex-h2"><a href="#t5"><span class="num">2.1. </span>CVSS Measures Severity, not Risk</a></p><p class="tocindex-h2"><a href="#t6"><span class="num">2.2. </span>Changes to Attack Vector and Modified Attack Vector</a></p><p class="tocindex-h2"><a href="#t7"><span class="num">2.3. </span>Changes to Scoring Guidance</a></p><p class="tocindex-h2"><a href="#t8"><span class="num">2.4. </span>Guidance for Scoring Attack Vector</a></p><p class="tocindex-h2"><a href="#t9"><span class="num">2.5. </span>The CVSS Extensions Framework</a></p><p class="tocindex-h2"><a href="#t10"><span class="num">2.6. </span>Formula Changes</a></p><p class="tocindex-h2"><a href="#t11"><span class="num">2.7. </span>Update to the Version Identifier in the Vector String</a></p><p class="tocindex-h1"><a href="#3-Scoring-Guide"><span class="num">3. </span>Scoring Guide</a></p><p class="tocindex-h2"><a href="#t13"><span class="num">3.1. </span>CVSS Scoring in the Exploit Life Cycle</a></p><p class="tocindex-h2"><a href="#t14"><span class="num">3.2. </span>Confidentiality and Integrity, Versus Availability Impacts</a></p><p class="tocindex-h2"><a href="#t15"><span class="num">3.3. </span>Local Vulnerabilities Exploited by Remote Attackers</a></p><p class="tocindex-h2"><a href="#t16"><span class="num">3.4. </span>Vulnerability Chaining</a></p><p class="tocindex-h2"><a href="#t17"><span class="num">3.5. </span>Scope, Vulnerable Component, and Impacted Component</a></p><p class="tocindex-h2"><a href="#t18"><span class="num">3.6. </span>Vulnerable Components Protected by a Firewall</a></p><p class="tocindex-h2"><a href="#t19"><span class="num">3.7. </span>Scoring Vulnerabilities in Software Libraries (and Similar)</a></p><p class="tocindex-h2"><a href="#t20"><span class="num">3.8. </span>Multiple CVSS Base Scores</a></p><p class="tocindex-h2"><a href="#t21"><span class="num">3.9. </span>CVSS Extensions Framework</a></p><p class="tocindex-h2"><a href="#t22"><span class="num">3.10. </span>Attack Vector Considerations</a></p><p class="tocindex-h2"><a href="#t23"><span class="num">3.11. </span>Security Requirements</a></p><p class="tocindex-h1"><a href="#4-Glossary-of-Terms"><span class="num">4. </span>Glossary of Terms</a></p><p class="tocindex-h1"><a href="#5-Scoring-Rubrics"><span class="num">5. </span>Scoring Rubrics</a></p></div></div></div></div><footer><div id="footer" data-studio-s="footer"><div id="c3" data-studio-c="wdW4irNSeA"><p><a href="http://www.w3.org/html/logo/"><img src="FIR19_files/html5-badge-h-css3-performance-semantics.png" alt="HTML5 Powered with CSS3 / Styling, Performance &amp; Integration, and Semantics" title="HTML5 Powered with CSS3 / Styling, Performance &amp; Integration, and Semantics"></a></p>
+<div class="middle-box smaller">
+<p><a href="https://www.first.org/signin">Sign in</a>  |
+<a href="https://www.first.org/contact">Contact</a> |
+<a href="https://www.first.org/sitemap">Sitemap</a> |
+<a href="https://www.first.org/copyright">Copyright</a> © 1995—2019 by FIRST.org, Inc.</p>
+<p><span class="smaller gray">Found a bug? E-mail us at <a href="mailto:first-website@first.org">first-website@first.org</a></span></p>
+</div>
+<p><span class="tlp smaller"></span></p></div></div></footer><script nonce="jK+kKXRyVQ0QGg==" type="text/javascript" async="async" src="FIR19_files/web.js"></script></body></html>

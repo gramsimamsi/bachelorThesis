@@ -467,6 +467,9 @@ Using the image version tag 'latest' is not recommended, as this could automatic
 With the attack vectors identified, we introduce a customized risk estimation model for our purpose and explain the challenges of developing it. The model is then used to estimate the relative risk of each vector.
 
 \section{Defining procedures and approach}
+Finding a framework to properly conduct a risk assessment proved to be more difficult and time consuming than expected. The process and result are laid out in this section.
+
+\subsection{Specification of environment factors}
 In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
 
 \begin{itemize}
@@ -483,19 +486,71 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \end{itemize}
 
-The formula for estimating risk values of the vectors identified in section \ref{vectorIdentify} was developed with the three scenarios in mind that were introduced in section \ref{scopeLimit}.
+The formula for estimating risk values of the vectors identified in section \ref{vectorIdentify} was developed with the three scenarios in mind that were derived in section \ref{scopeLimit}.
+
+\mybox{yellow}{
+TODO: based on specific software versions and (default) settings 
+}
 
 
+\mybox{yellow}{
+SETUP OF PRACTICAL PART:
+}
+
+\mybox{yellow}{
+Version freeze:
+OCP 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
+AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
+}
+
+\mybox{yellow}{
+Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
+- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (\#65799, @dekkagaijin)
+- https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
+- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (\#65499, @krunaljain)
+- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (\#65739, @liggitt)
+The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (\#65593, @bsalamat)
+}
+
+\mybox{yellow}{
+no major changes => OCP 3.11, AKS-k8s 1.11.9!
+}
+
+\mybox{yellow}{
+Dependency compatibilities:
+OCP 3.11: docker 1.13, CRI-O 1.11 (Source: LINK COMMENTED %https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
+k8s-1.11: docker 1.11.2 to 1.13.1  (Source: LINK COMMENTED % https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
+Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
+}
+
+\mybox{yellow}{
+-> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
+TODO: apply OCP updates when incoming?
+}
+
+\subsection{Process of deriving a formula}
+Generic methods of estimating risk may not lead to the most accurate results when assessing specialized systems like orchestrated container environments.
+But since an initial search for risk assessment frameworks and methodologies specific to such environments proved unsuccessful, more generic frameworks were considered. 
+The process laid out in the \gls{owasp} Risk Rating Methodology\footcite[][, sections 'Step 2' to 'Step 4' ]{riskRating} was an obvious choice, but discarded for the considerable effort needed to both map the generic ratings to indicators specific to our environment as well as estimating the sum of twelve to thirteen applicable factors per vector. Business impact factors would have been excluded since \gls{k8s} solutions are assessed in general, but for the exception of financial impact in case of cryptojacking where financial damage can be detached from the applications running on it.
+
+Another methodology considered but decided against was the Common Vulnerability Scoring System in its most current version, v3. As specifically stated in its user guide, it is not intended to measure risk but instead measuring the severity of specific vulnerabilities\footcite[][, section '2.1. CVSS Measures Severity, not Risk']{cvssUserGuide}.
+
+As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk being the mathematical product of likelihood and impact forms the basis of this methodology, where the impact is estimated directly while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the OWASP Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
+
+The original factors used to estimate a value for the likelihood were prevalence, detectability and exploitability. This methodology was customized in order to be more applicable, since prevalence would have been difficult to estimate and compare for such relatively new systems. Instead of detectability, the factors 'vantage point' and 'required access level' were added in order to explicitly consider both the possible origin of attack vectors as well as the privileges needed to leverage them. In contrast to other estimations they will not influence the exploitability value, as the formula would may then put too much weight on these factors. The average value of these four factors lead to the resulting probability value. Customizing the factors is done to tailor, a practice encouraged by the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 6: Customizing the Risk Rating Model']{riskRating}
+
+\mybox{yellow}{
+TODO: values not percentages, only numbers relational to other vectors. 
+TODO: map numbers to values
+TODO: make official formulas?
+TODO: based on specific software versions and (default) settings - put this into 'Specification of environment factors'!
+}
+
+\subsection{Resulting formula}
+TODO
 
 %START OLD STUFF, REVISIT%
-\mybox{yellow}{
-Focus on three scenarios: attack through network, hijacked container, bad user
-}
 
-\mybox{yellow}{
-Research-Freeze: May 3rd, 2019! (Pre-KubeCon19, check git commit dates for stuff like OWASP-documents etc!)
-Some newer information might be used for big outliers, but everything else just gets a side note
-}
 
 \mybox{yellow}{
 RISK ASSESSMENT METHODOLOGY:
@@ -544,41 +599,6 @@ goal is to reduce values above threshold X to below threshold X by applying secu
 
 \mybox{yellow}{
 Default values are defined as the following:
-}
-
-\mybox{yellow}{
-SETUP OF PRACTICAL PART:
-}
-
-\mybox{yellow}{
-Version freeze:
-OCP 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
-AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
-}
-
-\mybox{yellow}{
-Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
-- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (\#65799, @dekkagaijin)
-- https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
-- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (\#65499, @krunaljain)
-- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (\#65739, @liggitt)
-The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (\#65593, @bsalamat)
-}
-
-\mybox{yellow}{
-no major changes => OCP 3.11, AKS-k8s 1.11.9!
-}
-
-\mybox{yellow}{
-Dependency compatibilities:
-OCP 3.11: docker 1.13, CRI-O 1.11 (Source: LINK COMMENTED %https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
-k8s-1.11: docker 1.11.2 to 1.13.1  (Source: LINK COMMENTED % https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
-Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
-}
-
-\mybox{yellow}{
--> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
-TODO: apply OCP updates when incoming?
 }
 
 %TODO: END OLD STUFF, REVISIT%
