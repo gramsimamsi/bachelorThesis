@@ -464,7 +464,7 @@ Using the image version tag 'latest' is not recommended, as this could automatic
 \chapter{Assessing the attack surface risk}
 %TODO: derive process/evolution of risk rating model, introduce rating by threat actors + tools + vector + platform, explain problems / inaccuracies
 
-With the attack vectors identified, we introduce a customized risk estimation model for our purpose and explain the challenges of developing it. The model is then used to estimate the relative risk of each vector.
+With the attack vectors identified, we introduce a customized risk estimation model for our purpose and explain the challenges of developing it. The model is then used to estimate the relative risk of each vector, specific to each solution.
 
 \section{Defining procedures and approach}
 Finding a framework to properly conduct a risk assessment proved to be more difficult and time consuming than expected. The process and result are laid out in this section.
@@ -486,49 +486,15 @@ In order to achieve a view on the risks more accurately resembling situations wh
 
 \end{itemize}
 
-The formula for estimating risk values of the vectors identified in section \ref{vectorIdentify} was developed with the three scenarios in mind that were derived in section \ref{scopeLimit}.
+In addition to these assumptions, two specific implementations were selected and a software version was chosen. Additional solutions or software versions have not been assessed due to the exponential increase in workload to do so, but the process outlined in this thesis could be used to assess them, too.
+The solutions were selected since they are both popular as well as specific interest in them by the company accompanying this thesis, HvS Consulting.
+These include \gls{aks} as a public cloud solution and \gls{ocp} as an on-premise solution. As the latest stable version of \gls{ocp} during the beginning of this thesis was v3.11, this version was selected. It is based on \gls{okd} v3.11, which in turn is based on \gls{k8s} v1.11\footcite[][, refer to the second table below the headline 'Platform Components']{ocpK8sVersions}. \gls{aks} v1.13, directly correlating to \gls{k8s} v1.13 has already been available at this point\footnote{for more details, check figure \ref{aksVersionsMay}}, but v1.11 was chosen in order to achieve better comparability between the two solutions. This thesis will not look further into the upsides and downsides of faster availability in contrast to longer release and support cycles.
 
-\mybox{yellow}{
-TODO: based on specific software versions and (default) settings 
-}
+Whenever possible, all default settings were used to set up both solutions and get them functional. 
+As a managed solution, the \gls{aks} settings are less distributed and detailed. An overview of the default options at the time of preparing practical parts of this thesis can be seen in figure \ref{aksDefaultConfig}.
+Setting up the \gls{ocp} cluster was less straightforward and included steps with multiple options, but no defaults. The official setup guideline\footcite[][, sections 'Planning your installation' to 'Installing OpenShift']{ocpSetup} has been followed. A single master, single node setup was chosen. Multiple masters and (worker) nodes are recommended for production environments, but since this setup is purely used for assessment and demonstration, it is sufficient. Both nodes are virtual machines with sufficient resources in accordance to the documentation, running on \gls{rhel} 7.5. Best practices would recommend minimal OS setups like the \gls{rhel} Atomic Host offered by Red Hat, but this option has been chosen as such a setup is often needed within larger enterprises and as such faster and more easily available through preexisting processes in such corporate environments.
 
-
-\mybox{yellow}{
-SETUP OF PRACTICAL PART:
-}
-
-\mybox{yellow}{
-Version freeze:
-OCP 3.11 -> OKD 3.11 ->  k8s-version = 1.11(.0 with fixes, is a fork. see: https://github.com/openshift/origin/releases/tag/v3.11.0 )
-AKS (on May 3rd 2019) => k8s-version <= v1.13.5 available, but only for k8s-v1.11 only 1.11.8 or 1.11.9!
-}
-
-\mybox{yellow}{
-Considerable changes between 1.11.0 and 1.11.9 (Source: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md):
-- action required: the API server and client-go libraries have been fixed to support additional non-alpha-numeric characters in UserInfo "extra" data keys. Both should be updated in order to properly support extra data containing "/" characters or other characters disallowed in HTTP headers. (\#65799, @dekkagaijin)
-- https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.3.1
-- ACTION REQUIRED: Removes defaulting of CSI file system type to ext4. All the production drivers listed under https://kubernetes-csi.github.io/docs/Drivers.html were inspected and should not be impacted after this change. If you are using a driver not in that list, please test the drivers on an updated test cluster first. ``` (\#65499, @krunaljain)
-- kube-apiserver: the Priority admission plugin is now enabled by default when using --enable-admission-plugins. If using --admission-control to fully specify the set of admission plugins, the Priority admission plugin should be added if using the PodPriority feature, which is enabled by default in 1.11. (\#65739, @liggitt)
-The system-node-critical and system-cluster-critical priority classes are now limited to the kube-system namespace by the PodPriority admission plugin. (\#65593, @bsalamat)
-}
-
-\mybox{yellow}{
-no major changes => OCP 3.11, AKS-k8s 1.11.9!
-}
-
-\mybox{yellow}{
-Dependency compatibilities:
-OCP 3.11: docker 1.13, CRI-O 1.11 (Source: LINK COMMENTED %https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-about-this-release)
-k8s-1.11: docker 1.11.2 to 1.13.1  (Source: LINK COMMENTED % https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md#external-dependencies), CRI-O 1.11 (in-synch to k8s releases, source: https://github.com/cri-o/cri-o)
-Azure-AKS: uses moby, NOT docker! (moby = pluggable container runtime based on docker, automatically updated in background whenever no node restart needed)
-}
-
-\mybox{yellow}{
--> take defaults for all dependencies on install, document and apply all AKS node updates needing manual restart!
-TODO: apply OCP updates when incoming?
-}
-
-\subsection{Process of deriving a formula}
+\subsection{Deriving a risk estimation formula}
 Generic methods of estimating risk may not lead to the most accurate results when assessing specialized systems like orchestrated container environments.
 But since an initial search for risk assessment frameworks and methodologies specific to such environments proved unsuccessful, more generic frameworks were considered. 
 The process laid out in the \gls{owasp} Risk Rating Methodology\footcite[][, sections 'Step 2' to 'Step 4' ]{riskRating} was an obvious choice, but discarded for the considerable effort needed to both map the generic ratings to indicators specific to our environment as well as estimating the sum of twelve to thirteen applicable factors per vector. Business impact factors would have been excluded since \gls{k8s} solutions are assessed in general, but for the exception of financial impact in case of cryptojacking where financial damage can be detached from the applications running on it.
@@ -537,79 +503,40 @@ Another methodology considered but decided against was the Common Vulnerability 
 
 As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk being the mathematical product of likelihood and impact forms the basis of this methodology, where the impact is estimated directly while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the OWASP Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
 
-The original factors used to estimate a value for the likelihood were prevalence, detectability and exploitability. This methodology was customized in order to be more applicable, since prevalence would have been difficult to estimate and compare for such relatively new systems. Instead of detectability, the factors 'vantage point' and 'required access level' were added in order to explicitly consider both the possible origin of attack vectors as well as the privileges needed to leverage them. In contrast to other estimations they will not influence the exploitability value, as the formula would may then put too much weight on these factors. The average value of these four factors lead to the resulting probability value. Customizing the factors is done to tailor, a practice encouraged by the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 6: Customizing the Risk Rating Model']{riskRating}
+The original factors used to estimate a value for the likelihood were prevalence, awareness and exploitability. This methodology was customized in order to be more applicable, since prevalence would have been difficult to estimate and compare for the relatively new technologies. Instead of prevalence, the factors 'vantage point' and 'required access level' were added in order to explicitly consider both the possible origin of attack vectors as well as the privileges needed to leverage them. In contrast to other estimations they shall not influence the exploitability value, as the too much weight may then be put on these factors. The average value of these four factors lead to the resulting probability value. Customizing the factors is done to tailor towards our specific use case, a practice encouraged by the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 6: Customizing the Risk Rating Model']{riskRating}.
 
-\mybox{yellow}{
-TODO: values not percentages, only numbers relational to other vectors. 
-TODO: map numbers to values
-TODO: make official formulas?
-TODO: based on specific software versions and (default) settings - put this into 'Specification of environment factors'!
-}
+As a simple comparison of the risk to each vector in relation to each other is sufficient to our use case, numerical values without unit instead of percentages or monetary amounts suffice. Compared to each other, they can be used to provide a prioritized list after the assessment.
+The values for each respective factor were developed with the three scenarios derived in section \ref{scopeLimit} in mind. 
+The initial idea was to map the numbers of one through three to reasonable indicators for each factor with a value of three indicating the most serious contribution to overall risk. During the process, this was expanded to the values zero through four for severe outliers.
+
+The factor 'vantage point' increases in severity and value when it can be achieved more easily, as it would be easier to achieve it. It is valued at zero for situations that require more than a security baseline, i.e. physical access to the cluster nodes or hypervisors they may run on. A value of one is assigned for situations where commands need to be executed on the cluster nodes directly, as opposed to within the container. Command access to the containers is valued at two. Depending on the situation, access to the company network may be more difficult to achieve for an outside attacker than access to any single container, but from a cluster security perspective more people already have this sort of access. Therefore it is valued as a three, in contrast to the public internet accessible by anyone, which is an outlier in severity and assigned a value of four.
+
+'Required access level' is incrementally increased when less privileges are needed, as this increases the factors contribution to the total risk.
+Administrator access to the cloud environment or infrastructure underlying cluster nodes (i.e. equivalent access to the hypervisor in case the cluster nodes are \gls{vm}s) is valued at zero, as this would again exceed baseline security requirements. Administrator access to the orchestrator or nodes is valued at one. User access to these systems is valued at a two where read and write privileges are needed and valued at three in cases where only read privileges are required. If no privileges or authentication is needed at all, a sever outlier value of four is assigned.
+
+'Awareness' represents how easy it is for an attacker to become aware of this vector being feasible in general and in a specific system targeted for attack. As this is not applicable to negligent users, the value represents how easy it is to accidentally 'leverage' this vector instead. The assigned value increases with increase possibility for awareness, increasing the total risk estimation.
+In order to be estimated to be unlikely and valued at one, custom-made tools would be needed to detect vulnerabilities or and accidental attacks could happen during uncommon tasks, both being custom to a system-specific environment. It is estimated to be possible and valued at two in cases where specific attacks could be done regardless of the specific environment but customization of generic tools is needed. If and accidental attack might happen during common tasks where tools or processes are not used the way they are intended, a value of two is also assigned.
+The highest awareness value of three is assigned when attacks are both environment-agnostic as well as detectable by readily available tools or by simply using graphical user interfaces. It is valued at three in cases where proper usage of tools or processes during common tasks might accidentally lead to a security problem.
+
+The 'exploitability' factor differentiates between different levels of skill needed, increasing in value when less skill is required. In case of negligent users, it is simply valued the same as the awareness factor. It is valued at zero for situations that require more than a security baseline like unpublished and unknown exploitation of vulnerabilities. Synonymous to the definitions in the awareness factor, a difficult eploitability with a value of one would need custom tools for environment-specific exploitation, while an environment-agnostic exploit with require tool customization is valued as two. A value of three is again assigned when attacks are environment-agnostic and exploitable without tool customization or simple user interface interaction.
+
+The impact value was roughly estimated by differentiating between intermediate steps and achieved damage as well as whether a single namespace or the whole cluster is affected. Intermediate steps were assigned a value of one, while outcomes confined to a single namespace and limited monetary damages are given a vale of two. Compromises of the whole cluster and potentially unlimited monetary damages are valued at three for the most severe outcome rating.
 
 \subsection{Resulting formula}
-TODO
 
-%START OLD STUFF, REVISIT%
+The work elaborated on in the previous section leads to the following formula for estimating the total risk of the identified vectors, usable for a specific system setup at hand:
 
+$${Total\ risk}= Max[\frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}*\ impact,\ 10]$$
 
-\mybox{yellow}{
-RISK ASSESSMENT METHODOLOGY:
-difficulties with: 
-A how generically should vectors be set?
-B how to structure vectors (into categories?) 
-}
+This leads to a total risk of 0 through 10.5, which is rounded to full integers and capped at 10. In accordance to the OWASP Risk Rating Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high with the exception of 10, which is critical.
+It should be noted that the worst case option of each vector should be taken in case of multiple possible scenarios, attacks and outcomes.
 
-\mybox{yellow}{
-Solution to A: vectors split and merged after risk assessment sketch; if there were considerable differences in the estimated values, they were split. If no diffs, they were merged.
-Solution to B: Considerable time invested, no optimal solution was found. Ultimately ignored this, since more time investment wast feasible or added much value to the goals. TODO: Explain process, what was looked at and why it wast good, how we arrived at the end structure.
-}
-
-\mybox{yellow}{
-Risk assessment formula:
-Risk = Probability * Impact.
-Impact was taken as single value of 1 through 3  and estimated through None/Theoretical (0), Low/Intermediate-Step (1), non-severe security principle violation (2), severe security principle violation (3)
-}
-
-\mybox{yellow}{
-Probability was a bitch to define properly. Therefore split into four factors: Vantage Point, Required Access Level (RAL), Detectability and Exploitability. Those initially had values between 0 though 3, but outlier values of 4  were defined for RAL and Vantage Point (in sync with existing assessment methodologies within HvS).
-The average of these four values is taken as the total probability value, ranging from 0.25 through 3.5 (low <= 1.25, medium <= 2.25).
-Vantage Point: physical access (0, see above since your own or the cloud providers hardware-accessing employees can also do whatever they want); node or management-interface (1); within container (2); within company network (3); from public www (4)
-Required Access Level: cloud/infrastructure admin (0, since a rogue employee with super-admin can do whatever they want and this is about baseline security); cluster/system-admin (1); cluster/system user with read/write access (2); cluster/system user with read-only access (3); unauthenticated (4)
-Detectability: Difficult (1) since it needs custom tools for environment-specific vuln detection; Average (2) since it is either generic but needs simple custom tools or its individualized but can be identified with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to find the vuln
-Exploitability: Theoretical (0, since this is the level of unpublished 0-days and we are still doing baseline security); difficult (1) needs custom tools for environment-specific exploitation; Average(2), since its a generic exploit but needs simple custom tools or its individualized but can be exploited with some slight tool individualization; Easy (3) since there are generic script-kiddie tools / GUI-paths to exploit the vuln
-}
-
-\mybox{yellow}{
-This leads to a total risk of 0 through 10.5, which is then rounded to full integers and capped at 10. In accordance to HvS internal models, total risk values <= 3 are defined as low, <= 6 as medium, values above that are defined as high with the exception of 10, which is critical.
-}
-
-\mybox{yellow}{
-specific values for each vector are estimated in a context with multiple assumptions:
-TODO: callback to assumptions in scope limitation
-}
-
-\mybox{yellow}{
-- If multiple techniques can be used / impacts can occur to leverage a vector, all factor values of the one with the highest total risk are taken
-- Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
-}
-
-\mybox{yellow}{
-goal is to reduce values above threshold X to below threshold X by applying security measures. This aims to ensure a basic security level, not something against APT groups / zero-day protection / targeted attacks with a lot of resources and competence. (no online banking, user data of average confidentiality etc)
-}
-
-\mybox{yellow}{
-Default values are defined as the following:
-}
-
-%TODO: END OLD STUFF, REVISIT%
-
-\section{Estimating the risk} \label{riskEstimate}
+\section{Estimating the solution specific risk} \label{riskEstimate}
 %TODO put full tables into appendix + only reference here? or move estimate derivement to appendix
 %TODO get cell background colour working in latex tables? or...
 %TODO ...sort comparison table by sum of risk (aks+ocp) desc
 
-The resulting risk estimation is illustrated in Table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. The details on how these values were determined are explained hereafter.
-
+The resulting risk estimation for both the \gls{ocp} and \gls{aks} example systems are illustrated in Table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. The details on how these values were determined are explained hereafter.
 
 \begin{table}[H]
 \centering
@@ -645,7 +572,7 @@ V17             & Leveraging bad patch management                               
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
-{\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Detectability}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
+{\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidentials through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
@@ -675,7 +602,7 @@ V17             & Leveraging bad patch management                               
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
 \hline
-{\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Detectability}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
+{\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidentials through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
@@ -921,7 +848,7 @@ Among worst case: unauthenticated access to run commands which is hosted publicl
 }
 
 %AKS
-\highlight[yellow]{
+\mybox{yellow}{
 Surprisingly, same as OCP (despite the azure promise of PaaS-we-manage-your-infra)!
 That's the case since security updates on nodes that require a reboot are not done automatically, but have to be triggered manually or configured to trigger automatically.
 Remediation is far less work though.
@@ -930,15 +857,16 @@ Remediation is far less work though.
 \subsection{V17 - Leveraging bad patch management}
 
 %OCP
-\highlight[yellow]{
+\mybox{yellow}{
 Sinkhole vector for patch management. Would be a measure against every preceding vector otherwise.
 Worst case could be anything, thus maximum risk. (See kubernetes CVE with 9.8 / 10)
-
+}
+\mybox{yellow}{
 To check for this is common sense, some technical skill may be needed to find and exploit unpatched stuff.
 }
 
 %AKS
-\highlight[yellow]{
+\mybox{yellow}{
 Same as OCP. Even infra still needs user interaction to be patched, see preceding vector.
 }
 
@@ -950,8 +878,16 @@ With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} 
 %TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)
 Normally one should start with the vector currently having the highest overall risk. We chose two other vectors, since these were more representative of the environments within scope and concise enough to properly present the process. Securing the underlying physical servers or \gls{vm}s is not an optimal example representing the process of securing a solution based on orchestrated containers.
 
-\highlight[yellow]{
+\mybox{yellow}{
 TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
+}
+
+\mybox{yellow}{
+- Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
+}
+
+\mybox{yellow}{
+goal is to reduce values above threshold X to below threshold X by applying security measures. This aims to ensure a basic security level, not something against APT groups / zero-day protection / targeted attacks with a lot of resources and competence. (no online banking, user data of average confidentiality etc)
 }
 
 \section{Managing the risk of V07 - Lateral movement through cluster}
