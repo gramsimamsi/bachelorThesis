@@ -712,34 +712,23 @@ The total risk value is increased from 5 to 7 by this, leading to a high risk.
 
 \subsection{V09 - Image cache compromise}
 
-%OCP
-\mybox{yellow}{
-If you can swap out the cached container image on a host, the swapped-in version will run the next time this node spins up this container.
-This is a very sneaky way to inject a malicious container, but within the default settings, access to the host file system is required.
-Not well known and not entirely trivial to do (sneakily).
-}
-%AKS
-\mybox{yellow}{
-Same as OCP.
-}
+In the \gls{ocp} setup, a cached container image could be swapped out for a malicious one, thus affecting a container and its application (Impact: 2). In order to do this, an attacker would need administrative access to the underlying node (RAL: 1) and be able to execute commands on it (Vantage Point: 1). This is a sensible vector not commonly discussed (Awareness: 2) and would require technical knowledge to conduct (Exploitability: 2).
+With a total risk value of 3, it is classified as a low risk. \\
+
+The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
+
 \subsection{V10 - Container modification at runtime}
 
-%OCP
-\mybox{yellow}{
-Instead of deploying a container with malicious contents, an attacker can try to modify and use an already running container to its needs by loading additional tools/binaries, changing configurations or exfiltrating data. This could be done through an RCE vuln, ssh access or others, just like any compromised Linux machine.
--> Common sense to do this, same technical level as any command line interaction with a Linux system.
-}
-%AKS
-\mybox{yellow}{
-Same as OCP.}
+In the \gls{ocp} setup, an attacker can try to modify and use an already running container instead of deploying a container with malicious contents,. In order to do this, they would need to execute commands from within the container (Vantage Point: 2) and be able to write to its file system (RAL: 2). This would affect the container accessed and in turn the application it is part of (Impact: 2).
+Trying to do this within a container is straightforward (Awareness: 3) and would require the same technical expertise as any command line interaction with a linux system (Exploitability: 2).
+With a total risk value of 5, it is classified as a medium risk. \\
+
+The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
 
 \subsection{V11 - Resource hoarding (sabotage)}
 
-%OCP
-\mybox{yellow}{
-With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting DOS attacks or wiping nodes or cluster configurations. Since it is a complex system, finding the sabotaged component can take considerable know-how and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
-Wiping is common sense, sabotaging the cluster in a complex and effective way may take deeper knowledge and be customized to the environment.
-}
+With enough access or restrictions too lax, an attacker may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting Denial of Service attacks or wiping nodes or cluster configurations. Since clusters are a complex distributed system with a multitude of configurations, finding the sabotaged component could take considerable expertise and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
+The potential for wiping is common sense, sabotaging the cluster in a complex and effective way may take deeper knowledge and would have to be customized to the environment at hand.
 
 %AKS
 \mybox{yellow}{
