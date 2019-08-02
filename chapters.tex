@@ -738,7 +738,7 @@ With a total risk value of 8, it is classified as a high risk. \\
 The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
 Since it is far easier to spin up additional resources in the cloud to continue operations, less impact is estimated (Impact: 2).
 All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
-With a total risk value of 8, it is classified as a medium risk.
+With a total risk value of 6, it is classified as a medium risk.
 
 \subsection{V12 - Resource misuse (cryptojacking)}
 
@@ -747,92 +747,65 @@ In order to achieve more monetary gain, an attacker with access to the cluster i
 The goal is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
 Cryptojacking is regularly cited as an up-and-coming attack (Awareness: 3), but to do it without being detected needs some technical skill (Exploitability: 2).
 If successful for longer periods of time, a companies on-premise resources will be available to a lesser degree as some of them are used for mining. In addition to that, the underlying hardware will be degraded at a higher rate, leading to hardware failures and replacesments sooner than normal (Impact: 2).
-With a total risk value of 5, it is classified as a high risk. \\
+With a total risk value of 5, it is classified as a medium risk. \\
 
 
 The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
 In contrast to V11, the ability to spin up additional resources in the cloud increases the impact here, since those are virtually unlimited and simpy billed towards the attack victim (Impact: 3).
 All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
-With a total risk value of 8, it is classified as a medium risk.
+With a total risk value of 8, it is classified as a high risk.
 
 \subsection{V13 - Adding rogue containers}
 
-TODO
-%OCP
-\mybox{yellow}{
-Instead of manipulating running containers, an attacker with user access and permissions to spin up containers may start their own ones. (BYOC – bring-your-own-container?)
-This is still restricted by container admission restrictions on the user/project, but at least he can install all needed binaries beforehand and his shell doesn't die whenever the underlying container might be stopped.
-Doing this is common sense, as before some technical skill is required to prepare a malicious container
-}
+The \gls{ocp} setup will be assessed first.
+Instead of manipulating running containers, an attacker with access to the API (Vantage Point: 3) and permissions to spin up containers (RAL: 2) may start their own ones. 
+This is still restricted by container admission restrictions on the user/project, but they can be leveraged to compromise parts of the application (Impact: 2).
+Doing this is common sense (Awareness: 3), but as in other vectors some technical skill is required to prepare a malicious container (Exploitability: 2)
+With a total risk value of 5, it is classified as a medium risk. \\
 
-%AKS
-\mybox{yellow}{
-Same as OCP, except accessible from anywhere (cloud, duh).
--> increases total risk value slightly, both are still rated medium in the end
-}
+
+Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet. (Vantage Point: 4, RAL: 2, Awareness: 3, Exploitability: 2, Impact: 2). 
+The total risk value is increased from 5 to 6 by this, still classifying it as a medium risk.
+
 \subsection{V14 - Adding rogue nodes}
 
-%OCP
-\mybox{yellow}{
-An attacker could try to add a malicious node to the cluster and inspect or manipulate data in or exfiltrate data from containers scheduled on it. Since any container may run anywhere, there is a high chance of all containers eventually being run on a given node over time, exposing the whole cluster to an attacker. This could be sped up by manipulating the reports of remaining resources on the node towards the scheduler.
-By design, cluster administrator access is needed to add a node within OCP.
-This technique is not talked about that much, but still available in public resources and possible in all clusters. Docs are publicly available to add nodes to a cluster, basic Linux server administration skills are needed to follow them.
-}
-%AKS
-\mybox{yellow}{
-Accessible from anywhere (cloud).
--> total risk value unchanged
-In contrast to OCP, you can spin up additional nodes more easily in AKS if configured on creation, but to access/control/manipulate them you still need cluster administrator access.
-A tutorial on getting ssh access is available, but that's lengthy and not trivial.
-}
+In the \gls{ocp} setup, an attacker with access to the API (Vantage Point: 3) could try to add a malicious node to the cluster. Similar to V08, they could gain full access to containers of multiple projects by this (Impact: 3).
+By design, cluster administrator access is needed to add a node within OCP (RAL: 1).
+This technique is not talked about that much, but still available in public resources and possible in all clusters (Awareness: 2). Docs are publicly available to add nodes to a cluster, basic linux server administration skills are needed to follow them (Exploitability: 2).
+With a total risk value of 6, it is classified as a medium risk. \\
+
+
+The \gls{aks} interfaces are again available from the public internet (Vantage Point: 4).
+Adding nodes would still be possible here, but since they are automatically provisioned and customization of provisioned VMs is not straightforward, this attack is relatively unorthodox (Awareness: 1).
+The other circumstances remain synonymous to the \gls{ocp} setup (RAL: 1, Exploitability: 2, Impact: 3).
+The total risk value remains unchanged at 6, a medium risk.
+
 \subsection{V15 - Leveraging bad user practice}
 
-%OCP
-\mybox{yellow}{
-This vector comprises user practices outside of the cluster that lead to risks within it. Examples include phishing, openly publishing keys/tokens to public code repositories, password reuse, scouting specific software or container images used, publishing logs with information valuable to an attacker and more.
-Could be done targeted (i.e. specific OSINT) or untargeted through github crawlers, scanning account/password dumps, …
-Whatever you get could be used to access the cluster with the permissions granted by service-/user-accounts or as a reconnaissance base for further attacks.
-There are tools available to do this, using them effectively requires some technical skill.
-}
-%AKS
-\mybox{yellow}{
-Same as OCP, except accessible from anywhere (cloud, duh).
--> doesn't change total risk value
-}
+The \gls{ocp} setup will be assessed first.
+User practices outside of the cluster are not affected by cluster controls. Users entering their credentials in faked login windows or publicizing access tokens through public repositories are relatively common occurences that could potentially allow anyone finding them (RAL: 4) privileged access within that user context (Impact: 2) if they can reach the cluster interfaces (Vantage Point: 3).
+There are tools available to do this, but doing this is non-intuitive (Awareness: 2) and using them effectively requires some technical skill (Exploitability: 2).
+With a total risk value of 6, it is classified as a medium risk. \\
+
+
+Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 4, Awareness: 2, Exploitability: 2, Impact: 2). 
+The total risk value remains identical.
+
 \subsection{V16 - Leveraging bad infrastructure}
 
-%OCP
-\mybox{yellow}{
-The underlying nodes could allow an attacker easy entry, even if the containers themselves are hardened. 
-This includes Side-Channel attacks like Spectre and Meltdown, open ports on the servers exposed by other stuff running on it, being available from the public www, …
-Vector exists mostly to sink all classic infra security measures in it, since those are researched and available everywhere and very much not the focus of the thesis.
-Among worst case: unauthenticated access to run commands which is hosted publicly on the internet for anyone to access and indexed by shodan. Bye bye cluster.
-(Too many scenarios to hypothesize here, Ill just point the finger at conventional server and infra hardening standards and guidelines)
--> Well known, still needs some technical skill to find vulns and exploit them
-}
+The \gls{ocp} setup will be assessed first.
+The underlying nodes could allow an attacker easy entry, even if the platform itself is secured.
+Worst case scenarios include nodes available to the public internet (Vantage Point: 4) with insecure configuration, allowing any attacker unauthorized node access (RAL: 4). Synonymous to V08, this could lead to multiple compromised applications (Impact: 3). Technical know-how would still be needed to leverage this (Exploitability: 2) and attackers are assumed to be unlikely to look for containerized workloads specifically (Awareness: 2).
+With a total risk value of 9, it is classified as a high risk. \\
 
-%AKS
-\mybox{yellow}{
-Surprisingly, same as OCP (despite the azure promise of PaaS-we-manage-your-infra)!
-That's the case since security updates on nodes that require a reboot are not done automatically, but have to be triggered manually or configured to trigger automatically.
-Remediation is far less work though.
-}
+
+The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
 
 \subsection{V17 - Leveraging bad patch management}
 
-%OCP
-\mybox{yellow}{
-Sinkhole vector for patch management. Would be a measure against every preceding vector otherwise.
-Worst case could be anything, thus maximum risk. (See kubernetes CVE with 9.8 / 10)
-}
-\mybox{yellow}{
-To check for this is common sense, some technical skill may be needed to find and exploit unpatched stuff.
-}
 
-%AKS
-\mybox{yellow}{
-Same as OCP. Even infra still needs user interaction to be patched, see preceding vector.
-}
+Known and unpatched vulnerabilities in any components can lead to any number of problems. For both the \gls{aks} and \gls{ocp} setup, worst case values are assumed for all factors except Exploitability, as technical knowledge is required to leverage them. (Vantage Point: 4, RAL: 4, Awareness: 3, Exploitability: 2, Impact: 3).
+With a total risk value of 10, it is classified as a critical risk for both setups. \\
 
 \chapter{Managing the attack surface risk}
 
