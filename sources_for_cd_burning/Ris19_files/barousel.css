@@ -1,0 +1,182 @@
+/*-------------> BAROUSEL */
+.barousel
+{
+	position:relative;
+	margin-bottom:0px;
+	width:940px;
+	height:220px;
+	z-index: 0;
+}
+
+.barousel_image
+{
+	position:absolute;
+	z-index:10;
+	width:940px;
+	height:220px;
+}
+
+.barousel_image img
+{
+	position:absolute;
+	display:none;
+}
+
+.barousel_image img.default
+{    
+	display:block;
+}
+
+.barousel_image img.current
+{
+	z-index:10;
+}
+
+.barousel_image img.previous
+{
+	z-index:5;
+}
+
+.barousel_content
+{
+	position:absolute;
+	padding:15px 18px 0 18px;    
+	z-index:50;
+	background:url(/images/bg_barousel_content.png) repeat 0 0;
+	width: 300px;
+	max-width: 300px;
+	/* bottom:105px; - original */
+	bottom: 10px; /* Joe Changed */
+	left:0px;
+}
+
+.barousel_content a {
+    background: #b52f66;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+}
+.barousel_content div
+{
+	display:none;    
+}
+
+.barousel_content div.default
+{
+	display:block;    
+}
+
+.barousel_content p
+{
+	font-size:13px;
+	font-weight:normal; 
+	line-height:17px;   
+	/*margin-bottom: 0;*/
+}
+
+.barousel_content p.header
+{
+	font-size:28px;
+	font-weight:normal;
+	line-height:28px;
+	color:#fff55b;
+}
+
+/*.barousel_content a,
+.barousel_content a:hover
+{
+	background-color:transparent !important;
+} */
+
+.barousel_nav
+{
+	position:absolute;
+	padding:3px 3px 0px 0;
+	height:23px;    
+	background:url(/images/bg_barousel_content.png) repeat 0 0;
+	/* bottom:79px; - Original */
+	bottom:23px; 
+	left: 150px;
+	z-index:100;
+	width:333px;
+}
+
+.barousel_nav .counter
+{    
+	color: white;
+	margin:1px 5px 0 0;
+}
+
+.barousel_nav ul
+{
+	float:left;
+	padding:0;
+	margin:3px;
+}
+
+.barousel_nav li
+{
+	float:left;
+	padding-left:3px;
+	font-size:0;
+	line-height:0;
+	list-style:none;
+}
+
+.barousel_nav li a
+{
+	display:block;
+	width:15px;
+	height:15px;
+	font-size:0;
+	line-height:0;
+	text-decoration:none;
+}
+
+.barousel_nav li.prev a
+{
+	background-image:url(https://www.theirm.org/media/2934741/barousel_link_previous_sfw.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+	outline: 0 none;
+}
+
+.barousel_nav li.prev a:hover
+{
+	background-image:url(/images/barousel_link_previous.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.barousel_nav li.next a
+{
+	background-image:url(https://www.theirm.org/media/2934746/barousel_link_next_sfw.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+	outline: 0 none;
+}
+
+.barousel_nav li.next a:hover
+{
+	background-image:url(/images/barousel_link_next.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.barousel img.ajax_loader
+{
+	display:none;
+	position:absolute;
+	z-index:99;
+	top:70px;
+	left:135px;
+}
+
+.barousel_content, .barousel_nav {
+    background: rgba(255,255,255,0);
+}
+
+
+/* EDITOR PROPERTIES - PLEASE DON'T DELETE THIS LINE TO AVOID DUPLICATE PROPERTIES */

@@ -108,7 +108,7 @@ Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, bu
 A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, 
 resulting in some middleware responsibilities falling back to the consumer. 
 A consumer might also have to extensively configure or modify the application-hosting environment for compliance or security purposes. 
-Even some low-level tasks aren't completely managed, i.e. \gls{vm} reboots to apply security updates.\footcite[][, section 'Process Linux node updates and reboots using kured']{msVmReboot}
+Even some low-level tasks aren't completely managed, i.e. VM reboots to apply security updates.\footcite[][, section 'Process Linux node updates and reboots using kured']{msVmReboot}
 
 \section{Containers}
 
@@ -120,7 +120,7 @@ A container is a standard unit of software that packages up code and all its dep
 From a technical viewpoint, a container is an isolated process running in the userspace of a host OS. The host system shares the kernel with all containers on it and might share other resources, but containers are run from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on (except the kernel).\footcite[][, slide 13]{containerIntro}
 
 Linux containers were widely popularized through Docker, a container system initially based on \gls{lxc}.\footcite[][, section '2013: Docker']{containerHistory}
-Containers provide isolation of multiple applications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple \gls{vm}s. Thus, they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
+Containers provide isolation of multiple applications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple VMs. Thus, they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
 
 \begin{figure}[H]
 \includegraphics[scale=0.3]{pictures/VMsVsContainers.jpg} 
@@ -277,7 +277,7 @@ Another difference of note is is the mechanic of \gls{scc}, which are the OpenSh
 
 The Azure Kubernetes Service is a managed \gls{k8s} solution offered by Microsoft and running in the Azure public cloud. 
 As it does not differ from the \gls{k8s} reference implementation compared to \gls{ocp}, its functionality is identical to the general \gls{k8s} mechanics described in section \ref{k8sTheory}.
-The computing resources used to run the cluster are pre-configured and provisioned \gls{vm}s in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built.\footcite[][, section 'What is Moby?']{dockerMoby} 
+The computing resources used to run the cluster are pre-configured and provisioned VMs in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built.\footcite[][, section 'What is Moby?']{dockerMoby} 
 \gls{k8s} versions in \gls{aks} directly correspond to the \gls{k8s} version they are based on.
 As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite[][, first paragraph]{aadAksAuth}
 
@@ -462,7 +462,7 @@ With the attack vectors identified, we introduce a customized risk estimation mo
 \section{Defining procedures and approach}
 Finding a framework to properly conduct a risk assessment has proven to be more difficult and time consuming than expected. The process and result are laid out in this section.
 
-\subsection{Specification of environment factors}
+\subsection{Specification of environment factors} \label{envDefine}
 In order to achieve a view on the risks more accurately resembling situations where a solution might be implemented, several assumptions are made:
 
 \begin{itemize}
@@ -506,7 +506,7 @@ The initial idea was to map the numbers of one through three to reasonable indic
 The factor 'vantage point' increases in severity and value when it can be achieved more easily, as it would be easier to achieve it. It is valued at zero for situations that require more than a security baseline, i.e. physical access to the cluster nodes or hypervisors they may run on. A value of one is assigned for situations where commands need to be executed on the cluster nodes directly, as opposed to within the container. Command access to the containers is valued at two. Depending on the situation, access to the company network may be more difficult to achieve for an outside attacker than access to any single container, but from a cluster security perspective more people already have this sort of access. Therefore it is valued as a three, in contrast to the public internet accessible by anyone, which is an outlier in severity and assigned a value of four.
 
 The '\gls{ral}' is incrementally increased when less privileges are needed, as this increases the factors contribution to the total risk.
-Administrator access to the cloud environment or infrastructure underlying cluster nodes (i.e. equivalent access to the hypervisor in case the cluster nodes are \gls{vm}s) is valued at zero, as this would again exceed baseline security requirements. Administrator access to the orchestrator or nodes is valued at one. User access to these systems is valued at a two where read and write privileges are needed and valued at three in cases where only read privileges are required. If no privileges or authentication is needed at all, a sever outlier value of four is assigned.
+Administrator access to the cloud environment or infrastructure underlying cluster nodes (i.e. equivalent access to the hypervisor in case the cluster nodes are VMs) is valued at zero, as this would again exceed baseline security requirements. Administrator access to the orchestrator or nodes is valued at one. User access to these systems is valued at a two where read and write privileges are needed and valued at three in cases where only read privileges are required. If no privileges or authentication is needed at all, a sever outlier value of four is assigned.
 
 'Awareness' represents how easy it is for an attacker to become aware of this vector being feasible in general and in a specific system targeted for attack. As this is not applicable to negligent users, the value represents how easy it is to accidentally 'leverage' this vector instead. The assigned value increases with increase possibility for awareness, increasing the total risk estimation.
 In order to be estimated to be unlikely and valued at one, custom-made tools would be needed to detect vulnerabilities or and accidental attacks could happen during uncommon tasks, both being custom to a system-specific environment. It is estimated to be possible and valued at two in cases where specific attacks could be done regardless of the specific environment but customization of generic tools is needed. If and accidental attack might happen during common tasks where tools or processes are not used the way they are intended, a value of two is also assigned.
@@ -522,6 +522,7 @@ The work elaborated on in the previous section leads to the following formula fo
 
 $${Total\ risk}= Max[\frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}*\ impact,\ 10]$$
 
+%TODO formula misses rounding to full integer
 This leads to a total risk of 0 through 10.5, which is rounded to full integers and capped at 10. In accordance to the OWASP Risk Rating Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high with the exception of 10, which is critical.
 It should be noted that the worst case option of each vector should be taken in case of multiple possible scenarios, attacks and outcomes.
 
@@ -806,53 +807,61 @@ With a total risk value of 10, it is classified as a critical risk for both setu
 With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} is continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
 
 \section{Defining procedures and approach}
-%TODO: explain what to do if doing everything, will only implement two examples (maybe list all measures and post-measure risks in annex?)
-Normally one should start with the vector currently having the highest overall risk. We chose two other vectors, since these were more representative of the environments within scope and concise enough to properly present the process. Securing the underlying physical servers or \gls{vm}s is not an optimal example representing the process of securing a solution based on orchestrated containers.
+Before managing the risk, the risk appetite\footcite[][, first paragraph]{riskAppetite} should be decided on, defining what residual risk levels are acceptable.
+As the goal is to provide a security baseline, reducing the risk to below 'critical' and 'high' will be taken as a goal.
+This defines the work ahead, as any risk above this threshold is intended to either be accepted (i.e. in cases where the cost of implementing security measures exceeds the potential damage costs) or reduced to an acceptable level.
+The set of vectors above the risk appetite are typically ordered in descending order of their total risk value.
+Typically, one would start with the vector currently presenting the highest overall risk. 
+After selecting sensible security measures, the residual risk of all vectors should be reassessed, as some measures may influence multiple vectors. 
+Which measures to select highly depends on specific setups, use cases and available resources, as these would considerably influence factors like the implementation cost of each measure.
+%TODO ...but some best practises will be listed? Write some specifics here!
 
-\mybox{yellow}{
-TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
-}
+As the process will not be fully completed within this thesis, the vectors chosen to demonstrate the process were not the ones with the highest overall risk.
+Two other vectors were chosen instead, since these were more representative of the environments within scope and concise enough to properly present the process. Examples like securing the underlying physical servers or VMs are suboptimal for representing the process of securing a solution based on orchestrated containers.
 
-\mybox{yellow}{
-- Values might decrease through the implementation of security measures, leading to a lower total value. (If multiple techniques could be used to leverage a vector and only one gets its total risk reduced, the new maximum risk value of that vector becomes the vector value(s)
-}
-
-\mybox{yellow}{
-goal is to reduce values above threshold X to below threshold X by applying security measures. This aims to ensure a basic security level, not something against APT groups / zero-day protection / targeted attacks with a lot of resources and competence. (no online banking, user data of average confidentiality etc)
-}
+A specific attack for each vector has been conducted and will be examined for demonstration. Security measures will be chosen and implemented, after which the successful prevention of the attack will be shown.
+The remaining risk will be reassessed for all vectors.
 
 \section{Managing the risk of V07 - Lateral movement through cluster}
-%TODO write out all from ppt with commands, pictures
-\highlight[red]{
-TODO this was done in both AKS and OCP, is possible with both default configs!
-}
+This section will demonstrate the possibility of attackers to leverage network access to other containers in a cluster, across namespace/project boundaries.
+
+Both the \gls{aks} and \gls{ocp} clusters set up as specified in section \ref{envDefine} have been vulnerable to attacks leveraging the attack vector specified in section \ref{v07}. This is possible with the default settings for both clusters, as will be demonstrated. Security measures will be implemented and their effectiveness demonstrated. The risk management process will be demonstrated on the basis of these circumstances.
+
 \subsection{Demonstrating the successful attack without security measures}
 %TODO
-\highlight[yellow]{
-TODO: show demo on OCP and AKS, or just one and put the other in appendix?
+The \gls{ocp} cluster contains several projects, two of which are relevant to the situation at hand. 
+The 'sock-shop' project contains the Sock Shop, a microservice demo application that is open source and implements an online store for the purchase of various socks.\footcite[][, first paragraph of 'README.md']{sockShop}
+The 'testuser' project is used to simulate an attacker-controlled container admitted to another project.
 
-TODO: show getting in and damage, refer to ppt for commands, console I/O and screenshots
-}
+The project names are seen in listing \ref{lst:lateral-ocp-prep}, in addition to the \gls{k8s} services admitted by the sock shop application. One of these services is called user-db, reachable through the cluster-internal IP 172.30.2.17 and listening to port 27017. This port is commonly used by the database solution MongoDB\footcite[][, first table row]{mongoPort}. The listing also shows the yaml configuration file for the attacking container placed within a \gls{k8s} pod. It contains basic networking tools and runs a wait-loop to both simulate a running container as well as stay admitted in the cluster since the started process is perpetually running. The listing also shows the privileges needed to admit this pod into the cluster, which is allowed through unprivileged security context constraints\footcite[][, refer to table of section 'Listing Security Context Constraints']{sccDefaults}. After the pod is admitted and created through the oc apply command, a remote shell is opened through oc rsh in order to execute commands from within the simulated attacker context.
+
+Listing \ref{lst:lateral-ocp-exploit} shows the commands and output used to steal (fake) login, address and payment information from within the sock shop.
+The nmap tool is already installed and used to scan for MongoDB databases. This would take a considerable amount of time to do for the whole IP range of the cluster, which is why we resctricted it to the service IP we know to route to the user-db service. The output not only confirms that we can reach it from another namespace, but also shows three databases on it - local, admin and users.
+For usability purposes during the attack, the MongoDB shell is directly downloaded and installed during container runtime and used to connect to the database found. Since no access control is enabled, all databases can be enumerated and login, user as well as credit card data can be printed to the shell output.
+
+The same attack was successfully conducted on the \gls{aks} setup, only the commands used differ slightly. Details can be found in listings \ref{lst:lateral-aks-prep} and \ref{lst:lateral-aks-exploit}.
+
 \subsection{Selecting security measures}
 %TODO
-\highlight[yellow]{
+TODO restricting mongodb would mitigate, too. appsec not for paas provider, so k8s measures.
+
 TODO: use multitenant networkplugin (OCP) and network policies (k8s)
 TODO: show implementing measures through commands in ppt
-}
+
 
 %TODO RANT ABOUT AKS CLUSTER REBUILD NEEDED!
 The worst AKS-specific problem with this is the mitigation. This risk is not clearly documented in the setup section of the documentation. If one stumbles upon this information in further sections of the docs after setting up his cluster, he might postpone or deny changing the setting to isolate different projects by default. This is because a full cluster rebuild is needed to change this setting!
 
 \subsection{Demonstration with implemented security measures}
 %TODO
-\highlight[yellow]{
+
 TODO show remediation through demo of unsuccessful attack
-}
+
 \subsection{Risk reassessment}
 %TODO
-\highlight[yellow]{
+
 TODO updated table of risk for ocp AND aks
-}
+
 \section{Managing the risk of V08 - Container breakout}
 %TODO write out all from ppt with commands, pictures
 \highlight[yellow]{
@@ -882,9 +891,11 @@ TODO show remediation through demo of unsuccessful attack
 TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
 }
 \section{Continuing the risk management process}
-%TODO process only partially completed, how to proceed if you do everything. (point to completed list of measure recommendations + new risk?)
+%TODO point to completed list of measure recommendations + new risk?
+
+%TODO process only partially completed, how to proceed if you do everything. 
 \highlight[yellow]{
-TODO would start with highest vector, check possible measures and implement when acceptable/applicable. reassess vector risk and either implement more XOR accept residual risk if still highest. otherwise put back into queue -> pick up now highest vector and check possible measures, ... -> repeat until risks are either all below target threshold or all above are accepted.
+TODO two vectors are done (or residual risk accepted). others are reduced, too, as seen in comparison between the before/after tables. this would be continued until risk for all is below 7 and/or the rest is accepted.
 }
 
 \chapter{Conclusion}
