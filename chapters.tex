@@ -92,11 +92,7 @@ As with all systems, new attacks and vulnerabilities may emerge at any point in 
 With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
 will be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
 
-\section{Infrastructure-as-a-Service}
-In \gls{iaas} environments, a consumer delegates the management and control of the infrastructure needed to deploy his applications to his \gls{iaas} provider.
-The provided service ends at provisioning of processing, storage, networks and other computing resources.\footcite[][p. 2 to 3]{nistcloud}
-Therefore consumers do not need to manage their own data centers or topics like system  availability.
-As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for the OS layer and everything above it.
+\section{Platform-as-a-Service}
 
 \begin{figure}[H]
 \includegraphics[scale=0.4]{pictures/ServiceComparison.jpg} 
@@ -104,10 +100,8 @@ As shown in Figure ~\ref{fig:servicecomparison}, consumers are responsible for t
 \label{fig:servicecomparison}
 \end{figure}
 
-\section{Platform-as-a-Service}
-
-In \gls{paas} environments, a consumer delegates the management and control of even more resources needed to deploy his applications to his \gls{paas} provider, beyond those covered by \gls{iaas}.\footcite[][p. 2 to 3]{nistcloud}
-In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like database management or log collection and analysis\footcite[][, section 'Advantages of PaaS']{msPaas} and allows him to focus on other tasks, i.e. application development.
+In \gls{paas} environments, a consumer delegates the management and control of resources needed to deploy his applications to his \gls{paas} provider, beyond those covered by \gls{iaas}.\footcite[][p. 2 to 3]{nistcloud}
+In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like database management or log collection and analysis\footcite[][, section 'Advantages of PaaS']{msPaas} and allows them to focus on other tasks, i.e. application development.
 As a downside to this, a consumer might only have limited control on, among other factors, the software installed on the provisioned machines. 
 Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
 Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, but there is no clear standard on what capabilities or tools are included.
@@ -327,7 +321,7 @@ Following the security principle of limiting the attack surface\footcite[][, p. 
 Least privilege, another security principle\footcite[][, p. 3 to 4]{k8sBook}, can be followed by restricting access to used interfaces. Authentication can be required of both humans and automated processes and their access may be restricted to the information and capabilities strictly needed to operate. KubiScan, an open source tool to scan the \gls{rbac} permissions of a \gls{k8s} cluster for permissions considered risky, is publicly available to assess a given cluster. Users might be required to log in through a two factor authentication to hinder access through stolen credentials. Network restrictions can be put in place to restrict the vantage points from which an attacker may gain access.
 Following Defense in Depth\footcite[][, p. 3]{k8sBook}, this should not only be done from the outside, but access from inside the cluster, too. As an example, most containers don't need access to \gls{k8s} master components, so these requests can be blocked by \gls{k8s} Egress Network Policies\footcite[][, section 'The NetworkPolicy Resource']{egressNetPol}. The impact of successful attacks could be limited through Alerting and restriction of the attacks 'blast radius'. Logging and alerting processes may be implemented through \gls{k8s} audit policies\footcite[][, section 'Audit Policy']{auditPolicy} for requests that are considered suspicious and do not occur in normal operations, examples of which can be found in online sources\footcite[][, section 'Alerting on the Kubernetes infrastructure']{sysdigMonitoring}. The 'blast radius' may be reduced by isolating different applications or teams trough multiple namespaces and restricting access to non-namespaced resources to cluster administrators, thus isolating an attacker to a single namespace instead of the whole cluster. An even more drastic isolation could be achieved through isolation by cluster, resulting in separate \gls{k8s} master components per isolated entity.
 
-\subsection{V02 - Reading confidentials through interface components}
+\subsection{V02 - Reading confidential information through interface components}
 The components mentioned in section \ref{v01} could also be used by an attacker to gather confidential information, which can be either useful in and of itself or used to gain further access. Extracted private keys, tokens or passwords  may be leveraged to authenticate with additional privileges in order to steal or manipulate container images, adjacent applications, source code and interact with other interfaces.
 
 Despite presenting a more serious damage potential, the measures of section \ref{v01} also apply here since they target the same interfaces.
@@ -544,7 +538,7 @@ The resulting risk estimation for both the \gls{ocp} and \gls{aks} example syste
 \hline
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                    & {\ul{OCP Risk}} & {\ul{AKS Risk}} \\ \hline
 V01             & Reconnaissance through interface components                                            & \textbf{3}     & \textbf{3}     \\ \hline
-V02             & Reading confidentials through interface components                                     & \textbf{6}     & \textbf{7}     \\ \hline
+V02             & Reading confidential information through interface components                          & \textbf{6}     & \textbf{7}     \\ \hline
 V03             & Configuration manipulation through interface components                                & \textbf{7}     & \textbf{8}     \\ \hline
 V04             & Compromise internal master components                                                  & \textbf{5}     & \textbf{6}     \\ \hline
 V05             & Image poisoning and baiting                                                            & \textbf{7}     & \textbf{7}     \\ \hline
@@ -573,7 +567,7 @@ V17             & Leveraging bad patch management                               
 \hline
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
-V02             & Reading confidentials through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
+V02             & Reading confidential information through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 3                                        & 1                              & 3                                        & 2                    & 2.25                                   & 3            & \textbf{7}           \\ \hline
 V04             & Compromise internal master components                                                  & 3                                        & 1                              & 3                                        & 0                    & 1.75                                   & 3            & \textbf{5}           \\ \hline
 V05             & Image poisoning and baiting                                                            & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
@@ -603,7 +597,7 @@ V17             & Leveraging bad patch management                               
 \hline
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
-V02             & Reading confidentials through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
+V02             & Reading confidential information through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
 V03             & Configuration manipulation through interface components                                & 4                                        & 1                              & 3                                        & 2                    & 2.5                                    & 3            & \textbf{8}           \\ \hline
 V04             & Compromise internal master components                                                  & 4                                        & 1                              & 3                                        & 0                    & 2                                      & 3            & \textbf{6}           \\ \hline
 V05             & Image poisoning and baiting                                                            & 4                                        & 4                              & 3                                        & 2                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
@@ -638,7 +632,7 @@ With a total risk value of 3, it is classified as a low risk. \\
 
 The circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 3, Awareness: 3, Exploitability: 2, Impact: 1). The total risk value remains unchanged.
 
-\subsection{V02 - Reading confidentials through interface components}
+\subsection{V02 - Reading confidential information through interface components}
 
 In the \gls{ocp} setup, a user with access to the apiserver or webinterfaces (Vantage Point: 3) and read access (RAL: 3) can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain authorized access. They could pull/push images, trigger actions in other applications or containers and more. As a leakage of confidential information, his would constitute a security incident by itself (Impact: 2). 
 Kube-hunter is a readily available tool that checks for some confidential information automatically (Exploitability: 3).
