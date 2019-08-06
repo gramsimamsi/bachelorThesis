@@ -13,12 +13,9 @@
 \frame{\includegraphics[scale=0.8]{pictures/securityMailMS.jpg}\label{securityMailMS}}
 \captionof{figure}{An email from July 15th, 2019, advising users to reboot their AKS clusters in order to apply security patches. Screenshot taken by Lukas Grams.}
 
-\section{AKS cluster default configuration}
-%TODO
-\highlight[red]{TODO? <- maybe add screenshots about aks default config situation, leading to rebuild needed to get netpols?}
-
-\frame{\includegraphics[scale=0.75]{pictures/aksDefaultConfig.jpg}\label{aksDefaultConfig}}
-\captionof{figure}{Default \gls{aks} cluster configuration as of July 3rd, 2019. Screenshot taken by Lukas Grams.}
+\section{AKS cluster configuration}
+\frame{\includegraphics[scale=0.75]{pictures/aksConfig.jpg}\label{aksConfig}}
+\captionof{figure}{The final \gls{aks} cluster configuration used. Screenshot taken by Lukas Grams.}
 
 %TODO include full measure list for OCP + AKS? :P
 
@@ -173,6 +170,40 @@ customers
 >
 \end{lstlisting}
 
+\subsection{Lateral movement attack remediation in the OCP cluster}
+\begin{lstlisting}[
+	caption={Shell I/O of mitigating the \gls{ocp} cluster attack by lateral movement},
+	label={lst:lateral-ocp-mitigate},
+	breaklines=true]
+[root@openshiftmaster ~]# oc projects
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    default
+    kube-public
+    kube-system
+    management-infra
+    openshift
+    openshift-infra
+    openshift-logging
+    openshift-node
+    openshift-sdn
+    openshift-web-console
+    other-team-deployment
+    sock-shop
+  * testuser
+
+Using project "testuser" on server "https://openshiftmaster.lgr.com:8443".
+[root@openshiftmaster ~]# oc adm pod-network isolate-projects sock-shop
+[root@openshiftmaster ~]# oc rsh network-utils
+# ./mongodb-linux-x86_64-4.0.10/bin/mongo 172.30.2.17
+MongoDB shell version v4.0.10
+connecting to: mongodb://172.30.2.17:27017/test?gssapiServiceName=mongodb
+2019-06-14T14:31:15.634+0000 E QUERY    [js] Error: couldn't connect to server 172.30.2.17:27017, connection attempt failed: SocketException: Error connecting to 172.30.2.17:27017 :: caused by :: Connection timed out :
+connect@src/mongo/shell/mongo.js:344:17
+@(connect):2:6
+exception: connect failed
+#
+\end{lstlisting}
 \subsection{Lateral movement attack preparation in the AKS cluster}
 \begin{lstlisting}[
 	caption={Shell I/O in preparation of the \gls{aks} cluster attack by lateral movement},
@@ -300,4 +331,65 @@ switched to db users
 { "_id" : ObjectId("57a98d98e4b00679b4a830b4"), "longNum" : "0908415193175205", "expires" : "08/19", "ccv" : "280" }
 { "_id" : ObjectId("57a98ddce4b00679b4a830d2"), "longNum" : "5429804235432", "expires" : "04/16", "ccv" : "432" }
 >
+\end{lstlisting}
+
+\subsection{Lateral movement attack remediation in the AKS cluster}
+\begin{lstlisting}[
+	caption={Shell I/O of mitigating the \gls{aks} cluster attack by lateral movement},
+	label={lst:lateral-aks-mitigate},
+	breaklines=true]
+lukas@Azure:~$ cat sock-shop-ingress-netpol.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: sock-shop
+  name: sock-shop-ingress-netpol
+spec:
+  podSelector:
+    matchLabels:
+  ingress:
+  - from:
+    - podSelector: {}
+lukas@Azure:~$ kubectl apply -f sock-shop-ingress-netpol.yaml -n sock-shop
+networkpolicy.networking.k8s.io/sock-shop-ingress-netpol configured
+lukas@Azure:~$ kubectl describe netpol -n sock-shop
+Name:         sock-shop-ingress-netpol
+Namespace:    sock-shop
+Created on:   2019-06-18 12:00:09 +0000 UTC
+Labels:       <none>
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"networking.k8s.io/v1","kind":"NetworkPolicy","metadata":{"annotations":{},"name":"sock-shop-ingress-netpol","namespace":"so...
+Spec:
+  PodSelector:     <none> (Allowing the specific traffic to all pods in this namespace)
+  Allowing ingress traffic:
+    To Port: <any> (traffic allowed to all ports)
+    From:
+      PodSelector: <none>
+  Allowing egress traffic:
+    <none> (Selected pods are isolated for egress connectivity)
+  Policy Types: Ingress
+lukas@Azure:~$ kubectl get service -n sock-shop
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+carts          ClusterIP   10.0.144.225   <none>        80/TCP         29m
+carts-db       ClusterIP   10.0.174.90    <none>        27017/TCP      29m
+catalogue      ClusterIP   10.0.243.165   <none>        80/TCP         29m
+catalogue-db   ClusterIP   10.0.60.122    <none>        3306/TCP       29m
+front-end      NodePort    10.0.255.214   <none>        80:30001/TCP   29m
+orders         ClusterIP   10.0.145.107   <none>        80/TCP         29m
+orders-db      ClusterIP   10.0.217.238   <none>        27017/TCP      29m
+payment        ClusterIP   10.0.91.69     <none>        80/TCP         29m
+queue-master   ClusterIP   10.0.219.119   <none>        80/TCP         29m
+rabbitmq       ClusterIP   10.0.202.131   <none>        5672/TCP       29m
+shipping       ClusterIP   10.0.118.47    <none>        80/TCP         29m
+user           ClusterIP   10.0.52.200    <none>        80/TCP         29m
+user-db        ClusterIP   10.0.81.32     <none>        27017/TCP      29m
+lukas@Azure:~$ kubectl exec -it network-utils -- /bin/sh
+# ./mongodb-linux-x86_64-4.0.10/bin/mongo 10.0.81.32
+MongoDB shell version v4.0.10
+connecting to: mongodb://10.0.81.32:27017/test?gssapiServiceName=mongodb
+2019-06-18T12:05:06.734+0000 E QUERY    [js] Error: couldn't connect to server 10.0.81.32:27017, connection attempt failed: SocketException: Error connecting to 10.0.81.32:27017 :: caused by :: Connection timedout :
+connect@src/mongo/shell/mongo.js:344:17
+@(connect):2:6
+exception: connect failed
+#
 \end{lstlisting}

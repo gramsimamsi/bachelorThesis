@@ -27,7 +27,7 @@ to a public cloud solution?
 
 Another goal is to recommend security measures for different implementation use cases.
 A comparison of existing risks and the need for action derived from it should serve as central point of view. 
-Possible measures to mitigate those risks shall be explored, evaluated and exemplary put to use in practical examples.
+Possible measures to reduce those risks shall be explored, evaluated and exemplary put to use in practical examples.
 Subsequently the risk will be re-evaluated in order to illustrate a viable risk management method.
 With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
 
@@ -60,7 +60,7 @@ Grouping the remaining actors by the factors used to estimate risks in section \
 
 \section{Research basis and its limits}
 
-During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures an explain the sort or attacks they defend against. The only commonly referenced source that specifically introduces major risks for container technologies, without rating them, is the NIST Application Container Security Guide.\footcite{nistK8s}
+During the research for this thesis, a considerable amount of sources has been examined. Surprisingly, very little has been found regarding a risk-based point of view on \gls{k8s} solutions. A lot of sources start with measures and end with attacks, including one of the few published books\footcite{k8sBook}. They recommend specific security measures and explain the sort or attacks they defend against. The only commonly referenced source that specifically introduces major risks for container technologies, without rating them, is the NIST Application Container Security Guide.\footcite{nistK8s}
 In addition to that, many of them are still work in progress or outdated.
 
 Some of the sources commonly referenced include (in alphabetical order):
@@ -136,7 +136,7 @@ Some sources also talk about docker-formatted containers when those technologies
 \subsection{Images, image building and Dockerfiles}
 A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags.\footcite[][, section 'Docker Images']{redhatImages}
 Container images are sometimes referred to as docker images or docker-formatted images, but they can be run by other container runtimes and vice versa.
-In order to create a container image, you have to build it. This is often done through a build process executed by a container runtime. The instructions for container builds are commonly defined and documented in a Dockerfile\footcite[][, section 'Dockerfile reference']{dockerfileDocs} (which may also be done by non-docker programs, adding onto the vocabulary confusion).
+In order to create a container image, you have to build it. This is often done through a build process executed by a container runtime. The instructions for container builds are commonly defined and documented in a Dockerfile\footcite[][, section 'Dockerfile reference']{dockerfileDocs} (which may also be done by non-docker programs, adding to the vocabulary confusion).
 Container images can be distributed through container image registries, where images can be uploaded to and downloaded from. A commonly known example is docker hub, a public registry run by Docker Inc.
 
 \subsection{Container standards and interfaces} \label{runtimes}
@@ -151,7 +151,7 @@ Many high level runtimes today adhere to the \gls{cri} so they can be used inter
 %TODO maybe shorten and just talk about CRI upwards?
 
 \section{Container orchestration}
-Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when a container or machine fails, the need for automated systems to manage these containers arises. Orchestrators can also provide other advantages like load balancing and automated scaling.
+Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when one container or machine fails, the need for automated systems to manage these containers arises. Orchestrators can also provide other advantages like load balancing and automated scaling.
 Kubernetes systems are popular orchestrators currently in use.
 The sum of hosts running the orchestrator and containers are called a cluster.
 %TODO citation for kubernetes market share?
@@ -292,7 +292,7 @@ Picking up the three scenarios of section \ref{scopeLimit}, the possible attack 
 \section{Defining procedure and approach}
 
 The identification of attack vectors within scope turned out to be a big challenge, both in research and preparation for a clear presentation. 
-As new minor versions of \gls{k8s} are released approximately every tree months and the Kubernetes project only maintains release branches for the most recent three minor releases\footcite[][, section 'Supported versions']{k8sSupport}, the underlying system evolves continuously. Due to lengthy review processes, accredited literature about the topic are rare and risk being outdated quite quickly. Even less formal sources like blog posts or guidelines published by organizations are both rare, still unfinished at the point of this writing or updated continually, further complicating the creation of a snapshot regarding the current state. Nonetheless, it was attempted to achieve it on a best-effort basis.
+As new minor versions of \gls{k8s} are released approximately every tree months and the Kubernetes project only maintains release branches for the most recent three minor releases\footcite[][, section 'Supported versions']{k8sSupport}, the underlying system evolves continuously. Due to lengthy review processes, accredited literature about the topic is rare and risks being outdated quite quickly. Even less formal sources like blog posts or guidelines published by organizations are both rare, still unfinished at the point of this writing or updated continually, further complicating the creation of a snapshot regarding the current state. Nonetheless, it was attempted to achieve it on a best-effort basis.
 These vectors are applicable to all \gls{k8s} solutions, although the available security measures will vary between different products or implementations. Thus, applicable  generic measures will be mentioned and specific \gls{aks} and \gls{ocp} examples may be provided for further illustration.
 %TODO ^leave 'specific examples in? did you provide any?
 In order to give a more comprehensible picture, the scope of these vectors varies. Some areas of interest, i.e. unpatched software and vulnerabilities in the underlying server  infrastructure, have a broad scope. Since they are well known security topics applicable almost all information technology, they have been broadly encapsulated for a more clear understanding. If there would be rigorous differentiation between only slightly different vectors, this list would be multiple times as long as it already is.
@@ -379,7 +379,7 @@ Once an attacker is able to execute commands in a container within the cluster, 
 If an attacker successfully gains access to the underlying system, they might gain visibility into or control over any container running on it, including those of other applications. Additionally, they could gain access to internal cluster components like the kubelet\footnote{refer to section \ref{k8sComponents} for additional details}.
 Ways to achieve this include the invocation of syscalls, accessing mounted parts of the host file system and requesting additional capabilities. More ways to achieve this are being discussed at the time of this writing as the OWASP Docker Top 10 are worked on\footcite[][, dialogue by GitHub users 'drwetter', 'gramsimamsi' and 'wurstbrot']{dockerTop10GithubIssue} and openly demonstrated\footcite[][, section 'Breaking down the proof of concept']{trailOfBitsEscape}.
 
-This can again be mitigated by restricting the capabilities and host access a given container is provided through the Pod Security Policies mentioned in section \ref{v03}.
+This can again be reduced by restricting the capabilities and host access a given container is provided through the Pod Security Policies mentioned in section \ref{v03}.
 "Sandboxed" containers may be leveraged here, too, which provide more isolation between a container and its host at the cost of performance. Popular implementations include gVisor\footnote{https://github.com/google/gvisor} and Kata Containers\footnote{https://katacontainers.io/}.
 
 \subsection{V09 - Image cache compromise}
@@ -474,7 +474,7 @@ In order to achieve a view on the risks more accurately resembling situations wh
 %TODO put this back in?
 %\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the \gls{owasp} Top 10.\footcite[][, p. 4]{topten} The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
 
-\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footcite[][, starting at 3:05]{hackAndHarden} When setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
+\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footcite[][, starting at 3:05]{hackAndHarden} While setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
 
 \item Multiple tenants like different customers, teams or projects are separated by \gls{k8s} namespaces or \gls{ocp} projects respectively, not by isolated clusters.
 
@@ -485,8 +485,8 @@ The solutions were selected since they are both popular as well as there being s
 These include \gls{aks} as a public cloud solution and \gls{ocp} as an on-premise solution. As the latest stable version of \gls{ocp} during the beginning of this thesis was v3.11, this version was selected. It is based on \gls{okd} v3.11, which in turn is based on \gls{k8s} v1.11\footcite[][, refer to the second table below the headline 'Platform Components']{ocpK8sVersions}. \gls{aks} v1.13, directly correlating to \gls{k8s} v1.13 has already been available at this point\footnote{for more details, check figure \ref{aksVersionsMay}}, but v1.11 was chosen in order to achieve better comparability between the two solutions. This thesis will not look further into the upsides and downsides of faster availability in contrast to longer release and support cycles.
 
 Whenever possible, all default settings were used to set up both solutions and get them functional. 
-As a managed solution, the \gls{aks} settings are less distributed and detailed. An overview of the default options at the time of preparing practical parts of this thesis can be seen in figure \ref{aksDefaultConfig}.
-Setting up the \gls{ocp} cluster was less straightforward and included steps with multiple options, but no defaults. The official setup guideline\footcite[][, sections 'Planning your installation' to 'Installing OpenShift']{ocpSetup} has been followed. A single master, single node setup was chosen. Multiple masters and (worker) nodes are recommended for production environments, but since this setup is purely used for assessment and demonstration, it is sufficient. Both nodes are virtual machines with sufficient resources in accordance to the documentation, running on \gls{rhel} 7.5. Best practices would recommend minimal OS setups like the \gls{rhel} Atomic Host offered by Red Hat, but this option has been chosen as such hosts are a common request within larger enterprises and as such faster and more easily available through preexisting processes in many corporate environments.
+As a managed solution, the \gls{aks} settings are less distributed and detailed. An overview of the options chosen for the last \gls{aks} cluster setup of this thesis can be seen in figure \ref{aksConfig}.
+Setting up the \gls{ocp} cluster was less straightforward and included steps with multiple options, but no defaults. The official setup guideline\footcite[][, sections 'Planning your installation' to 'Installing OpenShift']{ocpSetup} has been followed. A single master, single node setup was chosen. Multiple masters and (worker) nodes are recommended for production environments, but since this setup is purely used for assessment and demonstration, it is adequate to the task. Both nodes are virtual machines with sufficient resources in accordance to the documentation, running on \gls{rhel} 7.5. Best practices would recommend minimal OS setups like the \gls{rhel} Atomic Host offered by Red Hat, but this option has been chosen as such hosts are a common request within larger enterprises and as such faster and more easily available through preexisting processes in many corporate environments.
 
 \subsection{Deriving a risk estimation formula}
 Generic methods of estimating risk may not lead to the most accurate results when assessing specialized systems like orchestrated container environments.
@@ -495,7 +495,7 @@ The process laid out in the \gls{owasp} Risk Rating Methodology\footcite[][, sec
 
 Another methodology considered but decided against was the Common Vulnerability Scoring System in its most current version, v3. As specifically stated in its user guide, it is not intended to measure risk but instead measuring the severity of specific vulnerabilities\footcite[][, section '2.1. CVSS Measures Severity, not Risk']{cvssUserGuide}.
 
-As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk being the mathematical product of likelihood and impact forms the basis of this methodology, where the impact is estimated directly while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the OWASP Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
+As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk is the mathematical product of likelihood and impact forms the basis of this methodology. The impact is estimated directly, while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the OWASP Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
 
 The original factors used to estimate a value for the likelihood were prevalence, awareness and exploitability. This methodology was customized in order to be more applicable, since prevalence would have been difficult to estimate and compare for the relatively new technologies. Instead of prevalence, the factors 'vantage point' and 'required access level' were added in order to explicitly consider both the possible origin of attack vectors as well as the privileges needed to leverage them. In contrast to other estimations they shall not influence the exploitability value, as the too much weight may then be put on these factors. The average value of these four factors lead to the resulting probability value. Customizing the factors is done to tailor towards our specific use case, a practice encouraged by the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 6: Customizing the Risk Rating Model']{riskRating}.
 
@@ -508,13 +508,13 @@ The factor 'vantage point' increases in severity and value when it can be achiev
 The '\gls{ral}' is incrementally increased when less privileges are needed, as this increases the factors contribution to the total risk.
 Administrator access to the cloud environment or infrastructure underlying cluster nodes (i.e. equivalent access to the hypervisor in case the cluster nodes are VMs) is valued at zero, as this would again exceed baseline security requirements. Administrator access to the orchestrator or nodes is valued at one. User access to these systems is valued at a two where read and write privileges are needed and valued at three in cases where only read privileges are required. If no privileges or authentication is needed at all, a sever outlier value of four is assigned.
 
-'Awareness' represents how easy it is for an attacker to become aware of this vector being feasible in general and in a specific system targeted for attack. As this is not applicable to negligent users, the value represents how easy it is to accidentally 'leverage' this vector instead. The assigned value increases with increase possibility for awareness, increasing the total risk estimation.
-In order to be estimated to be unlikely and valued at one, custom-made tools would be needed to detect vulnerabilities or and accidental attacks could happen during uncommon tasks, both being custom to a system-specific environment. It is estimated to be possible and valued at two in cases where specific attacks could be done regardless of the specific environment but customization of generic tools is needed. If and accidental attack might happen during common tasks where tools or processes are not used the way they are intended, a value of two is also assigned.
+'Awareness' represents how easy it is for an attacker to become aware of this vector being feasible in general and in a specific system targeted for attack. As this is not applicable to negligent users, the value represents how easy it is to accidentally 'leverage' this vector instead. The assigned value rises with increased possibility for awareness, increasing the total risk estimation.
+In order to be estimated to be unlikely and estimate at a value of one, custom-made tools would be needed to detect vulnerabilities. Accidental attacks which could happen during uncommon tasks would receive the same value, as both are custom to a system-specific environment. It is estimated to be possible and valued at two in cases where specific attacks could be done regardless of the specific environment but customization of generic tools is needed. If an accidental attack might happen during common tasks where tools or processes are not used the way they are intended, a value of two is also assigned.
 The highest awareness value of three is assigned when attacks are both environment-agnostic as well as detectable by readily available tools or by simply using graphical user interfaces. It is valued at three in cases where proper usage of tools or processes during common tasks might accidentally lead to a security problem.
 
 The 'exploitability' factor differentiates between different levels of skill needed, increasing in value when less skill is required. In case of negligent users, it is simply valued the same as the awareness factor. It is valued at zero for situations that require more than a security baseline like unpublished and unknown exploitation of vulnerabilities. Synonymous to the definitions in the awareness factor, a difficult eploitability with a value of one would need custom tools for environment-specific exploitation, while an environment-agnostic exploit with require tool customization is valued as two. A value of three is again assigned when attacks are environment-agnostic and exploitable without tool customization or simple user interface interaction.
 
-The impact value was roughly estimated by differentiating between intermediate steps and achieved damage as well as whether a single namespace or the whole cluster is affected. Intermediate steps were assigned a value of one, while outcomes confined to a single namespace and limited monetary damages are given a vale of two. Compromises of the whole cluster and potentially unlimited monetary damages are valued at three for the most severe outcome rating.
+The impact value was roughly estimated by differentiating between intermediate steps and achieved damage as well as whether a single namespace or the whole cluster is affected. Intermediate steps were assigned a value of one, while outcomes confined to a single namespace and limited monetary damages are given a value of two. Compromises of the whole cluster and potentially unlimited monetary damages are valued at three for the most severe outcome rating.
 
 \subsection{Resulting formula}
 
@@ -828,7 +828,6 @@ This section will demonstrate the possibility of attackers to leverage network a
 Both the \gls{aks} and \gls{ocp} clusters set up as specified in section \ref{envDefine} have been vulnerable to attacks leveraging the attack vector specified in section \ref{v07}. This is possible with the default settings for both clusters, as will be demonstrated. Security measures will be implemented and their effectiveness demonstrated. The risk management process will be demonstrated on the basis of these circumstances.
 
 \subsection{Demonstrating the successful attack without security measures}
-%TODO
 The \gls{ocp} cluster contains several projects, two of which are relevant to the situation at hand. 
 The 'sock-shop' project contains the Sock Shop, a microservice demo application that is open source and implements an online store for the purchase of various socks.\footcite[][, first paragraph of 'README.md']{sockShop}
 The 'testuser' project is used to simulate an attacker-controlled container admitted to another project.
@@ -841,45 +840,49 @@ For usability purposes during the attack, the MongoDB shell is directly download
 
 The same attack was successfully conducted on the \gls{aks} setup, only the commands used differ slightly. Details can be found in listings \ref{lst:lateral-aks-prep} and \ref{lst:lateral-aks-exploit}.
 
-\subsection{Selecting security measures}
-%TODO
-TODO restricting mongodb would mitigate, too. appsec not for paas provider, so k8s measures.
+\subsection{Selecting and implementing security measures}
 
-TODO: use multitenant networkplugin (OCP) and network policies (k8s)
-TODO: show implementing measures through commands in ppt
+A number of security measures could be used to mitigate this problem.
+The mongodb database could have restricted access and only be available with a password. 
+As a platform provider, application security measures like this may be unfavorable or unenforceable, so we will look into other measures instead.
 
+Section \ref{v07} outlines network isolation and mTLS authentication with Istio as possible solutions. As the simulated attacking container has been legitimately admitted, they would have a valid certificate and could again contact the container if they are not isolated. As such, network isolation will be implemented in order to defend against this.
+In order to provide the most limiting and save isolation without impacting functionality, each any container would have to be assessed for their communication needs and restricted to only these. In addition, this would have to be reassessed every time a new type of container/pod is introduced to the cluster or application code changes, as the communication need may change. In order to avoid this considerable effort, a compromise between usability and security can be made. Isolating each \gls{ocp} project and \gls{aks} namespace by default, but allowing any network communication within the project or namespace would limit lateral movement to these confinements while still allowing for rapid changes to the applications and their containers within a project or namespace. 
 
-%TODO RANT ABOUT AKS CLUSTER REBUILD NEEDED!
-The worst AKS-specific problem with this is the mitigation. This risk is not clearly documented in the setup section of the documentation. If one stumbles upon this information in further sections of the docs after setting up his cluster, he might postpone or deny changing the setting to isolate different projects by default. This is because a full cluster rebuild is needed to change this setting!
+The easiest way to achieve this on the \gls{ocp} cluster is to use the ovs-multitenant network plugin, which implements this isolation by default for any existing as well as newly created project\footcite[][, section 'Overview']{ocpNetworkPlugins}. The \gls{aks} cluster would need a default network policy\footcite[][, section 'Default Policies']{egressNetPol} to isolate namespaces, examples of which are publicly available\footcite[][, section 'Example']{netPolExample}.
+
+An \gls{aks}-specific challenge to note here is the current effort for mitigation not made clear by the Microsoft documentation. The network policy usage tutorial clearly states that "[t]he network policy feature can only be enabled when the cluster is created. You can't enable network policy on an existing AKS cluster."\footcite[][, section 'Frequently asked questions']{aksNetPolUse}, information currently not given in the official \gls{aks} cluster deployment tutorial\footcite{aksSetup}. When a cluster is set up, it defaults to the Basic option for network configuration at the time of this writing. This would require a full cluster rebuild and application migration in order to migrate to using network policies, as was the case during the practical part of this thesis.
+Even with this increased effort, using network policies is still recommended.
+
+The official documentation for migrating to the ovs-multitenant plugin\footcite{networkPluginSwitch} was followed to implement the security measures for the \gls{ocp} cluster. A new \gls{aks} cluster was built with the settings detailed in figure \ref{aksConfig} and all applications as well as the simulated attacker have been reconfigured and redeployed. A network policy denying all incoming traffic from other namespaces was applied to the sock shop namespace as detailed in listing \ref{lst:lateral-aks-mitigate}.
 
 \subsection{Demonstration with implemented security measures}
-%TODO
 
-TODO show remediation through demo of unsuccessful attack
+After isolating network communication to each \gls{ocp} project and \gls{aks} namespace respectively, the simulated attacking container will not be able to access the sock shop database anymore. As seen  in listings \ref{lst:lateral-ocp-mitigate} and \ref{lst:lateral-aks-mitigate}, both connection requests terminate with an 'exception: connect failed'.
 
 \subsection{Risk reassessment}
 %TODO
-
+TODO discuss how each is reduced
 TODO updated table of risk for ocp AND aks
 
 \section{Managing the risk of V08 - Container breakout}
 %TODO write out all from ppt with commands, pictures
-\highlight[yellow]{
+
 TODO this was done on AKS and OCP, but needed changes in default OCP settings to work.
-}
+
 \subsection{Demonstrating the successful attack without security measures}
 %TODO
-\highlight[yellow]{
+
 TODO: show demo on OCP and AKS, or just one and put the other in appendix?
 
 TODO: show getting in and damage, refer to ppt for commands, console I/O and screenshots
-}
+
 \subsection{Selecting security measures}
 %TODO
-\highlight[yellow]{
+
 TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 TODO: show implementing measures through commands in ppt
-}
+
 \subsection{Demonstration with implemented security measures}
 %TODO
 %TODO: maybe show again without privileged, but with uid 0?
@@ -887,16 +890,15 @@ TODO: show implementing measures through commands in ppt
 TODO show remediation through demo of unsuccessful attack
 
 \subsection{Risk reassessment revisited}
-\highlight[red]{
+
 TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
-}
+
 \section{Continuing the risk management process}
 %TODO point to completed list of measure recommendations + new risk?
 
 %TODO process only partially completed, how to proceed if you do everything. 
-\highlight[yellow]{
+
 TODO two vectors are done (or residual risk accepted). others are reduced, too, as seen in comparison between the before/after tables. this would be continued until risk for all is below 7 and/or the rest is accepted.
-}
 
 \chapter{Conclusion}
 This chapter aims to provide answers to the remaining questions posed in chapter \ref{goal}.
