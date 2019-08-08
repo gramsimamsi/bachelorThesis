@@ -38,7 +38,7 @@ These solutions will be \gls{ocp} as an on-premise solution and \gls{aks} as a p
 The latest stable version of \gls{ocp} during the work on this thesis was version 3.11\footcite[][, see headline and date]{ocpRelease}, which is based on v1.11 of \gls{k8s}.
 Although \gls{k8s} v1.13 was already available through \gls{aks} at the same point in time (see figure \ref{aksVersionsMay}), the available v1.11 was chosen to improve comparability.
 
-The components of these two solutions providing \gls{k8s} compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
+The components of these two solutions providing \gls{k8s} compliance will be the main focus, as these bear the most relevance across all Kubernetes Certified solutions. 
 A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.
 In order to be applicable to a higher number of use cases, attacks and measures seen in environments with exceptionally high security requirements might be mentioned, but not  covered in their entirety. This includes state-sponsored actors deploying zero-day exploits, which are not applicable to a majority of solutions deployed and thus disregarded for the given context.
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigation thereof. 
@@ -131,7 +131,7 @@ Containers provide isolation of multiple applications running on the same machin
 \subsection{Differentiating docker}
 Talking about docker can be quite difficult, since the term is overloaded with different meanings - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (formerly known as Docker, now called Moby).\footcite[][, section 'What is Moby?']{dockerMoby}
 Additionally, there is a \gls{cli} called docker engine, which serves as an interface to the containers running on a host. It includes a high-level container runtime\footcite[][, section 'Develop, Ship and Run Any Application, Anywhere']{dockerEngine}, which will be talked about in the section \ref{runtimes}.
-Some sources also talk about docker-formatted containers when those technologies implement the same interfaces as the docker container runtime.\footcite[][, section '1.11. Working with Docker formatted containers']{dockerFormatted}
+Some sources also talk about docker-formatted containers when those technologies implement the same interfaces as the docker container runtime\footcite[][, section '1.11. Working with Docker formatted containers']{dockerFormatted}, which will be adopted in this thesis.
 
 \subsection{Images, image building and Dockerfiles}
 A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags.\footcite[][, section 'Docker Images']{redhatImages}
@@ -187,7 +187,7 @@ The important node components include:
 
 \end{itemize}
 
-Figure \ref{fig:k8s-big-picture} illustrates these components in context. It is to note that users in this illustration are the users of the applications running in the cluster; From a provider standpoint the users would be the people responsible for development and operations.
+Figure \ref{fig:k8s-big-picture} illustrates these components in context. It is to note that users in this illustration are the users of the applications running in the cluster. From a platform provider standpoint the users would be the people responsible for development and operations.
 
 \begin{figure}[H]
 \includegraphics[scale=0.2]{pictures/big-picture.JPG} 
@@ -277,7 +277,7 @@ Another difference of note is is the mechanic of \gls{scc}, which are the OpenSh
 
 The Azure Kubernetes Service is a managed \gls{k8s} solution offered by Microsoft and running in the Azure public cloud. 
 As it does not differ from the \gls{k8s} reference implementation compared to \gls{ocp}, its functionality is identical to the general \gls{k8s} mechanics described in section \ref{k8sTheory}.
-The computing resources used to run the cluster are pre-configured and provisioned VMs in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built.\footcite[][, section 'What is Moby?']{dockerMoby} 
+The computing resources used to run the cluster are pre-configured and provisioned VMs in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built\footcite[][, section 'What is Moby?']{dockerMoby}.
 \gls{k8s} versions in \gls{aks} directly correspond to the \gls{k8s} version they are based on.
 As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite[][, first paragraph]{aadAksAuth}
 
@@ -319,7 +319,7 @@ One example of reconnaissance against the kube-apiserver was demonstrated at Kub
 
 Following the security principle of limiting the attack surface\footcite[][, p. 4 to 5]{k8sBook}, the measures against this include blocking access to or outright deactivating interfaces. If interfaces are unused, i.e. the \gls{k8s} Dashboard where only \gls{cli} tools are used for cluster interaction, one can easily deactivate the Dashboard and thus reduce the attack surface without further work needed. If an interface is used, but alternatives exist, it may be advisable to evaluate whether a change in workflows or software architectures in order to decommission the interface may provide an overall benefit.
 Least privilege, another security principle\footcite[][, p. 3 to 4]{k8sBook}, can be followed by restricting access to used interfaces. Authentication can be required of both humans and automated processes and their access may be restricted to the information and capabilities strictly needed to operate. KubiScan, an open source tool to scan the \gls{rbac} permissions of a \gls{k8s} cluster for permissions considered risky, is publicly available to assess a given cluster. Users might be required to log in through a two factor authentication to hinder access through stolen credentials. Network restrictions can be put in place to restrict the vantage points from which an attacker may gain access.
-Following Defense in Depth\footcite[][, p. 3]{k8sBook}, this should not only be done from the outside, but access from inside the cluster, too. As an example, most containers don't need access to \gls{k8s} master components, so these requests can be blocked by \gls{k8s} Egress Network Policies\footcite[][, section 'The NetworkPolicy Resource']{egressNetPol}. The impact of successful attacks could be limited through Alerting and restriction of the attacks 'blast radius'. Logging and alerting processes may be implemented through \gls{k8s} audit policies\footcite[][, section 'Audit Policy']{auditPolicy} for requests that are considered suspicious and do not occur in normal operations, examples of which can be found in online sources\footcite[][, section 'Alerting on the Kubernetes infrastructure']{sysdigMonitoring}. The 'blast radius' may be reduced by isolating different applications or teams trough multiple namespaces and restricting access to non-namespaced resources to cluster administrators, thus isolating an attacker to a single namespace instead of the whole cluster. An even more drastic isolation could be achieved through isolation by cluster, resulting in separate \gls{k8s} master components per isolated entity.
+Following Defense in Depth\footcite[][, p. 3]{k8sBook}, this should not only be done from the outside, but access from inside the cluster, too. As an example, most containers don't need access to \gls{k8s} master components, so these requests can be blocked by \gls{k8s} Egress Network Policies\footcite[][, section 'The NetworkPolicy Resource']{egressNetPol}. The impact of successful attacks could be limited through alerting and restricting of the attacks 'blast radius'. Logging and alerting processes may be implemented through \gls{k8s} audit policies\footcite[][, section 'Audit Policy']{auditPolicy} for requests that are considered suspicious and do not occur in normal operations, examples of which can be found in online sources\footcite[][, section 'Alerting on the Kubernetes infrastructure']{sysdigMonitoring}. The 'blast radius' may be reduced by isolating different applications or teams trough multiple namespaces and restricting access to non-namespaced resources to cluster administrators, thus isolating an attacker to a single namespace instead of the whole cluster. An even more drastic isolation could be achieved through isolation by cluster, resulting in separate \gls{k8s} master components per isolated entity.
 
 \subsection{V02 - Reading confidential information through interface components}
 The components mentioned in section \ref{v01} could also be used by an attacker to gather confidential information, which can be either useful in and of itself or used to gain further access. Extracted private keys, tokens or passwords  may be leveraged to authenticate with additional privileges in order to steal or manipulate container images, adjacent applications, source code and interact with other interfaces.
@@ -343,13 +343,13 @@ Therefore, \gls{k8s} solutions can restrict access to these by either not exposi
 Synonymous to section \ref{v01}, isolating through separate clusters per team or application can restrict the damage potential through separate master components.
 
 \subsection{V05 - Image poisoning and baiting} \label{v05}
-An attacker may try and lead a cluster user to run containers from a container image that is either controlled by the attacker or insecure.\footcite[][, p. 13 to 14]{nistK8s}
+An attacker may try and lead a cluster user to run containers from a container image that is either controlled by the attacker or insecure\footcite[][, p. 13 to 14]{nistK8s}.
 This could be done as an untargeted attack by offering images on popular public image repositories like Docker Hub or providing examples of similarly bad Dockerfiles in tutorials or support forums.
 Since building new containers from scratch is a lot of work, container images for popular applications are often sought to either build upon or use out-of-the-box.
 Applications for which no official container image is maintained are an especially common niche for such attacks.
 In contrast to this, an attacker could also try a more targeted attack by uploading bad images to the (possibly private) repository used by their target.
-Even previously trusted images may become insecure over time as new vulnerabilities are publicized, thus becoming "stale".\footcite[][, p. 14]{nistK8s}
-It should be noted that providing Dockerfiles instead of images may be easier to identify as malicious, but when a user builds an image from it anyway, the build process will commonly run under a root user.\footnote{While \gls{k8s} currently doesn't provide image building capabilities out-of-the-box, many \gls{k8s} certified solutions implement this functionality.}
+Even previously trusted images may become insecure over time as new vulnerabilities are publicized, thus becoming "stale"\footcite[][, p. 14]{nistK8s}.
+It should be noted that providing Dockerfiles instead of images may be easier to identify as malicious, but when a user builds an image from it anyway, the build process will commonly run under a root user\footnote{While \gls{k8s} currently doesn't provide image building capabilities out-of-the-box, many \gls{k8s} certified solutions implement this functionality.}.
 
 In order to mitigate all of the above, only safe images should be used to run containers within a cluster. Although this sounds simple in theory, it may prove to be far more complex in practice. One would first have to define what constitutes a safe image in their context before implementing any measures ensuring their usage.
 Docker Hub introduced measures that help identifying more trustworthy images by labeling them as Verified Publisher Images or Certified Images respectively\footcite[][, sections 'Verified Publisher Images and Plugins' and 'Certified Images and Plugins']{safeImagesDockerhub}.
@@ -358,7 +358,7 @@ The damage potential of images may be limited by restricting the capabilities a 
 Images could also go through a (either manual or automated) vetting process before being admitted to a registry. Images in a registry may be reassessed on a regular basis, too, so images with known vulnerabilities can be identified and removed. Multiple tools that provide automated image scans exist and can be found online\footcite[][, section 'Securing your container images']{k8sBookWebsite}, some of which provide integration into \gls{k8s} clusters or cloud platforms.
 
 \subsection{V06 - Configuration poisoning and baiting}
-An attacker may try and lead a cluster user or even administrator to configure the cluster in such a way that the attacker gains control, the cluster is left insecure, or both.\footcite[][, p. 13 to 14]{nistK8s}
+An attacker may try and lead a cluster user or even administrator to configure the cluster in such a way that the attacker gains control, the cluster is left insecure, or both\footcite[][, p. 13 to 14]{nistK8s}.
 This vector has a lot in common with the one described in section \ref{v05}. A bad configuration might include bad containers, but does not have to, which is why we kept this as a separate vector. Attacks like this are far easier to do untargeted by offering tutorials and posts in support forums, but might also be conducted in a targeted way, similar to spear phishing attacks.
 The number of possibilities for specific bad configurations is near endless. Easy and effective misconfigurations may be achieved by swapping out popular image names with similar ones controlled by the attacker (i.e. 'nodejs' instead of 'node'), preconfiguring weak or attacker known default passwords, simply omitting or misconfiguring security measures so they do not work effectively (i.e. defining Network Policies, but not applying them) or making internal interfaces available to the public network.
 
@@ -391,7 +391,7 @@ In order to mitigate this, container runtimes may support capabilities to check 
 Instead of starting bad containers as discussed in section \ref{v13}, an attacker may try to modify it in order to suit their needs and support further attacks.
 This may be done by downloading and running additional binaries, establishing connections to Command and Control Servers or manipulating the software and files in place.
 
-Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Limiting network connections to cluster-external sources may mitigate ways to download additional software or exfiltrate data. This could be done via Egress Network Policies, which were introduced in section \ref{v01}
+Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Limiting network connections to cluster-external sources may mitigate ways to download additional software or exfiltrate data. This could be done via Egress Network Policies, which section \ref{v01} introduced.
 Monitoring tools could be used to detect this, of which several commercial products are offered and often integrated into (cloud) provider platforms\footcite[][, slide 40 to 41]{runtimeProt}.
 
 \subsection{V11 - Resource hoarding (sabotage)} \label{v11}
@@ -432,7 +432,7 @@ This could be done in a targeted way (i.e. specific Open Source Intelligence gat
 % check user rights: 
 
 \subsection{V16 - Leveraging bad infrastructure} \label{v16}
-Even if the cluster itself is secured properly, an attacker may gain access through the underlying infrastructure if it isn't.
+Even if the cluster itself is secured properly, an attacker may gain access through the underlying infrastructure if no security measures have been applied to it.
 This includes the configuration of cloud infrastructure as well as on-premise configurations.
 Servers may open insecure or unnecessary ports towards the public, as well as interfaces that allow someone any sort of control, i.e. allowing public access to the Docker remote API\footcite[][, section 'Publicly Accessible Docker Hosts']{dockerRemoteAccess}.
 Internally, an attacker may access data belonging to other applications by leveraging side channel attacks like Spectre and Meltdown\footcite[][, section 'Which cloud providers are affected by Meltdown?']{spectreMeltdown}.
