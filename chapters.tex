@@ -806,7 +806,7 @@ With a total risk value of 10, it is classified as a critical risk for both setu
 
 With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} is continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
 
-\section{Defining procedures and approach}
+\section{Defining procedures and approach} \label{riskMgmtApproach}
 Before managing the risk, the risk appetite\footcite[][, first paragraph]{riskAppetite} should be decided on, defining what residual risk levels are acceptable.
 As the goal is to provide a security baseline, reducing the risk to below 'critical' and 'high' will be taken as a goal.
 This defines the work ahead, as any risk above this threshold is intended to either be accepted (i.e. in cases where the cost of implementing security measures exceeds the potential damage costs) or reduced to an acceptable level.
@@ -861,26 +861,36 @@ The official documentation for migrating to the ovs-multitenant plugin\footcite{
 After isolating network communication to each \gls{ocp} project and \gls{aks} namespace respectively, the simulated attacking container will not be able to access the sock shop database anymore. As seen  in listings \ref{lst:lateral-ocp-mitigate} and \ref{lst:lateral-aks-mitigate}, both connection requests terminate with an 'exception: connect failed'.
 
 \subsection{Risk reassessment}
-%TODO
-TODO discuss how each is reduced
-TODO updated table of risk for ocp AND aks
+
+Isolating each application or team to its own network limits the reach to other containers within this application. As other projects or namespaces cannot be reached anymore, an attacker won't be able to compromise them. This reduces the impact from a potential compromise of multiple applications (Impact: 3) to a single one (Impact: 2).
+In keeping the remaining values and formula, this reduces the total risk value for both the \gls{aks} and \gls{ocp} cluster from 7 to 5, resulting in a medium risk estimation instead of the high risk it was estimated at before implementing the security measures. Thus, the reduced risk is acceptable in accordance with the goal set in section \ref{riskMgmtApproach}.
+
+Updated tables are listed in section \ref{reassess2}, which also take the risk reduction of any security measures selected in section \ref{measures2} into account.
 
 \section{Managing the risk of V08 - Container breakout}
-%TODO write out all from ppt with commands, pictures
 
-TODO this was done on AKS and OCP, but needed changes in default OCP settings to work.
+This section will demonstrate the possibility of attackers to break out of the container environment and into the host system.
+
+Both the \gls{aks} and \gls{ocp} clusters set up as specified in section \ref{envDefine} have been vulnerable to attacks leveraging the attack vector specified in section \ref{v08}. This is possible with the default settings for the \gls{aks} cluster, while some default settings had to be changed in order to achieve this. The attacks on both clusters as well as the configuration changes made will be demonstrated. Security measures will be implemented and their effectiveness illustrated. The risk management process will be demonstrated on the basis of these circumstances.
 
 \subsection{Demonstrating the successful attack without security measures}
+Listing \ref{lst:breakout-aks-exploit} shows the commands used and output returned in an attack demonstration on the \gls{aks} cluster.
+The pod configuration file printed to the command line contains a single, privileged container running multiple commands on admission.
+A sleep loop is executed at the end in order to keep the cluster from continuously restarting the pod with its otherwise terminating container.
+The container simply mounts the root filepath of its host, the underlying worker node, in the container file system as '/mnt/rootnode'. 
+The commands executed are all permitted to read and write to the specified file path, as the User ID of the executing user is 0, the root user. Since it is a privileged container, this is not only the case for the container environment, but also the mounted host file system.
+The \gls{k8s} pod admission is started and after a short amount of time, its logs are printed to the console. 
+These logs contain both the {\slash}etc{\slash}passwd and {\slash}etc{\slash}shadow file contents as well as the presumed node root directory with a file named ALL{\_}YOUR{\_}NODES{\_}ARE{\_}BELONG{\_}TO{\_}US written to it.
+This root file system is checked by directly accessing the host file system of the node. Although it is unusual to do this on dedicated VMs automatically created specifically for \gls{k8s} clusters, \gls{aks} offers specific functionality to do this\footcite{aksNodeSsh}. Listing \ref{lst:breakout-aks-nodeOutput} shows that the file was indeed written to the node.
+The output seen in listing \ref{lst:breakout-aks-exploit} is partially redacted in order to shorten the document as well as to not disclose any password hashes.
+
+The same attack was successfully conducted on the \gls{ocp} setup, only the commands used differ slightly. Details can be found in listings \ref{lst:breakout-ocp-exploit} and \ref{lst:breakout-ocp-nodeOutput}.
+
+\subsection{Selecting and implementing security measures} \label{measures2}
 %TODO
 
-TODO: show demo on OCP and AKS, or just one and put the other in appendix?
+TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS), maybe forbid file mounts?
 
-TODO: show getting in and damage, refer to ppt for commands, console I/O and screenshots
-
-\subsection{Selecting security measures}
-%TODO
-
-TODO dont allow privileged containers (scc in OCP, podsecuritypolicies in AKS)
 TODO: show implementing measures through commands in ppt
 
 \subsection{Demonstration with implemented security measures}
@@ -888,10 +898,11 @@ TODO: show implementing measures through commands in ppt
 %TODO: maybe show again without privileged, but with uid 0?
 
 TODO show remediation through demo of unsuccessful attack
+TODO put remediation listings in appendix
 
-\subsection{Risk reassessment revisited}
+\subsection{Risk reassessment revisited} \label{reassess2}
 
-TODO SECOND updated table of risk for ocp AND aks <- this one starts with first updated one
+TODO updated table of risk for ocp AND aks INCLUDING risk reduction for network isolation
 
 \section{Continuing the risk management process}
 %TODO point to completed list of measure recommendations + new risk?

