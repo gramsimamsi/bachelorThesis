@@ -293,6 +293,19 @@ lrwxrwxrwx.   1 root root    7 May 16 16:59 bin -> usr/bin
 drwxr-xr-x.  20 root root  282 May 20 10:00 var
 \end{lstlisting}
 
+\subsection{Container breakout attack remediation in the OCP cluster}
+\begin{lstlisting}[
+	caption={Shell I/O of mitigating the \gls{ocp} cluster attack by breakout},
+	label={lst:breakout-ocp-mitigate},
+	breaklines=true]
+[root@openshiftmaster ~]# oc adm policy scc-review -z default -f container_breakout.yaml
+RESOURCE       SERVICE ACCOUNT   ALLOWED BY
+Pod/breakout   default           privileged
+[root@openshiftmaster ~]# oc adm policy remove-scc-from-user privileged -z default
+scc "privileged" removed from: ["system:serviceaccount:testuser:default"]
+[root@openshiftmaster ~]# oc adm policy scc-review -z default -f container_breakout.yaml
+RESOURCE   SERVICE ACCOUNT   ALLOWED BY
+\end{lstlisting}
 
 \subsection{Lateral movement attack preparation in the AKS cluster}
 \begin{lstlisting}[
@@ -574,4 +587,27 @@ drwxr-xr-x  23 root root  4096 Jun 17 13:02 ..
 drwxr-xr-x   2 root root  4096 May 23 18:48 bin
 ...
 lrwxrwxrwx   1 root root    30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
+\end{lstlisting}
+
+\subsection{Container breakout attack remediation in the AKS cluster}
+\begin{lstlisting}[
+	caption={Shortened version of the shell I/O while mitigating the \gls{aks} cluster attack by breakout},
+	label={lst:breakout-aks-mitigate},
+	breaklines=true]
+lukas@Azure:~$ kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+network-utils   1/1     Running   0          17m
+lukas@Azure:~$ az aks update --resource-group kubernetes-ba-test --name demo-cluster-LGR --enable-pod-security-policy
+{
+  "aadProfile": null,
+...
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": null
+}
+lukas@Azure:~$ kubectl create serviceaccount --namespace testuser nonadmin-user
+serviceaccount/nonadmin-user created
+lukas@Azure:~$ kubectl create rolebinding --namespace testuser nonadmin-rolebinding --clusterrole=edit --serviceaccount=testuser:nonadmin-user
+rolebinding.rbac.authorization.k8s.io/nonadmin-rolebinding created
+lukas@Azure:~$ kubectl --as=system:serviceaccount:testuser:nonadmin-user apply -f container_breakout.yaml
+Error from server (Forbidden): error when creating "container_breakout.yaml": pods "breakout" is forbidden: unable to validate against any pod security policy: [spec.volumes[0]: Invalid value: "hostPath": hostPath volumes are not allowed to be used spec.containers[0].securityContext.privileged: Invalid value: true: Privileged containers are not allowed]
 \end{lstlisting}
