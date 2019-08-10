@@ -11,35 +11,42 @@ This calls for a more detailed, focused examination.
 
 \section{Objective} \label{goal}
 
-This thesis aims to answer the following questions:
+The thesis aims to answer the following questions:
 
 \begin{itemize}
 
 \item What generic security risks emerge when providing or using a multi-tenant PaaS solution,
 with each tenant developing, deploying and running their own applications? 
 
-\item How can a PaaS provider (serving internal and/or external users) mitigate those risks? 
+\item What measures could a PaaS provider (serving internal and/or external users) use to mitigate those risks? 
 
 \item  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
 to a public cloud solution? 
 
 \end{itemize}
 
-Another goal is to recommend security measures for different implementation use cases.
+Another goal is to recommend security measures.
 A comparison of existing risks and the need for action derived from it should serve as central point of view. 
-Possible measures to reduce those risks shall be explored, evaluated and exemplary put to use in practical examples.
-Subsequently the risk will be re-evaluated in order to illustrate a viable risk management method.
-With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
+
+
+After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they should have pointers to some of the security measures needed to reduce these risks and be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
 
 \section{Scope limitation} \label{scopeLimit}
 
-The thesis will first limit the view on the problem to a manageable scope by concentrating on the components enabled by default and those required for operations of two established and \gls{k8s} compliant solutions.
-These solutions will be \gls{ocp} as an on-premise solution and \gls{aks} as a public cloud solution. 
+To achieve the aforementioned goals, the thesis will limit the view on the problem to a manageable scope by
+concentrating on the components enabled by default and those required for operations of established and Kubernetes compliant solutions.
+
+Since both the gravity of each risk and the comparison of on-premise and public cloud solutions would depend on a multitude of factors, specific solutions will be used as examples. These are \gls{ocp} and the \gls{aks} which respectively represent on-premise and public cloud solutions.
+The vector risks will be assessed for these two exemplary solutions.
+Carrying out a full risk management process for such solutions would exceed the scope of this thesis.
+A demonstration by partially completing the risk management process aims to provide insight to the complete risk management process suggested.
+Possible measures to reduce those risks shall be explored, evaluated and demonstrated in two practical examples.
+
 The latest stable version of \gls{ocp} during the work on this thesis was version 3.11\footcite[][, see headline and date]{ocpRelease}, which is based on v1.11 of \gls{k8s}.
 Although \gls{k8s} v1.13 was already available through \gls{aks} at the same point in time (see figure \ref{aksVersionsMay}), the available v1.11 was chosen to improve comparability.
 
 The components of these two solutions providing \gls{k8s} compliance will be the main focus, as these bear the most relevance across all Kubernetes Certified solutions. 
-A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, though some might be recommended as a mitigation.
+A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, although some might be recommended as a mitigation.
 In order to be applicable to a higher number of use cases, attacks and measures seen in environments with exceptionally high security requirements might be mentioned, but not  covered in their entirety. This includes state-sponsored actors deploying zero-day exploits, which are not applicable to a majority of solutions deployed and thus disregarded for the given context.
 This thesis aims to provide insight to the risks of providing a PaaS solution and mitigation thereof. 
 As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 

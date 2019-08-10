@@ -9,7 +9,7 @@ Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 
 \begin{itemize}
 
-\item Was für Sicherheits-Risiken existieren für den Anbieter und/oder Nutzer einer mandantenfähigen PaaS-Lösung, wenn jeder Mandant über eigene Entwicklungs-, Verteilungs- und Laufzeit-Umgebungen für seine Anwendungen verfügt?
+\item Was für generische Sicherheits-Risiken existieren für den Anbieter und/oder Nutzer einer mandantenfähigen PaaS-Lösung, wenn jeder Mandant über eigene Entwicklungs-, Verteilungs- und Laufzeit-Umgebungen für seine Anwendungen verfügt?
 
 \item Wie kann ein Anbieter von PaaS-Lösungen an interne und/oder externe Nutzer diese Risiken eindämmen?
 
@@ -19,27 +19,24 @@ Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 
 Ein weiteres Ziel ist es, Maßnahmen für die unterschiedlichen Implementierungsmöglichkeiten zu empfehlen.
 Der Vergleich bestehender IT-Sicherheits-Risiken und daraus abgeleitet der priorisierte Handlungsbedarf sollen hierbei als zentraler Betrachtungswinkel dienen.
-Unter den etablierten PaaS-Lösungen in unterschiedlichen Umgebungen finden sich OpenShift Container Platform als Vor-Ort-Lösung und Azure Kubernetes Service für Cloud-Umgebungen.
-%ZUERST nicht mehr richtig hier. Umformulieren, auch in Englisch! Formulierung allgemein!
-Um die genannten Ziele zu erreichen, grenzt diese Arbeit den Problembereich zuerst ein, indem sie sich auf die standardmäßig eingerichteten und zum Betrieb notwendigen Komponenten dieser zwei gängigen und Kubernetes-zertifizierten PaaS-Lösungen konzentriert.
 
+Der geneigte Leser soll durch diese Arbeit die zugrundeliegenden Mechanismen und inhärenten, generischen Risiken der im Umfang liegenden Lösungen verstehen können.
+Weiterhin soll diese Arbeit das Abschätzen von Werten für diese Risiken ermöglichen, welche sowohl für einen Vergleich untereinander als auch zu anderen Lösungen dienen. Darüber hinaus sollten Ansätze zu Schutzmaßnahmen aufgezeigt werden, welche zur Reduktion der Risiken genutzt werden können. Das Befolgen eines empfohlenen Prozesses für das Erreichen eines gewünschten Sicherheitsniveaus sollt ebenfalls ermöglicht werden.
+
+
+Um die genannten Ziele zu erreichen, grenzt diese Arbeit den Problembereich ein, indem sie sich auf die standardmäßig eingerichteten und zum Betrieb notwendigen Komponenten von gängigen und Kubernetes-zertifizierten PaaS-Lösungen konzentriert.
 Das Hauptaugenmerk liegt hierbei auf den Kubernetes-konformen Teilkomponenten, da hier die Risiken und Maßnahmen den weitreichensten Gültigkeitsbereich haben, unabhängig von der betrachteten Lösung.
-Aus den Zielen werden drei gängige Angriffsszenarien hergeleitet: 
+Angriffsszenarien werden von Bedrohungsakteuren abgeleitet, welche wiederum durch gängige Anwendungsfälle der Industrie bestimmt werden.
+Diese Szenarien werden verwendet, um eine gängige Formel zur Risikoschätzung auf den spezifizierten Umfang zurechtzuschneiden.
+Angriffsvektoren werden aus Fachliteratur abgeleitet und erläutert. Dazugehörige Schutzmaßnahmen werden ebenfalls vorgestellt.
 
-\begin{itemize}
+Da sowohl die die Höhe des individuellen Risikos als auch der Vergleich von selbst betriebenen und Cloud Lösungen von einer Vielzahl an Faktoren abhängt, werden spezifische Lösungen herangezogen. OpenShift Container Platform wird selbst betriebene Lösungen repräsentieren, während Azure Kubernetes Service als Beispiel einer Cloud Lösung dient.
+Die Risiken der Vektoren werden beispielhaft anhand dieser Lösungen bewertet und beide auf Basis dieser Bewertungen miteinander verglichen.
+Das Durchführen eines vollständigen Risikomanagement-Prozesses würde über den Umfang dieser Arbeit hinausgehen.
+Das partielle Durchführen des Risikomanagement-Prozesses soll als Beispiel dienen und Einblick in den vorgeschlagenen Prozess geben.
+Mögliche Maßnahmen zur Reduzierung der Risiken werden untersucht, bewerted und anhand praktischer Beispiele demonstriert.
+Im Anschluss werden die Risiken neu bewertet.
 
-\item Angriff von böswilligen Dritten auf die Infrastruktur ausgehend des LAN und/oder dem Internet
-
-\item Angriff von böswilligen Dritten aus einem Container heraus, über den die Kontrolle übernommen wurde. Ein Beispiel wäre das Ausführen von Code oder Befehlen per Zugriff von außen.
-
-\item Angriff von böswilligen Dritten sowie böswilliger oder fahrlässiger Nutzer bzw. Nutzer-Identität, was ein Kompromittierungsrisiko für diesen und/oder weitere Mandanten und deren Anwendungen darstellt.
-
-\end{itemize}
-
-Diese Szenarien dienen als Grundlage zur Identifikation von Angriffsvektoren, deren jeweiliges Schadenspotential evaluiert und das bestehende Risiko eingeschätzt werden.
-Es werden potentielle Maßnahmen zur Risiko-Eindämmung gesucht, evaluiert und exemplarisch in der Praxis umgesetzt.
-Im Anschluss wird eine Neubewertung des Risikos vorgenommen, um so beispielhaft eine zielführende Methode zum Risikomanagement zu demonstrieren.
-Mithilfe der Ergebnisse werden verschiedene Implementierungs-Empfehlungen verglichen, anhand der verschiedenen Anwendungsfälle differenziert und jeweils Maßnahmen empfohlen.
 
 \bigskip
 
@@ -47,12 +44,13 @@ Mithilfe der Ergebnisse werden verschiedene Implementierungs-Empfehlungen vergli
 Schlagworte: \\
 Platform-as-a-Service, PaaS, Cloud, Security, Container, Kubernetes, Docker, Risikomanagement, OpenShift Container Platform, OCP, Azure Kubernetes Service, AKS
 
+
 \chapter*{Abstract (english)}
 \thispagestyle{empty}
 
 The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments, containerized workloads and microservice architectures introduce new attack scenarios. 
 This creates the need for new defense strategies in both Development and Operations. 
-Especially solutions providing (Kubernetes compliant) container orchestration are identifiably different and high in business demand compared to long established solutions. 
+Especially solutions providing Kubernetes (k8s) compliant container orchestration are identifiably different and in high demand compared to long established solutions. 
 This calls for a more detailed, focused examination. 
 The thesis aims to answer the following questions:
 
@@ -61,40 +59,35 @@ The thesis aims to answer the following questions:
 \item What generic security risks emerge when providing or using a multi-tenant PaaS solution,
 with each tenant developing, deploying and running their own applications? 
 
-\item How can a PaaS provider (serving internal and/or external users) mitigate those risks? 
+\item What measures could a PaaS provider (serving internal and/or external users) use to mitigate those risks? 
 
 \item  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
 to a public cloud solution? 
 
 \end{itemize}
 
-Another goal is to recommend security measures for different implementation use cases.
-A comparison of existing IT security risks and the need for action derived from it should serve as central point of view.
-Examples for widely used PaaS solutions in different environments include OpenShift Container Platform 
-as an on- premise solution and Azure Kubernetes Service as a public cloud solution.
-To achieve the aforementioned goals, the thesis will first limit the view on the problem to a manageable scope by
-concentrating on the components enabled by default and those required for operations of these established and Kubernetes compliant solutions.
+Another goal is to recommend security measures.
+A comparison of existing risks and the need for action derived from it should serve as central point of view. 
+
+
+After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they should have pointers to some of the security measures needed to reduce these risks and be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
+
+
+To achieve the aforementioned goals, the thesis will limit the view on the problem to a manageable scope by
+concentrating on the components enabled by default and those required for operations of established and Kubernetes compliant solutions.
 Components providing Kubernetes compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
-Three common attack scenarios will be derived from the goals:
+Attack scenarios will be derived from the threat actors which are in turn dictated by common use cases in the industry.
+These scenarios are used to tailor a commonly accepted risk assessment formula to the scope specified.
+Attack vectors will be derived from technical literature and elaborated on as well as corresponding security measures introduced.
 
-\begin{itemize}
 
-\item Malicious third party attacking the underlying infrastructure from within the LAN and/or the
-internet
-
-\item Malicious third party attacking from inside a hijacked container, i.e. remotely executing code
-or commands
-
-\item Bad User, i.e. a negligent, hijacked or malicious developer account risking compromise of
-his own and/or other applications
-
-\end{itemize}
-
-These scenarios serve as a foundation to identify attack vectors, evaluate their respective potential impact and estimate their risks.
-Possible measures to mitigate those risks will also be explored, evaluated and exemplary put to use in practical examples.
-Subsequently the risk will be re-evaluated in order to illustrate a viable, result oriented risk management method.
-With the results gathered, the thesis will compare different best practice implementations for different use cases and recommend measures for each.
-
+Since both the gravity of each risk and the comparison of on-premise and public cloud solutions would depend on a multitude of factors, specific solutions will be used as examples. These are the OpenShift Container Platform and the Azure Kubernetes Service which respectively represent on-premise and public cloud solutions.
+The vector risks will be assessed for these two exemplary solutions.
+On the basis of these assessments, both solutions will be compared.
+Carrying out a full risk management process for such solutions would exceed the scope of this thesis.
+A demonstration by partially completing the risk management process aims to provide insight to the complete risk management process suggested.
+Possible measures to reduce those risks shall be explored, evaluated and demonstrated in two practical examples.
+The risks will subsequently be re-evaluated.
 
 \bigskip
 
