@@ -530,7 +530,13 @@ It should be noted that the worst case option of each vector should be taken in 
 %TODO move most vector estimate derivements to appendix?
 %TODO get cell background colour working in latex tables? -> one shaded, one not?
 
-The resulting risk estimation for both the \gls{ocp} and \gls{aks} example systems are illustrated in Table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. The details on how these values were determined are explained hereafter.
+Within this chapter, the estimated risk values of all vectors are presented for both the \gls{aks} and \gls{ocp} setups.
+The details on how these values were determined are partially explained hereafter. 
+The two vectors used in chapter \ref{riskMgmtTotal} are listed in full detail to serve as examples, details on the remaining vectors can be found in section \ref{riskAssessmentContd}.
+
+\subsection{Overview of results}
+
+The resulting risk estimation for both the \gls{ocp} and \gls{aks} example systems are illustrated in table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. 
 
 \begin{table}[H]
 \centering
@@ -621,68 +627,6 @@ V17             & Leveraging bad patch management                               
 \captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster\label{aksRiskTable}}
 \end{landscape}
 
-\subsection{V01 - Reconnaissance through interface components}
-
-In the \gls{ocp} setup, a user with read access to the apiserver or webinterfaces can scout out information. It is assumed that these are only accessible internally in typical corporate environments (Vantage Point: 3).
-By default, each account (project admin or project user, but not cluster admin) can only see information about their own project while a cluster admin can see all namespaces.
-The worst case assumption would be leveraging user permissions (RAL: 3).
-The information gathering processes and interfaces are known and documented pretty well (Awareness: 3), but the information gathered has to be analyzed specific to the environment (Exploitability: 2).
-This could show information useful to an attacker like software versions, running systems or pods, user account privileges or misconfigurations and may help in planning and confirming the effectiveness of further attacks (Impact: 1).
-With a total risk value of 3, it is classified as a low risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 3, Awareness: 3, Exploitability: 2, Impact: 1). The total risk value remains unchanged.
-
-\subsection{V02 - Reading confidential information through interface components}
-
-In the \gls{ocp} setup, a user with access to the apiserver or webinterfaces (Vantage Point: 3) and read access (RAL: 3) can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain authorized access. They could pull/push images, trigger actions in other applications or containers and more. As a leakage of confidential information, his would constitute a security incident by itself (Impact: 2). 
-Kube-hunter is a readily available tool that checks for some confidential information automatically (Exploitability: 3).
-With a total risk value of 6, it is cassified as a medium risk. \\
-
-
-Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 3, Awareness: 3, Exploitability: 2, Impact: 1). 
-The total risk value is increased from 6 to 7 by this, classifying it as a high risk.
-
-\subsection{V03 - Configuration manipulation through interface components}
-%TODO
-In the \gls{ocp} setup, administrators (RAL: 1) with access to the apiserver or webinterface (Vantage Point: 3) can change configurations on the cluster. This includes project-specific resources like pods, services, routes, but also cluster-global resources like nodes or authorization configuration (Impact: 3).
-The capabilities can be looked up through the documented console commands of kubectl (Awareness: 3), but ways to achieve long-term benefit as an attacker has to be analyzed environment-specifically (Exploitability: 2).
-With a total risk value of 7, it is classified as a high risk. \\
-
-
-Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 1, Awareness: 3, Exploitability: 2, Impact: 3). 
-The total risk value is increased from 7 to 8 by this, classifying it as a high risk.
-
-\subsection{V04 - Compromise internal master components}
-
-In the \gls{ocp} setup, misconfiguration of internal \gls{k8s} components could lead to a full cluster compromise (Impact: 3).  It is assumed that these are only accessible internally in typical corporate environments (Vantage Point: 3). The cluster configuration and all secrets and authorization credentials are stored in the etcd instance(s). This is secured by the \gls{ocp} setup process and and administrator would have to willingly misconfigure the cluster (RAL: 1) through internal settings not intended to be changed in order to make this possible. Undisclosed vulnerabilities in the \gls{ocp} could lead to this problem, too (Exploitability: 0).
-Kube-hunter checks for generally common cluster misconfigurations in this regard (Awareness: 3).
-With a total risk value of 5, it is classified as a medium risk. \\
-
-
-Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet and internal component configuration being maintained by Microsoft. (Vantage Point: 4, RAL: 1, Awareness: 3, Exploitability: 0, Impact: 3). 
-The total risk value is increased from 5 to 6 by this, still classifying it as a medium risk.
-
-\subsection{V05 - Image poisoning and baiting}
-
-In the \gls{ocp} setup, the untargeted version\footnote{refer to section \ref{v05} for a detailed description} needs the least access. A free and anonymously created dockerhub account to upload malicious images is available from anywhere (Vantage Point: 4) by anyone (RAL: 4). By itself only a single application or namespace / project would be affected by this (Impact: 2), as further exploitation of this foothold for an attacker is handled in vector V07.
-These methods are publicly known and both the docker container runtime and docker hub actively try to mitigate this, but malicious images are only deleted when reported by enough users (Awareness: 3).
-Base containers and malware as well as known vulnerable versions are readily available from public sources, but need some technical expertise to 'weaponize' (Exploitability: 2).
-With a total risk value of 7, it is classified as a high risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
-\subsection{V06 - Configuration poisoning and baiting}
-
-In the \gls{ocp} setup, the untargeted version also needs the least access. Synonymous to V05, this can be done by anyone (RAL: 4) from anywhere (Vantage Point: 4).
-Compromised configurations can lead to a full cluster compromise (Impact: 3).
-Examples are readily available from public sources (Awareness: 3), but need some technical expertise to 'weaponize' (Exploitability: 2).
-With a total risk value of 10, it is classified as a critical risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
 \subsection{V07 - Lateral movement through cluster}
 
 The \gls{ocp} setup will be elaborated on first. Once an attacker can execute commands within a container (Vantage Point: 2) and is able to send network requests (RAL: 2), they can scan the network for other containers, hosts, services, apis or similar interfaces for further access. By default, all containers in all projects (except master \& infra components) are put in the same subnet, allowing everyone to communicate with anyone else, including application components belonging to other tenants. These components may rely on the restriction of network access to them instead of authorizing individual requests (Impact: 3).
@@ -705,104 +649,7 @@ With a total risk value of 5, it is classified as a medium risk. \\
 The \gls{aks} setup differs from these circumstances by having no restrictions to admitted pods in place. Thus, this vector is more easily exploitable (Exploitability: 2).
 The total risk value is increased from 5 to 7 by this, leading to a high risk.
 
-\subsection{V09 - Image cache compromise}
-
-In the \gls{ocp} setup, a cached container image could be swapped out for a malicious one, thus affecting a container and its application (Impact: 2). In order to do this, an attacker would need administrative access to the underlying node (RAL: 1) and be able to execute commands on it (Vantage Point: 1). This is a sensible vector not commonly discussed (Awareness: 2) and would require technical knowledge to conduct (Exploitability: 2).
-With a total risk value of 3, it is classified as a low risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
-\subsection{V10 - Container modification at runtime}
-
-In the \gls{ocp} setup, an attacker can try to modify and use an already running container instead of deploying a container with malicious contents,. In order to do this, they would need to execute commands from within the container (Vantage Point: 2) and be able to write to its file system (RAL: 2). This would affect the container accessed and in turn the application it is part of (Impact: 2).
-Trying to do this within a container is straightforward (Awareness: 3) and would require the same technical expertise as any command line interaction with a linux system (Exploitability: 2).
-With a total risk value of 5, it is classified as a medium risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
-\subsection{V11 - Resource hoarding (sabotage)}
-
-First, the \gls{ocp} setup will be assessed.
-With enough access or restrictions too lax, an attacker with access to the cluster interfaces (Vantage Point: 3) and the ability to change or add \gls{k8s} objects (RAL: 2)  may be able to seriously halt the availability of all workloads processed by the cluster by misconfiguration, conducting Denial of Service attacks or wiping nodes or cluster configurations. Since clusters are a complex distributed system with a multitude of configurations, finding the sabotaged component could take considerable expertise and time if done well, increasing the impact – especially in on-premise environments, where resources are limited.
-The potential to do this is common sense (Awareness: 3), sabotaging the cluster in a complex and effective way (Impact: 3) may take deeper knowledge and would have to be customized to the environment at hand (Exploitability: 2).
-With a total risk value of 8, it is classified as a high risk. \\
-
-
-The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
-Since it is far easier to spin up additional resources in the cloud to continue operations, less impact is estimated (Impact: 2).
-All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
-With a total risk value of 6, it is classified as a medium risk.
-
-\subsection{V12 - Resource misuse (cryptojacking)}
-
-The \gls{ocp} setup will be assessed first.
-In order to achieve more monetary gain, an attacker with access to the cluster interfaces (Vantage Point: 3) and the ability to change or add \gls{k8s} objects (RAL: 2) will try to be discrete. 
-The goal is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
-Cryptojacking is regularly cited as an up-and-coming attack (Awareness: 3), but to do it without being detected needs some technical skill (Exploitability: 2).
-If successful for longer periods of time, a companies on-premise resources will be available to a lesser degree as some of them are used for mining. In addition to that, the underlying hardware will be degraded at a higher rate, leading to hardware failures and replacesments sooner than normal (Impact: 2).
-With a total risk value of 5, it is classified as a medium risk. \\
-
-
-The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
-In contrast to V11, the ability to spin up additional resources in the cloud increases the impact here, since those are virtually unlimited and simpy billed towards the attack victim (Impact: 3).
-All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
-With a total risk value of 8, it is classified as a high risk.
-
-\subsection{V13 - Adding rogue containers}
-
-The \gls{ocp} setup will be assessed first.
-Instead of manipulating running containers, an attacker with access to the API (Vantage Point: 3) and permissions to spin up containers (RAL: 2) may start their own ones. 
-This is still restricted by container admission restrictions on the user/project, but they can be leveraged to compromise parts of the application (Impact: 2).
-Doing this is common sense (Awareness: 3), but as in other vectors some technical skill is required to prepare a malicious container (Exploitability: 2)
-With a total risk value of 5, it is classified as a medium risk. \\
-
-
-Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet. (Vantage Point: 4, RAL: 2, Awareness: 3, Exploitability: 2, Impact: 2). 
-The total risk value is increased from 5 to 6 by this, still classifying it as a medium risk.
-
-\subsection{V14 - Adding rogue nodes}
-
-In the \gls{ocp} setup, an attacker with access to the API (Vantage Point: 3) could try to add a malicious node to the cluster. Similar to V08, they could gain full access to containers of multiple projects by this (Impact: 3).
-By design, cluster administrator access is needed to add a node within OCP (RAL: 1).
-This technique is not talked about that much, but still available in public resources and possible in all clusters (Awareness: 2). Docs are publicly available to add nodes to a cluster, basic linux server administration skills are needed to follow them (Exploitability: 2).
-With a total risk value of 6, it is classified as a medium risk. \\
-
-
-The \gls{aks} interfaces are again available from the public internet (Vantage Point: 4).
-Adding nodes would still be possible here, but since they are automatically provisioned and customization of provisioned VMs is not straightforward, this attack is relatively unorthodox (Awareness: 1).
-The other circumstances remain synonymous to the \gls{ocp} setup (RAL: 1, Exploitability: 2, Impact: 3).
-The total risk value remains unchanged at 6, a medium risk.
-
-\subsection{V15 - Leveraging bad user practice}
-
-The \gls{ocp} setup will be assessed first.
-User practices outside of the cluster are not affected by cluster controls. Users entering their credentials in faked login windows or publicizing access tokens through public repositories are relatively common occurences that could potentially allow anyone finding them (RAL: 4) privileged access within that user context (Impact: 2) if they can reach the cluster interfaces (Vantage Point: 3).
-There are tools available to do this, but doing this is non-intuitive (Awareness: 2) and using them effectively requires some technical skill (Exploitability: 2).
-With a total risk value of 6, it is classified as a medium risk. \\
-
-
-Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 4, Awareness: 2, Exploitability: 2, Impact: 2). 
-The total risk value remains identical.
-
-\subsection{V16 - Leveraging bad infrastructure}
-
-The \gls{ocp} setup will be assessed first.
-The underlying nodes could allow an attacker easy entry, even if the platform itself is secured.
-Worst case scenarios include nodes available to the public internet (Vantage Point: 4) with insecure configuration, allowing any attacker unauthorized node access (RAL: 4). Synonymous to V08, this could lead to multiple compromised applications (Impact: 3). Technical know-how would still be needed to leverage this (Exploitability: 2) and attackers are assumed to be unlikely to look for containerized workloads specifically (Awareness: 2).
-With a total risk value of 9, it is classified as a high risk. \\
-
-
-The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
-\subsection{V17 - Leveraging bad patch management}
-
-
-Known and unpatched vulnerabilities in any components can lead to any number of problems. For both the \gls{aks} and \gls{ocp} setup, worst case values are assumed for all factors except Exploitability, as technical knowledge is required to leverage them. (Vantage Point: 4, RAL: 4, Awareness: 3, Exploitability: 2, Impact: 3).
-With a total risk value of 10, it is classified as a critical risk for both setups. \\
-
-\chapter{Managing the attack surface risk}
+\chapter{Managing the attack surface risk} \label{riskMgmtTotal}
 
 With this chapter, the \gls{owasp} Risk Rating Methodology\footcite{riskRating} is continued. As completing the risk management process would exceed the scope of this thesis, the full process will be described and the risk management steps will be demonstrated through two exemplary vectors.
 
