@@ -524,7 +524,7 @@ The 'exploitability' factor differentiates between different levels of skill nee
 The impact value was roughly estimated by differentiating between intermediate steps and achieved damage as well as whether a single namespace or the whole cluster is affected. Intermediate steps were assigned a value of one, while outcomes confined to a single namespace and limited monetary damages are given a value of two. Compromises of the whole cluster and potentially unlimited monetary damages are valued at three for the most severe outcome rating.
 
 \subsection{Resulting formula}
-
+%TODO citation for risk product by pascal?!
 The work elaborated on in the previous section leads to the following formula for estimating the total risk of the identified vectors, usable for a specific system setup at hand:
 
 $${Total\ risk}= Max[\frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}*\ impact,\ 10]$$
@@ -792,6 +792,7 @@ The comparison is based on the values derived from the default settings shown in
 
 The overall risk of \gls{aks} is slightly higher, both due to being accessible from the public internet as well as more lenient default limitations. The former is understandable due to the nature of cloud solutions. The latter may be a result of usability being a higher priority. \\
 The \gls{ocp} default settings stand in contrast to this, i.e. by preventing many popular images from being run since they require root privileges within the container environment. This alludes to a mindset of security by default, which reduces the existing risk. Nevertheless, other factors like i.e. outdated servers or negligent employees result in risks which can not be mitigated by the solution itself. Additionally, very limited default settings may lead to configuration changes in order to increase productivity. These changes, especially when overcompensated, could increase risks in such significant ways that a more sensible and less restricting default configuration would have been better off.
+%TODO say something on on-demand resources, sabotage via DOS vs. cryptojacking!
 
 % FOLLOWING SECTION SCRAPPED FOR THESIS! left as comment for reference
 %\subsection{Multi-tenant isolation}
@@ -800,12 +801,12 @@ The \gls{ocp} default settings stand in contrast to this, i.e. by preventing man
 %namespace/project isolation vs. cluster isolation. refer to separate-tenants-by-cluster measure in vector identification section. Is possible, but more complex and tedious ATM. refer to growing projects for cluster federation and clusters-as-cattle (instead of container-as-cattle and cluster-as-pet)
 %-> may be better in future, only do today for super-high-security apps in their own cluster. costs more resources, at which point one may simply run the stuff on isolated and dedicated servers anyway (except when needed for workflow, high availability or mircoservice arch offsets complexity needed)?
 
-\subsection{Summary}
+\subsection{Closing remarks}
 
-%TODO summary of thesis process, outlook, commentary
-TODO summary of thesis process - huge scope, could have been better defined beforehand. risk estimate formula still inst perfect, but time would probably still be better allocated to practical stuff or more research, both for thesis and others trying to follow the process. no use in better knowing which one is the biggest problem if no time left to reduce risk in the end. hope that more sources are published and industry standards crystallize so not everyone has to do that much research on their own.
+Although the initial goal including a comprehensive list of security measures and best practices had to be changed, I am content with the result. The amount of work needed for both the derivation of security vectors and tailoring of the risk model to meet the requirements took far more work than anticipated. This is in part due to the limits of existing research as well as the significant difference to other platforms and architectures. The initial goal of comparing the risk of on-premise and public cloud had to be changed due to being highly dependent on solution-specific details. This may get easier in the future as robust solutions form and are adopten in other solutions.
 
-TODO outlook - stuff will continue to move fast, hopefully with security in mind. we are currently far better with security than i.e. pre k8s-1.8. more security features will be introduced or go stable (refer to future k8s pod sandbox option in YAML files). as mentioned in multi-tenant isolation, cluster federation might help and will introduce new solutions, but probably also new problems. rootless builds, currently through buildah etc, becoming more mainstream will probably be the next big security thing here.
-% rootless container runtime \& build: https://github.com/moby/moby/pull/38050 %
+The risk estimation formula could still be improved upon, in example by incorporating the expenditure needed for mitigation. For most use cases in the industry, this effort may instead be better used to actually reduce the risks, even when some risks are slightly over- or underestimated. 
+A lot of improvements to the available security measures in \gls{k8s} solutions have been made in the last few years or are still ongoing, i.e. pod security policies reaching preview status in \gls{aks}. New features like the \gls{k8s} runtime class\footcite[][, section 'Motivation']{runtimeClass} are nearing a stable state and will make sandboxing of specific pods easier. Several solutions for rootless container builds\footcite[][, slides 10 to 11]{rootlessBuilds} are also actively being worked on for multiple solutions at the time of this writing. 
 
-TODO commentary - hope this helps someone and spares some time. am excited for future tools and platform developments.
+I personally hope for further collaboration, solidifying security measures and best practices in this fast evolving area.
+Likewise, I hope that this thesis helps the inclined reader to accelerate their task to secure orchestrated container environments, so the considerable amount of time invested was not spent in vain.
