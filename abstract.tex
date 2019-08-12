@@ -1,10 +1,9 @@
 \chapter*{Abstract (german)}
 \thispagestyle{empty}
-%TODO erster satz: feststellung. kannst das hinterlegen oder umformulieren? Auch im EN-Abstract!
-Die wachsende Zahl von Platform-as-a-Service (PaaS) Lösungen, Cloud-Umgebungen, containerisierter Datenverarbeitung und Microservice-Architekturen bieten neue Angriffsszenarien.
-Dies erhöht den Bedarf an neuen Verteidigungs-Strategien in der IT-Sicherheit von Entwicklungs- und Produktiv-Betriebsumgebungen.
-Gerade Lösungen auf Basis von (Kubernetes konformer) Container-Orchestrierung sind in der Wirtschaft stark gefragt und haben einen sehr unterschiedlichen Aufbau im Kontrast zu konventionellen und etablierten Lösungen.
-Dieser Umstand legt eine nähere Untersuchung dieses Teilbereichs nahe.
+Die wachsende Zahl von Platform-as-a-Service (PaaS) Lösungen, Cloud-Umgebungen, \\
+containerisierter Datenverarbeitung und Microservice-Architekturen bieten neue Angriffsszenarien.
+Gerade Lösungen auf Basis von (Kubernetes konformer) Container-Orchestrierung sind in der Wirtschaft stark gefragt und haben einen sehr unterschiedlichen Aufbau im Vergleich zu konventionellen und etablierten Lösungen.
+Dies erhöht den Bedarf an neuen Verteidigungs-Strategien in der IT-Sicherheit von Entwicklungs- und Produktiv-Betriebsumgebungen und legt eine nähere Untersuchung dieses Teilbereichs nahe.
 Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 
 \begin{itemize}
@@ -20,11 +19,12 @@ Ziel dieser Arbeit ist es, folgende Fragestellungen zu beantworten:
 Ein weiteres Ziel ist es, Sicherheitsmaßnahmen zu empfehlen. \\
 Der Vergleich bestehender IT-Sicherheits-Risiken und daraus abgeleitet der priorisierte Handlungsbedarf sollen als zentraler Betrachtungswinkel für die Implementierung dieser Maßnahmen und den Vergleich der Lösungen dienen. 
 
-Der geneigte Leser soll durch diese Arbeit die zugrundeliegenden Mechanismen und inhärenten, generischen Risiken der im Umfang liegenden Lösungen verstehen können.
-Weiterhin soll diese Arbeit das Abschätzen von Werten für diese Risiken ermöglichen, welche sowohl für einen Vergleich untereinander als auch zu anderen Lösungen dienen. Darüber hinaus sollten Ansätze zu Schutzmaßnahmen aufgezeigt werden, welche zur Reduktion der Risiken genutzt werden können. Das Befolgen eines empfohlenen Prozesses für das Erreichen eines gewünschten Sicherheitsniveaus sollt ebenfalls ermöglicht werden.
+Der geneigte Leser soll durch diese Arbeit die zugrundeliegenden Mechanismen und inhärenten, \\
+generischen Risiken der im Umfang liegenden Lösungen verstehen können.
+Weiterhin soll diese Arbeit das Abschätzen der Schwere dieser Risiken anhand von Werten ermöglichen, welche sowohl für einen Vergleich untereinander als auch zu anderen Lösungen dienen. Darüber hinaus werden Ansätze zu Schutzmaßnahmen aufgezeigt, welche zur Reduktion der Risiken genutzt werden können. Das Befolgen eines empfohlenen Prozesses für das Erreichen eines gewünschten Sicherheitsniveaus soll ebenfalls ermöglicht werden.
 
 
-Um die genannten Ziele zu erreichen, grenzt diese Arbeit den Problembereich ein, indem sie sich auf die standardmäßig eingerichteten und zum Betrieb notwendigen Komponenten von gängigen und Kubernetes-zertifizierten PaaS-Lösungen konzentriert.
+Um die genannten Ziele zu erreichen, ist diese Arbeit auf die standardmäßig eingerichteten und zum Betrieb notwendigen Komponenten von gängigen und Kubernetes-zertifizierten PaaS-Lösungen fokussiert.
 Das Hauptaugenmerk liegt hierbei auf den Kubernetes-konformen Teilkomponenten, da hier die Risiken und Maßnahmen den weitreichensten Gültigkeitsbereich haben, unabhängig von der betrachteten Lösung.
 Angriffsszenarien werden von Bedrohungsakteuren abgeleitet, welche wiederum durch gängige Anwendungsfälle der Industrie bestimmt werden.
 Diese Szenarien werden verwendet, um eine gängige Formel zur Risikoschätzung auf den spezifizierten Umfang zurechtzuschneiden.
@@ -34,7 +34,7 @@ Da sowohl die die Höhe des individuellen Risikos als auch der Vergleich von sel
 Die Risiken der Vektoren werden beispielhaft anhand dieser Lösungen bewertet und beide auf Basis dieser Bewertungen miteinander verglichen.
 Das Durchführen eines vollständigen Risikomanagement-Prozesses würde über den Umfang dieser Arbeit hinausgehen.
 Das partielle Durchführen des Risikomanagement-Prozesses soll als Beispiel dienen und Einblick in den vorgeschlagenen Prozess geben.
-Mögliche Maßnahmen zur Reduzierung der Risiken werden untersucht, bewerted und anhand praktischer Beispiele demonstriert.
+Mögliche Maßnahmen zur Reduzierung der Risiken werden untersucht, bewertet und anhand praktischer Beispiele demonstriert.
 Im Anschluss werden die Risiken neu bewertet.
 
 
@@ -49,9 +49,8 @@ Platform-as-a-Service, PaaS, Cloud, Security, Container, Kubernetes, Docker, Ris
 \thispagestyle{empty}
 
 The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments, containerized workloads and microservice architectures introduce new attack scenarios. 
-This creates the need for new defense strategies in both Development and Operations. 
 Especially solutions providing Kubernetes (k8s) compliant container orchestration are identifiably different and in high demand compared to long established solutions. 
-This calls for a more detailed, focused examination. 
+This creates the need for new defense strategies in both Development and Operations and calls for a more detailed, focused examination. 
 The thesis aims to answer the following questions:
 
 \begin{itemize}
@@ -70,11 +69,10 @@ Another goal is to recommend security measures. \\
 A comparison of existing risks and the need for action derived from it should serve as central point of view for implementing these measures as well as comparing the risks. 
 
 
-After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they should have pointers to some of the security measures needed to reduce these risks and be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
+After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values regarding the risk gravity to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they have pointers to some of the security measures needed to reduce these risks and should be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
 
 
-To achieve the aforementioned goals, the thesis will limit the view on the problem to a manageable scope by
-concentrating on the components enabled by default and those required for operations of established and Kubernetes compliant solutions.
+To achieve the aforementioned goals, the thesis will focus on the components enabled by default and those required for operations of established and Kubernetes compliant solutions.
 Components providing Kubernetes compliance will be the main focus, as these bear the most significance across all Kubernetes Certified solutions. 
 Attack scenarios will be derived from the threat actors which are in turn dictated by common use cases in the industry.
 These scenarios are used to tailor a commonly accepted risk assessment formula to the scope specified.

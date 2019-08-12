@@ -5,9 +5,8 @@ what it tries to accomplish and which topics are considered within the scope of 
 \section{Motivation}
 
 The increasing amount of Platform-as-a-Service (PaaS) solutions, cloud-hosted environments, containerized workloads and microservice architectures introduce new attack scenarios. 
-This creates the need for new defense strategies in both Development and Operations. 
 Especially solutions providing Kubernetes (k8s) compliant container orchestration are identifiably different and in high demand compared to long established solutions. 
-This calls for a more detailed, focused examination. 
+This creates the need for new defense strategies in both Development and Operations and calls for a more detailed, focused examination. 
 
 \section{Objective} \label{goal}
 
@@ -15,12 +14,12 @@ The thesis aims to answer the following questions:
 
 \begin{itemize}
 
-\item What generic security risks emerge when providing or using a multi-tenant PaaS solution,
+\item What generic security risks emerge when providing or using a multi-tenant \gls{paas} solution,
 with each tenant developing, deploying and running their own applications? 
 
-\item What could a PaaS provider (serving internal and/or external users) do to mitigate those risks? 
+\item What could a \gls{paas} provider (serving internal and/or external users) do to mitigate those risks? 
 
-\item  In this scope and from a PaaS provider viewpoint, how does an on-premise solution compare
+\item  In this scope and from a \gls{paas} provider viewpoint, how does an on-premise solution compare
 to a public cloud solution? 
 
 \end{itemize}
@@ -29,7 +28,7 @@ Another goal is to recommend security measures. \\
 A comparison of existing risks and the need for action derived from it should serve as central point of view for implementing these measures as well as comparing the risks. 
 
 
-After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they should have pointers to some of the security measures needed to reduce these risks and be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
+After reading this thesis, the inclined reader should understand the underlying constructs of a solution within scope as well as the generic security risks present. When examining a specific solution, they should also be able to estimate values regarding the risk gravity to compare these risks among each other as well as compare them with those of other solutions. In addition to this, they have pointers to some of the security measures needed to reduce these risks and should be able to follow a suggested risk management process in order to adjust the solution to a desired security level.
 
 \section{Scope limitation} \label{scopeLimit}
 
@@ -48,7 +47,7 @@ Although \gls{k8s} v1.13 was already available through \gls{aks} at the same poi
 The components of these two solutions providing \gls{k8s} compliance will be the main focus, as these bear the most relevance across all Kubernetes Certified solutions. 
 A look at popular tools and frameworks used in such clusters will be avoided in order to keep the scope manageable, although some might be recommended as a mitigation.
 In order to be applicable to a higher number of use cases, attacks and measures seen in environments with exceptionally high security requirements might be mentioned, but not  covered in their entirety. This includes state-sponsored actors deploying zero-day exploits, which are not applicable to a majority of solutions deployed and thus disregarded for the given context.
-This thesis aims to provide insight to the risks of providing a PaaS solution and mitigation thereof. 
+This thesis aims to provide insight to the risks of providing a \gls{paas} solution and mitigation thereof. 
 As such, it will look at the capabilities a potential provider has to (mis-)configure such solutions - inherent risks of the technologies themselves are only explored when measures to mitigate them are accessible from a provider standpoint. 
 In short, the goal is to improve the security of a given \gls{k8s} cluster, not \gls{k8s} itself.
 To follow the \gls{owasp} Risk Rating Methodology\footcite{riskRating} down the line, threat actors have to be defined and grouped when applicable\footcite[][, Section 'Define all possible threats']{threatModeling}. Examining a list of threat actors published through SANS\footcite[][p. 12 to 17]{sansThreatActors}, only state-sponsored actors are excluded. This leaves us with cyber criminals, hacktivists, systems administrators, end users, executives and partners.
@@ -89,14 +88,12 @@ Some of the sources commonly referenced include (in alphabetical order):
 
 Other sources include solution specific advisories, i.e. for \gls{k8s} in general\footcite{k8sDocsSecurity} as well as \gls{ocp}\footcite{ocpSecTips} and \gls{aks}\footcite{aksSecTips} specifically. In addition to that, recorded and openly available talks by different people in the industry are available. Especially the talks at KubeCon, the annual \gls{k8s} conference, are accessible through the \gls{cncf} YouTube presence\footnote{Channel Link: https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA/videos}. The speakers include recognized people in the industry, contributors to the \gls{k8s} project and employees of reputable companies like Google, Red Hat and Microsoft.
 A considerable number of other online sources were referenced in the sources above or found with online search engines.
-These common recommendations exist, but neither claim to be exhaustive nor applicable to all future versions. In case of the \gls{cis} benchmarks, they are not even intended to be followed in full, but just as basis for security considerations.\footcite[][, starting at 29:18]{cisJustRecommendation}
+These common recommendations exist, but neither claim to be exhaustive nor applicable to all future versions. In case of the \gls{cis} benchmarks, they are not even intended to be followed in full, but just as basis for security considerations\footcite[][, starting at 29:18]{cisJustRecommendation}.
 In accordance to this, the findings can only be provided on a best-effort basis and not without reservation towards possible changes through future software versions or new information. This should be an information basis and approach for rating your own implementation while taking the business risk into consideration, not a definitive guide to all aspects in this regard.
 As with all systems, new attacks and vulnerabilities may emerge at any point in time. With sufficient research, the chance to have identified the most common attack vectors is probable but the limitations of this research has to be emphasized.
 
-%TODO full list of sources in appendix & reference here?
-
 \chapter{Theory}
-With this chapter, a reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
+With this chapter, the inclined reader with foundational knowledge of topics regarding Computer Science and/or Informatics 
 will be able to grasp the specialized technologies discussed within the thesis and familiarize themselves with the definitions and terminology used throughout it.
 
 \section{Platform-as-a-Service}
@@ -107,7 +104,7 @@ will be able to grasp the specialized technologies discussed within the thesis a
 \label{fig:servicecomparison}
 \end{figure}
 
-In \gls{paas} environments, a consumer delegates the management and control of resources needed to deploy his applications to his \gls{paas} provider, beyond those covered by \gls{iaas}.\footcite[][p. 2 to 3]{nistcloud}
+In \gls{paas} environments, a consumer delegates the management and control of resources needed to deploy his applications to his \gls{paas} provider, beyond those covered by Infrastructure-as-a-Service\footcite[][p. 2 to 3]{nistcloud}.
 In an ideal scenario, this leads to a consumer not having to concern himself with the underlying network, hardware, servers, operating systems, storage or even common middleware like database management or log collection and analysis\footcite[][, section 'Advantages of PaaS']{msPaas} and allows them to focus on other tasks, i.e. application development.
 As a downside to this, a consumer might only have limited control on, among other factors, the software installed on the provisioned machines. 
 Although this shifts some of the responsibility burden towards the provider, the situation isn't as clear-cut as one might think. 
@@ -115,7 +112,7 @@ Figure ~\ref{fig:servicecomparison} shows middleware and runtime as provided, bu
 A consumer might require capabilities which aren't provided or wishes to avoid provider lock-in through proprietary tools, 
 resulting in some middleware responsibilities falling back to the consumer. 
 A consumer might also have to extensively configure or modify the application-hosting environment for compliance or security purposes. 
-Even some low-level tasks aren't completely managed, i.e. VM reboots to apply security updates.\footcite[][, section 'Process Linux node updates and reboots using kured']{msVmReboot}
+Even some low-level tasks aren't completely managed, i.e. VM reboots to apply security updates\footcite[][, section 'Process Linux node updates and reboots using kured']{msVmReboot}.
 
 \section{Containers}
 
@@ -123,10 +120,10 @@ Unsurprisingly, a basic building block of running containerized applications are
 In order to run and manage containers, several components and systems are needed. The most important ones will be introduced here.
 
 \subsection{What are containers?}
-A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.\footcite[][, section 'Package Software into Standardized Units for Development, Shipment and Deployment']{whatContainer}
-From a technical viewpoint, a container is an isolated process running in the userspace of a host OS. The host system shares the kernel with all containers on it and might share other resources, but containers are run from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on (except the kernel).\footcite[][, slide 13]{containerIntro}
+A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another\footcite[][, section 'Package Software into Standardized Units for Development, Shipment and Deployment']{whatContainer}.
+From a technical viewpoint, a container is an isolated process running in the userspace of a host OS. The host system shares the kernel with all containers on it and might share other resources, but containers are run from container images which include any code and dependencies needed in order to make them independent of the infrastructure they are running on (except the kernel)\footcite[][, slide 13]{containerIntro}.
 
-Linux containers were widely popularized through Docker, a container system initially based on \gls{lxc}.\footcite[][, section '2013: Docker']{containerHistory}
+Linux containers were widely popularized through Docker, a container system initially based on a technology called LinuX Containers\footcite[][, section '2013: Docker']{containerHistory}.
 Containers provide isolation of multiple applications running on the same machine and are often deployed in environments where this isolation would formerly have been achieved by using multiple VMs. Thus, they are often compared to them despite the fundamental technical differences. The Kubernetes documentation illustrates the differences as seen in Figure ~\ref{fig:VMsVsContainers}.
 
 \begin{figure}[H]
@@ -136,12 +133,12 @@ Containers provide isolation of multiple applications running on the same machin
 \end{figure}
 
 \subsection{Differentiating docker}
-Talking about docker can be quite difficult, since the term is overloaded with different meanings - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (formerly known as Docker, now called Moby).\footcite[][, section 'What is Moby?']{dockerMoby}
+Talking about docker can be quite difficult, since the term is overloaded with different meanings - a company (Docker Inc.), their commercial products (Docker CE and Docker EE) and the former name of their open source project (formerly known as Docker, now called Moby)\footcite[][, section 'What is Moby?']{dockerMoby}.
 Additionally, there is a \gls{cli} called docker engine, which serves as an interface to the containers running on a host. It includes a high-level container runtime\footcite[][, section 'Develop, Ship and Run Any Application, Anywhere']{dockerEngine}, which will be talked about in the section \ref{runtimes}.
 Some sources also talk about docker-formatted containers when those technologies implement the same interfaces as the docker container runtime\footcite[][, section '1.11. Working with Docker formatted containers']{dockerFormatted}, which will be adopted in this thesis.
 
 \subsection{Images, image building and Dockerfiles}
-A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags.\footcite[][, section 'Docker Images']{redhatImages}
+A container image is a binary including all the data needed to run a container. It might also contain metadata on its needs and capabilities, i.e. version information through tags\footcite[][, section 'Docker Images']{redhatImages}.
 Container images are sometimes referred to as docker images or docker-formatted images, but they can be run by other container runtimes and vice versa.
 In order to create a container image, you have to build it. This is often done through a build process executed by a container runtime. The instructions for container builds are commonly defined and documented in a Dockerfile\footcite[][, section 'Dockerfile reference']{dockerfileDocs} (which may also be done by non-docker programs, adding to the vocabulary confusion).
 Container images can be distributed through container image registries, where images can be uploaded to and downloaded from. A commonly known example is docker hub, a public registry run by Docker Inc.
@@ -149,32 +146,30 @@ Container images can be distributed through container image registries, where im
 \subsection{Container standards and interfaces} \label{runtimes}
 
 Without going into the nuances and historical developments, there are a multitude of programs mostly implementing three interfaces for container management.
-The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed.\footcite[][, first paragraph]{ociStandards}
-The \gls{oci} also maintains a commonly used reference implementation called runc, alternatives include rkt and lmctfy.\footcite[][, section 'Examples of Low-Level Container Runtimes']{lowLevelRuntimes}
+The two basic interfaces are the runtime and image specifications under the \gls{oci} which standardize how containers and container images should be formatted and executed\footcite[][, first paragraph]{ociStandards}.
+The \gls{oci} also maintains a commonly used reference implementation called runc, alternatives include rkt and lmctfy\footcite[][, section 'Examples of Low-Level Container Runtimes']{lowLevelRuntimes}.
 Runc and similar programs implementing these specifications are commonly called low level runtimes, in contrast to the high level runtimes that control them.
-These high level runtimes like containerd or CRI-O commonly manage more abstract features like downloading and verifying container images.\footcite[][, Intro and section 'Examples of High-Level Runtimes']{highLevelRuntimes}
-Many high level runtimes today adhere to the \gls{cri} so they can be used interchangeably by container orchestrators.\footcite[][, section 'Purpose']{criGithub}
-
-%TODO maybe shorten and just talk about CRI upwards?
+These high level runtimes like containerd or CRI-O commonly manage more abstract features like downloading and verifying container images\footcite[][, Intro and section 'Examples of High-Level Runtimes']{highLevelRuntimes}.
+Many high level runtimes today adhere to the \gls{cri} so they can be used interchangeably by container orchestrators\footcite[][, section 'Purpose']{criGithub}.
 
 \section{Container orchestration}
 Once you want to use multiple containers on different machines talking to each other and offering stable services that continue even when one container or machine fails, the need for automated systems to manage these containers arises. Orchestrators can also provide other advantages like load balancing and automated scaling.
 Kubernetes systems are popular orchestrators currently in use.
 The sum of hosts running the orchestrator and containers are called a cluster.
-%TODO citation for kubernetes market share?
 
 \subsection{Kubernetes} \label{k8sTheory}
 At its core, \gls{k8s} is a control system for containers.
 It constantly compares the current state with the set target state and tries to correct towards the target when needed, i.e. when a container crashes.
-The intended way for a user to deploy or change their application is to adjust the target state and let the \gls{k8s} system take care of the rest.\footcite[][, section 'Understanding Kubernetes Objects']{k8sObjects}
+The intended way for a user to deploy or change their application is to adjust the target state and let the \gls{k8s} system take care of the rest\footcite[][, section 'Understanding Kubernetes Objects']{k8sObjects}.
 There are many \gls{k8s} distributions, many of which are certified Kubernetes offerings, meaning they all comply to the same standards and interfaces. These are set by the Linux Foundation through the \gls{cncf} which oversees the project.
-The Kubernetes code base is open source and maintained on GitHub, but any implementation fulfilling the (publicized) requirements can become \gls{k8s} certified, regardless of how much code they changed.\footcite[][, section 'There are over 80 Certified Kubernetes offerings.']{certifiedK8s} You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
+The Kubernetes code base is open source and maintained on GitHub, but any implementation fulfilling the (publicized) requirements can become \gls{k8s} certified, regardless of how much code they changed\footcite[][, section 'There are over 80 Certified Kubernetes offerings.']{certifiedK8s}.
+You could look at \gls{k8s} as a standardized interface for container orchestration with a public reference implementation.
 
 \subsubsection{Kubernetes components} \label{k8sComponents}
 
 In order to deliver a working \gls{k8s} cluster, multiple (binary) components are needed.
 Master components provide the control plane, while node components are run on each underlying machine in order to maintain and provide the environment to execute the containers you want to run eventually.
-Master components are often exclusively run on machines dedicated to them, which are called master nodes - in contrast to worker nodes, which run the containers your applications consist of.\footcite[][, section 'Master Components']{k8sComponents}
+Master components are often exclusively run on machines dedicated to them, which are called master nodes - in contrast to worker nodes, which run the containers your applications consist of\footcite[][, section 'Master Components']{k8sComponents}.
 
 The most relevant master components from the perspective of this thesis are:
 \begin{itemize}
@@ -196,7 +191,7 @@ The important node components include:
 
 Figure \ref{fig:k8s-big-picture} illustrates these components in context. It is to note that users in this illustration are the users of the applications running in the cluster. From a platform provider standpoint the users would be the people responsible for development and operations.
 
-\begin{figure}[H]
+\begin{figure}
 \includegraphics[scale=0.2]{pictures/big-picture.JPG} 
 \caption{An overview of different \gls{k8s} components\protect\footcite{nicoPictures}}
 \label{fig:k8s-big-picture}
@@ -206,20 +201,17 @@ Figure \ref{fig:k8s-big-picture} illustrates these components in context. It is 
 
 \subsubsection{Kubernetes objects}
 Kubernetes objects are persistent entities that represent the desired state of your cluster. They can describe what containers should run, which resources are available to what system and the policies to apply (i.e. automatic restart behavior and communication restrictions).
-The intent is to modify these objects in order to change the target state, which the \gls{k8s} system then works towards by adjusting the current state to match.\footcite[][, section 'Understanding Kubernetes Objects']{k8sObjects}
+The intent is to modify these objects in order to change the target state, which the \gls{k8s} system then works towards by adjusting the current state to match\footcite[][, section 'Understanding Kubernetes Objects']{k8sObjects}.
 Some objects, i.e. pods, belong to a specific namespace, meaning a virtual cluster of many in a shared physical cluster. Others, like node objects describing the underlying machine, exist outside of a specific namespace.
-In order to understand how one can make the \gls{k8s} system run an application according to its requirements, an understanding of the basic objects is needed.
+In order to understand how one can make the \gls{k8s} system run an application according to its requirements, an understanding of the basic objects is needed. \\
 %TODO make object names bold/italics? also do that to all other important names/definitions in the theory chapter?
-
-A pod is the basic \gls{k8s} object and encapsulates a container with some resources like an IP, storage and policies. Pods are typically each comprised of one container, a single instance of an application in \gls{k8s}. They may contain more than one container for cases where these are tightly coupled and directly share resources.\footcite[][, section 'Understanding Pods']{k8sPods}
-That's all the pods do. They run.\footcite[][p. 4]{phippy}
-
-Pods are usually not created manually, but started and stopped by a replicaSet. Their purpos as a \gls{k8s} controller is to maintain a stable set of replica pods running at any time in order to ensure availability of the function this type of pod provides.\footcite[][, introductory sentence]{k8sReplicaSets}
-
+A pod is the basic \gls{k8s} object and encapsulates a container with some resources like an IP, storage and policies. Pods are typically each comprised of one container, a single instance of an application in \gls{k8s}. They may contain more than one container for cases where these are tightly coupled and directly share resources\footcite[][, section 'Understanding Pods']{k8sPods}.
+That's all the pods do. They run\footcite[][p. 4]{phippy}. \\
+Pods are usually not created manually, but started and stopped by a replicaSet. Their purpos as a \gls{k8s} controller is to maintain a stable set of replica pods running at any time in order to ensure availability of the function this type of pod provides\footcite[][, introductory sentence]{k8sReplicaSets}.
 ReplicaSets are in turn managed by deployments. Just as replicaSets control pods, deployments control replicaSets in order to maintain the currently desired state of a cluster.
-Figure \ref{fig:k8s-deployments} illustrates this connection.
+Figure \ref{fig:k8s-deployments} illustrates this connection. \\
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[scale=0.2]{pictures/deployment.JPG} 
 \caption{Connection between deployments and other \gls{k8s} objects down to containers\protect\footcite{nicoPictures}}
 \label{fig:k8s-deployments}
@@ -236,13 +228,13 @@ Since multiple identical pods may provide the same functionality and instances o
 %TODO other objects: volumes, daemonsets, podsecuritypolicies, networkpolicies, (others needed/referenced?)
 
 \subsubsection{Using Kubernetes}
-There are many ways and solutions to set up a \gls{k8s} cluster. Anyone can write their own one from scratch, but so-called turnkey solutions for cloud and on-premise environments exist, too, which significantly reduce the time and effort required to set up and run a cluster.\footcite[][, sections 'Turnkey Cloud Solutions' and 'On-Premises turnkey cloud solutions']{turnkey}
+There are many ways and solutions to set up a \gls{k8s} cluster. Anyone can write their own one from scratch, but so-called turnkey solutions for cloud and on-premise environments exist, too, which significantly reduce the time and effort required to set up and run a cluster\footcite[][, sections 'Turnkey Cloud Solutions' and 'On-Premises turnkey cloud solutions']{turnkey}.
 %TODO maybe: buy CaaS/PaaS/IaaS, cloud vs. on-prem, different scopes/features from different products
-Once your cluster is set up, it is typically interacted with through the \gls{k8s} API. For human interaction, kubectl is a \gls{cli} reference implementation which enables remote interaction with it.\footcite[][, section 'The Kubernetes API']{k8sApi}
-In order to create or manipulate an object, you need to provide its new specification. This is typically supplied to kubectl as a .yaml file, an example of which can be seen in listing \ref{lst:example-yaml-file}.\footcite[][, section 'Describing a Kubernetes Object']{k8sObjects}
+Once your cluster is set up, it is typically interacted with through the \gls{k8s} API. For human interaction, kubectl is a \gls{cli} reference implementation which enables remote interaction with it\footcite[][, section 'The Kubernetes API']{k8sApi}.
+In order to create or manipulate an object, you need to provide its new specification. This is typically supplied to kubectl as a .yaml file, an example of which can be seen in listing \ref{lst:example-yaml-file}\footcite[][, section 'Describing a Kubernetes Object']{k8sObjects}.
 
 \begin{lstlisting}[
-	caption={Exemplary .yaml file of a simple k8s deployment\protect\footcite{k8sObjects}},
+	caption={Exemplary .yaml file of a simple \gls{k8s} deployment},
 	label={lst:example-yaml-file}]
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -269,16 +261,16 @@ spec:
 
 \subsection{OpenShift} \label{openshiftExplanation}
 
-OpenShift is a commercial Kubernetes container platform by Red Hat. There are several different options to choose, deployable in different environments. OpenShift Online is hosted in a public cloud, while OpenShift Dedicated is hosted on dedicated nodes in a virtual private cloud. The option most relevant to this thesis is \gls{ocp}, which can be deployed on any infrastructure, including on-premise environments.\footcite[][, section 'OpenShift plans and pricing']{openShiftOptions}
+OpenShift is a commercial Kubernetes container platform by Red Hat of which there are several different options to choose from. OpenShift Online is hosted in a public cloud, while OpenShift Dedicated is hosted on dedicated nodes in a virtual private cloud. The option used in this thesis is \gls{ocp}, which can be deployed on any infrastructure, including on-premise environments\footcite[][, section 'OpenShift plans and pricing']{openShiftOptions}.
 Red Hat sponsors and supports the development of Fedora, a Linux distribution on which they base their \gls{rhel} OS on. \gls{rhel} is then used by them commercially by supplying its binaries and updates through commercial licenses.
-Similar to this, Red Hat develops and supports a \gls{k8s} distribution called \gls{okd}, which then serves as a base for their OpenShift products, including \gls{ocp}.\footcite[][, section 'OKD vs Red Hat OpenShift']{ocpVsOkd}
-\gls{okd} release versions correspond to the \gls{k8s} version it is based on, i.e. \gls{okd} 1.11 is based on \gls{k8s} 1.11.\footcite[][, section 'What is OKD?']{okd}
-\gls{ocp} versions may differ, but Red Hat maintains a list of tested integrations for each major \gls{ocp} release, giving insight to which \gls{k8s} version it is based on.\footcite[][, table 'Platform Components']{ocpK8sVersions}
-\gls{ocp} is a certified Kubernetes distribution, which means it implements the same interfaces as all the others.\footcite[][, table 'Platform - Certified Kubernetes - Distribution']{certifiedK8s}
-Despite this, the differences in intended usage become apparent quite quickly, starting with the \gls{cli} used to interact with a cluster (oc instead of kubectl).\footcite[][, section 'Basic Setup and Login']{ocpCli}
-Even basic concepts like namespaces are different, as \gls{ocp} uses the similar but not identical concept of projects.\footcite[][, section 'Overview']{ocpProjects}
-Another difference of note is is the mechanic of \gls{scc}, which are the OpenShift equivalent of and initial inspiration for \gls{k8s} Pod Security Policies\footnote{refer to section \ref{v05} for details on Pod Security Policies}.
-\gls{ocp} uses Docker as its container runtime by default, but CRI-O is another option\footcite[][, section 'Getting CRI-O']{ocpCrio}.
+Similar to this, Red Hat develops and supports a \gls{k8s} distribution called \gls{okd}, which then serves as a base for all versions of OpenShift products\footcite[][, section 'OKD vs Red Hat OpenShift']{ocpVsOkd}.
+\gls{okd} release versions correspond to the \gls{k8s} version it is based on, i.e. \gls{okd} 1.11 is based on \gls{k8s} 1.11\footcite[][, section 'What is OKD?']{okd}.
+\gls{ocp} versions may differ, but Red Hat maintains a list of tested integrations for each major \gls{ocp} release, giving insight to which \gls{k8s} version it is based on\footcite[][, table 'Platform Components']{ocpK8sVersions}.
+\gls{ocp} is a certified Kubernetes distribution, which means it implements the same interfaces as all the others\footcite[][, table 'Platform - Certified Kubernetes - Distribution']{certifiedK8s}.
+Despite this, the differences in intended usage become apparent quite quickly, starting with the \gls{cli} used to interact with a cluster (oc instead of kubectl).
+Even basic concepts like namespaces are different, as \gls{ocp} uses the similar but not identical concept of projects\footcite[][, section 'Overview']{ocpProjects}.
+Another difference of note is is the mechanic of \gls{scc}, which are the OpenShift equivalent of and initial inspiration for \gls{k8s} Pod Security Policies.
+\gls{ocp} uses Docker as its default container runtime.
 
 \subsection{Azure Kubernetes Service}
 
@@ -286,7 +278,7 @@ The Azure Kubernetes Service is a managed \gls{k8s} solution offered by Microsof
 As it does not differ from the \gls{k8s} reference implementation compared to \gls{ocp}, its functionality is identical to the general \gls{k8s} mechanics described in section \ref{k8sTheory}.
 The computing resources used to run the cluster are pre-configured and provisioned VMs in the Azure cloud, which do not need to be configured and run a container runtime based on Moby, a toolkit from which the Docker runtime is built\footcite[][, section 'What is Moby?']{dockerMoby}.
 \gls{k8s} versions in \gls{aks} directly correspond to the \gls{k8s} version they are based on.
-As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users.\footcite[][, first paragraph]{aadAksAuth}
+As many cloud services do, there are multiple integrations to other cloud services, in case of \gls{aks} including an option to integrate your Azure Active Directory to authenticate users\footcite[][, first paragraph]{aadAksAuth}.
 
 %TODO any context missing here?
 
@@ -325,14 +317,14 @@ Other interfaces are intended to be accessible from inside a cluster. These may 
 One example of reconnaissance against the kube-apiserver was demonstrated at KubeCon 2019\footcite[][, starting at 8:45]{lizReconDemo}, while an example of leveraging the cloud api can be found in a blog post\footcite{aksApiExploit}.
 
 Following the security principle of limiting the attack surface\footcite[][, p. 4 to 5]{k8sBook}, the measures against this include blocking access to or outright deactivating interfaces. If interfaces are unused, i.e. the \gls{k8s} Dashboard where only \gls{cli} tools are used for cluster interaction, one can easily deactivate the Dashboard and thus reduce the attack surface without further work needed. If an interface is used, but alternatives exist, it may be advisable to evaluate whether a change in workflows or software architectures in order to decommission the interface may provide an overall benefit.
-Least privilege, another security principle\footcite[][, p. 3 to 4]{k8sBook}, can be followed by restricting access to used interfaces. Authentication can be required of both humans and automated processes and their access may be restricted to the information and capabilities strictly needed to operate. KubiScan, an open source tool to scan the \gls{rbac} permissions of a \gls{k8s} cluster for permissions considered risky, is publicly available to assess a given cluster. Users might be required to log in through a two factor authentication to hinder access through stolen credentials. Network restrictions can be put in place to restrict the vantage points from which an attacker may gain access.
+Least privilege, another security principle\footcite[][, p. 3 to 4]{k8sBook}, can be followed by restricting access to used interfaces. Authentication can be required of both humans and automated processes and their access may be restricted to the information and capabilities strictly needed to operate. KubiScan, an open source tool to scan the role-based access control permissions of a \gls{k8s} cluster for permissions considered risky, is publicly available to assess a given cluster. Users might be required to log in through a two factor authentication to hinder access through stolen credentials. Network restrictions can be put in place to restrict the vantage points from which an attacker may gain access.
 Following Defense in Depth\footcite[][, p. 3]{k8sBook}, this should not only be done from the outside, but access from inside the cluster, too. As an example, most containers don't need access to \gls{k8s} master components, so these requests can be blocked by \gls{k8s} Egress Network Policies\footcite[][, section 'The NetworkPolicy Resource']{egressNetPol}. The impact of successful attacks could be limited through alerting and restricting of the attacks 'blast radius'. Logging and alerting processes may be implemented through \gls{k8s} audit policies\footcite[][, section 'Audit Policy']{auditPolicy} for requests that are considered suspicious and do not occur in normal operations, examples of which can be found in online sources\footcite[][, section 'Alerting on the Kubernetes infrastructure']{sysdigMonitoring}. The 'blast radius' may be reduced by isolating different applications or teams trough multiple namespaces and restricting access to non-namespaced resources to cluster administrators, thus isolating an attacker to a single namespace instead of the whole cluster. An even more drastic isolation could be achieved through isolation by cluster, resulting in separate \gls{k8s} master components per isolated entity.
 
 \subsection{V02 - Reading confidential information through interface components}
 The components mentioned in section \ref{v01} could also be used by an attacker to gather confidential information, which can be either useful in and of itself or used to gain further access. Extracted private keys, tokens or passwords  may be leveraged to authenticate with additional privileges in order to steal or manipulate container images, adjacent applications, source code and interact with other interfaces.
 
 Despite presenting a more serious damage potential, the measures of section \ref{v01} also apply here since they target the same interfaces.
-In addition to that, special attention should be paid to the way secrets are passed into code running under \gls{k8s}. Embedding secret information into container images should be avoided, since those are not only unencrypted and difficult to change, but may be extracted by an attacker reading the Dockerfile or inspecting an image themselves. Supplying them through environment variables is also not recommended, as those might be exposed in unconsidered ways. It is recommended to supply them to containers at runtime through \gls{k8s} secrets or external tools like those integrated into cloud platforms or offered by third-party providers. Popular third-party solutions include HashiCorp Vault and CyberArk Conjur.\footcite[][, chapter 7]{k8sBook}
+In addition to that, special attention should be paid to the way secrets are passed into code running under \gls{k8s}. Embedding secret information into container images should be avoided, since those are not only unencrypted and difficult to change, but may be extracted by an attacker reading the Dockerfile or inspecting an image themselves. Supplying them through environment variables is also not recommended, as those might be exposed in unconsidered ways. It is recommended to supply them to containers at runtime through \gls{k8s} secrets or external tools like those integrated into cloud platforms or offered by third-party providers. Popular third-party solutions include HashiCorp Vault and CyberArk Conjur\footcite[][, chapter 7]{k8sBook}.
 
 \subsection{V03 - Configuration manipulation through interface components} \label{v03}
 With write access to the components mentioned in section \ref{v01}, an attacker may change configurations of the cluster or its environment, i.e. security controls set in place through the cloud provider platform. Examples include disabling security restrictions, rendering alerting processes dysfunctional by blocking their communication or swapping container images with functional, but compromised alternatives.
@@ -345,7 +337,7 @@ In contrast to the components mentioned in section \ref{v01}, there are others w
 The most promising target is the etcd key value store introduced in section \ref{k8sComponents}, as through it an attacker may gain any permission they want\footcite[][, chapter 'Running etcd Safely']{k8sBook}.
 
 The available security measures are much more straightforward than those of the interface components, which is why all (ab)use cases have been united in one vector.
-Master components can be run on any machine in the cluster, but are often run on dedicated master nodes.\footcite[][, section 'Master Components']{k8sComponents}
+Master components can be run on any machine in the cluster, but are often run on dedicated master nodes\footcite[][, section 'Master Components']{k8sComponents}.
 Therefore, \gls{k8s} solutions can restrict access to these by either not exposing them to anyone outside the pool of master nodes or, in case the components themselves are deployed as containers, restricting write access to their namespace they are running in as well as communication to the containers themselves.
 Synonymous to section \ref{v01}, isolating through separate clusters per team or application can restrict the damage potential through separate master components.
 
@@ -383,9 +375,10 @@ Applicable security measures include network isolation through Network Policies\
 \subsection{V08 - Container breakout} \label{v08}
 A popular phrase about container security is that "[c]ontainers do not contain"\footcite[][, first headline]{doNotContain}.
 Once an attacker is able to execute commands in a container within the cluster, he may try influence components outside its isolation confinements. 
-If an attacker successfully gains access to the underlying system, they might gain visibility into or control over any container running on it, including those of other applications. Additionally, they could gain access to internal cluster components like the kubelet\footnote{refer to section \ref{k8sComponents} for additional details}.
-Ways to achieve this include the invocation of syscalls, accessing mounted parts of the host file system and requesting additional capabilities. More ways to achieve this are being discussed at the time of this writing as the OWASP Docker Top 10 are worked on\footcite[][, dialogue by GitHub users 'drwetter', 'gramsimamsi' and 'wurstbrot']{dockerTop10GithubIssue} and openly demonstrated\footcite[][, section 'Breaking down the proof of concept']{trailOfBitsEscape}.
+If an attacker successfully gains access to the underlying system, they might gain visibility into or control over any container running on it, including those of other applications. Additionally, they could gain access to internal cluster components like the kubelet.
+Ways to achieve this include the invocation of syscalls, accessing mounted parts of the host file system and requesting additional capabilities. More ways to achieve this  have been demonstrated\footcite[][, section 'Breaking down the proof of concept']{trailOfBitsEscape} and are being discussed at the time of this writing as the \gls{owasp} Docker Top 10 are worked on\footcite[][, dialogue by GitHub users 'drwetter', 'gramsimamsi' and 'wurstbrot']{dockerTop10GithubIssue} .
 
+\newpage
 This can again be reduced by restricting the capabilities and host access a given container is provided through the Pod Security Policies mentioned in section \ref{v03}.
 "Sandboxed" containers may be leveraged here, too, which provide more isolation between a container and its host at the cost of performance. Popular implementations include gVisor\footnote{https://github.com/google/gvisor} and Kata Containers\footnote{https://katacontainers.io/}.
 
@@ -401,6 +394,7 @@ This may be done by downloading and running additional binaries, establishing co
 Measures against this build include limiting the capabilities a container has as discussed in section \ref{v03}. Limiting network connections to cluster-external sources may mitigate ways to download additional software or exfiltrate data. This could be done via Egress Network Policies, which section \ref{v01} introduced.
 Monitoring tools could be used to detect this, of which several commercial products are offered and often integrated into (cloud) provider platforms\footcite[][, slide 40 to 41]{runtimeProt}.
 
+\newpage
 \subsection{V11 - Resource hoarding (sabotage)} \label{v11}
 An attacker with the ability to use resources or manipulate configuration may misuse or misconfigure them in order to disrupt the availability of specific applications or the cluster as a whole in DOS attacks.
 This may be done in a myriad of ways. Exhausting the available resources through fork bombs\footcite[][, chapter 'Fork Bombs and Resource-Based Attacks']{k8sBook} or intensive use of memory, RAM, network bandwidth, processing power or available network ports may be a straightforward technique. They could also delete data and binaries, i.e. \gls{k8s} objects and node programs and operating system components, wherever they have access to.
@@ -415,22 +409,28 @@ The measures against this include those introduced in section \ref{v11}. As this
 More advanced measures are presented by RedLock, the company which uncovered the Tesla incident, on their blog\footcite[][, section 'Preventing Such Compromises']{teslaIncident}.
 
 \subsection{V13 - Adding rogue containers} \label{v13}
+\vspace{-0.25cm}
 In contrast to sections \ref{v05} and \ref{v10}, an attacker or malicious user capable of starting containers in the cluster may simply start their own malicious one. Since they could try to configure it in any way they want, this could help them in further attacks, leveraging vectors like those described in sections \ref{v07} or \ref{v08}.
 
 The mitigations of section \ref{v10} mostly apply here, except for those against downloading additional binaries at runtime. An attacker could simply supply these within a Dockerfile or container image so they would already be installed. Against this, the detection and mitigation measures against bad images described in section \ref{v05} are applicable.
 
+\vspace{-0.25cm}
 \subsection{V14 - Adding rogue nodes}
+\vspace{-0.25cm}
 An attacker could try and add a host as a cluster node which is controlled by them. If successful, containers will be scheduled on the new node, allowing an attacker access to these containers in order to read, exfiltrate or manipulate data. They would also have control over the kubelet on this node, as described in section \ref{v08}.
 In a sufficient time period, the chance of any container in the cluster running on the node at least once increases. This process could be sped up by manipulating the reporting data sent by the kubelet to the kube-scheduler, faking a lot of unused resources on it so more containers are scheduled.
 
 In order to mitigate this, nodes would have to authenticate themselves to the apiserver and permissions to add new nodes should be limited to the highest possible user accounts like cluster administrators.
 
+\vspace{-0.25cm}
 \subsection{V15 - Leveraging bad user practice}
+\vspace{-0.25cm}
 An attacker may leverage bad user practice to gain access to or permissions within a cluster. 
 This vector comprises user practices outside of the cluster that lead to risks within it.
 Examples include phishing for user accounts, gathering keys/tokens published to public code repositories, gathering passwords published in credential leaks or dumps, scouting specific software or container images used as well as gathering logs published with information valuable to an attacker.
-This could be done in a targeted way (i.e. specific Open Source Intelligence gathering or sending spearphishing emails) or untargeted by searching large repositories like Github for information formatted in a specific way. A practical example would include looking for published '.kube\textbackslash config' files, where authentication information and kube-apiserver addresses are saved to\footcite[][, section 'Define clusters, users, and contexts']{kubectlClusterAccess}. Gaining access through tokens in public logs has been demonstrated, too\footcite[][, section 'Results and notable findings']{ciKnew}.
+This could be done in a targeted way (i.e. specific Open Source Intelligence gathering or sending spearphishing emails) or untargeted by searching large repositories like GitHub for information formatted in a specific way. A practical example would include looking for published '.kube\textbackslash config' files, where authentication information and kube-apiserver addresses are saved to\footcite[][, section 'Define clusters, users, and contexts']{kubectlClusterAccess}. Gaining access through tokens in public logs has been demonstrated, too\footcite[][, section 'Results and notable findings']{ciKnew}.
 
+%TODO mitigation!
 %TODO: dont forget
 %default kubeconfig file location on user machine: $HOME/.kube/config <- contains certs + tokens for login, specifies which apiservers, ...
 %get token from user: oc whoami --token
@@ -450,6 +450,7 @@ Establishing a 'bastion host'\footcite[][, section 'What is a bastion host, and 
 Measures can also be found in the \gls{owasp} \gls{csvs}\footcite[][, section 'Infrastructure']{csvsGithub}, \gls{cis} Docker Benchmark\footcite[][, chapters 1 through 3 and 5]{cisDocker}, the \gls{cis} Kubernetes Benchmark\footcite[][, chapters 'Worker Node Security Configuration' and 'Configuration Files']{cisK8s} and the NIST publication\footcite[][, chapters 3.5, 4.5 and 4.6]{nistK8s}.
 Cloud configuration may be assessed and/or enforced with automated tools like ScoutSuite\footnote{https://github.com/nccgroup/ScoutSuite}, cloud-custodian\footnote{https://github.com/cloud-custodian/cloud-custodian} or environment-specific tools like azurite\footnote{https://github.com/mwrlabs/Azurite}.
 
+\newpage
 \subsection{V17 - Leveraging bad patch management} \label{v17}
 An attacker may leverage publicly known vulnerabilities in software that is not up to date on any component used in the environment.
 This may even include systems assumed to be responsible for by other parties. Even in \gls{paas} environments like \gls{aks}, servers have to be restarted by the cloud customer in order for some security updates to take effect. An example for this can be seen in an email sent to an Azure cloud account holder, a screenshot of which is provided in figure \ref{securityMailMS}.
@@ -481,7 +482,7 @@ In order to achieve a view on the risks more accurately resembling situations wh
 %TODO put this back in?
 %\item Regarding the design and implementation of applications running on the solutions, it is assumed that conventional application security measures have been implemented, i.e. against the \gls{owasp} Top 10.\footcite[][, p. 4]{topten} The extent of those measures is assumed to be in accordance to moderate criticality of the data and service provided by the application.
 
-\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies.\footcite[][, starting at 3:05]{hackAndHarden} While setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
+\item Some risks increase or decrease drastically, depending on many specific configurations. Considering the high system complexity, ``getting it to work'' is hard enough for users and operators new to these technologies\footcite[][, starting at 3:05]{hackAndHarden}. While setting up and configuring a setup, the default configurations are left as-is whenever possible. Guidelines of specific implementations are followed, but whenever measures are presented as optional and not required, they will be skipped. Before recommending security measures, the setup will be modified just enough to become functional, without regards to the security implementations.
 
 \item Multiple tenants like different customers, teams or projects are separated by \gls{k8s} namespaces or \gls{ocp} projects respectively, not by isolated clusters.
 
@@ -502,7 +503,7 @@ The process laid out in the \gls{owasp} Risk Rating Methodology\footcite[][, sec
 
 Another methodology considered but decided against was the Common Vulnerability Scoring System in its most current version, v3. As specifically stated in its user guide, it is not intended to measure risk but instead measuring the severity of specific vulnerabilities\footcite[][, section '2.1. CVSS Measures Severity, not Risk']{cvssUserGuide}.
 
-As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk is the mathematical product of likelihood and impact forms the basis of this methodology. The impact is estimated directly, while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the OWASP Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
+As an alternative, another methodology was proposed by the company accompanying this thesis, HvS Consulting. The generally accepted base formula of risk is the mathematical product of likelihood and impact forms the basis of this methodology. The impact is estimated directly, while the likelihood is calculated by summing up the estimation of several contributing factors. This is a simplified, but similar version of the \gls{owasp} Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}. 
 
 The original factors used to estimate a value for the likelihood were prevalence, awareness and exploitability. This methodology was customized in order to be more applicable, since prevalence would have been difficult to estimate and compare for the relatively new technologies. Instead of prevalence, the factors 'vantage point' and 'required access level' were added in order to explicitly consider both the possible origin of attack vectors as well as the privileges needed to leverage them. In contrast to other estimations they shall not influence the exploitability value, as the too much weight may then be put on these factors. The average value of these four factors lead to the resulting probability value. Customizing the factors is done to tailor towards our specific use case, a practice encouraged by the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 6: Customizing the Risk Rating Model']{riskRating}.
 
@@ -530,7 +531,7 @@ The work elaborated on in the previous section leads to the following formula fo
 $${Total\ risk}= Max[\frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}*\ impact,\ 10]$$
 
 %TODO formula misses rounding to full integer
-This leads to a total risk of 0 through 10.5, which is rounded to full integers and capped at 10. In accordance to the OWASP Risk Rating Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high with the exception of 10, which is critical.
+This leads to a total risk of 0 through 10.5, which is rounded to full integers and capped at 10. In accordance to the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high with the exception of 10, which is critical.
 It should be noted that the worst case option of each vector should be taken in case of multiple possible scenarios, attacks and outcomes.
 
 \section{Estimating the solution specific risk} \label{riskEstimate}
@@ -571,7 +572,7 @@ V17             & Leveraging bad patch management                               
 \end{tabular}%
 }
 \end{table}
-\captionof{table}{A comparison of the resulting risk for the OCP and AKS environments\label{estimateComparison}}
+\captionof{table}{A comparison of the resulting risk for the \gls{ocp} and \gls{aks} environments\label{estimateComparison}}
 
 \begin{landscape}
 \begin{table}[]
@@ -600,7 +601,7 @@ V17             & Leveraging bad patch management                               
 \end{tabular}%
 }
 \end{table}
-\captionof{table}{The risk estimation of all vectors for an OCP 3.11 cluster\label{ocpRiskTable}}
+\captionof{table}{The risk estimation of all vectors for an \gls{ocp} 3.11 cluster\label{ocpRiskTable}}
 \end{landscape}
 
 \begin{landscape}
@@ -631,7 +632,7 @@ V17             & Leveraging bad patch management                               
 }
 %\caption{The risk estimation of all vectors for an AKS 3.11 cluster}
 \end{table}
-\captionof{table}{The risk estimation of all vectors for an AKS 3.11 cluster\label{aksRiskTable}}
+\captionof{table}{The risk estimation of all vectors for an \gls{aks} 3.11 cluster\label{aksRiskTable}}
 \end{landscape}
 
 \subsection{V07 - Lateral movement through cluster}
@@ -675,7 +676,7 @@ As the process is not fully completed within this thesis, the vectors chosen to 
 Two other vectors were chosen instead, since these were more representative of the environments within scope and concise enough to properly present the process. Examples like securing the underlying physical servers or VMs are suboptimal for representing the process of securing a solution based on orchestrated containers.
 
 A specific attack for each vector has been conducted and will be examined for demonstration. Security measures will be chosen and implemented, after which the successful prevention of the attack will be shown.
-The remaining risk will be reassessed for all vectors, as some measures may influence other vectors.
+The remaining risk will be reassessed for all vectors, as some measures may influence others.
 
 \section{Managing the risk of V07 - Lateral movement through cluster} \label{v07ManageTotal}
 This section will demonstrate the possibility of attackers to leverage network access to other containers in a cluster, across namespace/project boundaries.
@@ -684,10 +685,10 @@ Both the \gls{aks} and \gls{ocp} clusters set up as specified in section \ref{en
 
 \subsection{Demonstrating the successful attack without security measures}
 The \gls{ocp} cluster contains several projects, two of which are relevant to the situation at hand. 
-The 'sock-shop' project contains the Sock Shop, a microservice demo application that is open source and implements an online store for the purchase of various socks.\footcite[][, first paragraph of 'README.md']{sockShop}
+The 'sock-shop' project contains the Sock Shop, a microservice demo application that is open source and implements an online store for the purchase of various socks\footcite[][, first paragraph of 'README.md']{sockShop}.
 The 'testuser' project is used to simulate an attacker-controlled container admitted to another project.
 
-The project names are seen in listing \ref{lst:lateral-ocp-prep}, in addition to the \gls{k8s} services admitted by the sock shop application. One of these services is called user-db, reachable through the cluster-internal IP 172.30.2.17 and listening to port 27017. This port is commonly used by the database solution MongoDB\footcite[][, first table row]{mongoPort}. The listing also shows the yaml configuration file for the attacking container placed within a \gls{k8s} pod. It contains basic networking tools and runs a wait-loop to both simulate a running container as well as stay admitted in the cluster since the started process is perpetually running. The listing also shows the privileges needed to admit this pod into the cluster, which is allowed through unprivileged security context constraints\footcite[][, refer to table of section 'Listing Security Context Constraints']{sccDefaults}. After the pod is admitted and created through the oc apply command, a remote shell is opened through oc rsh in order to execute commands from within the simulated attacker context.
+The project namesand  services admitted by the sock shop application are seen in listing \ref{lst:lateral-ocp-prep}. One of these services is called user-db, reachable through the cluster-internal IP 172.30.2.17 and listening to port 27017. This port is commonly used by the database solution MongoDB\footcite[][, first table row]{mongoPort}. The listing also shows the configuration file for the attacking container placed within a \gls{k8s} pod. It contains basic networking tools and runs a wait-loop to both simulate a running container as well as keep the pod from terminating. The listing also shows the privileges needed to admit this pod into the cluster, which is permitted even by unprivileged security context constraints\footcite[][, refer to table of section 'Listing Security Context Constraints']{sccDefaults}. After the pod is admitted and created through the oc apply command, a remote shell is opened through oc rsh in order to execute commands from within the simulated attacker context.
 
 Listing \ref{lst:lateral-ocp-exploit} shows the commands and output used to steal (fake) login, address and payment information from within the sock shop.
 The nmap tool is already installed and used to scan for MongoDB databases. This would take a considerable amount of time to do for the whole IP range of the cluster, which is why we resctricted it to the service IP we know to route to the user-db service. The output not only confirms that we can reach it from another namespace, but also shows three databases on it - local, admin and users.
@@ -706,7 +707,7 @@ In order to provide the most limiting and save isolation without impacting funct
 
 The easiest way to achieve this on the \gls{ocp} cluster is to use the ovs-multitenant network plugin, which implements this isolation by default for any existing as well as newly created project\footcite[][, section 'Overview']{ocpNetworkPlugins}. The \gls{aks} cluster would need a default network policy\footcite[][, section 'Default Policies']{egressNetPol} to isolate namespaces, examples of which are publicly available\footcite[][, section 'Example']{netPolExample}.
 
-An \gls{aks}-specific challenge to note here is the current effort for mitigation not made clear by the Microsoft documentation. The network policy usage tutorial clearly states that "[t]he network policy feature can only be enabled when the cluster is created. You can't enable network policy on an existing AKS cluster."\footcite[][, section 'Frequently asked questions']{aksNetPolUse}, information currently not given in the official \gls{aks} cluster deployment tutorial\footcite{aksSetup}. When a cluster is set up, it defaults to the Basic option for network configuration at the time of this writing. This would require a full cluster rebuild and application migration in order to migrate to using network policies, as was the case during the practical part of this thesis.
+An \gls{aks}-specific challenge to note here is the current effort for mitigation not made clear by the Microsoft documentation. The network policy usage tutorial clearly states that "[t]he network policy feature can only be enabled when the cluster is created. You can't enable network policy on an existing AKS cluster"\footcite[][, section 'Frequently asked questions']{aksNetPolUse}. This information is currently not given in the official \gls{aks} cluster deployment tutorial\footcite{aksSetup}. When a cluster is set up, it defaults to the Basic option for network configuration at the time of this writing. This would require a full cluster rebuild and application migration in order to migrate to using network policies, as was the case during the practical part of this thesis.
 Even with this increased effort, using network policies is still recommended.
 
 The official documentation for migrating to the ovs-multitenant plugin\footcite{networkPluginSwitch} was followed to implement the security measures for the \gls{ocp} cluster. A new \gls{aks} cluster was built with the settings detailed in figure \ref{aksConfig} and all applications as well as the simulated attacker have been reconfigured and redeployed. A network policy denying all incoming traffic from other namespaces was applied to the sock shop namespace as detailed in listing \ref{lst:lateral-aks-mitigate}.
@@ -783,7 +784,7 @@ No other vectors are influenced by these measures. If root users within the cont
 The emerging generic security risks and pointers to security measures were detailed in chapter \ref{deriveRisks}. A process to mitigate these risks has been introduced in chapter \ref{riskMgmtTotal}. 
 This chapter aims to provide answers to the remaining question posed in section \ref{goal} by comparing the \gls{aks} and \gls{ocp} solutions based on the assessment of chapter \ref{riskAssessTotal}, as well as provide a closing summary.
 
-\subsection{Comparing on-premise and public cloud}
+\section{Comparing on-premise and public cloud}
 
 Since both the gravity of each risk and the comparison of on-premise and public cloud solutions would depend on a multitude of factors, the \gls{ocp} and \gls{aks} setup will be compared specifically. They respectively represent on-premise and public cloud solutions within the scope of this thesis. It should be noted that this comparison should not be generalized to hold true for all respective solutions.
 
@@ -791,7 +792,7 @@ The comparison is based on the values derived from the default settings shown in
 
 
 The overall risk of \gls{aks} is slightly higher, both due to being accessible from the public internet as well as more lenient default limitations. The former is understandable due to the nature of cloud solutions. The latter may be a result of usability being a higher priority. \\
-The \gls{ocp} default settings stand in contrast to this, i.e. by preventing many popular images from being run since they require root privileges within the container environment. This alludes to a mindset of security by default, which reduces the existing risk. Nevertheless, other factors like i.e. outdated servers or negligent employees result in risks which can not be mitigated by the solution itself. Additionally, very limited default settings may lead to configuration changes in order to increase productivity. These changes, especially when overcompensated, could increase risks in such significant ways that a more sensible and less restricting default configuration would have been better off.
+The \gls{ocp} default settings stand in contrast to this, i.e. by preventing many popular images from being run since they require root privileges within the container environment. This alludes to a mindset of security by default, which reduces the existing risk. Nevertheless, other factors as i.e. outdated servers or negligent employees result in risks which can not be mitigated by the solution itself. Additionally, very limited default settings may lead to configuration changes in order to increase productivity. These changes, especially when overcompensated, could increase risks in such significant ways that a more sensible and less restricting default configuration would have been better off.
 %TODO say something on on-demand resources, sabotage via DOS vs. cryptojacking!
 
 % FOLLOWING SECTION SCRAPPED FOR THESIS! left as comment for reference
@@ -801,7 +802,8 @@ The \gls{ocp} default settings stand in contrast to this, i.e. by preventing man
 %namespace/project isolation vs. cluster isolation. refer to separate-tenants-by-cluster measure in vector identification section. Is possible, but more complex and tedious ATM. refer to growing projects for cluster federation and clusters-as-cattle (instead of container-as-cattle and cluster-as-pet)
 %-> may be better in future, only do today for super-high-security apps in their own cluster. costs more resources, at which point one may simply run the stuff on isolated and dedicated servers anyway (except when needed for workflow, high availability or mircoservice arch offsets complexity needed)?
 
-\subsection{Closing remarks}
+\newpage
+\section{Closing remarks}
 
 Although the initial goal including a comprehensive list of security measures and best practices had to be changed, I am content with the result. The amount of work needed for both the derivation of security vectors and tailoring of the risk model to meet the requirements took far more work than anticipated. This is in part due to the limits of existing research as well as the significant difference to other platforms and architectures. The initial goal of comparing the risk of on-premise and public cloud had to be changed due to being highly dependent on solution-specific details. This may get easier in the future as robust solutions form and are adopten in other solutions.
 

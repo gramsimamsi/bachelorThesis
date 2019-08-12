@@ -18,7 +18,7 @@
 \captionof{figure}{An email from July 15th, 2019, advising users to reboot their AKS clusters in order to apply security patches. Screenshot taken by Lukas Grams.}
 
 \subsection{AKS cluster configuration}
-\frame{\includegraphics[scale=0.75]{pictures/aksConfig.jpg}\label{aksConfig}}
+\frame{\includegraphics[scale=0.7]{pictures/aksConfig.jpg}\label{aksConfig}}
 \captionof{figure}{The final \gls{aks} cluster configuration used. Screenshot taken by Lukas Grams.}
 
 
@@ -126,7 +126,7 @@ Cryptojacking is regularly cited as an up-and-coming attack (Awareness: 3), but 
 If successful for longer periods of time, a companies on-premise resources will be available to a lesser degree as some of them are used for mining. In addition to that, the underlying hardware will be degraded at a higher rate, leading to hardware failures and replacesments sooner than normal (Impact: 2).
 With a total risk value of 5, it is classified as a medium risk. \\
 
-
+\newpage
 The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
 In contrast to V11, the ability to spin up additional resources in the cloud increases the impact here, since those are virtually unlimited and simpy billed towards the attack victim (Impact: 3).
 All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
@@ -180,16 +180,16 @@ The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting i
 
 \subsection{V17 - Leveraging bad patch management}
 
-
 Known and unpatched vulnerabilities in any components can lead to any number of problems. For both the \gls{aks} and \gls{ocp} setup, worst case values are assumed for all factors except Exploitability, as technical knowledge is required to leverage them. (Vantage Point: 4, RAL: 4, Awareness: 3, Exploitability: 2, Impact: 3).
 With a total risk value of 10, it is classified as a critical risk for both setups. \\
 
+\newpage
 \section{Attack demonstrations}
-%TODO shorten out more irrelevant lines
+%TODO shorten out more irrelevant lines?
 
 \subsection{Lateral movement attack preparation in the OCP cluster}
 \begin{lstlisting}[
-	caption={Shell I/O in preparation of the \gls{ocp} cluster attack by lateral movement},
+	caption={Shortened version of the shell I/O in preparation of the \gls{ocp} cluster attack by lateral movement},
 	label={lst:lateral-ocp-prep},
 	basicstyle=\tiny,
 	language=bash,
@@ -199,15 +199,7 @@ You have access to the following projects and can switch between them with 'oc p
 
     default
     kube-public
-    kube-system
-    management-infra
-    openshift
-    openshift-infra
-    openshift-logging
-    openshift-node
-    openshift-sdn
-    openshift-web-console
-    other-team-deployment
+    ...
     sock-shop
   * testuser
 
@@ -215,17 +207,7 @@ Using project "testuser" on server "https://openshiftmaster.lgr.com:8443".
 [root@openshiftmaster ~]# oc get service -n sock-shop
 NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 carts          ClusterIP   172.30.64.220    <none>        80/TCP         17d
-carts-db       ClusterIP   172.30.43.90     <none>        27017/TCP      17d
-catalogue      ClusterIP   172.30.233.128   <none>        80/TCP         17d
-catalogue-db   ClusterIP   172.30.235.75    <none>        3306/TCP       23d
-front-end      NodePort    172.30.56.57     <none>        80:30001/TCP   23d
-orders         ClusterIP   172.30.157.45    <none>        80/TCP         17d
-orders-db      ClusterIP   172.30.11.68     <none>        27017/TCP      17d
-payment        ClusterIP   172.30.95.255    <none>        80/TCP         17d
-queue-master   ClusterIP   172.30.150.132   <none>        80/TCP         23d
-rabbitmq       ClusterIP   172.30.248.38    <none>        5672/TCP       17d
-shipping       ClusterIP   172.30.151.180   <none>        80/TCP         17d
-user           ClusterIP   172.30.124.104   <none>        80/TCP         17d
+...
 user-db        ClusterIP   172.30.2.17      <none>        27017/TCP      17d
 [root@openshiftmaster ~]# cat network-utils.yaml
 apiVersion: v1
@@ -253,6 +235,7 @@ pod/network-utils created
 # 
 \end{lstlisting}
 
+\newpage
 \subsection{Lateral movement attack conduction in the OCP cluster}
 \begin{lstlisting}[
 	caption={Shortened version of the shell I/O during the exploitation of the \gls{ocp} cluster attack by lateral movement},
@@ -375,7 +358,9 @@ exception: connect failed
 #
 \end{lstlisting}
 
+\vspace{-0.25cm}
 \subsection{Container breakout attack conduction in the OCP cluster}
+\vspace{-0.25cm}
 
 \begin{lstlisting}[
 	caption={Shortened version of the shell I/O during the exploitation of the \gls{ocp} cluster attack by breakout},
@@ -485,7 +470,7 @@ RESOURCE   SERVICE ACCOUNT   ALLOWED BY
 
 \subsection{Lateral movement attack preparation in the AKS cluster}
 \begin{lstlisting}[
-	caption={Shell I/O in preparation of the \gls{aks} cluster attack by lateral movement},
+	caption={Shortened version of the shell I/O in preparation of the \gls{aks} cluster attack by lateral movement},
 	label={lst:lateral-aks-prep},
 	basicstyle=\tiny,
 	language=bash,
@@ -493,24 +478,13 @@ RESOURCE   SERVICE ACCOUNT   ALLOWED BY
 lukas@Azure:~$ kubectl get namespace
 NAME          STATUS   AGE
 default       Active   7h
-kube-public   Active   7h
-kube-system   Active   7h
+...
 sock-shop     Active   6h
 testuser      Active   6h
 lukas@Azure:~$ kubectl get service -n sock-shop
 NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 carts          ClusterIP   10.0.167.221   <none>        80/TCP         6h
-carts-db       ClusterIP   10.0.199.172   <none>        27017/TCP      6h
-catalogue      ClusterIP   10.0.133.141   <none>        80/TCP         6h
-catalogue-db   ClusterIP   10.0.240.1     <none>        3306/TCP       6h
-front-end      NodePort    10.0.246.241   <none>        80:30001/TCP   6h
-orders         ClusterIP   10.0.16.21     <none>        80/TCP         6h
-orders-db      ClusterIP   10.0.119.245   <none>        27017/TCP      6h
-payment        ClusterIP   10.0.89.48     <none>        80/TCP         6h
-queue-master   ClusterIP   10.0.64.13     <none>        80/TCP         6h
-rabbitmq       ClusterIP   10.0.185.20    <none>        5672/TCP       6h
-shipping       ClusterIP   10.0.117.16    <none>        80/TCP         6h
-user           ClusterIP   10.0.69.17     <none>        80/TCP         6h
+...
 user-db        ClusterIP   10.0.1.75      <none>        27017/TCP      6h
 lukas@Azure:~$ cat network-utils.yaml
 apiVersion: v1
