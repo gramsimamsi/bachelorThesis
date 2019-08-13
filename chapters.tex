@@ -263,8 +263,6 @@ spec:
         - containerPort: 80
 \end{lstlisting}
 
-%TODO custom yaml highlighting? https://tex.stackexchange.com/questions/152829/how-can-i-highlight-yaml-code-in-a-pretty-way-with-listings/152856#152856
-
 \subsection{OpenShift} \label{openshiftExplanation}
 
 OpenShift is a commercial Kubernetes container platform by Red Hat of which there are several different options to choose from. OpenShift Online is hosted in a public cloud, while OpenShift Dedicated is hosted on dedicated nodes in a virtual private cloud. The option used in this thesis is \gls{ocp}, which can be deployed on any infrastructure, including on-premise environments\footcite[][, section 'OpenShift plans and pricing']{openShiftOptions}.
@@ -504,7 +502,7 @@ The impact value was roughly estimated by differentiating between intermediate s
 \subsection{Resulting formula}
 The work elaborated on in the previous section leads to the following formula for estimating the total risk of the identified vectors, usable for a specific system setup at hand:
 
-$${Total\ risk}= Max[\frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}*\ impact,\ 10]$$
+$${Total\ risk}= Max[\nint{\ \frac{ {vantage\ point}\ + {required\ access\ level}\ + {awareness}\ + {exploitability} }{4}}*\ impact,\ 10]$$
 
 %TODO formula misses rounding to full integer
 This leads to a total risk of 0 through 10.5, which is rounded to full integers and capped at 10. In accordance to the \gls{owasp} Risk Rating Methodology\footcite[][, section 'Step 4: Determining the Severity of the Risk']{riskRating}, total risk values <= 3 are defined as low, <= 6 as medium and values above that are defined as high with the exception of 10, which is critical.
