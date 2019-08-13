@@ -52,7 +52,7 @@ As such, it will look at the capabilities a potential provider has to (mis-)conf
 In short, the goal is to improve the security of a given \gls{k8s} cluster, not \gls{k8s} itself.
 To follow the \gls{owasp} Risk Rating Methodology\footcite{riskRating} down the line, threat actors have to be defined and grouped when applicable\footcite[][, Section 'Define all possible threats']{threatModeling}. Examining a list of threat actors published through SANS\footcite[][p. 12 to 17]{sansThreatActors}, only state-sponsored actors are excluded. The remaining groups are cyber criminals, hacktivists, systems administrators, end users, executives and partners.
 Grouping the remaining actors by the factors used to estimate risks in section \ref{riskEstimate}, three scenarios that encompass all of the actors can be identified:
-%TODO Mention baseline security in summary!
+%TODO Mention baseline security in abstract
 \begin{itemize}
 
 \item Malicious third party attacking the solution from within the company network and/or the internet
@@ -240,6 +240,7 @@ In order to create or manipulate an object, a new specification has to be provid
 \begin{lstlisting}[
 	caption={Exemplary .yaml file of a simple \gls{k8s} deployment},
 	basicstyle=\tiny,
+	language=yaml,
 	label={lst:example-yaml-file}]
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
