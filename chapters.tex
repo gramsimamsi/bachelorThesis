@@ -409,9 +409,8 @@ In order to mitigate this, nodes would have to authenticate themselves to the ap
 An attacker may leverage bad user practice to gain access to or permissions within a cluster. 
 This vector comprises user practices outside of the cluster that lead to risks within it.
 Examples include phishing for user accounts, gathering keys/tokens published to public code repositories, gathering passwords published in credential leaks or dumps, scouting specific software or container images used as well as gathering logs published with information valuable to an attacker.
-This could be done in a targeted way (i.e. specific Open Source Intelligence gathering or sending spearphishing emails) or untargeted by searching large repositories like GitHub for information formatted in a specific way. A practical example would include looking for published '.kube\textbackslash config' files, where authentication information and kube-apiserver addresses are saved to\footcite[][, section 'Define clusters, users, and contexts']{kubectlClusterAccess}. Gaining access through tokens in public logs has been demonstrated, too\footcite[][, section 'Results and notable findings']{ciKnew}.
-
-%TODO mitigation!
+This could be done in a targeted way (i.e. specific Open Source Intelligence gathering or sending spearphishing emails) or untargeted by searching large repositories like GitHub for information formatted in a specific way. A practical example would include looking for published '.kube\textbackslash config' files, where authentication information and kube-apiserver addresses are saved to\footcite[][, section 'Define clusters, users, and contexts']{kubectlClusterAccess}. Gaining access through tokens in public logs has been demonstrated, too\footcite[][, section 'Results and notable findings']{ciKnew}. \\
+Mitigating this mainly requires measures beyond the cluster configuration. Raising awareness for users about different risks, possibilities for exposure and phishing attempts  could help decrease the likelihood of such a problem. In-cluster measures include the restriction of privileges according to the principle of least privilege, which could limit the impact. Two-factor authentication access would also make exploiting credentials used by humans more difficult.
 
 \newpage
 \subsection{V16 - Leveraging bad infrastructure} \label{v16}
@@ -522,11 +521,12 @@ The two vectors used in chapter \ref{riskMgmtTotal} are listed in full detail to
 
 The resulting risk estimation for both the \gls{ocp} and \gls{aks} example systems are illustrated in table \ref{estimateComparison}. The individual values these results are derived from can be seen in tables \ref{ocpRiskTable} and \ref{aksRiskTable}. 
 
+\rowcolors{2}{gray!25}{white}
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|c|c|}
-\hline
+\hline \rowcolor{gray!50}
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                    & {\ul{OCP Risk}} & {\ul{AKS Risk}} \\ \hline
 V01             & Reconnaissance through interface components                                            & \textbf{3}     & \textbf{3}     \\ \hline
 V02             & Reading confidential information through interface components                          & \textbf{6}     & \textbf{7}     \\ \hline
@@ -552,10 +552,11 @@ V17             & Leveraging bad patch management                               
 
 
 \begin{landscape}
+\rowcolors{2}{gray!25}{white}
 \begin{table}[]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
-\hline
+\hline \rowcolor{gray!50}
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 3                                        & 3                              & 3                                        & 2                    & 2.75                                   & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidential information through interface components                                     & 3                                        & 3                              & 3                                        & 3                    & 3                                      & 2            & \textbf{6}           \\ \hline
@@ -580,10 +581,11 @@ V17             & Leveraging bad patch management                               
 \end{table}
 %\captionof{table}{The risk estimation of all vectors for an \gls{ocp} 3.11 cluster\label{ocpRiskTable}}
 
+\rowcolors{2}{gray!25}{white}
 \begin{table}[]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|cccc|cc|c|}
-\hline
+\hline \rowcolor{gray!50}
 {\ul{Vector ID}} & \multicolumn{1}{c|}{{\ul{Vector}}}                                                      & \multicolumn{1}{c|}{{\ul{Vantage Point}}} & \multicolumn{1}{c|}{{\ul{RAL}}} & \multicolumn{1}{c|}{{\ul{Awareness}}} & {\ul{Exploitability}} & \multicolumn{1}{c|}{{\ul{Probability}}} & {\ul{Impact}} & {\ul{Resulting risk}} \\ \hline
 V01             & Reconnaissance through interface components                                             & 4                                        & 3                              & 3                                        & 2                    & 3                                      & 1            & \textbf{3}           \\ \hline
 V02             & Reading confidential information through interface components                                     & 4                                        & 3                              & 3                                        & 3                    & 3.25                                   & 2            & \textbf{7}           \\ \hline
