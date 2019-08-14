@@ -39,7 +39,7 @@ The circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exc
 
 In the \gls{ocp} setup, a user with access to the apiserver or webinterfaces (Vantage Point: 3) and read access (RAL: 3) can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain authorized access. They could pull/push images, trigger actions in other applications or containers and more. As a leakage of confidential information, his would constitute a security incident by itself (Impact: 2). 
 Kube-hunter is a readily available tool that checks for some confidential information automatically (Exploitability: 3).
-With a total risk value of 6, it is cassified as a medium risk. \\
+With a total risk value of 6, it is classified as a medium risk. \\
 Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 3, Awareness: 3, Exploitability: 2, Impact: 1). 
 The total risk value is increased from 6 to 7 by this, classifying it as a high risk.
 
@@ -85,7 +85,7 @@ The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting i
 \subsection{V10 - Container modification at runtime}
 
 In the \gls{ocp} setup, an attacker can try to modify and use an already running container instead of deploying a container with malicious contents,. In order to do this, they would need to execute commands from within the container (Vantage Point: 2) and be able to write to its file system (RAL: 2). This would affect the container accessed and in turn the application it is part of (Impact: 2).
-Trying to do this within a container is straightforward (Awareness: 3) and would require the same technical expertise as any command line interaction with a linux system (Exploitability: 2).
+Trying to do this within a container is straightforward (Awareness: 3) and would require the same technical expertise as any command line interaction with a Linux system (Exploitability: 2).
 With a total risk value of 5, it is classified as a medium risk. \\
 The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
 
@@ -107,10 +107,10 @@ The \gls{ocp} setup will be assessed first.
 In order to achieve more monetary gain, an attacker with access to the cluster interfaces (Vantage Point: 3) and the ability to change or add \gls{k8s} objects (RAL: 2) will try to be discrete. 
 The goal is to (ab)use the computing resources not belonging to and payed for by him to achieve monetary gain though mining cryptocurrencies.
 Cryptojacking is regularly cited as an up-and-coming attack (Awareness: 3), but to do it without being detected needs some technical skill (Exploitability: 2).
-If successful for longer periods of time, a companies on-premise resources will be available to a lesser degree as some of them are used for mining. In addition to that, the underlying hardware will be degraded at a higher rate, leading to hardware failures and replacesments sooner than normal (Impact: 2).
+If successful for longer periods of time, a companies on-premise resources will be available to a lesser degree as some of them are used for mining. In addition to that, the underlying hardware will be degraded at a higher rate, leading to hardware failures and replacements sooner than normal (Impact: 2).
 With a total risk value of 5, it is classified as a medium risk. \\
 The circumstances in the \gls{aks} setup differ again by the interfaces being available from the public internet (Vantage Point: 4).
-In contrast to V11, the ability to spin up additional resources in the cloud increases the impact here, since those are virtually unlimited and simpy billed towards the attack victim (Impact: 3).
+In contrast to V11, the ability to spin up additional resources in the cloud increases the impact here, since those are virtually unlimited and simply billed towards the attack victim (Impact: 3).
 All other circumstances remain (RAL: 2, Awareness: 3, Exploitability: 2).
 With a total risk value of 8, it is classified as a high risk.
 
@@ -128,7 +128,7 @@ The total risk value is increased from 5 to 6 by this, still classifying it as a
 
 In the \gls{ocp} setup, an attacker with access to the API (Vantage Point: 3) could try to add a malicious node to the cluster. Similar to V08, they could gain full access to containers of multiple projects by this (Impact: 3).
 By design, cluster administrator access is needed to add a node within OCP (RAL: 1).
-This technique is not talked about that much, but still available in public resources and possible in all clusters (Awareness: 2). Docs are publicly available to add nodes to a cluster, basic linux server administration skills are needed to follow them (Exploitability: 2).
+This technique is not talked about that much, but still available in public resources and possible in all clusters (Awareness: 2). Docs are publicly available to add nodes to a cluster, basic Linux server administration skills are needed to follow them (Exploitability: 2).
 With a total risk value of 6, it is classified as a medium risk. \\
 The \gls{aks} interfaces are again available from the public internet (Vantage Point: 4).
 Adding nodes would still be possible here, but since they are automatically provisioned and customization of provisioned VMs is not straightforward, this attack is relatively unorthodox (Awareness: 1).
@@ -138,7 +138,7 @@ The total risk value remains unchanged at 6, a medium risk.
 \subsection{V15 - Leveraging bad user practice}
 
 The \gls{ocp} setup will be assessed first.
-User practices outside of the cluster are not affected by cluster controls. Users entering their credentials in faked login windows or publicizing access tokens through public repositories are relatively common occurences that could potentially allow anyone finding them (RAL: 4) privileged access within that user context (Impact: 2) if they can reach the cluster interfaces (Vantage Point: 3).
+User practices outside of the cluster are not affected by cluster controls. Users entering their credentials in faked login windows or publicizing access tokens through public repositories are relatively common occurrences that could potentially allow anyone finding them (RAL: 4) privileged access within that user context (Impact: 2) if they can reach the cluster interfaces (Vantage Point: 3).
 There are tools available to do this, but doing this is non-intuitive (Awareness: 2) and using them effectively requires some technical skill (Exploitability: 2).
 With a total risk value of 6, it is classified as a medium risk. \\
 Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 4, Awareness: 2, Exploitability: 2, Impact: 2). 
