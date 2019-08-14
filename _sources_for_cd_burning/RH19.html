@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://kubernetes-security.info/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Kubernetes Security | Operating Kubernetes Clusters and Applications Safely</title>
+<meta name="generator" content="Jekyll v3.7.4">
+<meta property="og:title" content="Kubernetes Security">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Operating Kubernetes Clusters and Applications Safely">
+<meta property="og:description" content="Operating Kubernetes Clusters and Applications Safely">
+<link rel="canonical" href="https://kubernetes-security.info/">
+<meta property="og:url" content="https://kubernetes-security.info/">
+<meta property="og:site_name" content="Kubernetes Security">
+<script type="application/ld+json">
+{"@type":"WebSite","headline":"Kubernetes Security","url":"https://kubernetes-security.info/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kubernetes-security.info/assets/img/logo.png"}},"name":"Kubernetes Security","description":"Operating Kubernetes Clusters and Applications Safely","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="./RH19_files/style.css">
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="https://kubernetes-security.info/">Kubernetes Security</a></h1>
+        
+        
+          <img src="./RH19_files/logo.png" alt="Logo">
+        
+
+        <p>Operating Kubernetes Clusters and Applications Safely</p>
+
+        
+
+        
+        <p class="view"><a href="https://github.com/k8s-sec/k8s-sec.github.io/issues">Suggestions …</a></p>
+        
+
+        
+      </header>
+      <section>
+
+      <p>Hello and welcome to Kubernetes Security, the resource center for the <a href="https://info.aquasec.com/kubernetes-security">O’Reilly book</a> on this topic by Liz Rice and Michael Hausenblas.</p>
+
+<p><img src="./RH19_files/cover.png" alt="Kubernetes Security book cover"></p>
+
+<p>In the book we explore security concepts including defense in depth, least privilege, and limiting the attack surface. We discuss and show how to secure clusters, and you’ll also learn how Kubernetes uses authentication and authorization. The book will teache you how to secure container images against known vulnerabilities and abuse by third parties, enforce policies on the container runtime level as well as the networking level, and give you to rundown on how to handle sensitive information such as credentials.</p>
+
+<h3 id="table-of-contents">Table of contents</h3>
+
+<ul>
+  <li><a href="https://kubernetes-security.info/#securing-the-cluster">Securing the cluster</a></li>
+  <li><a href="https://kubernetes-security.info/#authentication-and-authorization">Authentication and authorization</a></li>
+  <li><a href="https://kubernetes-security.info/#securing-your-container-images">Securing your container images</a></li>
+  <li><a href="https://kubernetes-security.info/#running-containers-securely">Running containers securely</a></li>
+  <li><a href="https://kubernetes-security.info/#secrets-management">Secrets management</a></li>
+  <li><a href="https://kubernetes-security.info/#advanced-topics">Advanced topics</a></li>
+  <li><a href="https://kubernetes-security.info/#references">References</a></li>
+</ul>
+
+<hr>
+
+<h2 id="securing-the-cluster">Securing the cluster</h2>
+
+<p>Relevant pages in the official Kubernetes documentation:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/">Securing a Cluster</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">Encrypting Secret Data at Rest</a></li>
+  <li><a href="https://github.com/kubernetes/dashboard/wiki/Installation#recommended-setup">Installation—Recommended setup</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/audit/">Auditing</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/tls/certificate-rotation/">Certificate Rotation</a></li>
+</ul>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="https://www.theregister.co.uk/2018/12/03/kubernetes_flaw_cve_2018_1002105/">CVE-2018-1002105—Kubernetes privilege escalation and access to sensitive information</a></li>
+  <li>etcd’s <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md">transport security model</a></li>
+  <li><a href="https://sysdig.com/blog/kubernetes-security-kubelet-etcd/">Securing Kubernetes components: kubelet, etcd and Docker registry</a></li>
+  <li><a href="https://www.slideshare.net/SharonVendrov/k8s-security-best-practices-85961183">K8s security best practices</a></li>
+  <li><a href="https://github.com/freach/kubernetes-security-best-practice">Kubernetes Security - Best Practice Guide</a></li>
+  <li><a href="https://blog.redlock.io/cryptojacking-tesla">Lessons from the Cryptojacking Attack at Tesla</a></li>
+  <li><a href="https://www.youtube.com/watch?v=vTgQLzeBfRU">Hacking and Hardening Kubernetes Clusters by Example</a></li>
+  <li><a href="https://weave.works/blog/what-does-production-ready-really-mean-for-a-kubernetes-cluster">What Does “Production Ready” Really Mean for a Kubernetes Cluster</a></li>
+  <li><a href="https://www.youtube.com/watch?v=dxKpCO2dAy8">A Hacker’s Guide to Kubernetes and the Cloud</a></li>
+  <li><a href="https://www.youtube.com/watch?v=b3qJwIttqqs">Kubernetes Container Clustering, Catastrophe</a></li>
+  <li><a href="https://github.com/hardening-kubernetes/from-scratch">Hardening Kubernetes from Scratch</a></li>
+  <li><a href="https://medium.com/handy-tech/analysis-of-a-kubernetes-hack-backdooring-through-kubelet-823be5c3d67c">Analysis of a Kubernetes hack — Backdooring through kubelet</a></li>
+  <li><a href="https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/">11 Ways (Not) to get Hacked</a></li>
+  <li><a href="https://gist.github.com/lizrice/c32740fac51db2a5518f06c3dae4944f">Testing access to the Kubelet API</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li>Center for Internet Security (CIS) <a href="https://www.cisecurity.org/benchmark/kubernetes/">Benchmark for Kubernetes</a></li>
+  <li>Center for Internet Security (CIS) <a href="https://www.cisecurity.org/benchmark/docker/">Benchmark for Docker</a></li>
+  <li><a href="https://github.com/aquasecurity/kube-bench">aquasecurity/kube-bench</a></li>
+  <li><a href="https://github.com/aquasecurity/kube-hunter">aquasecurity/kube-hunter</a></li>
+  <li><a href="https://k8guard.github.io/">k8guard.github.io</a></li>
+  <li><a href="https://github.com/bgeesaman/kubeatf">bgeesaman/kubeatf</a></li>
+  <li><a href="https://github.com/docker/docker-bench-security">docker/docker-bench-security</a></li>
+</ul>
+
+<h2 id="authentication-and-authorization">Authentication and authorization</h2>
+
+<p>Introductions and overview resources for authn &amp; authz in Kubernetes:</p>
+
+<ul>
+  <li><a href="https://blog.openshift.com/kubernetes-deep-dive-api-server-part-1/">Kubernetes deep dive: API Server – part 1</a> by Stefan Schimanski and Michael Hausenblas</li>
+  <li><a href="https://www.youtube.com/watch?v=WvnXemaYQ50">Kubernetes Auth and Access Control</a> by Eric Chiang</li>
+  <li><a href="https://kubernetes.io/docs/reference/access-authn-authz/webhook/">Webhook Mode</a> via Kubernetes documentation</li>
+  <li><a href="https://www.youtube.com/watch?v=gXz4cq3PKdg">Certifik8s: All You Need to Know About Certificates in Kubernetes</a> by Alexander Brand,</li>
+  <li>RFC 7519 <a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a></li>
+  <li>RFC 7617 <a href="https://tools.ietf.org/html/rfc7617">The ‘Basic’ HTTP Authentication Scheme</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/X.509">X.509 certificates</a></li>
+  <li><a href="https://openid.net/connect/">OpenID Connect</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://jwt.io/">jwt.io</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/">kubeadm</a></li>
+</ul>
+
+<h3 id="authentication">Authentication</h3>
+
+<p>Relevant pages in the official Kubernetes documentation:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/admin/authentication/">Authentication</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/">Authenticating with Bootstrap Tokens</a></li>
+</ul>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="https://akomljen.com/protect-kubernetes-external-endpoints-with-oauth2-proxy/">Protect Kubernetes External Endpoints with OAuth2 Proxy</a> by Alen Komljen</li>
+  <li><a href="https://medium.com/@while1eq1/single-sign-on-for-internal-apps-in-kubernetes-using-google-oauth-sso-2386a34bc433">Single Sign-On for Internal Apps in Kubernetes using Google Oauth / SSO</a> by William Broach</li>
+  <li><a href="https://thenewstack.io/kubernetes-single-sign-one-less-identity/">Single Sign-On for Kubernetes: An Introduction</a> by Joel Speed</li>
+  <li><a href="https://eng.fromatob.com/post/2017/02/lets-encrypt-oauth-2-and-kubernetes-ingress/">Let’s Encrypt, OAuth 2, and Kubernetes Ingress</a> by Ian Chiles</li>
+  <li><a href="https://medium.com/@etienne_24233/comparing-kubernetes-authentication-methods-6f538d834ca7by">Comparing Kubernetes Authentication Methods</a> by Etienne Dilocker</li>
+  <li><a href="http://uptoknow.blogspot.com/2017/06/kubernetes-authentication-proxy-example.html">K8s auth proxy example</a></li>
+  <li><a href="https://blog.conjur.org/kubernetes-authentication">K8s authentication with Conjur</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://www.keycloak.org/">Keycloak</a></li>
+  <li><a href="https://github.com/coreos/dex">coreos/dex</a></li>
+  <li><a href="https://github.com/heptio/authenticator">heptio/authenticator</a></li>
+  <li><a href="https://github.com/hashicorp/vault-plugin-auth-kubernetes">hashicorp/vault-plugin-auth-kubernetes</a></li>
+  <li><a href="https://github.com/appscode/guard">appscode/guard</a></li>
+  <li><a href="https://github.com/cyberark/conjur">cyberark/conjur</a></li>
+</ul>
+
+<h3 id="authorization">Authorization</h3>
+
+<p>Relevant pages in the official Kubernetes documentation:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/admin/authorization/">Authorization</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Using RBAC Authorization</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">Controlling Access to the Kubernetes API</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">Configure Service Accounts for Pods</a></li>
+</ul>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=Nw1ymxcLIDI">Effective RBAC</a> by Jordan Liggitt</li>
+  <li><a href="https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/">Configure RBAC In Your Kubernetes Cluster</a> via Bitnami</li>
+  <li><a href="https://kubernetes.io/blog/2017/10/using-rbac-generally-available-18/">Using RBAC, Generally Available in Kubernetes v1.8</a> by Eric Chiang</li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://github.com/liggitt/audit2rbac">liggitt/audit2rbac</a></li>
+  <li><a href="https://github.com/reactiveops/rbac-manager">reactiveops/rbac-manager</a></li>
+  <li><a href="https://github.com/jtblin/kube2iam">jtblin/kube2iam</a></li>
+</ul>
+
+<h2 id="securing-your-container-images">Securing your container images</h2>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=zs-6YEUrJAM">Establishing Image Provenance and Security in Kubernetes</a></li>
+  <li><a href="https://container-solutions.com/image-management-mutability-in-docker-and-kubernetes/">Image Management &amp; Mutability in Docker and Kubernetes</a></li>
+  <li><a href="https://thenewstack.io/container-security-considerations-kubernetes-deployment/">Container security considerations in a Kubernetes deployment</a></li>
+  <li><a href="https://medium.com/microscaling-systems/using-docker-tags-to-mess-with-peoples-minds-367bb2c93bd0">Using Docker tags to mess with people’s minds</a></li>
+  <li><a href="https://jpetazzo.github.io/2014/06/23/docker-ssh-considered-evil/">If you run SSHD in your Docker containers, you’re doing it wrong!</a></li>
+  <li><a href="https://www.youtube.com/watch?v=pPsREQbf3PA">Creating Effective Images</a></li>
+  <li><a href="https://www.safaribooksonline.com/library/view/how-to-containerize/9781491982310/">How to containerize your Go code</a></li>
+  <li><a href="https://blog.jessfraz.com/post/building-container-images-securely-on-kubernetes/">Building Container Images Securely on Kubernetes</a></li>
+  <li><a href="https://docs.openshift.com/container-platform/3.9/security/build_process.html">The OpenShift Build Process</a></li>
+  <li><a href="https://cloudplatform.googleblog.com/2017/10/introducing-grafeas-open-source-api-.html">Introducing Grafeas: An open-source API to audit and govern your software supply chain</a></li>
+  <li><a href="https://docs.google.com/presentation/d/1ZZPJd_b_p6bTQhUk3KqJW63fwzXZidcTAyyJ6PXpTSI/">Secure Kubernetes Application Delivery</a></li>
+  <li><a href="https://docs.docker.com/datacenter/dtr/2.4/guides/admin/configure/set-up-vulnerability-scans/">Set up Security Scanning in DTR</a></li>
+  <li><a href="https://www.theregister.co.uk/2018/09/26/aeroflot_server_code_open/">Pain spotting: Russia’s Aeroflot Docker server lands internal source code, config files on public internet</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://nvd.nist.gov/">National Vulnerability Database</a></li>
+  <li><a href="https://www.open-scap.org/tools/">OpenSCAP tools</a></li>
+  <li><a href="https://github.com/coreos/clair">coreos/clair</a></li>
+  <li><a href="https://github.com/aquasecurity/microscanner">aquasecurity/microscanner</a></li>
+  <li><a href="https://docs.docker.com/registry/deploying/">Docker Registry Server</a></li>
+  <li><a href="https://docs.gitlab.com/ee/user/project/container_registry.html">GitLab Container Registry</a></li>
+  <li><a href="https://www.openshift.com/products/quay">Red Hat Quay container registry</a></li>
+  <li><a href="https://aws.amazon.com/ecr/">Amazon Elastic Container Registry</a></li>
+  <li><a href="https://github.com/theupdateframework/notary">theupdateframework/notary</a></li>
+  <li><a href="https://github.com/weaveworks/flux">weaveworks/flux</a></li>
+  <li><a href="https://github.com/IBM/portieris">IBM/portieris</a></li>
+  <li><a href="https://grafeas.io/">Grafeas</a></li>
+  <li><a href="https://in-toto.github.io/">in-toto</a></li>
+</ul>
+
+<h2 id="running-containers-securely">Running containers securely</h2>
+
+<p>Relevant pages in the official Kubernetes documentation:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/">Configure Quality of Service for Pods</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Configure a Security Context for a Pod or Container</a></li>
+  <li><a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">Pod Security Policies</a></li>
+  <li><a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">Network policies</a></li>
+</ul>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="https://opensource.com/article/18/3/just-say-no-root-containers">Just say no to root (in containers)</a></li>
+  <li><a href="http://canihaznonprivilegedcontainers.info/">Non-privileged containers FTW!</a></li>
+  <li><a href="https://www.youtube.com/watch?v=ltrV-Qmh3oY">Running with Scissors</a></li>
+  <li><a href="https://articles.microservices.com/containers-are-a-lie-2521afda1f81">Containers are a lie</a></li>
+  <li>Exploring Container Mechanisms Through the Story of a Syscall: <a href="https://schd.ws/hosted_files/kccnceu18/46/Exploring%20container%20mechanisms%20through%20the%20story%20of%20a%20syscall.pdf">slides</a>, <a href="https://www.youtube.com/watch?v=1Tl-NURLoq4">video</a></li>
+  <li><a href="https://www.youtube.com/watch?v=T_NxDXAdbfo">Improving your Kubernetes Workload Security</a></li>
+  <li>Container Isolation at Scale (Introducing gVisor): <a href="https://schd.ws/hosted_files/kccnceu18/47/Container%20Isolation%20at%20Scale.pdf">slides</a>, <a href="https://www.youtube.com/watch?v=pWyJahTWa4I">video</a></li>
+  <li><a href="https://www.youtube.com/watch?v=ohTq0no0ZVU">Shipping in Pirate-Infested Waters: Practical Attack and Defense in Kubernetes</a></li>
+  <li><a href="https://cloudplatform.googleblog.com/2018/05/Exploring-container-security-Isolation-at-different-layers-of-the-Kubernetes-stack.html">Exploring container security: Isolation at different layers of the Kubernetes stack</a></li>
+  <li><a href="https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment/">Security Best Practices for Kubernetes Deployment</a></li>
+  <li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf">NIST Special Publication 800-190: Application Container Security Guide</a></li>
+  <li><a href="https://www.youtube.com/watch?v=pzAwTC8KYV8">Kubernetes Security Best Practices</a></li>
+  <li><a href="https://ahmet.im/blog/kubernetes-network-policy/">Securing Kubernetes Cluster Networking</a></li>
+  <li><a href="https://github.com/ahmetb/kubernetes-network-policy-recipes">Tutorials and Recipes for Kubernetes Network Policies feature</a></li>
+  <li><a href="https://sysdig.com/blog/kubernetes-security-psp-network-policy/">Kubernetes Security Context and Kubernetes Network Policy</a></li>
+  <li><a href="https://www.youtube.com/watch?v=YtrA7eauSSg">Continuous Kubernetes Security</a></li>
+  <li><a href="https://thenewstack.io/cilium-making-bpf-easy-on-kubernetes-for-improved-security-performance/">Cilium: Making BPF Easy on Kubernetes for Improved Security, Performance</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://github.com/Shopify/kubeaudit">Shopify/kubeaudit</a></li>
+  <li><a href="https://sysdig.com/opensource/falco/">opensource/falco</a></li>
+  <li><a href="https://github.com/genuinetools/bane">genuinetools/bane</a></li>
+  <li><a href="https://kubesec.io/">kubesec.io</a></li>
+  <li><a href="https://github.com/draios/sysdig-inspect">Sysdig Inspect</a></li>
+  <li><a href="https://sysdig.com/blog/enable-kubernetes-pod-security-policy/">kube-psp-advisor</a></li>
+</ul>
+
+<h2 id="secrets-management">Secrets management</h2>
+
+<p>Relevant pages in the official Kubernetes documentation:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secrets</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#securing-etcd-clusters">Securing etcd clusters</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/">Distribute Credentials Securely Using Secrets</a></li>
+</ul>
+
+<p>Further reading:</p>
+
+<ul>
+  <li><a href="http://kubernetesbyexample.com/secrets/">Kubernetes secrets examples</a></li>
+  <li><a href="https://medium.com/@gmaliar/dynamic-secrets-on-kubernetes-pods-using-vault-35d9094d169">Dynamic secrets on Kubernetes pods using Hashicorp Vault</a></li>
+  <li><a href="https://blog.openshift.com/managing-secrets-openshift-vault-integration/">Managing Secrets on OpenShift – Vault Integration</a></li>
+  <li><a href="https://medium.com/@mtreacher/using-aws-kms-for-application-secrets-in-kubernetes-149ffb6b4073">Using AWS KMS for application secrets in Kubernetes</a></li>
+  <li><a href="https://blog.aquasec.com/injecting-secrets-kubernetes-hashicorp-vault-and-aqua-on-azure">Injecting secrets with Aqua</a></li>
+  <li><a href="https://www.youtube.com/watch?v=y5gfvEO_cjY">Your secret’s safe with me</a></li>
+  <li><a href="https://www.infoworld.com/article/3064355/security/how-you-might-be-leaking-your-secrets-onto-github.html">How you could be leaking your secrets onto GitHub</a></li>
+  <li><a href="https://www.ncsc.gov.uk/articles/problems-forcing-regular-password-expiry">The problems with forcing regular password expiry</a></li>
+  <li><a href="https://blog.openshift.com/managing-secrets-in-openshift-containers-with-cyberark-conjur-and-the-cyberark-vault/">Managing Secrets in OpenShift with CyberArk Conjur and the CyberArk Vault</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://github.com/kelseyhightower/konfd">kelseyhightower/konfd</a></li>
+  <li><a href="https://github.com/bitnami-labs/sealed-secrets">bitnami-labs/sealed-secrets</a></li>
+  <li><a href="https://github.com/shyiko/kubesec">shyiko/kubesec</a></li>
+  <li><a href="https://github.com/cyberark/conjur">cyberark/conjur</a></li>
+</ul>
+
+<h2 id="advanced-topics">Advanced topics</h2>
+
+<ul>
+  <li><a href="https://jvns.ca/blog/2017/08/05/how-kubernetes-certificates-work/">How Kubernetes certificate authorities work</a></li>
+  <li><a href="https://blog.openshift.com/kubernetes-application-operator-basics/">Kubernetes Application Operator Basics</a></li>
+  <li><a href="https://www.theregister.co.uk/2013/03/18/servers_pets_or_cattle_cern/">Are your servers PETS or CATTLE?</a></li>
+  <li><a href="https://principlesofchaos.org/">Principles of Chaos Engineering</a></li>
+  <li><a href="https://blog.loof.fr/2018/06/gvisor-in-depth.html">gVisor in depth</a></li>
+  <li><a href="https://nabla-containers.github.io/">Nabla containers: a new approach to container isolation</a></li>
+  <li><a href="https://github.com/kelseyhightower/grafeas-tutorial">A step by step guide for getting started with Grafeas and Kubernetes</a></li>
+  <li><a href="https://blog.aquasec.com/network-nano-segmentation-for-container-security-in-aqua-2.0">Network Nano-Segmentation for Container Security in Aqua 2.0</a></li>
+  <li><a href="https://www.projectcalico.org/using-network-policy-in-concert-with-istio/">Using Network Policy in concert with Istio</a></li>
+  <li><a href="https://www.youtube.com/watch?v=xygE8DbwJ7c">Multi-tenancy in Kubernetes</a></li>
+  <li><a href="https://hackerone.com/reports/341876">SSRF in Exchange leads to ROOT access in all instances</a></li>
+  <li><a href="https://blog.jetstack.io/blog/hidden-gems-1.10/#pids-per-pod-limit">PIDs per Pod limit</a></li>
+  <li><a href="https://redlock.io/blog/cryptojacking-tesla">Lessons from the Cryptojacking Attack at Tesla</a></li>
+  <li><a href="https://blog.aquasec.com/cryptocurrency-miners-abusing-containers-anatomy-of-an-attempted-attack">Cryptocurrency Miners Abusing Containers: Anatomy of an (Attempted) Attack</a></li>
+</ul>
+
+<p>Tooling:</p>
+
+<ul>
+  <li><a href="https://prometheus.io/">Prometheus</a></li>
+  <li><a href="https://istio.io/">Istio</a></li>
+  <li><a href="https://linkerd.io/">Linkerd</a></li>
+  <li><a href="https://oval.mitre.org/index.html">Open Vulnerability and Assessment Language</a></li>
+  <li><a href="https://github.com/aporeto-inc/trireme-kubernetes">aporeto-inc/trireme-kubernetes</a></li>
+  <li><a href="https://github.com/jetstack/cert-manager/">jetstack/cert-manager</a></li>
+  <li><a href="https://katacontainers.io/">Kata Containers</a></li>
+  <li><a href="https://github.com/google/gvisor">google/gvisor</a></li>
+  <li><a href="https://spiffe.io/">SPIFFE</a></li>
+  <li><a href="https://www.openpolicyagent.org/">Open Policy Agent</a></li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<h3 id="official-kubernetes-documentation">Official Kubernetes documentation</h3>
+
+<p>API and resource references relevant to security (Kubernetes v1.11) docs:</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#namespace-v1-core">Namespace</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#secret-v1-core">Secret</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#resourcequota-v1-core">ResourceQuota</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#serviceaccount-v1-core">ServiceAccount</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#role-v1-rbac-authorization-k8s-io">Role</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#clusterrole-v1-rbac-authorization-k8s-io">ClusterRole</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#rolebinding-v1-rbac-authorization-k8s-io">RoleBinding</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#clusterrolebinding-v1-rbac-authorization-k8s-io">ClusterRoleBinding</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#podsecuritypolicy-v1beta1-extensions">PodSecurityPolicy</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#networkpolicy-v1-networking-k8s-io">NetworkPolicy</a></li>
+</ul>
+
+<h3 id="useful-kubectl-commands">Useful <code class="highlighter-rouge">kubectl</code> commands</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">kubectl create secret</code> … <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-secret-em-">docs</a></li>
+  <li><code class="highlighter-rouge">kubectl create serviceaccount</code> … <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-serviceaccount-em-">docs</a></li>
+  <li><code class="highlighter-rouge">kubectl create role</code> … <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-role-em-">docs</a></li>
+  <li><code class="highlighter-rouge">kubectl create rolebinding</code> … <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-rolebinding-em-">docs</a></li>
+  <li><code class="highlighter-rouge">kubectl auth can-i</code> … <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-can-i-em-">docs</a></li>
+</ul>
+
+<h3 id="providers">Providers</h3>
+
+<ul>
+  <li><a href="https://www.aquasec.com/">Aqua Security</a></li>
+  <li><a href="https://www.twistlock.com/platform/">Twistlock</a></li>
+  <li><a href="https://neuvector.com/">Neuvector</a></li>
+  <li><a href="https://sysdig.com/products/secure/">Sysdig Secure</a></li>
+</ul>
+
+<hr>
+
+<p>The logo uses a padlock icon by <a href="http://www.freepik.com/">Freepik</a> from www.flaticon.com and the Kubernetes logo kudos to the <a href="https://github.com/cncf/artwork/">CNCF</a>, The Linux Foundation.</p>
+
+
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages — Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="./RH19_files/scale.fix.js.Download"></script>
+    
+  
+</body></html>
