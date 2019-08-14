@@ -24,9 +24,9 @@
 \captionof{figure}{The final \gls{aks} cluster configuration used. Screenshot taken by Lukas Grams.}
 }
 \section{Estimating the solution specific risk, continued} \label{riskAssessmentContd}
-
+\vspace{-0.25cm}
 \subsection{V01 - Reconnaissance through interface components}
-
+\vspace{-0.25cm}
 In the \gls{ocp} setup, a user with read access to the apiserver or webinterfaces can scout out information. It is assumed that these are only accessible internally in typical corporate environments (Vantage Point: 3).
 By default, each account (project admin or project user, but not cluster admin) can only see information about their own project while a cluster admin can see all namespaces.
 The worst case assumption would be leveraging user permissions (RAL: 3).
@@ -34,9 +34,9 @@ The information gathering processes and interfaces are known and documented pret
 This could show information useful to an attacker like software versions, running systems or pods, user account privileges or misconfigurations and may help in planning and confirming the effectiveness of further attacks (Impact: 1).
 With a total risk value of 3, it is classified as a low risk. \\
 The circumstances in the \gls{aks} setup are identical to \gls{ocp} with the exception of those interfaces being available from the public internet (Vantage Point: 4, RAL: 3, Awareness: 3, Exploitability: 2, Impact: 1). The total risk value remains unchanged.
-
+\vspace{-0.25cm}
 \subsection{V02 - Reading confidential information through interface components}
-
+\vspace{-0.25cm}
 In the \gls{ocp} setup, a user with access to the apiserver or webinterfaces (Vantage Point: 3) and read access (RAL: 3) can gather confidential secrets like certs, tokens or passwords which are intended to be used by automated systems and/or users to authenticate themselves to cluster components and gain authorized access. They could pull/push images, trigger actions in other applications or containers and more. As a leakage of confidential information, his would constitute a security incident by itself (Impact: 2). 
 Kube-hunter is a readily available tool that checks for some confidential information automatically (Exploitability: 3).
 With a total risk value of 6, it is classified as a medium risk. \\
@@ -60,24 +60,23 @@ Synonymous to V01, the circumstances in the \gls{aks} setup are identical to \gl
 The total risk value is increased from 5 to 6 by this, still classifying it as a medium risk.
 
 \subsection{V05 - Image poisoning and baiting}
-
+\vspace{-0.25cm}
 In the \gls{ocp} setup, the untargeted version\footnote{refer to section \ref{v05} for a detailed description} needs the least access. A free and anonymously created dockerhub account to upload malicious images is available from anywhere (Vantage Point: 4) by anyone (RAL: 4). By itself only a single application or namespace / project would be affected by this (Impact: 2), as further exploitation of this foothold for an attacker is handled in vector V07.
 These methods are publicly known and both the docker container runtime and docker hub actively try to mitigate this, but malicious images are only deleted when reported by enough users (Awareness: 3).
 Base containers and malware as well as known vulnerable versions are readily available from public sources, but need some technical expertise to 'weaponize' (Exploitability: 2).
 With a total risk value of 7, it is classified as a high risk. \\
 The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
+\vspace{-0.25cm}
 \subsection{V06 - Configuration poisoning and baiting}
-
+\vspace{-0.25cm}
 In the \gls{ocp} setup, the untargeted version also needs the least access. Synonymous to V05, this can be done by anyone (RAL: 4) from anywhere (Vantage Point: 4).
 Compromised configurations can lead to a full cluster compromise (Impact: 3).
 Examples are readily available from public sources (Awareness: 3), but need some technical expertise to 'weaponize' (Exploitability: 2).
 With a total risk value of 10, it is classified as a critical risk. \\
 The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
-
-
+\vspace{-0.25cm}
 \subsection{V09 - Image cache compromise}
-
+\vspace{-0.25cm}
 In the \gls{ocp} setup, a cached container image could be swapped out for a malicious one, thus affecting a container and its application (Impact: 2). In order to do this, an attacker would need administrative access to the underlying node (RAL: 1) and be able to execute commands on it (Vantage Point: 1). This is a sensible vector not commonly discussed (Awareness: 2) and would require technical knowledge to conduct (Exploitability: 2).
 With a total risk value of 3, it is classified as a low risk. \\
 The circumstances in the \gls{aks} setup are identical to \gls{ocp}, resulting in the same risk values.
@@ -427,6 +426,7 @@ lrwxrwxrwx.   1 root root    7 May 16 16:59 bin -> usr/bin
 drwxr-xr-x.  20 root root  282 May 20 10:00 var
 \end{lstlisting}
 
+\newpage
 \subsection{Container breakout attack remediation in the OCP cluster}
 \begin{lstlisting}[
 	caption={Shell I/O of mitigating the \gls{ocp} cluster attack by breakout},
@@ -628,8 +628,9 @@ exception: connect failed
 #
 \end{lstlisting}
 
+\newpage
 \subsection{Container breakout attack conduction in the AKS cluster}
-
+\vspace{-0.4cm}
 \begin{lstlisting}[
 	caption={Shortened version of the shell I/O during the exploitation of the \gls{aks} cluster attack by breakout},
 	label={lst:breakout-aks-exploit},
@@ -705,9 +706,9 @@ drwxr-xr-x    2 root     root          4096 May 23 18:48 bin
 ...
 lrwxrwxrwx    1 root     root            30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
 \end{lstlisting}
-
+\vspace{-0.4cm}
 \subsection{Container breakout node file system in the AKS cluster}
-
+\vspace{-0.4cm}
 \begin{lstlisting}[
 	caption={Shortened version of the shell I/O on the \gls{aks} cluster worker node after the attack by breakout},
 	label={lst:breakout-aks-nodeOutput},
@@ -723,8 +724,9 @@ drwxr-xr-x   2 root root  4096 May 23 18:48 bin
 ...
 lrwxrwxrwx   1 root root    30 May 15 03:24 vmlinuz.old -> boot/vmlinuz-4.15.0-1045-azure
 \end{lstlisting}
-
+\vspace{-0.4cm}
 \subsection{Container breakout attack remediation in the AKS cluster}
+\vspace{-0.4cm}
 \begin{lstlisting}[
 	caption={Shortened version of the shell I/O while mitigating the \gls{aks} cluster attack by breakout},
 	label={lst:breakout-aks-mitigate},
