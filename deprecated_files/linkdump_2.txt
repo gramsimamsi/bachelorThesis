@@ -347,3 +347,7 @@ https://www.youtube.com/watch?v=byWsbXRlqmc
 ^30:32: podSecPolicy explanation FOLLOWED BY BEST PRACTICES
 ^35:40: AUDIT POLICY FOR LOGGING! (followed by app logging)
 ^43:20: "credential management you have to DIY"
+
+
+https://docs.google.com/presentation/d/1tCqmGSOJJzi6ZK7TNhbzVFsTekvjvQR8GGPoaYBrM1o/edit#slide=id.p 
+^great breakout collection slides, finding credit MED
